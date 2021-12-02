@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/buttom_timepick"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#20000000"
+    android:clickable="true"
+    android:focusable="true"
+    android:theme="@style/SampleTheme">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="245dp"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="5dp"
+        app:cardPreventCornerOverlap="false">
+
+        <RelativeLayout
+            android:id="@+id/timepicker_rl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/numpicker_rl"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_above="@+id/split"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:paddingStart="80dp"
+                        android:text="@string/date_hour"
+                        android:textColor="@color/theme_color" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:paddingStart="80dp"
+                        android:text="@string/date_minute"
+                        android:textColor="@color/theme_color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/numerPicker_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:weightSum="2">
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/theme_color" />
+
+                    <com.xm.ui.widget.NumberPicker
+                        android:id="@+id/numpicker_hour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/NPWidget.Holo.NumberPicker"/>
+
+                    <com.xm.ui.widget.NumberPicker
+                        android:id="@+id/numpicker_min"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/NPWidget.Holo.NumberPicker"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/split"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_above="@+id/control_ll"
+                android:background="#efeff5" />
+
+            <LinearLayout
+                android:id="@+id/control_ll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_height"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/tv_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.99"
+                    android:gravity="center"
+                    android:text="@string/common_cancel"
+                    android:textColor="@color/hint_color"
+                    android:textSize="16sp"
+                    android:background="@drawable/fill_gray_selector"/>
+
+                <TextView
+                    android:id="@+id/tv_sure"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.99"
+                    android:gravity="center"
+                    android:text="@string/common_confirm"
+                    android:textColor="@color/theme_color"
+                    android:textSize="16sp"
+                    android:background="@drawable/fill_gray_selector"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="1px"
+                android:layout_height="200dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignTop="@+id/numpicker_rl"
+                android:layout_centerHorizontal="true"
+                android:background="#efeff5" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

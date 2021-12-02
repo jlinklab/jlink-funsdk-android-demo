@@ -1,0 +1,31 @@
+7767517
+29 31
+Input            data_24          0 1 data_24 0=24 1=24 2=3
+Split            splitncnn_0      1 2 data_24 data_24_splitncnn_0 data_24_splitncnn_1
+Pooling          pool_data_24     1 1 data_24_splitncnn_1 data_12 0=1 1=2 2=2 3=0 4=0
+Convolution      conv1_Net12      1 1 data_12 conv1_Net12 0=8 1=2 2=1 3=1 4=0 5=1 6=96
+ReLU             relu1_Net12      1 1 conv1_Net12 conv1_Net12_relu1_Net12
+Pooling          pool1_Net12      1 1 conv1_Net12_relu1_Net12 pool1_Net12 0=0 1=3 2=2 3=0 4=0
+Convolution      conv2_Net12      1 1 pool1_Net12 conv2_Net12 0=16 1=2 2=1 3=1 4=0 5=1 6=512
+ReLU             relu2_Net12      1 1 conv2_Net12 conv2_Net12_relu2_Net12
+Pooling          pool2_Net12      1 1 conv2_Net12_relu2_Net12 pool2_Net12 0=1 1=2 2=2 3=0 4=0
+Convolution      conv3_Net12      1 1 pool2_Net12 conv3_Net12 0=24 1=2 2=1 3=1 4=0 5=1 6=1536
+ReLU             relu3_Net12      1 1 conv3_Net12 conv3_Net12_relu3_Net12
+Convolution      conv4_Net12      1 1 conv3_Net12_relu3_Net12 conv4_Net12 0=16 1=1 2=1 3=1 4=0 5=1 6=384
+ReLU             relu4_Net12      1 1 conv4_Net12 conv4_Net12_relu4_Net12
+Convolution      conv1_Net24      1 1 data_24_splitncnn_0 conv1_Net24 0=16 1=3 2=1 3=1 4=0 5=1 6=432
+ReLU             relu1_Net24      1 1 conv1_Net24 conv1_Net24_relu1_Net24
+Pooling          pool1_Net24      1 1 conv1_Net24_relu1_Net24 pool1_Net24 0=0 1=2 2=2 3=0 4=0
+Convolution      conv2_Net24      1 1 pool1_Net24 conv2_Net24 0=24 1=3 2=1 3=1 4=0 5=1 6=3456
+ReLU             relu2_Net24      1 1 conv2_Net24 conv2_Net24_relu2_Net24
+Pooling          pool2_Net24      1 1 conv2_Net24_relu2_Net24 pool2_Net24 0=0 1=3 2=2 3=0 4=0
+Convolution      conv3_Net24      1 1 pool2_Net24 conv3_Net24 0=32 1=3 2=1 3=1 4=0 5=1 6=6912
+ReLU             relu3_Net24      1 1 conv3_Net24 conv3_Net24_relu3_Net24
+Convolution      conv4_Net24      1 1 conv3_Net24_relu3_Net24 conv4_Net24 0=128 1=2 2=1 3=1 4=0 5=1 6=16384
+ReLU             relu4_Net24      1 1 conv4_Net24 conv4_Net24_relu4_Net24
+Concat           concat_Net12_Net24 2 1 conv4_Net12_relu4_Net12 conv4_Net24_relu4_Net24 concat_12-24fc 0=0
+Reshape          reshape_Net24    1 1 concat_12-24fc reshape_12-24fc 0=0 1=0 2=0 3=0
+Split            splitncnn_1      1 2 reshape_12-24fc reshape_12-24fc_splitncnn_0 reshape_12-24fc_splitncnn_1
+Convolution      box_12-24fc      1 1 reshape_12-24fc_splitncnn_1 box_12-24fc 0=8 1=1 2=1 3=1 4=0 5=1 6=1152
+Convolution      score_12-24fc    1 1 reshape_12-24fc_splitncnn_0 score_12-24fc 0=2 1=1 2=1 3=1 4=0 5=1 6=288
+Softmax          prob_Net24       1 1 score_12-24fc prob_Net24 0=0

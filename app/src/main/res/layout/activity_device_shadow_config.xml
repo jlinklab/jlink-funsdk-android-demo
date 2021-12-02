@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lis_config_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        uilib:Title="@string/configuration_name"
+        uilib:ItemTitleColor="@color/default_normal_text_color"
+        uilib:ItemTipSize="@dimen/normal_text_size"
+        uilib:RightClickable="false"
+        uilib:CapColor="@color/default_normal_text_color"
+        uilib:Cap=""
+        uilib:CapSize="@dimen/small_text_size"
+        uilib:LineColor="@color/line_color"
+        uilib:ShowBottomLine="true"
+        uilib:ImageRight1="@mipmap/icon_next"
+        uilib:ImageRight2="@mipmap/icon_next"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.xm.ui.widget.ItemSetLayout
+                android:id="@+id/is_send_config_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:left_title_text="@string/send_data"
+                uilib:main_layout="@layout/view_text"/>
+
+            <com.xm.ui.widget.ItemSetLayout
+                android:id="@+id/is_receive_config_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:left_title_text=""
+                uilib:main_layout="@layout/view_text"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

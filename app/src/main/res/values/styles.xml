@@ -1,0 +1,124 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="setup_sub_layout">
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="user_info_normal_text">
+        <item name="android:background">#00000000</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#ff101010</item>
+        <item name="android:textColorHint">#ffe0e0e0</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="text_system_info_title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/demo_title</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="text_system_info_value">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/theme_color</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">right|center_vertical</item>
+    </style>
+
+    <style name="video_control_button">
+        <item name="android:padding">6dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="dialog_animation" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_center_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_center_out</item>
+    </style>
+
+    <style name="dialog_translucent" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowFrame">@null</item><!-- 边框 -->
+        <item name="android:windowIsFloating">true</item><!-- 是否悬浮在activity上 -->
+        <item name="android:windowIsTranslucent">false</item><!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item><!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item><!-- 背景透明 -->
+        <item name="android:backgroundDimEnabled">true</item><!-- 模糊 -->
+        <item name="android:windowContentOverlay">@null</item><!-- 对话框是否有遮盖 -->
+        <item name="android:windowAnimationStyle">@style/dialog_animation</item><!-- 弹出或者进入时的动画效果 -->
+        <item name="android:colorBackgroundCacheHint">@null</item><!-- 背景缓存颜色 -->
+    </style>
+    <style name="DialogFragment_style" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+
+    <style name="baseListSelectItemStyle">
+        <item name="ImageRight1">@drawable/icon_next</item>
+        <item name="ImageRight2">@drawable/icon_next</item>
+        <item name="ItemTitleColor">@color/item_text_color</item>
+        <item name="ItemTitleSize">@dimen/item_text_size</item>
+        <item name="LineColor">@color/line_color</item>
+        <item name="ItemTipColor">@color/item_bottom_tip_text_color</item>
+        <item name="ItemTipSize">@dimen/to_small_text_size</item>
+        <item name="CapSize">@dimen/item_right_cap_size</item>
+        <item name="CapColor">@color/item_right_cap_text_color</item>
+        <item name="leftMargin">0dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+
+
+    <style name="ThemeLayoutStyle">
+        <item name="android:background">@drawable/corner_white_bg</item>
+        <item name="android:layout_marginTop">@dimen/half_of_normal_margin</item>
+    </style>
+
+    <style name="MyDialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowNoDisplay">false</item>
+    </style>
+
+    <style name="SeekBar_Duration" parent="@android:style/Widget.SeekBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/seekbar_progress_drawable</item>
+        <item name="android:indeterminateDrawable">@drawable/seekbar_progress_drawable</item>
+        <item name="android:minHeight">10dp</item>
+        <item name="android:maxHeight">10dp</item>
+        <item name="android:thumb">@drawable/icon_set_slider</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+
+    <style name="NumberPickerAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="selectionDivider">@drawable/line3</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+</resources>

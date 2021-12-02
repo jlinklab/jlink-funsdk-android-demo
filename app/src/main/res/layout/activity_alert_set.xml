@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.xm.ui.widget.XTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:LeftBtn_Nor="@mipmap/ic_xm_ui_back_sel"
+        app:LeftBtn_Sel="@mipmap/ic_xm_ui_back_sel"
+        app:TitleText=""
+        app:TitleTextColor="@android:color/white">
+
+    </com.xm.ui.widget.XTitleBar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/fragment_alert_set_preview"
+            android:name="demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.alert.view.AlertSetPreviewFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <fragment
+            android:id="@+id/fragment_alert_set_function"
+            android:name="demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.alert.view.AlertSetFunctionFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</RelativeLayout>

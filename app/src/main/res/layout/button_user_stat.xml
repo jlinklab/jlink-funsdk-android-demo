@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/btnUserStat"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:scaleType="fitCenter"
+    android:background="@drawable/common_button_selector_trans_border"
+    android:padding="4dp"
+    android:textSize="14dp"
+    android:text="@string/user_not_login"
+    android:textColor="@color/white"
+    />
+    

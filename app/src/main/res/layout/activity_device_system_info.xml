@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <!--<include-->
+    <!--android:id="@+id/layoutTop"-->
+    <!--layout="@layout/layout_top_navigate_theme" />-->
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_check_dev_upgrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:CapSize="@dimen/small_text_size"
+                uilib:ImageRight1="@mipmap/icon_next"
+                uilib:ImageRight2="@mipmap/icon_next"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:ItemTitleSize="@dimen/normal_text_size"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"
+                uilib:ShowBottomLine="true"
+                uilib:Title="@string/check_dev_upgrade" />
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_local_dev_upgrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:CapSize="@dimen/small_text_size"
+                uilib:ImageRight1="@mipmap/icon_next"
+                uilib:ImageRight2="@mipmap/icon_next"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:ItemTitleSize="@dimen/normal_text_size"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"
+                uilib:ShowBottomLine="true"
+                uilib:Title="@string/select_local_file_upgrade" />
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_dev_pid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:CapSize="@dimen/small_text_size"
+                uilib:ImageRight1="@mipmap/icon_next"
+                uilib:ImageRight2="@mipmap/icon_next"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:ItemTitleSize="@dimen/normal_text_size"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"
+                uilib:ShowBottomLine="true"
+                uilib:Title="PID" />
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_dev_oemid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:CapSize="@dimen/small_text_size"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:ItemTitleSize="@dimen/normal_text_size"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"
+                uilib:ShowBottomLine="true"
+                uilib:Title="OEMID"
+                android:visibility="gone"/>
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_sync_dev_time_zone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:CapSize="@dimen/small_text_size"
+                uilib:ImageRight1="@mipmap/icon_next"
+                uilib:ImageRight2="@mipmap/icon_next"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:ItemTitleSize="@dimen/normal_text_size"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"
+                uilib:ShowBottomLine="true"
+                uilib:Title="@string/sync_dev_time_zone" />
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_sync_dev_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:CapSize="@dimen/small_text_size"
+                uilib:ImageRight1="@mipmap/icon_next"
+                uilib:ImageRight2="@mipmap/icon_next"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:ItemTitleSize="@dimen/normal_text_size"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"
+                uilib:ShowBottomLine="true"
+                uilib:Title="@string/sync_dev_time" />
+
+            <com.xm.ui.widget.ItemSetLayout
+                android:id="@+id/isl_device_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:left_title_text="@string/dev_basic_information"
+                uilib:main_layout="@layout/view_content"/>
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_iccid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:CapSize="@dimen/small_text_size"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:ItemTitleSize="@dimen/normal_text_size"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"
+                uilib:ShowBottomLine="true"
+                uilib:Title="ICCID"
+                android:visibility="gone"/>
+
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_imei"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:CapSize="@dimen/small_text_size"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:ItemTitleSize="@dimen/normal_text_size"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"
+                uilib:ShowBottomLine="true"
+                uilib:Title="IMEI"
+                android:visibility="gone"/>
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_network_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:CapSize="@dimen/small_text_size"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:ItemTitleSize="@dimen/normal_text_size"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"
+                uilib:ShowBottomLine="true"
+                uilib:Title="@string/network_mode" />
+
+            <ImageView
+                android:id="@+id/imgDeviceQRCode"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_below="@id/layoutTop"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/defealtconfig"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/common_button_shape"
+                android:text="@string/device_system_info_defealtconfig"
+                android:textColor="@drawable/common_text_selector"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/defealtconfig"
+        android:layout_below="@id/imgDeviceQRCode"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    style="@style/text_system_info_title"
+                    android:text="@string/device_system_info_sn" />
+
+                <TextView
+                    android:id="@+id/textDeviceSN"
+                    style="@style/text_system_info_value" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    style="@style/text_system_info_title"
+                    android:text="@string/device_system_info_model" />
+
+                <TextView
+                    android:id="@+id/textDeviceModel"
+                    style="@style/text_system_info_value" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    style="@style/text_system_info_title"
+                    android:text="@string/device_system_info_hw_ver" />
+
+                <TextView
+                    android:id="@+id/textDeviceHWVer"
+                    style="@style/text_system_info_value" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    style="@style/text_system_info_title"
+                    android:text="@string/device_system_info_sw_ver" />
+
+                <TextView
+                    android:id="@+id/textDeviceSWVer"
+                    style="@style/text_system_info_value" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    style="@style/text_system_info_title"
+                    android:text="@string/device_system_info_pub_date" />
+
+                <TextView
+                    android:id="@+id/textDevicePubDate"
+                    style="@style/text_system_info_value"
+                    android:onClick="syncTime" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    style="@style/text_system_info_title"
+                    android:text="@string/device_system_info_pub_time" />
+                <!--<com.lib.funsdk.support.widget.TimeTextView-->
+                <!--android:id="@+id/textDevicePubTime"-->
+                <!--style="@style/text_system_info_value"-->
+                <!--android:onClick="syncTime"-->
+                <!--/>-->
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    style="@style/text_system_info_title"
+                    android:text="@string/device_system_info_run_time" />
+
+                <TextView
+                    android:id="@+id/textDeviceRunTime"
+                    style="@style/text_system_info_value" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    style="@style/text_system_info_title"
+                    android:text="@string/device_system_info_nat_code" />
+
+                <TextView
+                    android:id="@+id/textDeviceNatCode"
+                    style="@style/text_system_info_value" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    style="@style/text_system_info_title"
+                    android:text="@string/device_system_info_nat_status" />
+
+                <TextView
+                    android:id="@+id/textDeviceNatStatus"
+                    style="@style/text_system_info_value" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <!--android:onClick="onUpdate"-->
+            <LinearLayout
+                android:id="@+id/device_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    style="@style/text_system_info_title"
+                    android:text="@string/device_system_info_upgrade" />
+
+                <TextView
+                    android:id="@+id/textDeviceUpgrade"
+                    style="@style/text_system_info_value"
+                    android:text="Checking" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

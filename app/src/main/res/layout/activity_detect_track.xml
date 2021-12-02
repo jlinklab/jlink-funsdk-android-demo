@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_enable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:ImageRight1="@mipmap/icon_checked_no"
+                uilib:ImageRight2="@mipmap/icon_checked_yes"
+                uilib:Title="@string/detect_track"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"/>
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_watch_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:ImageRight1="@mipmap/icon_next"
+                uilib:ImageRight2="@mipmap/icon_next"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:ExtraMode="Spinner"
+                uilib:Title="@string/watch_time"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"/>
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_sensitivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:ImageRight1="@mipmap/icon_next"
+                uilib:ImageRight2="@mipmap/icon_next"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:ExtraMode="Spinner"
+                uilib:Title="@string/intelligent_sensitivity"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"/>
+            <com.xm.ui.widget.BtnColorBK
+                style="@style/defaultButtonStyle"
+                android:id="@+id/btn_set_watch_preset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/half_of_normal_padding"
+                android:text="@string/set_watch_preset"
+                android:textColor="@color/default_normal_text_color"
+                uilib:no_press_solid="@color/button_normal_color"
+                uilib:pressed_solid="@color/button_pressed_color" />
+            <FrameLayout
+                android:id="@+id/fl_monitor_surface"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.xm.ui.widget.ptzview.PtzView
+                android:id="@+id/ptz_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:NormalBgSrc="@mipmap/ic_ptz_ctrl_nor"
+                uilib:SelectedDownBgSrc="@mipmap/ic_ptz_ctrl_down"
+                uilib:SelectedUpBgSrc="@mipmap/ic_ptz_ctrl_top"
+                uilib:SelectedLeftBgSrc="@mipmap/ic_ptz_ctrl_left"
+                uilib:SelectedRightBgSrc="@mipmap/ic_ptz_ctrl_right"
+                android:layout_margin="@dimen/half_of_normal_padding"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

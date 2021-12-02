@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <com.xm.ui.widget.XTitleBar
+        android:id="@+id/layoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color1"
+        uilib:LeftBtn_Nor="@mipmap/icon_back_normal"
+        uilib:LeftBtn_Sel="@mipmap/icon_back_pressed"
+        uilib:TitleText="@string/camera_link_set"
+        uilib:TitleTextColor="@color/white"/>
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_link_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/half_of_normal_padding"
+        uilib:RightClickable="false"
+        uilib:ShowBottomLine="false"
+        uilib:ShowSwitch="false"
+        uilib:ShowTopLine="false"
+        uilib:ImageRight1="@mipmap/icon_checked_no"
+        uilib:ImageRight2="@mipmap/icon_checked_yes"
+        uilib:ItemTitleColor="@color/default_normal_text_color"
+        uilib:Title="@string/camera_link_switch" />
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_link_aiming"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/half_of_normal_padding"
+        uilib:RightClickable="false"
+        uilib:ShowBottomLine="false"
+        uilib:ShowSwitch="false"
+        uilib:ShowTopLine="false"
+        uilib:ImageRight1="@mipmap/icon_next"
+        uilib:ImageRight2="@mipmap/icon_next"
+        uilib:ItemTitleColor="@color/default_normal_text_color"
+        uilib:Title="@string/camera_link_aiming" />
+
+</LinearLayout>

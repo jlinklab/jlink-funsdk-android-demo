@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/xm_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        uilib:layout_constraintTop_toBottomOf="@+id/layoutTop">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/llAovBatteryTopView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/corner_white_10"
+        android:orientation="vertical"
+        uilib:layout_constraintEnd_toEndOf="parent"
+        uilib:layout_constraintStart_toStartOf="parent"
+        uilib:layout_constraintTop_toTopOf="parent"
+        >
+
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/lisPowerSupplyMode"
+            uilib:CapColor="@color/default_normal_text_color"
+            uilib:ItemTitleColor="@color/default_normal_text_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ripple_round_btn_selector"
+            uilib:Cap="TR_Setting_Battery"
+            uilib:ImageRight1="@null"
+            uilib:ItemTitleSize="15sp"
+            uilib:RightClickable="false"
+            uilib:ShowBottomLine="true"
+            uilib:ShowTopLine="false"
+            uilib:Title="TR_Setting_Power_Supply_Mode"
+            uilib:singleClick="true" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:id="@+id/tvAovCurBattery"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="23dp"
+                android:text="TR_Setting_Current_Battery_Level"
+                android:textColor="#ff5a5a5a"
+                android:textSize="15sp"
+                uilib:layout_constraintHorizontal_bias="0"
+                uilib:layout_constraintEnd_toStartOf="@+id/ivCharging"
+                uilib:layout_constraintBottom_toBottomOf="parent"
+                uilib:layout_constraintStart_toStartOf="parent"
+                uilib:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvPower"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="18dp"
+                android:textColor="#ff999999"
+                android:textSize="12sp"
+                android:text=""
+                uilib:layout_constraintBottom_toBottomOf="parent"
+                uilib:layout_constraintEnd_toEndOf="parent"
+                uilib:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivCharging"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_battery_charging"
+                android:visibility="gone"
+                uilib:layout_constraintBottom_toBottomOf="parent"
+                uilib:layout_constraintEnd_toStartOf="@+id/tvPower"
+                uilib:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color"
+                uilib:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clSetLowPowerMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvTitlePowerMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="11dp"
+                android:text="TR_Setting_Low_Power_Mode"
+                android:textColor="#ff5a5a5a"
+                android:textSize="15sp"
+                uilib:layout_constraintStart_toStartOf="parent"
+                uilib:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvTipPowerMode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="23dp"
+                android:text="TR_Setting_Low_Power_Mode_Description"
+                android:textColor="#ff999999"
+                android:textSize="11sp"
+                uilib:layout_constraintEnd_toEndOf="parent"
+                uilib:layout_constraintHorizontal_bias="0"
+                uilib:layout_constraintStart_toStartOf="@+id/tvTitlePowerMode"
+                uilib:layout_constraintTop_toBottomOf="@+id/tvTitlePowerMode" />
+
+            <demo.xm.com.xmfunsdkdemo.ui.widget.MySeekBar
+                android:id="@+id/sbSetBatteryLevel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="16.5dp"
+                uilib:layout_constraintEnd_toEndOf="parent"
+                uilib:layout_constraintStart_toStartOf="parent"
+                uilib:layout_constraintTop_toBottomOf="@+id/tvTipPowerMode" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvBatteryStatistic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="@dimen/di_20"
+        android:text="TR_Setting_Battery_Statistic"
+        android:textColor="#ff777777"
+        android:textSize="13sp"
+        android:visibility="gone"
+        uilib:layout_constraintEnd_toEndOf="parent"
+        uilib:layout_constraintHorizontal_bias="0"
+        uilib:layout_constraintStart_toStartOf="parent"
+        uilib:layout_constraintTop_toBottomOf="@+id/llAovBatteryTopView" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/clChart"
+        uilib:layout_constraintTop_toBottomOf="@+id/tvBatteryStatistic"
+        uilib:layout_constraintStart_toStartOf="parent"
+        uilib:layout_constraintEnd_toEndOf="parent"
+        uilib:layout_constraintBottom_toBottomOf="parent"
+        uilib:layout_constraintVertical_bias="0"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:background="@drawable/corner_white_10">
+
+        <LinearLayout
+            android:id="@+id/llSelectType"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@drawable/shape_f0f2f6_conner_5"
+            uilib:layout_constraintTop_toTopOf="parent"
+            uilib:layout_constraintStart_toStartOf="parent"
+            uilib:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="15dp"
+            android:padding="3dp"
+            android:layout_marginTop="@dimen/dp_10">
+
+            <TextView
+                android:id="@+id/tvToday"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/corner_white_5"
+                android:text="TR_Today"/>
+            <TextView
+                android:id="@+id/tvWeek"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="TR_Setting_Last_Week"/>
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tvBatteryLineChartTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TR_Setting_Power_Level"
+            uilib:layout_constraintStart_toStartOf="parent"
+            uilib:layout_constraintTop_toBottomOf="@+id/llSelectType"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="17.5dp"
+            android:textColor="#ffc5c5c7"
+            android:textSize="10sp"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/LineChart"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            uilib:layout_constraintTop_toBottomOf="@+id/tvBatteryLineChartTitle"
+            uilib:layout_constraintStart_toStartOf="parent"
+            uilib:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="15dp" />
+        <TextView
+            android:id="@+id/tvBatteryChartTip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="时"
+            android:textColor="@color/text_color"
+            android:textSize="10sp"
+            uilib:layout_constraintBottom_toBottomOf="@+id/LineChart"
+            uilib:layout_constraintStart_toEndOf="@+id/LineChart"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="5dp"/>
+        <TextView
+            android:id="@+id/tvSignalLineChartTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TR_Setting_Signal"
+            uilib:layout_constraintStart_toStartOf="parent"
+            uilib:layout_constraintTop_toBottomOf="@+id/LineChart"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="17.5dp"
+            android:textColor="#ffc5c5c7"
+            android:textSize="10sp"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/signalChart"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            uilib:layout_constraintTop_toBottomOf="@+id/tvSignalLineChartTitle"
+            uilib:layout_constraintStart_toStartOf="parent"
+            uilib:layout_constraintEnd_toEndOf="parent"
+            uilib:layout_constraintBottom_toBottomOf="parent"
+            uilib:layout_constraintVertical_bias="0"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="15dp"/>
+
+        <TextView
+            android:id="@+id/tvSignalChartTip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="时"
+            android:textSize="10sp"
+            android:textColor="@color/text_color"
+            uilib:layout_constraintBottom_toBottomOf="@+id/signalChart"
+            uilib:layout_constraintStart_toEndOf="@+id/signalChart"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="5dp"/>
+
+        <LinearLayout
+            android:id="@+id/llWake"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            uilib:layout_constraintTop_toBottomOf="@+id/signalChart">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_ffe4eafc_conner_8"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginBottom="15dp"
+                >
+                <TextView
+                    android:id="@+id/tvPreViewTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    uilib:layout_constraintEnd_toStartOf="@+id/ivPreView"
+                    uilib:layout_constraintStart_toStartOf="parent"
+                    uilib:layout_constraintTop_toTopOf="parent"
+                    android:text="TR_Setting_Preview_Time"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="15dp"
+                    android:textColor="#ff6b4d3e"
+                    android:textSize="13sp"/>
+                <TextView
+                    android:id="@+id/tvtvPreViewNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    uilib:layout_constraintTop_toBottomOf="@+id/tvPreViewTime"
+                    android:layout_marginTop="@dimen/dp_10"
+                    uilib:layout_constraintStart_toStartOf="@+id/tvPreViewTime"
+                    uilib:layout_constraintBottom_toBottomOf="parent"
+                    uilib:layout_constraintVertical_bias="0"
+                    android:layout_marginBottom="12.5dp"
+                    android:text=""
+                    android:textColor="#ff6b4d3e"
+                    android:textSize="20sp"/>
+
+                <ImageView
+                    android:id="@+id/ivPreView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    uilib:layout_constraintEnd_toEndOf="parent"
+                    uilib:layout_constraintTop_toTopOf="parent"
+                    uilib:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/battery_icon_preview"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_ffe3f2fd_corner8"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginBottom="15dp"
+                >
+                <TextView
+                    android:id="@+id/tvWakeTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    uilib:layout_constraintStart_toStartOf="parent"
+                    uilib:layout_constraintTop_toTopOf="parent"
+                    uilib:layout_constraintEnd_toStartOf="@+id/ivWake"
+                    android:text="TR_Setting_Wake_Up_Time"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginStart="15dp"
+                    android:textColor="#ff6b4d3e"
+                    android:textSize="13sp"/>
+                <TextView
+                    android:id="@+id/tvWakeNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    uilib:layout_constraintTop_toBottomOf="@+id/tvWakeTime"
+                    android:layout_marginTop="@dimen/dp_10"
+                    uilib:layout_constraintStart_toStartOf="@+id/tvWakeTime"
+                    uilib:layout_constraintBottom_toBottomOf="parent"
+                    uilib:layout_constraintVertical_bias="0"
+                    android:layout_marginBottom="12.5dp"
+                    android:text=""
+                    android:textColor="#ff6b4d3e"
+                    android:textSize="20sp"/>
+
+                <ImageView
+                    android:id="@+id/ivWake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    uilib:layout_constraintEnd_toEndOf="parent"
+                    uilib:layout_constraintTop_toTopOf="parent"
+                    uilib:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/battery_icon_awaken"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/alarm_time_background"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginHorizontal="15dp"
+            uilib:layout_constraintStart_toStartOf="parent"
+            uilib:layout_constraintEnd_toEndOf="parent"
+            uilib:layout_constraintTop_toBottomOf="@+id/llWake"
+            uilib:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="15dp"
+            >
+            <TextView
+                android:id="@+id/tvAlarmTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                uilib:layout_constraintStart_toStartOf="parent"
+                uilib:layout_constraintTop_toTopOf="parent"
+                android:text="TR_Setting_Number_Of_Alarms"
+                android:layout_marginTop="13dp"
+                android:layout_marginStart="15dp"
+                android:textColor="#ff6b4d3e"
+                android:textSize="13sp"/>
+            <TextView
+                android:id="@+id/tvNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                uilib:layout_constraintTop_toBottomOf="@+id/tvAlarmTime"
+                android:layout_marginTop="@dimen/dp_10"
+                uilib:layout_constraintStart_toStartOf="@+id/tvAlarmTime"
+                uilib:layout_constraintBottom_toBottomOf="parent"
+                uilib:layout_constraintVertical_bias="0"
+                android:layout_marginBottom="12.5dp"
+                android:text="11"
+                android:textColor="#ff6b4d3e"
+                android:textSize="20sp"/>
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                uilib:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/battery_icon_alarm"/>
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</LinearLayout>

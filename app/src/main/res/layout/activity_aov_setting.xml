@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/xm_root_layout"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <include
+        android:id="@+id/xb_idr_setting"
+        layout="@layout/include_title_layout"/>
+
+    <com.xm.ui.widget.ListSelectItem
+        android:visibility="gone"
+        android:id="@+id/lsi_battery_manager_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        uilib:Title="TR_Setting_Battery_Management"
+        uilib:ItemTitleColor="@color/default_normal_text_color"
+        uilib:ItemTitleSize="@dimen/small_text_size"
+        uilib:LineColor="@color/line_color"
+        uilib:ShowBottomLine="true"
+        uilib:ImageRight1="@mipmap/icon_next"
+        uilib:ImageRight2="@mipmap/icon_next"
+        uilib:RightClickable="false"/>
+
+    <com.xm.ui.widget.ListSelectItem
+        android:visibility="gone"
+        android:id="@+id/lsi_work_mode_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        uilib:Title="TR_Setting_Mode_Of_Work"
+        uilib:ItemTitleColor="@color/default_normal_text_color"
+        uilib:ItemTitleSize="@dimen/small_text_size"
+        uilib:LineColor="@color/line_color"
+        uilib:ShowBottomLine="true"
+        uilib:ImageRight1="@mipmap/icon_next"
+        uilib:ImageRight2="@mipmap/icon_next"
+        uilib:RightClickable="false"/>
+
+    <com.xm.ui.widget.ListSelectItem
+        android:visibility="gone"
+        android:id="@+id/lsi_light_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        uilib:Title="TR_Light_Settings"
+        uilib:ItemTitleColor="@color/default_normal_text_color"
+        uilib:ItemTitleSize="@dimen/small_text_size"
+        uilib:LineColor="@color/line_color"
+        uilib:ShowBottomLine="true"
+        uilib:ImageRight1="@mipmap/icon_next"
+        uilib:ImageRight2="@mipmap/icon_next"
+        uilib:RightClickable="false"/>
+</LinearLayout>

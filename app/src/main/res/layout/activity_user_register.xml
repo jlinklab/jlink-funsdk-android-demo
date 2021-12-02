@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <RadioGroup
+        android:id="@+id/rg_register_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutTop"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/btn_register_by_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/common_radiobutton_backgroud"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="@string/user_register_by_email"
+            android:textColor="@drawable/common_radiobutton_textcolor"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/btn_register_by_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/common_radiobutton_backgroud"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="@string/user_register_by_cellphone"
+            android:textColor="@drawable/common_radiobutton_textcolor"
+            android:textSize="18sp" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/layoutRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rg_register_mode"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingStart="25dp"
+        android:paddingEnd="32dp"
+        android:paddingTop="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/userRegisterUserNameIcon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/user_icon_login_user" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_alignBottom="@id/userRegisterUserNameIcon"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/userRegisterUserNameIcon"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_user_register_username"
+                    android:layout_width="0dp"
+                    android:layout_height="28dp"
+                    android:layout_weight="2"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/user_register_hint_username"
+                    android:singleLine="true"
+                    android:textColor="#ff101010"
+                    android:textColorHint="#ffe0e0e0"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btn_username_repeat"
+                    android:layout_width="0dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/common_button_selector"
+                    android:text="@string/user_name_repeat_btn"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignStart="@id/userRegisterUserNameIcon"
+                android:layout_below="@id/userRegisterUserNameIcon"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="8dp"
+                android:background="#ffe0e0e0" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutRegisterEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/userRegisterEmailIcon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="8dp"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/user_icon_login_email" />
+
+            <EditText
+                android:id="@+id/et_user_register_email"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_alignBottom="@id/userRegisterEmailIcon"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/userRegisterEmailIcon"
+                android:background="#00000000"
+                android:gravity="center_vertical"
+                android:hint="@string/user_register_hint_email"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                android:textColor="#ff101010"
+                android:textColorHint="#ffe0e0e0"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignLeft="@id/userRegisterEmailIcon"
+                android:layout_below="@id/userRegisterEmailIcon"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="8dp"
+                android:background="#ffe0e0e0" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutRegisterPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/userRegisterPhoneIcon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="8dp"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/user_icon_login_email" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_alignBottom="@id/userRegisterPhoneIcon"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/userRegisterPhoneIcon"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_phone_in_country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/bg_gray"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="@string/user_register_china"
+                    android:textColor="@color/demo_desc"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_user_register_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="5dp"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/user_register_hint_phone"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="#ff101010"
+                    android:textColorHint="#ffe0e0e0"
+                    android:textSize="16sp"
+                    tools:ignore="TextFields" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/userRegisterPhoneIcon"
+                android:layout_alignStart="@id/userRegisterPhoneIcon"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="8dp"
+                android:background="#ffe0e0e0" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutRegisterVerifyCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/userRegisterVerifyCodeIcon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="8dp"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/user_icon_login_email" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_alignBottom="@id/userRegisterVerifyCodeIcon"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/userRegisterVerifyCodeIcon"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_user_register_verify_code"
+                    android:layout_width="0dp"
+                    android:layout_height="28dp"
+                    android:layout_weight="2"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/user_register_hint_verify_code"
+                    android:singleLine="true"
+                    android:textColor="#ff101010"
+                    android:textColorHint="#ffe0e0e0"
+                    android:textSize="16dp" />
+
+                <Button
+                    android:id="@+id/btn_get_verify_code"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/common_button_selector"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="@string/user_register_get_verify_code"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignLeft="@id/userRegisterVerifyCodeIcon"
+                android:layout_below="@id/userRegisterVerifyCodeIcon"
+                android:layout_marginLeft="36dp"
+                android:layout_marginTop="8dp"
+                android:background="#ffe0e0e0" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/userRegisterPasswdIcon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="8dp"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/user_icon_login_passwd" />
+
+            <EditText
+                android:id="@+id/et_user_register_psw"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_alignBottom="@id/userRegisterPasswdIcon"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/userRegisterPasswdIcon"
+                android:background="#00000000"
+                android:gravity="center_vertical"
+                android:hint="@string/user_register_hint_password"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="#ff101010"
+                android:textColorHint="#ffe0e0e0"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignLeft="@id/userRegisterPasswdIcon"
+                android:layout_below="@id/userRegisterPasswdIcon"
+                android:layout_marginLeft="36dp"
+                android:layout_marginTop="8dp"
+                android:background="#ffe0e0e0" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/userRegisterPasswdConfirmIcon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="8dp"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/user_icon_login_passwd_confirm" />
+
+            <EditText
+                android:id="@+id/et_user_register_psw_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_alignBottom="@id/userRegisterPasswdConfirmIcon"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/userRegisterPasswdConfirmIcon"
+                android:background="#00000000"
+                android:gravity="center_vertical"
+                android:hint="@string/user_register_hint_password_confirm"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="#ff101010"
+                android:textColorHint="#ffe0e0e0"
+                android:textSize="16dp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/userRegisterBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutRegister"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/common_button_selector_white"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/user_register_account"
+        android:textColor="@drawable/common_text_selector"
+        android:textSize="18dp"/>
+
+    <Button
+        android:id="@+id/btn_register_not_bind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userRegisterBtn"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/common_button_selector_white"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/register_not_bind"
+        android:textColor="@drawable/common_text_selector"
+        android:textSize="18dp" />
+</RelativeLayout>

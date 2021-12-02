@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_ircut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        uilib:ShowSwitch="true"
+        uilib:ImageRight1="@mipmap/icon_checked_no"
+        uilib:ImageRight2="@mipmap/icon_checked_yes"
+        uilib:ItemTitleColor="@color/default_normal_text_color"
+        uilib:ItemTitleSize="@dimen/normal_text_size"
+        uilib:RightClickable="false"
+        uilib:Title="irCut" />
+</LinearLayout>

@@ -1,0 +1,26 @@
+#################
+## Eclipse
+#################
+
+*.pydevproject
+.project
+.metadata
+.mr.developer.cfg
+.classpath
+.svn
+.gradle/
+.idea/
+build/
+.gradle/
+gradlew
+gradlew.bat
+hmsagents/hmsagents.iml
+iCSee_Pro_Android.iml
+push/push.iml
+*.log
+*.iml
+CseeBase/CseeBase.iml
+/IDR/IDR.iml
+/local.properties
+.externalNativeBuild
+*.pro

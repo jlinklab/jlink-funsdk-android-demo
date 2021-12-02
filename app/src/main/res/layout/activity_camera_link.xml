@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:uilib="http://schemas.android.com/tools"
+    android:id="@+id/layoutRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical">
+
+    <com.xm.ui.widget.XTitleBar
+        android:id="@+id/init_camera_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color1"
+        uilib:LeftBtn_Nor="@mipmap/icon_back_normal"
+        uilib:LeftBtn_Sel="@mipmap/icon_back_pressed"
+        app:RightText="ok"
+        app:ShowBottomTip="false"
+        uilib:TitleTextColor="@color/white"
+        app:TitleText="TR_Camera_Linkage" />
+
+<!--    <ScrollView-->
+<!--        android:id="@+id/scrollView_link"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_tips"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginStart="25dp"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:layout_marginEnd="25dp"-->
+<!--                    android:text="TR_Camera_Linkage_Tip"-->
+<!--                    android:textColor="@color/black" />-->
+
+<!--                <RelativeLayout-->
+<!--                    android:id="@+id/rl_play_a"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="30dp"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:layout_marginEnd="30dp"-->
+<!--                    android:background="@drawable/corner_white_bg">-->
+<!--                    -->
+<!--                </RelativeLayout>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_a"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="A"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--                <RelativeLayout-->
+<!--                    android:id="@+id/rl_play_b"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/tv_a"-->
+<!--                    android:layout_marginStart="30dp"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:layout_marginEnd="30dp"-->
+<!--                    android:background="@drawable/corner_white_bg">-->
+
+<!--&lt;!&ndash;                    <ImageView&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:id="@+id/iv_select_point"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_centerInParent="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:background="@drawable/ic_select_point" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:id="@+id/tv_reset"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_alignParentRight="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_alignParentBottom="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:background="@drawable/corner_theme_left_top_right_bottom"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:paddingStart="10dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:paddingEnd="10dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:text="TR_Reset"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:textColor="@color/white" />&ndash;&gt;-->
+<!--                </RelativeLayout>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_b"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="B"-->
+<!--                    android:textStyle="bold" />-->
+<!--            </LinearLayout>-->
+
+<!--            <RelativeLayout-->
+<!--                android:id="@+id/ll_pop"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                android:visibility="invisible">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/iv_pop"-->
+<!--                    android:layout_width="62dp"-->
+<!--                    android:layout_height="62dp"-->
+<!--                    android:layout_gravity="start|center_vertical"-->
+<!--                    android:background="@drawable/shape_gray_corner"-->
+<!--                    android:padding="1dp" />-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/iv_pop"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginTop="-1dp"-->
+<!--                    android:src="@drawable/ic_drop_rectangle" />-->
+<!--            </RelativeLayout>-->
+<!--        </RelativeLayout>-->
+<!--    </ScrollView>-->
+</LinearLayout>
