@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutDirectionControl"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/layoutPlayWnd"
+    android:layout_marginTop="5dp">
+
+    <ImageButton
+        android:id="@+id/ptz_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ptz_right"
+        android:layout_toLeftOf="@+id/ptz_up"
+        android:background="@drawable/ptzleft_selector" />
+
+    <ImageButton
+        android:id="@+id/ptz_center"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/ptz_down"
+        android:layout_centerHorizontal="true"
+        android:background="@null" />
+
+    <Button
+        android:id="@+id/btnGetPreset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="32dp"
+        android:layout_toRightOf="@+id/ptz_center"
+        android:text="@string/device_opt_get_preset" />
+
+    <Button
+        android:id="@+id/btnSetPreset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnGetPreset"
+        android:layout_alignLeft="@+id/btnGetPreset"
+        android:text="@string/device_opt_set_preset" />
+
+    <ImageButton
+        android:id="@+id/ptz_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnGetPreset"
+        android:layout_toRightOf="@+id/ptz_left"
+        android:background="@drawable/ptzdown_selector" />
+
+    <ImageButton
+        android:id="@+id/ptz_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ptz_center"
+        android:layout_toLeftOf="@+id/ptz_center"
+        android:background="@drawable/ptzright_selector" />
+
+    <ImageButton
+        android:id="@+id/ptz_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ptz_right"
+        android:layout_toLeftOf="@+id/ptz_right"
+        android:background="@drawable/ptzup_selector" />
+
+    <ImageView
+        android:id="@+id/selected1"
+        android:src="@mipmap/checkbox_normal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="130dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/unselected1"
+        android:src="@mipmap/checkbox_checked_red"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="130dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

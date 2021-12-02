@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_seekbar_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        uilib:layout_constraintLeft_toLeftOf="@+id/viewPoint"
+        uilib:layout_constraintRight_toRightOf="@+id/viewPoint"
+        uilib:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/seek_top_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/set_img_bubble"
+            android:gravity="center"
+            android:text="111"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            uilib:layout_constraintLeft_toLeftOf="parent"
+            uilib:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_bubble_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/set_img_bubble_1"
+            android:visibility="visible"
+            uilib:layout_constraintEnd_toEndOf="@+id/seek_top_tv"
+            uilib:layout_constraintStart_toStartOf="@+id/seek_top_tv"
+            uilib:layout_constraintTop_toBottomOf="@+id/seek_top_tv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/viewPoint"
+        android:layout_width="1px"
+        android:layout_height="1px"
+        android:layout_marginLeft="15dp"
+        uilib:layout_constraintLeft_toLeftOf="@+id/seekbar"
+        uilib:layout_constraintTop_toTopOf="parent" />
+
+
+    <SeekBar
+        style="@style/SeekBar_Duration"
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginBottom="6dp"
+        android:max="100"
+        android:maxHeight="12dp"
+        android:progress="50"
+        android:progressDrawable="@drawable/seekbar_progress_drawable"
+        android:splitTrack="false"
+        android:thumb="@drawable/seek_thumb1"
+        android:visibility="visible"
+        uilib:layout_constraintEnd_toEndOf="parent"
+        uilib:layout_constraintStart_toStartOf="parent"
+        uilib:layout_constraintTop_toBottomOf="@+id/cl_seekbar_top" />
+
+    <TextView
+        android:id="@+id/seekbar_left_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/seekbar"
+        android:layout_marginStart="@dimen/dp_10"
+        android:text="TR_Low"
+        android:textColor="#ff999999"
+        uilib:layout_constraintStart_toStartOf="@+id/seekbar"
+        uilib:layout_constraintTop_toBottomOf="@+id/seekbar" />
+
+    <TextView
+        android:id="@+id/seekbar_right_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/seekbar"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:text="TR_High"
+        android:textColor="#ff999999"
+        uilib:layout_constraintEnd_toEndOf="@+id/seekbar"
+        uilib:layout_constraintTop_toBottomOf="@+id/seekbar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

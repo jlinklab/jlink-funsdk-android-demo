@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/layoutPlayWnd"
+    android:layout_marginTop="5dp">
+
+    <!--<Button-->
+    <!--android:id="@+id/Btn_Talk_Switch"-->
+    <!--android:layout_width="80dp"-->
+    <!--android:layout_height="80dp"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:text="Open TalkChannel" />-->
+
+    <RelativeLayout
+        android:id="@+id/VoiceTalk"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@color/transparent">
+
+        <Button
+            android:id="@+id/Btn_Talk_Switch"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Open TalkChannel" />
+
+        <RelativeLayout
+            android:id="@+id/btnVoiceTalk"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/icon_voice_talk"
+            android:scaleType="fitCenter"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/btn_quit_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/transparent"
+                android:src="@mipmap/icon_close" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/btnDevRecord"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="24dp"
+        android:layout_toRightOf="@+id/VoiceTalk"
+        android:background="@color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_record" />
+
+    <ImageButton
+        android:id="@+id/btnDevCapture"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/btnDevRecord"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="24dp"
+        android:layout_toLeftOf="@+id/VoiceTalk"
+        android:background="@color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_devcapture" />
+    />
+
+    <ImageView
+        android:id="@+id/selected1"
+        android:src="@mipmap/checkbox_checked_red"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="130dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/unselected1"
+        android:src="@mipmap/checkbox_normal"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="130dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

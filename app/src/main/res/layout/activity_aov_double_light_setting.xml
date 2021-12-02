@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/xm_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/ThemeLayoutStyle"
+        android:id="@+id/cl_light_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/layoutTop">
+
+        <!-- 红外夜视 -->
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/lsi_night_vision"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:ImageRight1="@drawable/select_normal"
+            app:ImageRight2="@drawable/select_press"
+            app:RightClickable="false"
+            app:ShowTopLine="false"
+            app:Title="General_Night_Vision"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <!-- 星光全彩 -->
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/lsi_full_color"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:ImageRight1="@drawable/select_normal"
+            app:ImageRight2="@drawable/select_press"
+            app:RightClickable="false"
+            app:Title="TR_Intelligent_Dual_Light"
+            app:layout_constraintTop_toBottomOf="@+id/lsi_night_vision"
+            tools:visibility="visible" />
+
+        <!-- 双光警戒 -->
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/lsi_double_light"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:ImageRight1="@drawable/select_normal"
+            app:ImageRight2="@drawable/select_press"
+            app:RightClickable="false"
+            app:Title="Double_Light_Vision"
+            app:layout_constraintTop_toBottomOf="@+id/lsi_full_color"
+            tools:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lis_indicator_light"
+        style="@style/baseListSelectItemStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_round_btn_selector"
+        app:ShowSwitch="true"
+        app:ShowBottomLine="false"
+        app:ShowTopLine="false"
+        app:Title="TR_Setting_Device_Indicator_Light"
+        app:layout_constraintTop_toBottomOf="@+id/cl_light_mode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/dp_10"
+        app:RightClickable="false"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:singleClick="false" />
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lis_Micro_light"
+        style="@style/baseListSelectItemStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_round_btn_selector"
+        app:ShowSwitch="true"
+        app:ShowBottomLine="false"
+        app:ShowTopLine="false"
+        app:Title="TR_Low_Light_Control"
+        app:Tip="TR_Low_Light_Control_Tip"
+        app:layout_constraintTop_toBottomOf="@+id/lis_indicator_light"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/dp_10"
+        app:RightClickable="false"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:singleClick="false" />
+</androidx.constraintlayout.widget.ConstraintLayout>

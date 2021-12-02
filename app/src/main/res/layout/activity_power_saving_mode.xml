@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <com.xm.ui.widget.XTitleBar
+        android:id="@+id/layoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color1"
+        uilib:LeftBtn_Nor="@mipmap/icon_back_normal"
+        uilib:LeftBtn_Sel="@mipmap/icon_back_pressed"
+        uilib:TitleText="@string/power_saving_mode"
+        uilib:TitleTextColor="@color/white" />
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_power_saving_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        uilib:Title="@string/power_saving_mode"
+        uilib:ItemTitleColor="@color/default_normal_text_color"
+        uilib:ItemTitleSize="@dimen/normal_text_size"
+        uilib:ImageRight1="@mipmap/icon_next"
+        uilib:ImageRight2="@mipmap/icon_next"
+        uilib:Cap=""
+        uilib:CapColor="@color/default_normal_text_color"
+        uilib:CapSize="@dimen/small_text_size"
+        uilib:ExtraMode="Spinner"/>
+
+    <!--延时时间-->
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_time_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        uilib:Title="@string/delay_time"
+        uilib:ItemTitleColor="@color/default_normal_text_color"
+        uilib:ItemTitleSize="@dimen/normal_text_size"
+        uilib:ImageRight1="@mipmap/icon_next"
+        uilib:ImageRight2="@mipmap/icon_next"
+        uilib:Cap=""
+        uilib:CapColor="@color/default_normal_text_color"
+        uilib:CapSize="@dimen/small_text_size"
+        uilib:ExtraMode="SeekBar"/>
+</LinearLayout>

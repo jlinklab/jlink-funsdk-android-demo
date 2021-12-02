@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dlg_calendar_date_bg"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:footerDividersEnabled="true"
+        android:listSelector="@drawable/common_list_selector"
+        android:scrollbars="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp">
+
+            <RelativeLayout
+                android:id="@+id/rl_dev_alarm_video_loss_alarm"
+                style="@style/setup_sub_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/device_alarm_loss_video_loss"
+                    android:textColor="@color/demo_title"
+                    android:textSize="16sp"
+                    tools:ignore="RelativeOverlap" />
+
+                <ImageButton
+                    android:id="@+id/btn_dev_alarm_loss_video"
+                    android:layout_width="48dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_switch_check" />
+            </RelativeLayout>
+
+            <!-- 移动侦测 -->
+            <LinearLayout
+                android:id="@+id/ll_dev_alarm_motion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_dev_alarm_video_loss_alarm"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_pir_alarm"
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pir_detection"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16sp"
+                        tools:ignore="RelativeOverlap" />
+
+                    <ImageButton
+                        android:id="@+id/btn_dev_alarm_pir_alarm"
+                        android:layout_width="48dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_switch_check" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_alarm_motion_detection"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16sp"
+                        tools:ignore="RelativeOverlap" />
+
+                    <ImageButton
+                        android:id="@+id/btn_dev_alarm_motion"
+                        android:layout_width="48dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_switch_check" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/theme_color" />
+
+                <!-- 录像联动 -->
+
+                <RelativeLayout
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_alarm_func_record"
+                        android:textColor="@color/demo_title"
+                        android:textSize="14sp"
+                        tools:ignore="RelativeOverlap" />
+
+                    <ImageButton
+                        android:id="@+id/btn_dev_alarm_motion_record"
+                        android:layout_width="48dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_switch_check" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+
+                <!-- 拍照联动 -->
+
+                <RelativeLayout
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_alarm_func_capture"
+                        android:textColor="@color/demo_title"
+                        android:textSize="14sp"
+                        tools:ignore="RelativeOverlap" />
+
+                    <ImageButton
+                        android:id="@+id/btn_dev_alarm_motion_capture"
+                        android:layout_width="48dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_switch_check" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+
+                <!-- 手机推送联动 -->
+
+                <RelativeLayout
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_alarm_func_pushmsg"
+                        android:textColor="@color/demo_title"
+                        android:textSize="14sp"
+                        tools:ignore="RelativeOverlap" />
+
+                    <ImageButton
+                        android:id="@+id/btn_dev_alarm_motion_push_msg"
+                        android:layout_width="48dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_switch_check" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+                <!-- 报警铃声联动 -->
+                <RelativeLayout
+                    android:id="@+id/alarm_motion_enable_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_min_height"
+                    android:background="@drawable/corner_white_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <CheckBox
+                        android:id="@+id/alarm_motion_voice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableStart="@drawable/radio_btn"
+                        android:drawablePadding="8dp"
+                        android:text="@string/settings_alarm_beep"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_alarm_motion_next"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_toRightOf="@+id/alarm_motion_voice"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/tv_alarm_motion_dev_beep"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@mipmap/icon_next"
+                            android:gravity="right"
+                            android:singleLine="false"
+                            android:textColor="@color/default_normal_text_color"
+                            android:textSize="@dimen/small_text_size"
+                            tools:ignore="RtlHardcoded" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+
+                <!-- 报警灵敏度 -->
+
+                <RelativeLayout
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_alarm_func_level"
+                        android:textColor="@color/demo_title"
+                        android:textSize="14sp"
+                        tools:ignore="RelativeOverlap" />
+
+                    <Spinner
+                        android:id="@+id/sp_dev_alarm_motion_sensitivity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@mipmap/spinner_ab_activated_holo_dark" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+            </LinearLayout>
+
+            <!--人形检测-->
+            <LinearLayout
+                android:id="@+id/ll_dev_alarm_human"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_dev_alarm_motion"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <!--人形检测-->
+                <RelativeLayout
+                    android:id="@+id/rl_dev_alarm_human"
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/hunman_detect"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@mipmap/icon_next"
+                        android:clickable="false"/>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+            </LinearLayout>
+
+
+            <!-- 视频遮挡 -->
+            <LinearLayout
+                android:id="@+id/ll_dev_alarm_blind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_dev_alarm_human"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_alarm_video_block"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16sp"
+                        tools:ignore="RelativeOverlap" />
+
+                    <ImageButton
+                        android:id="@+id/btn_dev_alarm_blind"
+                        android:layout_width="48dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_switch_check" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/theme_color" />
+
+                <!-- 录像联动 -->
+
+                <RelativeLayout
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_alarm_func_record"
+                        android:textColor="@color/demo_title"
+                        android:textSize="14sp"
+                        tools:ignore="RelativeOverlap" />
+
+                    <ImageButton
+                        android:id="@+id/btn_dev_alarm_blind_record"
+                        android:layout_width="48dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_switch_check" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+
+                <!-- 拍照联动 -->
+
+                <RelativeLayout
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_alarm_func_capture"
+                        android:textColor="@color/demo_title"
+                        android:textSize="14sp"
+                        tools:ignore="RelativeOverlap" />
+
+                    <ImageButton
+                        android:id="@+id/btn_dev_alarm_blind_capture"
+                        android:layout_width="48dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_switch_check" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+
+                <!-- 手机推送联动 -->
+
+                <RelativeLayout
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_alarm_func_pushmsg"
+                        android:textColor="@color/demo_title"
+                        android:textSize="14sp" />
+
+                    <ImageButton
+                        android:id="@+id/btn_dev_alarm_blind_push_msg"
+                        android:layout_width="48dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_switch_check" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+
+                <!-- 报警铃声联动 -->
+                <RelativeLayout
+                    android:id="@+id/alarm_blind_enable_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_min_height"
+                    android:background="@drawable/corner_white_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <CheckBox
+                        android:id="@+id/alarm_blind_voice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableStart="@drawable/radio_btn"
+                        android:drawablePadding="8dp"
+                        android:text="@string/settings_alarm_beep"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_alarm_blind_next"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_toRightOf="@+id/alarm_blind_voice"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/tv_alarm_blind_dev_beep"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@mipmap/icon_next"
+                            android:gravity="right"
+                            android:singleLine="false"
+                            android:textColor="@color/default_normal_text_color"
+                            android:textSize="@dimen/small_text_size"
+                            tools:ignore="RtlHardcoded" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

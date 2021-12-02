@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/item_set"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:ImageRight1="@mipmap/icon_next"
+        app:ItemTitleColor="@color/default_normal_text_color"
+        app:Title="tttt"/>
+
+</LinearLayout>

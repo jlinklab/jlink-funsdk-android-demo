@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/buttom_timepick"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#88000000"
+    android:clickable="true"
+    android:focusable="true" >
+    <View
+        android:id="@+id/background_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/timepicker_rl"/>
+
+    <RelativeLayout
+        android:id="@+id/timepicker_rl"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/corner_white_top_bg" >
+
+        <RelativeLayout
+            android:id="@+id/numpicker_rl"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/error_tip"
+            android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/numerPicker_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingBottom="5dp"
+                android:paddingTop="10dp"
+                android:weightSum="2" >
+                <View
+                    android:layout_width="4dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/theme_color" />
+
+                <com.xm.ui.widget.NumberPicker
+                    android:id="@+id/numpicker_hour"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_weight="1" />
+
+                <com.xm.ui.widget.NumberPicker
+                    android:id="@+id/numpicker_min"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/split"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@+id/control_ll"
+            android:background="#efeff5" />
+        <TextView
+            android:id="@+id/error_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/split"
+            android:text="TR_Alarm_Period_End_Time_Can_Not_Less_Than_Or_Equal_To_Start_Time"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:textColor="@color/red" />
+
+        <LinearLayout
+            android:id="@+id/control_ll"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_height"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="cancel"
+                android:textColor="@color/login_page_color"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/tv_selected"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text=""
+                android:textStyle="bold"
+                android:textColor="#FF333333"
+                android:visibility="visible"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_sure"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="confirm"
+                android:textColor="@color/theme_color"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

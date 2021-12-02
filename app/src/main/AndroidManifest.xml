@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="demo.xm.com.xmfunsdkdemo">
+
+    <uses-sdk tools:overrideLibrary="me.goldze.mvvmhabit" />
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.RECORD_VIDEO" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <!--密码解锁权限-->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+
+    <application
+        android:name=".app.SDKDemoApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/logo_app"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="Support_XM_Language"
+            android:value="true" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="demo.xm.com.xmfunsdkdemo.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".ui.user.login.view.UserLoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.DeviceConfigActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.local.view.UserSaveLocalPwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.info.view.UserInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.forget.view.UserForgetPwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.modify.view.UserModifyPwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.register.view.UserRegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.manul.view.DevManulConnectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.sn.view.DevSnConnectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.ap.view.DevApConnectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.lan.view.DevLanConnectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.share.view.ShareDevToOtherAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.list.view.DevListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.quick.view.DevQuickConnectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.DevAlarmMsgActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.browse.view.DevBrowseFileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.preview.view.DevMonitorActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.decodeconfig.view.DevDecodeSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.alarmconfig.view.DevAlarmSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.videoconfig.view.DevRecordSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.ActivityGuideDeviceLanAlarm"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.DoubleLightBoxActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.WhiteLightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.DoubleLightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.MusicLightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.GardenDoubleLightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.imageconfig.view.DevCameraSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.advance.view.DevAdvanceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.fisheyecontrol.view.DevFishEyeSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.devicestore.view.DevSetupStorageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.pwdmodify.view.DevModifyPwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.systemfunc.view.DevSysFunctionSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.frontpanel.view.DevFrontSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.alarmcenter.view.DevAlarmCenterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.gbconfig.view.DevGbSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.jdevdebug.view.DevJsonCmdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.about.view.DevAboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.record.view.DevRecordActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.picture.view.DevPictureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.simpleconfig.view.DevSimpleConfigActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.cloud.view.CloudStateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.cloud.view.CloudWebActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.qrcode.view.SetDevToRouterByQrCodeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.push.view.DevPushActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.door.view.DoorSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.door.view.DoorSettingContactActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.door.view.DoorSettingPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.filetransfer.view.FileTransferActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.BubbleActivity"
+            android:allowEmbedded="true"
+            android:documentLaunchMode="always"
+            android:resizeableActivity="true" />
+        <activity
+            android:name=".ui.activity.CheckErrorCodeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.list.view.ChannelListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.scanqrcode.CaptureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.intelligentvigilance.view.IntelligentVigilanceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.intelligentvigilance.alert.view.AlertSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.serialport.view.SerialPortActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".ui.device.push.view.DevPushService"
+            android:enabled="true"
+            android:persistent="true"
+            android:stopWithTask="false" />
+
+        <activity
+            android:name="demo.xm.com.xmfunsdkdemo.ui.device.config.simpleconfig.view.ConfigNameSelActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.device.config.idr.view.IDRSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.bluetooth.DevBluetoothConnectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.bluetooth.DevBluetoothListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.share.view.DevShareAccountListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.share.view.DevShareManageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.share.view.ShareDevListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.push.view.DevIncomingCallActivity"
+            android:allowTaskReparenting="true"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.device.add.InputWiFiInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.shadow.view.ShadowConfigNameSelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.shadow.view.DevShadowConfigActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.preview.view.PresetListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.cameralink.view.CameraLinkSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.cameralink.view.CameraLinkInitActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.alarmvoice.view.AlarmVoiceListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.interdevlinkage.view.InterDevLinkageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.preview.view.VideoIntercomActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.powersavingmode.view.PowerSavingModeActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.xm.activity.device.devset.ability.view.XMDevAbilityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.detecttrack.DetectTrackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.bluetooth.DevBluetoothCtrlActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name="com.manager.device.idr.IDRSleepService"
+            android:screenOrientation="portrait" />
+        <service
+            android:name="com.manager.device.idr.IDRSleepService$InnerService"
+            android:screenOrientation="portrait" />
+
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVWorkingModeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVBlackLightSettingActivity"
+            android:theme="@style/NumberPickerAppTheme"
+            android:screenOrientation="portrait" />
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVDoubleLightSettingActivity"
+            android:screenOrientation="portrait" />
+<!--        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVIntelligentAlarmActivity"-->
+<!--            android:screenOrientation="portrait" />-->
+<!--        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVIntelligentDetectActivity"-->
+<!--            android:screenOrientation="portrait" />-->
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.SetFPSActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AovBatteryManagerActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AovSettingActivity"
+            android:screenOrientation="portrait"/>
+    </application>
+
+</manifest>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_dev_bluetooth_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ImageLeftWidth="40dp"
+        app:ImageLeftHeight="40dp"
+        app:ImageLeft1="@mipmap/xmjp_camera"
+        app:ImageLeft2="@mipmap/xmjp_camera"
+        app:ImageRight1="@mipmap/icon_next"
+        app:ImageRight2="@mipmap/icon_next"
+        app:ItemTipColor="@color/default_normal_text_color"
+        app:ItemTipSize="@dimen/middle_text_size"
+        app:ItemTitleColor="@color/default_normal_text_color"
+        app:ItemTitleSize="@dimen/normal_text_size"
+        app:LineColor="@color/line_color"
+        app:RightClickable="false"
+        app:ShowBottomLine="true"
+        app:ShowTopLine="false"
+        app:Cap="@string/not_paired"
+        app:CapColor="@color/default_normal_text_color"
+        app:CapSize="@dimen/middle_text_size"
+        app:Tip=""
+        app:Title=""
+        app:RightExtraViewLayout="@layout/view_progress"
+        android:layout_marginTop="@dimen/half_of_normal_padding"
+        android:layout_marginBottom="@dimen/half_of_normal_padding"/>
+</LinearLayout>

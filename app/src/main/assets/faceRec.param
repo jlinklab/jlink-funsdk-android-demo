@@ -1,0 +1,118 @@
+7767517
+116 128
+Input            data             0 1 data 0=128 1=128 2=1
+Convolution      conv1a           1 1 data conv1a 0=48 1=3 2=1 3=1 4=0 5=1 6=432
+PReLU            PReLU1a          1 1 conv1a conv1a_PReLU1a 0=48
+Convolution      conv1b           1 1 conv1a_PReLU1a conv1b 0=48 1=3 2=1 3=1 4=0 5=1 6=20736
+PReLU            PReLU1b          1 1 conv1b conv1b_PReLU1b 0=48
+Pooling          pool1b           1 1 conv1b_PReLU1b pool1b 0=0 1=2 2=2 3=0 4=0
+Split            splitncnn_0      1 2 pool1b pool1b_splitncnn_0 pool1b_splitncnn_1
+Convolution      conv2_1          1 1 pool1b_splitncnn_1 conv2_1 0=48 1=3 2=1 3=1 4=1 5=1 6=20736
+PReLU            PReLU2_1         1 1 conv2_1 conv2_1_PReLU2_1 0=48
+Convolution      conv2_2          1 1 conv2_1_PReLU2_1 conv2_2 0=48 1=3 2=1 3=1 4=1 5=1 6=20736
+PReLU            PReLU2_2         1 1 conv2_2 conv2_2_PReLU2_2 0=48
+Eltwise          res2_2           2 1 pool1b_splitncnn_0 conv2_2_PReLU2_2 res2_2 0=1 -23301=0
+ConvolutionDepthWise conv2            1 1 res2_2 conv2 0=96 1=3 2=1 3=1 4=0 5=1 6=10368 7=4
+PReLU            PReLU2           1 1 conv2 conv2_PReLU2 0=96
+Pooling          pool2            1 1 conv2_PReLU2 pool2 0=0 1=2 2=2 3=0 4=0
+ShuffleChannel   shuffle2         1 1 pool2 shuffle2 0=4
+Split            splitncnn_1      1 2 shuffle2 shuffle2_splitncnn_0 shuffle2_splitncnn_1
+ConvolutionDepthWise conv3_1          1 1 shuffle2_splitncnn_1 conv3_1 0=96 1=3 2=1 3=1 4=1 5=1 6=20736 7=4
+PReLU            PReLU3_1         1 1 conv3_1 conv3_1_PReLU3_1 0=96
+ShuffleChannel   shuffle3_1       1 1 conv3_1_PReLU3_1 shuffle3_1 0=4
+ConvolutionDepthWise conv3_2          1 1 shuffle3_1 conv3_2 0=96 1=3 2=1 3=1 4=1 5=1 6=20736 7=4
+PReLU            PReLU3_2         1 1 conv3_2 conv3_2_PReLU3_2 0=96
+ShuffleChannel   shuffle3_2       1 1 conv3_2_PReLU3_2 shuffle3_2 0=4
+Eltwise          res3_2           2 1 shuffle2_splitncnn_0 shuffle3_2 res3_2 0=1 -23301=0
+Split            splitncnn_2      1 2 res3_2 res3_2_splitncnn_0 res3_2_splitncnn_1
+ConvolutionDepthWise conv3_3          1 1 res3_2_splitncnn_1 conv3_3 0=96 1=3 2=1 3=1 4=1 5=1 6=20736 7=4
+PReLU            PReLU3_3         1 1 conv3_3 conv3_3_PReLU3_3 0=96
+ShuffleChannel   shuffle3_3       1 1 conv3_3_PReLU3_3 shuffle3_3 0=4
+ConvolutionDepthWise conv3_4          1 1 shuffle3_3 conv3_4 0=96 1=3 2=1 3=1 4=1 5=1 6=20736 7=4
+PReLU            PReLU3_4         1 1 conv3_4 conv3_4_PReLU3_4 0=96
+ShuffleChannel   shuffle3_4       1 1 conv3_4_PReLU3_4 shuffle3_4 0=4
+Eltwise          res3_4           2 1 res3_2_splitncnn_0 shuffle3_4 res3_4 0=1 -23301=0
+ConvolutionDepthWise conv3            1 1 res3_4 conv3 0=128 1=3 2=1 3=1 4=0 5=1 6=27648 7=4
+PReLU            PReLU3           1 1 conv3 conv3_PReLU3 0=128
+Pooling          pool3            1 1 conv3_PReLU3 pool3 0=0 1=2 2=2 3=0 4=0
+ShuffleChannel   shuffle3         1 1 pool3 shuffle3 0=4
+Split            splitncnn_3      1 2 shuffle3 shuffle3_splitncnn_0 shuffle3_splitncnn_1
+ConvolutionDepthWise conv4_1          1 1 shuffle3_splitncnn_1 conv4_1 0=128 1=3 2=1 3=1 4=1 5=1 6=36864 7=4
+PReLU            PReLU4_1         1 1 conv4_1 conv4_1_PReLU4_1 0=128
+ShuffleChannel   shuffle4_1       1 1 conv4_1_PReLU4_1 shuffle4_1 0=4
+ConvolutionDepthWise conv4_2          1 1 shuffle4_1 conv4_2 0=128 1=3 2=1 3=1 4=1 5=1 6=36864 7=4
+PReLU            PReLU4_2         1 1 conv4_2 conv4_2_PReLU4_2 0=128
+ShuffleChannel   shuffle4_2       1 1 conv4_2_PReLU4_2 shuffle4_2 0=4
+Eltwise          res4_2           2 1 shuffle3_splitncnn_0 shuffle4_2 res4_2 0=1 -23301=0
+Split            splitncnn_4      1 2 res4_2 res4_2_splitncnn_0 res4_2_splitncnn_1
+ConvolutionDepthWise conv4_3          1 1 res4_2_splitncnn_1 conv4_3 0=128 1=3 2=1 3=1 4=1 5=1 6=36864 7=4
+PReLU            PReLU4_3         1 1 conv4_3 conv4_3_PReLU4_3 0=128
+ShuffleChannel   shuffle4_3       1 1 conv4_3_PReLU4_3 shuffle4_3 0=4
+ConvolutionDepthWise conv4_4          1 1 shuffle4_3 conv4_4 0=128 1=3 2=1 3=1 4=1 5=1 6=36864 7=4
+PReLU            PReLU4_4         1 1 conv4_4 conv4_4_PReLU4_4 0=128
+ShuffleChannel   shuffle4_4       1 1 conv4_4_PReLU4_4 shuffle4_4 0=4
+Eltwise          res4_4           2 1 res4_2_splitncnn_0 shuffle4_4 res4_4 0=1 -23301=0
+Split            splitncnn_5      1 2 res4_4 res4_4_splitncnn_0 res4_4_splitncnn_1
+ConvolutionDepthWise conv4_5          1 1 res4_4_splitncnn_1 conv4_5 0=128 1=3 2=1 3=1 4=1 5=1 6=36864 7=4
+PReLU            PReLU4_5         1 1 conv4_5 conv4_5_PReLU4_5 0=128
+ShuffleChannel   shuffle4_5       1 1 conv4_5_PReLU4_5 shuffle4_5 0=4
+ConvolutionDepthWise conv4_6          1 1 shuffle4_5 conv4_6 0=128 1=3 2=1 3=1 4=1 5=1 6=36864 7=4
+PReLU            PReLU4_6         1 1 conv4_6 conv4_6_PReLU4_6 0=128
+ShuffleChannel   shuffle4_6       1 1 conv4_6_PReLU4_6 shuffle4_6 0=4
+Eltwise          res4_6           2 1 res4_4_splitncnn_0 shuffle4_6 res4_6 0=1 -23301=0
+ConvolutionDepthWise conv4            1 1 res4_6 conv4 0=192 1=3 2=1 3=1 4=0 5=1 6=55296 7=4
+PReLU            PReLU4           1 1 conv4 conv4_PReLU4 0=192
+Pooling          pool4            1 1 conv4_PReLU4 pool4 0=0 1=2 2=2 3=0 4=0
+ShuffleChannel   shuffle4         1 1 pool4 shuffle4 0=4
+Split            splitncnn_6      1 2 shuffle4 shuffle4_splitncnn_0 shuffle4_splitncnn_1
+ConvolutionDepthWise conv5_1          1 1 shuffle4_splitncnn_1 conv5_1 0=192 1=3 2=1 3=1 4=1 5=1 6=82944 7=4
+PReLU            PReLU5_1         1 1 conv5_1 conv5_1_PReLU5_1 0=192
+ShuffleChannel   shuffle5_1       1 1 conv5_1_PReLU5_1 shuffle5_1 0=4
+ConvolutionDepthWise conv5_2          1 1 shuffle5_1 conv5_2 0=192 1=3 2=1 3=1 4=1 5=1 6=82944 7=4
+PReLU            PReLU5_2         1 1 conv5_2 conv5_2_PReLU5_2 0=192
+ShuffleChannel   shuffle5_2       1 1 conv5_2_PReLU5_2 shuffle5_2 0=4
+Eltwise          res5_2           2 1 shuffle4_splitncnn_0 shuffle5_2 res5_2 0=1 -23301=0
+Split            splitncnn_7      1 2 res5_2 res5_2_splitncnn_0 res5_2_splitncnn_1
+ConvolutionDepthWise conv5_3          1 1 res5_2_splitncnn_1 conv5_3 0=192 1=3 2=1 3=1 4=1 5=1 6=82944 7=4
+PReLU            PReLU5_3         1 1 conv5_3 conv5_3_PReLU5_3 0=192
+ShuffleChannel   shuffle5_3       1 1 conv5_3_PReLU5_3 shuffle5_3 0=4
+ConvolutionDepthWise conv5_4          1 1 shuffle5_3 conv5_4 0=192 1=3 2=1 3=1 4=1 5=1 6=82944 7=4
+PReLU            PReLU5_4         1 1 conv5_4 conv5_4_PReLU5_4 0=192
+ShuffleChannel   shuffle5_4       1 1 conv5_4_PReLU5_4 shuffle5_4 0=4
+Eltwise          res5_4           2 1 res5_2_splitncnn_0 shuffle5_4 res5_4 0=1 -23301=0
+Split            splitncnn_8      1 2 res5_4 res5_4_splitncnn_0 res5_4_splitncnn_1
+ConvolutionDepthWise conv5_5          1 1 res5_4_splitncnn_1 conv5_5 0=192 1=3 2=1 3=1 4=1 5=1 6=82944 7=4
+PReLU            PReLU5_5         1 1 conv5_5 conv5_5_PReLU5_5 0=192
+ShuffleChannel   shuffle5_5       1 1 conv5_5_PReLU5_5 shuffle5_5 0=4
+ConvolutionDepthWise conv5_6          1 1 shuffle5_5 conv5_6 0=192 1=3 2=1 3=1 4=1 5=1 6=82944 7=4
+PReLU            PReLU5_6         1 1 conv5_6 conv5_6_PReLU5_6 0=192
+ShuffleChannel   shuffle5_6       1 1 conv5_6_PReLU5_6 shuffle5_6 0=4
+Eltwise          res5_6           2 1 res5_4_splitncnn_0 shuffle5_6 res5_6 0=1 -23301=0
+ConvolutionDepthWise conv5            1 1 res5_6 conv5 0=256 1=3 2=1 3=1 4=0 5=1 6=110592 7=4
+PReLU            PReLU5           1 1 conv5 conv5_PReLU5 0=256
+ShuffleChannel   shuffle5         1 1 conv5_PReLU5 shuffle5 0=4
+Split            splitncnn_9      1 2 shuffle5 shuffle5_splitncnn_0 shuffle5_splitncnn_1
+ConvolutionDepthWise conv6_1          1 1 shuffle5_splitncnn_1 conv6_1 0=256 1=3 2=1 3=1 4=1 5=1 6=147456 7=4
+PReLU            PReLU6_1         1 1 conv6_1 conv6_1_PReLU6_1 0=256
+ShuffleChannel   shuffle6_1       1 1 conv6_1_PReLU6_1 shuffle6_1 0=4
+ConvolutionDepthWise conv6_2          1 1 shuffle6_1 conv6_2 0=256 1=3 2=1 3=1 4=1 5=1 6=147456 7=4
+PReLU            PReLU6_2         1 1 conv6_2 conv6_2_PReLU6_2 0=256
+ShuffleChannel   shuffle6_2       1 1 conv6_2_PReLU6_2 shuffle6_2 0=4
+Eltwise          res6_2           2 1 shuffle5_splitncnn_0 shuffle6_2 res6_2 0=1 -23301=0
+Split            splitncnn_10     1 2 res6_2 res6_2_splitncnn_0 res6_2_splitncnn_1
+ConvolutionDepthWise conv6_3          1 1 res6_2_splitncnn_1 conv6_3 0=256 1=3 2=1 3=1 4=1 5=1 6=147456 7=4
+PReLU            PReLU6_3         1 1 conv6_3 conv6_3_PReLU6_3 0=256
+ShuffleChannel   shuffle6_3       1 1 conv6_3_PReLU6_3 shuffle6_3 0=4
+ConvolutionDepthWise conv6_4          1 1 shuffle6_3 conv6_4 0=256 1=3 2=1 3=1 4=1 5=1 6=147456 7=4
+PReLU            PReLU6_4         1 1 conv6_4 conv6_4_PReLU6_4 0=256
+ShuffleChannel   shuffle6_4       1 1 conv6_4_PReLU6_4 shuffle6_4 0=4
+Eltwise          res6_4           2 1 res6_2_splitncnn_0 shuffle6_4 res6_4 0=1 -23301=0
+Split            splitncnn_11     1 2 res6_4 res6_4_splitncnn_0 res6_4_splitncnn_1
+ConvolutionDepthWise conv6_5          1 1 res6_4_splitncnn_1 conv6_5 0=256 1=3 2=1 3=1 4=1 5=1 6=147456 7=4
+PReLU            PReLU6_5         1 1 conv6_5 conv6_5_PReLU6_5 0=256
+ShuffleChannel   shuffle6_5       1 1 conv6_5_PReLU6_5 shuffle6_5 0=4
+ConvolutionDepthWise conv6_6          1 1 shuffle6_5 conv6_6 0=256 1=3 2=1 3=1 4=1 5=1 6=147456 7=4
+PReLU            PReLU6_6         1 1 conv6_6 conv6_6_PReLU6_6 0=256
+ShuffleChannel   shuffle6_6       1 1 conv6_6_PReLU6_6 shuffle6_6 0=4
+Eltwise          res6_6           2 1 res6_4_splitncnn_0 shuffle6_6 res6_6 0=1 -23301=0
+Convolution      fc6              1 1 res6_6 fc6 0=256 1=4 2=1 3=1 4=0 5=1 6=1048576

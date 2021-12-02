@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/item_shape"
+    android:minHeight="@dimen/title_height"
+    android:orientation="vertical">
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_dev_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:Cap=""
+        app:CapColor="@color/default_normal_text_color"
+        app:CapSize="@dimen/normal_text_size"
+        app:ImageLeft1="@mipmap/xmjp_camera"
+        app:ImageLeft2="@mipmap/xmjp_camera"
+        app:ImageLeftHeight="40dp"
+        app:ImageLeftWidth="40dp"
+        app:ItemTipColor="@color/hint_color"
+        app:ItemTipSize="@dimen/small_text_size"
+        app:ItemTitleColor="@color/default_normal_text_color"
+        app:ItemTitleSize="@dimen/normal_text_size"
+        app:ShowBottomLine="false"
+        app:ShowTopLine="false"
+        app:Tip=""
+        app:Title="111"
+        app:leftMargin="0dp" />
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/half_of_normal_padding"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--推送消息-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_turn_to_alarm_msg"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/push_msg"
+                android:visibility="gone"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5"
+                tools:visibility="visible" />
+            <!--推送设置-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_turn_to_push_set"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/push_set"
+                android:visibility="gone"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5"
+                tools:visibility="visible" />
+            <!--云服务-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_turn_to_cloud_service"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/cloud_service"
+                android:visibility="gone"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5"
+                tools:visibility="visible" />
+            <!--修改设备名称-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_modify_dev_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/modify_dev_name"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
+            <!--分享设备-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_share_dev"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/device_share_manage"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
+
+            <!--修改设备登录名和密码-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_edit_user_password"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/edit_local_user_password"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
+
+            <!--SD卡录像回放-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_sd_playback"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/playback"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
+
+            <!--唤醒主控-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_wake_up_master"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/wake_up_master"
+                android:visibility="gone"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
+
+            <!--Ping-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_ping"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="Ping"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
+
+            <!--门锁和摇头机之间联动-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_inter_device_linkage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/inter_device_linkage_link"
+                android:visibility="gone"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
+
+            <!--设备能力集-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_dev_ability"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/dev_ability"
+                android:visibility="visible"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
+
+            <!--从服务器获取设备Token-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_update_dev_token"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/get_dev_token_from_server"
+                android:visibility="visible"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
+        </LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>

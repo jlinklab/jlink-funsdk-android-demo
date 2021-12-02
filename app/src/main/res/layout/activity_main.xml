@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_gray"
+    tools:context="demo.xm.com.xmfunsdkdemo.ui.activity.MainActivity">
+
+    <!--<include-->
+    <!--android:id="@+id/layoutTop"-->
+    <!--layout="@layout/layout_top_navigate_theme" />-->
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.xm.ui.widget.ItemSetLayout
+                android:id="@+id/item_set_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_white_shape"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                uilib:left_title_text="@string/set_user"
+                android:textStyle="bold"
+                android:textSize="@dimen/normal_text_size"
+                uilib:main_layout="@layout/layout_base_item_set" />
+
+            <com.xm.ui.widget.ItemSetLayout
+                android:id="@+id/item_set_dev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_white_shape"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal_text_size"
+                android:textStyle="bold"
+                uilib:left_title_text="@string/set_dev"
+                uilib:main_layout="@layout/layout_base_item_set" />
+
+            <com.xm.ui.widget.ItemSetLayout
+                android:id="@+id/item_set_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_white_shape"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal_text_size"
+                android:textStyle="bold"
+                uilib:left_title_text="@string/set_list"
+                uilib:main_layout="@layout/layout_base_item_set" />
+
+            <com.xm.ui.widget.ItemSetLayout
+                android:id="@+id/item_set_error_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_white_shape"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal_text_size"
+                android:textStyle="bold"
+                uilib:left_title_text="@string/error_code_list"
+                uilib:main_layout="@layout/layout_base_item_set"/>
+
+            <com.xm.ui.widget.ItemSetLayout
+                android:id="@+id/item_view_doc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_white_shape"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal_text_size"
+                android:textStyle="bold"
+                uilib:left_title_text="@string/view_doc" />
+
+            <com.xm.ui.widget.ItemSetLayout
+                android:id="@+id/item_set_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_white_shape"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal_text_size"
+                android:textStyle="bold"
+                uilib:left_title_text="@string/set_about" />
+            <!--uilib:main_layout="@layout/layout_base_item_set"-->
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

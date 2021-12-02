@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/xm_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_control_mode"
+        style="@style/baseListSelectItemStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        uilib:Cap=""
+        uilib:CapColor="@color/default_normal_text_color"
+        uilib:ExtraMode="Spinner"
+        uilib:ImageRight1="@mipmap/icon_next"
+        uilib:ImageRight2="@mipmap/icon_next"
+        uilib:ItemTitleColor="@color/default_normal_text_color"
+        uilib:Title="@string/control_mode" />
+
+    <LinearLayout
+        android:id="@+id/ll_intelligent_model_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:orientation="vertical">
+
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/lsi_intelligent_sensitivity"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            uilib:Cap=""
+            uilib:CapColor="@color/default_normal_text_color"
+            uilib:ExtraMode="Spinner"
+            uilib:ImageRight1="@mipmap/icon_next"
+            uilib:ImageRight2="@mipmap/icon_next"
+            uilib:ItemTitleColor="@color/default_normal_text_color"
+            uilib:Title="@string/intelligent_sensitivity" />
+
+
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/lsi_intelligent_duration"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            uilib:Cap=""
+            uilib:CapColor="@color/default_normal_text_color"
+            uilib:ExtraMode="Spinner"
+            uilib:ImageRight1="@mipmap/icon_next"
+            uilib:ImageRight2="@mipmap/icon_next"
+            uilib:ItemTitleColor="@color/default_normal_text_color"
+            uilib:Title="@string/intelligent_duration" />
+
+
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/intelligent_vigilance_set"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            uilib:Cap=""
+            uilib:CapColor="@color/default_normal_text_color"
+            uilib:ExtraMode="Spinner"
+            uilib:ImageRight1="@mipmap/icon_next"
+            uilib:ImageRight2="@mipmap/icon_next"
+            uilib:ItemTitleColor="@color/default_normal_text_color"
+            uilib:Title="@string/intelligent_vigilance" />
+
+    </LinearLayout>
+    <!-- 智能警戒 -->
+    <include
+        android:id="@+id/intelligent_alert_layout"
+        layout="@layout/intelligent_alert"/>
+</LinearLayout>

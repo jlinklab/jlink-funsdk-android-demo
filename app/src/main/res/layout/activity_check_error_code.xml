@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+    <com.xm.ui.widget.XMEditText
+        android:id="@+id/et_input_error_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_error_code"/>
+    <com.xm.ui.widget.BtnColorBK
+        style="@style/defaultButtonStyle"
+        android:id="@+id/btn_check"
+        android:layout_marginTop="@dimen/half_of_normal_padding"
+        android:layout_marginBottom="@dimen/half_of_normal_padding"
+        android:layout_marginStart="@dimen/button_margin_start"
+        android:layout_marginEnd="@dimen/button_margin_end"
+        app:corners="6dp"
+        android:text="@string/ok"
+        android:textColor="@color/default_normal_text_color"
+        android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/tv_error_code_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/theme_color"
+        android:textSize="@dimen/big_text_size"/>
+</LinearLayout>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white">
+
+    <!--<include-->
+    <!--android:id="@+id/layoutTop"-->
+    <!--layout="@layout/layout_top_navigate_theme" />-->
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layoutTop"
+        android:footerDividersEnabled="true"
+        android:listSelector="@drawable/common_list_selector">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/theme_color" />
+
+            <!-- 曝光时间 -->
+            <RelativeLayout
+                android:id="@+id/layoutSetupExposureTime"
+                style="@style/setup_sub_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_gpio_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="GPIO 1"
+                    android:textColor="@color/demo_title"
+                    android:textSize="16dp" />
+
+                <Spinner
+                    android:id="@+id/sp_gpio_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <RelativeLayout
+                android:id="@+id/layoutSetupSceneMode"
+                style="@style/setup_sub_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_gpio_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="GPIO 2"
+                    android:textColor="@color/demo_title"
+                    android:textSize="16dp" />
+
+                <Spinner
+                    android:id="@+id/sp_gpio_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <Button
+                android:id="@+id/btn_modify_dev_name_osd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_dev_name_osd"/>
+
+            <TextView
+                android:id="@+id/tv_osd"
+                android:layout_width="wrap_content"
+                android:layout_height="24px"
+                android:background="#FFFFFF"
+                android:enabled="false"
+                android:focusable="false"
+                android:gravity="top|start"
+                android:padding="0dp"
+                android:text=""
+                android:textColor="#000000"
+                android:textSize="18px"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

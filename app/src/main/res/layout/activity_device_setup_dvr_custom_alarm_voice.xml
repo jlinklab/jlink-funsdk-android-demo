@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout" />
+
+    <Button
+        android:id="@+id/btn_voice_recording"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/common_button_selector_white"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/voice_recording"
+        android:textColor="@drawable/common_text_selector"
+        android:textSize="18dp"/>
+
+    <Button
+        android:id="@+id/btn_load_local_voice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/common_button_selector_white"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/loading_local_voice"
+        android:textColor="@drawable/common_text_selector"
+        android:textSize="18dp"/>
+
+    <Button
+        android:id="@+id/btn_text_to_audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/common_button_selector_white"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/text_to_audio"
+        android:textColor="@drawable/common_text_selector"
+        android:textSize="18dp"/>
+
+    <Button
+        android:id="@+id/btn_play_voice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/common_button_selector_white"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/play_recording_voice"
+        android:textColor="@drawable/common_text_selector"
+        android:textSize="18dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/btn_upload_voice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/common_button_selector_white"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/upload_voice"
+        android:textColor="@drawable/common_text_selector"
+        android:textSize="18dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+    <!--设备端音频列表-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_voice_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/normal_padding"/>
+</LinearLayout>

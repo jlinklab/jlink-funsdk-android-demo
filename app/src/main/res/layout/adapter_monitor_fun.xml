@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <com.xm.ui.widget.BtnColorBK
+        android:id="@+id/btn_monitor_fun"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        uilib:no_press_solid="@color/line_color"
+        uilib:pressed_solid="@color/theme_color"/>
+</RelativeLayout>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_human_detection_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:ImageRight1="@mipmap/icon_checked_no"
+                uilib:ImageRight2="@mipmap/icon_checked_yes"
+                uilib:Title="@string/hunman_detect"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"/>
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_human_detection_track"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:ImageRight1="@mipmap/icon_checked_no"
+                uilib:ImageRight2="@mipmap/icon_checked_yes"
+                uilib:Title="@string/show_traces"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"
+                android:visibility="gone"/>
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_human_detection_perimeter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                uilib:ImageRight1="@mipmap/icon_checked_no"
+                uilib:ImageRight2="@mipmap/icon_checked_yes"
+                uilib:Title="@string/perimeter_alert"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:LineColor="@color/line_color"
+                uilib:RightClickable="false"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <LinearLayout
+                android:id="@+id/ll_human_detection_perimeter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_human_detection_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    uilib:ImageRight1="@mipmap/correct_nor"
+                    uilib:ImageRight2="@mipmap/correct_sel"
+                    uilib:Title="@string/alert_line"
+                    uilib:ItemTitleColor="@color/default_normal_text_color"
+                    uilib:LineColor="@color/line_color"
+                    uilib:RightClickable="false"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_human_detection_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    uilib:ImageRight1="@mipmap/correct_nor"
+                    uilib:ImageRight2="@mipmap/correct_sel"
+                    uilib:Title="@string/alert_area"
+                    uilib:ItemTitleColor="@color/default_normal_text_color"
+                    uilib:LineColor="@color/line_color"
+                    uilib:RightClickable="false"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

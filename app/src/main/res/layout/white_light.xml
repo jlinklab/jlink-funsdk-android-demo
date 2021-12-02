@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/xm_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <!-- 灯光设置 -->
+            <com.xm.ui.widget.ListSelectItem
+                style="@style/baseListSelectItemStyle"
+                android:id="@+id/lsi_double_light_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_of_normal_margin"
+                android:background="@drawable/ripple_round_btn_selector"
+                android:visibility="gone"
+                tools:visibility="visible"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                uilib:ExtraMode="Spinner"
+                uilib:ImageRight1="@drawable/icon_next"
+                uilib:ImageRight2="@drawable/icon_next"
+                uilib:RightClickable="false"
+                uilib:ShowBottomLine="true"
+                uilib:ShowTopLine="false"
+                uilib:Title="TR_Light_Settings" />
+
+            <LinearLayout
+                style="@style/ThemeLayoutStyle"
+                android:id="@+id/ll_white_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <com.xm.ui.widget.ListSelectItem
+                    style="@style/baseListSelectItemStyle"
+                    android:id="@+id/lsi_white_light_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    uilib:Cap=""
+                    uilib:CapColor="@color/default_normal_text_color"
+                    uilib:ExtraMode="Spinner"
+                    uilib:ImageRight1="@drawable/icon_next"
+                    uilib:ImageRight2="@drawable/icon_next"
+                    uilib:RightClickable="false"
+                    uilib:ShowBottomLine="false"
+                    uilib:ShowTopLine="false"
+                    uilib:Title="bulb_switch" />
+
+                <com.xm.ui.widget.ListSelectItem
+                    style="@style/baseListSelectItemStyle"
+                    android:id="@+id/lsi_white_light_music_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    uilib:Cap=""
+                    uilib:CapColor="@color/default_normal_text_color"
+                    uilib:ExtraMode="Spinner"
+                    uilib:ImageRight1="@drawable/icon_next"
+                    uilib:ImageRight2="@drawable/icon_next"
+                    uilib:RightClickable="false"
+                    uilib:ShowTopLine="true"
+                    uilib:Title="bulb_switch" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/item_min_height"
+                    android:visibility="gone">
+
+                    <com.xm.ui.widget.ButtonCheck
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/button_margin"
+                        android:orientation="horizontal"
+                        uilib:NormalBkg="@drawable/icon_off"
+                        uilib:SelectedBkg="@drawable/icon_open" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/button_margin"
+                        android:singleLine="true"
+                        android:text="timing_switch"
+                        android:textColor="@color/default_normal_text_color" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="@dimen/button_margin"
+                        android:layout_marginEnd="@dimen/button_margin"
+                        android:background="@color/line_color" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/time_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:id="@+id/setting_open_time_rl_white_light"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/item_min_height">
+
+                        <TextView
+                            android:id="@+id/open_setting_text_white_light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/button_margin"
+                            android:drawableEnd="@drawable/icon_next"
+                            android:drawablePadding="5dp"
+                            android:gravity="center"
+                            android:paddingStart="@dimen/button_margin"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="06:00"
+                            android:textColor="@color/login_page_color" />
+
+                        <TextView
+                            android:id="@+id/open_setting_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/button_margin"
+                            android:text="open_time"
+                            android:textColor="@color/default_normal_text_color" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="@dimen/button_margin"
+                            android:layout_marginEnd="@dimen/button_margin"
+                            android:background="@color/line_color" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/setting_close_time_rl_white_light"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/item_min_height">
+
+                        <TextView
+                            android:id="@+id/close_setting_text_white_light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/button_margin"
+                            android:drawableEnd="@drawable/icon_next"
+                            android:drawablePadding="5dp"
+                            android:gravity="center"
+                            android:paddingStart="@dimen/button_margin"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="17:00"
+                            android:textColor="@color/login_page_color" />
+
+                        <TextView
+                            android:id="@+id/close_setting_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/button_margin"
+                            android:text="close_time"
+                            android:textColor="@color/default_normal_text_color" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="@dimen/button_margin"
+                            android:layout_marginEnd="@dimen/button_margin"
+                            android:background="@color/line_color" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/intelligent_model_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <com.xm.ui.widget.ListSelectItem
+                        style="@style/baseListSelectItemStyle"
+                        android:id="@+id/lsi_intelligent_sensitivity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        uilib:Cap=""
+                        uilib:CapColor="@color/default_normal_text_color"
+                        uilib:ExtraMode="Spinner"
+                        uilib:ImageRight1="@drawable/icon_next"
+                        uilib:ImageRight2="@drawable/icon_next"
+                        uilib:RightClickable="false"
+                        uilib:ShowBottomLine="false"
+                        uilib:ShowTopLine="true"
+                        uilib:Title="Intelligent_sensitivity" />
+
+                    <com.xm.ui.widget.ListSelectItem
+                        style="@style/baseListSelectItemStyle"
+                        android:id="@+id/lsi_intelligent_duration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        uilib:Cap=""
+                        uilib:CapColor="@color/default_normal_text_color"
+                        uilib:ExtraMode="Spinner"
+                        uilib:ImageRight1="@drawable/icon_next"
+                        uilib:ImageRight2="@drawable/icon_next"
+                        uilib:RightClickable="false"
+                        uilib:ShowTopLine="true"
+                        uilib:Title="Intelligent_duration" />
+                </LinearLayout>
+
+                <com.xm.ui.widget.ListSelectItem
+                    style="@style/baseListSelectItemStyle"
+                    android:id="@+id/lsi_expert_color_white_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    uilib:Cap=""
+                    uilib:CapColor="@color/default_normal_text_color"
+                    uilib:ExtraMode="Spinner"
+                    uilib:ImageRight1="@drawable/icon_next"
+                    uilib:ImageRight2="@drawable/icon_next"
+                    uilib:RightClickable="false"
+                    uilib:ShowTopLine="true"
+                    uilib:Title="Video_Model" />
+            </LinearLayout>
+            <!-- 庭院灯开关 -->
+            <include
+                android:id="@+id/garden_light_layout"
+                layout="@layout/garden_light_layout"
+                android:visibility="gone" />
+
+            <!-- 智能警戒 -->
+            <include
+                android:id="@+id/intelligent_alert_layout"
+                layout="@layout/intelligent_alert"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
