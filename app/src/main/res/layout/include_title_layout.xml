@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xm.ui.widget.XTitleBar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/theme_color1"
+    uilib:LeftBtn_Nor="@mipmap/icon_back_normal"
+    uilib:LeftBtn_Sel="@mipmap/icon_back_pressed"
+    uilib:RightText=""
+    uilib:RightTextSize="@dimen/small_text_size"
+    uilib:RightTextColor="@color/white"
+    uilib:BottomTipText=""
+    uilib:BottomTipSize="@dimen/too_small_text_size"
+    uilib:BottomTipColor="@color/white"
+    uilib:TitleText="@string/set_user_login"
+    uilib:TitleTextColor="@color/white"
+    uilib:XTitleImageRightWidth="30dp"
+    uilib:XTitleImageRightHeight="30dp"/>

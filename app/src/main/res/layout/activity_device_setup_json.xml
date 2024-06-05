@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <RadioGroup
+        android:id="@+id/radioConfigMode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutTop"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioBtnbyjson"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/common_radiobutton_backgroud"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="@string/device_setup_radio_byjson"
+            android:textColor="@drawable/common_radiobutton_textcolor"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/radioBtnbydevcmd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/common_radiobutton_backgroud"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="@string/device_setup_radio_bycmd"
+            android:textColor="@drawable/common_radiobutton_textcolor"
+            android:textSize="18sp" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/edit_json"
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/radioConfigMode"
+        android:layout_margin="5dp"
+        android:background="@drawable/common_editor_bg"
+        android:gravity="top"
+        android:hint="@string/device_setup_hint_dev_jsonset" />
+
+    <LinearLayout
+        android:id="@+id/linearlayout_sn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_json"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="@string/device_setup_jsonsn"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edit_sn"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/common_editor_bg" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_channel_seq"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearlayout_sn"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_channel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/device_setup_channelno"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edit_channel"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/common_editor_bg"
+                android:digits="1234567890" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_seq"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/device_setup_optno"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/edit_optid"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/common_editor_bg"
+                android:digits="1234567890"
+                android:hint="@string/device_setup_optnohint" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/linearlayout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearlayout_channel_seq"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/btn_getConfig"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/common_button_selector_blue"
+            android:text="@string/device_setup_btn_getconfig"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/btn_setConfig"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/common_button_selector_blue"
+            android:text="@string/device_setup_btn_setconfig"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</RelativeLayout>

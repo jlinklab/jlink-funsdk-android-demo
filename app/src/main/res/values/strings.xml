@@ -1,0 +1,874 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">XMFunSDKDemo</string>
+    <string name="app_welcome">Welcome to Demo for FunSDK!\n©2024, Powered by JFTECH.</string>
+    <string name="set_user">User</string>
+    <string name="set_dev">Device</string>
+    <string name="set_list">Device List</string>
+    <string name="set_about">About Demo</string>
+    <string name="set_user_register">Register</string>
+    <string name="set_user_login">Login</string>
+    <string name="set_user_modify_pwd">Modify Password</string>
+    <string name="set_user_forget_pwd">Forget Password</string>
+    <string name="set_user_info">User Information</string>
+    <string name="set_user_info_change">edit</string>
+    <string name="set_user_info_change_save">save</string>
+    <string name="set_user_save_local_pwd">Save Local Password</string>
+    <string name="user_name_repeat_btn">Repeat</string>
+    <string name="user_logout">Logout</string>
+    <string name="guide_message_username_fine">User name available</string>
+    <string name="guide_message_request_phone_msg_success">Request to send verification code succeeded</string>
+    <string name="user_login_error_emptypassword">The password is empty</string>
+    <string name="user_login_error_emptyverifycode">Verification code is empty</string>
+    <string name="guide_message_register_user_success">Registered user successfully</string>
+    <string name="user_set_debug_info">Select whether to use the local password saving function here (valid at the next startup). If this function is used, the myapplication class will set the save path during initialization, and the password setting will be saved every time the device is successfully logged in. To obtain the local password, you can call FunSDK.DevGetLocalPwd () interface</string>
+    <string name="test_qrcode_create">Create QR code</string>
+    <string name="input_something">Input information</string>
+    <string name="start_lan_alarm">Lan Alarm</string>
+    <string name="device_lan_alarm_test">Alarm of LAN</string>
+    <string name="device_opt_off">Close</string>
+    <string name="device_opt_on">Open</string>
+    <string name="user_info_id">ID</string>
+    <string name="user_info_username">user name</string>
+    <string name="user_info_email">e-mail</string>
+    <string name="user_info_phone">mobile phone</string>
+    <string name="user_info_sex">Sex</string>
+    <string name="user_info_reg_time">Registration time</string>
+    <string name="user_login_error_emptyusername">The user name is empty</string>
+    <string name="user_login_error_email">Email error</string>
+    <string name="user_login_error_phone_number">Wrong mobile number</string>
+    <string name="guide_message_error_call">Interface call returned error, please check</string>
+    <string name="user_forget_pwd_verify_code_format_erroe">The captcha should be a four digit integer</string>
+    <string name="user_forget_pwd_verify_code_first">Please submit the verification code first</string>
+    <string name="user_forget_pwd_new_password_error">Please check the format of the new password</string>
+    <string name="password_checker_weak_error"> The password you entered is too simple</string>
+    <string name="user_forget_pwd_new_password_confirm_error">Please make sure that the password you entered is the same</string>
+    <string name="user_forget_pwd_verify_success">Validation successful</string>
+    <string name="user_forget_pwd_reset_passw_success">Password reset successful</string>
+
+    <string name="user_forget_pwd_email"> please enter your mailbox</string>
+    <string name="user_forget_pwd_phone"> please enter your mobile phone number</string>
+    <string name="user_forget_pwd_verify_code"> please enter your verification code</string>
+    <string name="user_forget_pwd_send_verify_code"> click to get</string>
+    <string name="user_forget_pwd_verify_code_sent"> verification code has been sent</string>
+    <string name="user_forget_pwd_new_passw"> please enter a new password</string>
+    <string name="user_forget_pwd_new_passw_confirm"> please enter the confirm password</string>
+    <string name="user_forget_pwd_submit"> submit</string>
+    <string name="user_forget_pwd_verify"> submit verification code</string>
+
+    <string name="password_checker_strong"> strong</string>
+    <string name="password_checker_medium"> in </string>
+    <string name="password_checker_weak"> weak </string>
+    <string name="password_checker_empty"> empty</string>
+    <string name="password_checker_short"> short</string>
+    <string name="password_checker_long"> long</string>
+
+    <string name="user_change_password"> confirm the change</string>
+    <string name="user_change_password_hint_username"> account number more than 6 letters/numbers/symbols</string>
+    <string name="user_change_password_hint_old_password"> old password</string>
+    <string name="user_change_password_hint_new_password"> new password 6–16 digits/letters/symbols</string>
+    <string name="user_change_password_hint_new_password_confirm"> please enter the password again</string>
+    <string name="user_change_password_sucess"> modify the password successfully, please use the new password to log in again</string>
+    <string name="user_change_password_error_emptyusername"> user name cannot be empty</string>
+    <string name="user_change_password_error_emptypassw"> any password cannot be empty</string>
+    <string name="user_change_password_error_passwtooshort"> new password is not up to standard</string>
+    <string name="user_change_password_error_passwnotequal"> Please make sure that you enter the same password twice</string>
+
+    <string name="user_login_hint_username"> account number/phone number</string>
+    <string name="user_login_hint_password"> password</string>
+    <string name="user_login_forgot_passwd"> Forgot your password?</string>
+    <string name="user_login"> login </string>
+    <string name="user_login_save_password"> save the password</string>
+    <string name="user_login_auto_login"> automatic login </string>
+    <string name="user_login_otherway"> can also choose the following way to log in </string>
+    <string name="user_login_byweibo"> Sina Weibo login</string>
+    <string name="user_login_byqq">QQ account login</string>
+    <string name="user_login_noaccount"> no account?</string>
+    <string name="user_login_register"> quick registration account </string>
+    <string name="user_login_please_input_username_and_pwd">please input username and password</string>
+
+    <string name="user_register_china"> China +86</string>
+    <string name="user_register_get_verify_code"> click to get </string>
+    <string name="user_register_account"> quick registration </string>
+    <string name="user_register_by_email"> through the mailbox</string>
+    <string name="user_register_by_cellphone"> through mobile phone</string>
+    <string name="user_register_error_password_unmatched"> before and after the password does not match </string>
+    <string name="user_register_error_username_length"> user name length does not match </string>
+    <string name="user_register_error_password_length"> password length does not match </string>
+    <string name="user_register_hint_username"> "account 6 or more letters/numbers/symbols"</string>
+    <string name="user_register_hint_email">"Email is used when filling in/retrieving the password correctly"</string>
+    <string name="user_register_hint_phone"> "Please enter the 11-digit phone number"</string>
+    <string name="user_register_hint_verify_code"> "Enter the verification code"</string>
+    <string name="user_register_hint_password"> "password 8–16 digits/letters/symbols"</string>
+    <string name="user_register_hint_password_confirm"> please enter the password again</string>
+    <string name="user_registering"> is registering…</string>
+    <string name="user_register_success"> registered successfully, logging in…</string>
+    <string name="user_register_login_success"> successfully logged in</string>
+    <string name="user_register_login_fail"> login failure </string>
+    <string name="user_not_login"> not logged in</string>
+    <string name="user_info_not_login"> you have not logged in</string>
+    <string name="user_info_sex_man"> male</string>
+    <string name="user_info_sex_female"> female</string>
+
+    <string name="guide_module_title_device_sn"> serial number to connect the device</string>
+    <string name="guide_module_title_device_ap"> AP direct connection device</string>
+    <string name="guide_module_title_device_lan"> LAN connection equipment </string>
+    <string name="guide_module_title_device_add"> users add equipment </string>
+    <string name="guide_module_title_device_connect2"> shared equipment</string>
+    <string name="guide_module_title_device_browse"> view device files</string>
+    <string name="guide_module_title_device_alarm"> device alarm </string>
+    <string name="guide_module_title_device_setwifi"> WiFi quick configuration </string>
+
+    <string name="device_opt_alarm_config"> alarm configuration </string>
+    <string name="device_setup"> device configuration </string>
+    <string name="device_preview"> device preview</string>
+    <string name="device_setup_encode"> encoding configuration</string>
+    <string name="device_setup_record"> video configuration </string>
+    <string name="device_setup_image"> image configuration</string>
+    <string name="device_setup_expert"> advanced configuration </string>
+    <string name="device_setup_storage"> device storage management </string>
+    <string name="device_setup_camerafisheye"> fisheye bulb control </string>
+    <string name="device_setup_change_password"> password modification </string>
+    <string name="device_setup_hint_encode_config_alarm"> here, you can configure the resolution, number of frames, audio, video</string>
+    <string name="device_setup_hint_alarm_config_alarm"> The device supports various alarm triggering and linkage, you can configure it here</string>
+    <string name="device_setup_hint_record_config_alarm"> This setting allows you to change the recording mode, turn off the audio, and change the file length</string>
+    <string name="device_setup_hint_picture_config_alarm"> through this setting, you can change the image quality, image character overlay </string>
+    <string name="device_setup_hint_expert_config_alarm"> this function is mainly some more specialized setting items </string>
+    <string name="device_setup_hint_picture_config_sport_alarm"> through this setting, you can change the image resolution, frame rate, image quality, image character superimposition</string>
+    <string name="device_setup_hint_pwd_modify_alarm"> you can change the access password of the device, which is very important to protect privacy</string>
+    <string name="device_setup_hint_pilot_light_config_alarm"> If you turn it off, the indicator light of the device will no longer light up, which means you will not be able to determine the operating status of the device (invalid in AP mode)</string>
+    <string name="device_setup_hint_harddisk_config_alarm"> this option allows you to view and manage the storage space of the device, you can format it</string>
+    <string name="device_setup_hint_camerafisheye"> fisheye bulb switch and brightness control </string>
+    <string name="device_setup_hint_device_code_alarm">Through this function, you can generate a QR code that contains the login account information, and you can control the device by scanning it on WeChat.</string>
+    <string name="device_setup_hint_workrecord_alarm"> This function can simply count the approximate power consumption, the power consumption is for reference only</string>
+    <string name="device_setup_hint_about_dev_alarm"> contains basic equipment information</string>
+    <string name="device_setup_hint_dev_jsonset"> the results display and configure the Json string (please check the format strictly, the wrong format and type may cause the device to be abnormal)</string>
+    <string name="device_setup_system_function">Device capability set</string>
+    <string name="device_setup_alarm_center"> alarm center</string>
+    <string name="device_setup_frontctr">Front Panel Operate</string>
+    <string name="device_setup_jsonanddevcmd"> Json and DevCmd debugging</string>
+    <string name="device_setup_spvmn_cfg_json"> GB configuration</string>
+    <string name="device_system_info"> About the device</string>
+    <string name="device_reboot"> restart the device</string>
+    <string name="device_reboot_context">really to reboot？</string>
+
+    <string name="device_type"> device type:</string>
+    <string name="device_mac"> device MAC:</string>
+    <string name="device_sn"> device SN:</string>
+    <string name="device_ip"> device IP:</string>
+    <string name="device_status"> status details:</string>
+    <string name="device_login"> device login </string>
+    <string name="device_login_sn"> serial number</string>
+    <string name="device_login_ip">IP</string>
+    <string name="Enter_Device_Port"> device port number (default 34567)</string>
+    <string name="device_login_name_hint"> login user name, the default is: admin</string>
+    <string name="device_login_password_hint"> login password</string>
+    <string name="device_login_error_sn"> serial number is incorrect </string>
+    <string name="device_login_input_password"> please enter the device login password</string>
+    <string name="device_opt_add"> add </string>
+    <string name="device_opt_add_tip"> In addition to manually entering the device serial number,\nthe following are devices in the same LAN, you can choose one of the tests:\nExecute [connected devices in the LAN]</string>
+    <string name="device_opt_play"> play</string>
+    <string name="device_opt_stop"> stop </string>
+    <string name="device_opt_capture"> screenshot </string>
+    <string name="device_opt_record"> recording</string>
+    <string name="device_opt_fullscreen"> full screen</string>
+    <string name="device_opt_fisheye_info"> information </string>
+    <string name="media_stream_switch"> code stream switching</string>
+
+    <string name="device_opt_set_wifi"> quickly configure WiFi </string>
+    <string name="device_opt_set_wifi_hint_ssid">WiFi SSID</string>
+    <string name="device_opt_set_wifi_hint_passwd"> WiFi password</string>
+    <string name="device_opt_set_wifi_success"> device [%s] WiFi configuration is successful </string>
+
+    <string name="stream_setting">Stream Setting</string>
+    <string name="media_stream_main"> main stream </string>
+    <string name="media_stream_secondary"> secondary stream</string>
+    <string name="device_setup_encode_resolution"> resolution</string>
+    <string name="device_setup_encode_frames"> number of frames</string>
+    <string name="device_setup_encode_definition"> definition </string>
+    <string name="device_setup_encode_audio"> audio</string>
+    <string name="device_setup_encode_video"> video</string>
+
+    <string name="device_alarm_loss_video_loss">Video Loss Alarm</string>
+    <string name="device_alarm_human_alarm">Human Alarm</string>
+    <string name="device_alarm_motion_detection"> motion detection </string>
+    <string name="device_alarm_motion_detection_tip"> When the switch is turned on, if the device detects a moving object, an alarm event will be triggered</string>
+    <string name="device_alarm_func_record"> video linkage </string>
+    <string name="device_alarm_func_capture"> camera linkage </string>
+    <string name="device_alarm_func_pushmsg"> mobile phone push linkage</string>
+    <string name="device_alarm_func_level"> alarm sensitivity </string>
+    <string name="device_alarm_func_record_motion_tip"> When the switch is turned on, if the device detects a moving object, it will start recording</string>
+    <string name="device_alarm_func_capture_motion_tip"> When the switch is turned on, if the device detects a moving object, it will grab a picture</string>
+    <string name="device_alarm_func_pushmsg_motion_tip"> when the device triggers an alarm, it will push a message to the phone</string>
+    <string name="device_alarm_func_level_motion_tip"> Alarm sensitivity is divided into three levels: low, intermediate, and high </string>
+    <string name="device_alarm_video_block"> video block </string>
+    <string name="device_alarm_video_block_tip"> When the switch is turned on, if the device detects that the front is blocked, an alarm event will be triggered</string>
+    <string name="device_alarm_func_record_block_tip"> When the switch is turned on, if the device lens is blocked, it will start recording</string>
+    <string name="device_alarm_func_capture_block_tip"> When the switch is turned on, if the device lens is blocked, a picture will be captured</string>
+    <string name="device_alarm_func_alarmout_tip">This device does not support this feature</string>
+    <string name="device_alarm_func_pushmsg_block_tip"> when the device triggers an alarm, it will push a message to the phone</string>
+    <string name="device_alarm_local_alarm"> alarm input</string>
+    <string name="device_alarm_output"> alarm output</string>
+    <string name="device_alarm_output_status"> alarm output status </string>
+    <string name="device_alarm_output_tipe"> alarm output type</string>
+    <string name="device_alarm_no_change"> configuration has not changed </string>
+    <string name="device_alarm_center_protocol"> protocol type:</string>
+    <string name="device_alarm_center_enable"> enable </string>
+    <string name="device_alarm_center_server_address"> server address</string>
+    <string name="device_alarm_center_server_port"> port</string>
+    <string name="device_alarm_center_alarm"> alarm report </string>
+    <string name="device_alarm_center_log"> log report</string>
+
+    <string name="device_setup_record_prerecord"> pre-recording</string>
+    <string name="device_setup_record_prerecord_prompt"> This function is only valid under the linkage recording caused by the alarm or wireless remote control, it can pre-record the recording before the alarm is generated</string>
+    <string name="device_setup_record_length"> length</string>
+    <string name="device_setup_record_length_prompt"> this function allows you to change the length of the video file stored in the device</string>
+    <string name="device_setup_record_mode"> recording mode</string>
+    <string name="device_setup_record_type"> recording type</string>
+    <string name="device_setup_record_mode_prompt">If you select config recording, you can set the all-day recording or alarm recording mode</string>
+    <string name="device_setup_record_type_prompt"> If you select alarm recording, it means that the device does not usually record, and only starts recording when there is an alarm such as motion detection or a recording command from a dedicated remote control is received</string>
+    <string name="device_setup_record_audio"> video audio </string>
+    <string name="device_setup_record_audio_prompt"> If it is closed, the recorded file has no audio</string>
+    <string name="device_setup_record_cloud"> cloud storage</string>
+
+    <string name="device_setup_camera_definition"> definition </string>
+    <string name="device_setup_camera_daynight"> dayNight Mode </string>
+    <string name="device_setup_camera_daynight_prompt">If the device supports soft photosensitivity, the day-night mode can select automatic infrared/white full-color/black and white mode/intelligent warm light/intelligent infrared. If not, the day-night mode can select automatic infrared/white full-color/black and white mode.(The selection effect is only for reference)</string>
+    <string name="device_setup_camera_get_failed">Failed to get image configuration</string>
+    <string name="device_setup_camera_flip"> the image is flipped up and down </string>
+    <string name="device_setup_camera_flip_prompt"> If it is turned on, the image will be flipped 180 degrees, which is very useful for device flipping (when using this function, if the image is upside down, you need to use the "image left and right flip" function) </string>
+    <string name="device_setup_camera_mirror"> flip around the image </string>
+    <string name="device_setup_camera_mirror_prompt"> If opened, the image will be flipped left and right</string>
+    <string name="device_setup_camera_osd_switch"> custom watermark switch </string>
+    <string name="device_setup_camera_osd_timeswitch"> time watermark switch </string>
+    <string name="device_setup_camera_osd_timeswitch_prompt"> whether the function is set to display the watermark time </string>
+    <string name="device_setup_camera_osd_switch_prompt"> This function allows you to superimpose your favorite personalized signature, place name, event title, etc. into the image, which can enrich the information of the image and make the video emotional</string>
+    <string name="device_setup_camera_osd"> custom text watermark</string>
+    <string name="device_setup_camera_blcmode"> backlight compensation</string>
+    <string name="device_setup_camera_blcmode_prompt"> If you turn on this function, you can effectively compensate for the darkness of the main body of the picture when the camera is shooting in a backlight environment.</string>
+    <string name="device_setup_camera_wide_dynamic"> wide dynamic </string>
+    <string name="device_setup_camera_wide_dynamic_prompt"> If you turn on this function, you can effectively solve the problem of too bright background or too dark foreground in the captured image when the contrast between light and dark is too large.</string>
+    <string name="device_setup_camera_white_balance"> white balance </string>
+    <string name="device_setup_camera_white_balance_prompt"> If you use white balance under the light, the color tone of the picture will be restored to the original state, and the white balance will correct the error caused by the external light according to the image characteristics of the current portrait.</string>
+    <string name="device_setup_camera_noise_reduction"> noise reduction</string>
+    <string name="device_setup_camera_noise_reduction_prompt"> when the light is not good, there will be noise. The higher the noise reduction level, the less noise.</string>
+    <string name="device_setup_camera_anti_shake"> electronic anti-shake </string>
+    <string name="device_setup_camera_anti_shake_prompt"> reduce the picture blur caused by high-frequency jitter</string>
+    <string name="device_setup_camera_metering"> metering mode</string>
+
+    <string name="device_setup_exposure_time"> exposure time</string>
+    <string name="device_setup_scene_mode"> scene mode</string>
+    <string name="device_setup_electronic_slow_shutter"> electronic slow shutter </string>
+    <string name="device_setup_electronic_slow_shutter_prompt"> in a low-light environment, improve the screen brightness. Will cause the dynamic image to blur</string>
+    <string name="device_setup_color_mode"> color mode</string>
+    <string name="device_setup_defogging"> defogging</string>
+    <string name="device_setup_defogging_prompt"> in the foggy weather, make the image effect transparent </string>
+
+    <string name="device_setup_storage_capacity"> storage capacity</string>
+    <string name="device_setup_storage_snapshot"> picture partition</string>
+    <string name="device_setup_storage_record"> video partition </string>
+    <string name="device_setup_storage_remain"> remaining capacity </string>
+    <string name="device_setup_storage_format"> formatting</string>
+    <string name="device_setup_storage_record_full"> when the video is full:</string>
+    <string name="device_setup_storage_record_stop"> stop recording</string>
+    <string name="device_setup_storage_record_cycle"> loop recording </string>
+    <string name="device_setup_storage_format_tip"> whether to format the device disk?</string>
+    <string name="device_setup_storage_format_success">success</string>
+    <string name="device_setup_storage_format_failed">failed</string>
+
+    <string name="EE_OK">OK</string>
+    <string name="setup_btn_left">Left</string>
+    <string name="setup_btn_right">Right</string>
+    <string name="setup_btn_up">Up</string>
+    <string name="setup_btn_down">Down</string>
+    <string name="setup_btn_menu">Menu</string>
+    <string name="setup_btn_esc">Esc</string>
+
+    <string name="device_setup_gb_config_bcsenable"> enable tag </string>
+    <string name="device_setup_gb_config_szcsip"> server address (IP)</string>
+    <string name="device_setup_gb_config_scsport"> server port</string>
+    <string name="device_setup_gb_config_sudpport"> local server udp port</string>
+    <string name="device_setup_gb_config_szserverno"> server number</string>
+    <string name="device_setup_gb_config_szserverdn"> server domain name (domain name is 28181 number) </string>
+    <string name="device_setup_gb_config_szdeviceno"> device number</string>
+    <string name="device_setup_gb_config_szconnpass"> device registration password</string>
+    <string name="device_setup_gb_config_ihsintervaltime"> heartbeat interval time (seconds) </string>
+    <string name="device_setup_gb_config_irsagedtime"> registration validity period (seconds) </string>
+    <string name="device_setup_gb_config_camreaid"> channel number</string>
+    <string name="device_setup_gb_config_camrealevel"> alarm level (Camrea)</string>
+    <string name="device_setup_gb_config_alarmid"> alarm number</string>
+    <string name="device_setup_gb_config_alarmlevel"> Alarm level (Alarm)</string>
+    <string name="device_setup_gb_config_uialarmstategpin"> external alarm enable </string>
+    <string name="device_setup_gb_config_uialarmstatelose"> video loss alarm enable</string>
+    <string name="device_setup_gb_config_uialarmstatemotion"> video motion detection alarm is enabled</string>
+    <string name="device_setup_gb_config_uialarmstateblind"> screen occlusion alarm enable</string>
+    <string name="device_setup_gb_config_uialarmstateformance"> system abnormal alarm enable</string>
+    <string name="device_setup_gb_config_uialarmstateconnect"> user connection alarm enable</string>
+
+    <string name="device_setup_radio_byjson">GetConfigByJson</string>
+    <string name="device_setup_radio_bycmd">DevCmdGeneral</string>
+    <string name="device_setup_jsonsn">ConfigName:</string>
+    <string name="device_setup_channelno">ChannelNo：</string>
+    <string name="device_setup_optno">OptNo:</string>
+    <string name="device_setup_optnohint">No of CmdID</string>
+    <string name="device_setup_btn_getconfig">GetConfig</string>
+    <string name="device_setup_btn_setconfig">SetConfig</string>
+    <string name="device_setup_nullconfigname">ConfigName is null.</string>
+    <string name="device_setup_setconfigsuccess">Set config success</string>
+
+    <string name="device_setup_daynight_auto_color">Auto Color</string>
+    <string name="device_setup_daynight_setting_color">Color</string>
+    <string name="device_setup_daynight_setting_white_black">White Black</string>
+    <string name="device_setup_daynight_setting_whiteLamp_auto">Intelligent Warm Light</string>
+    <string name="device_setup_daynight_setting_irLamp_auto">Intelligent Infrared</string>
+
+    <string name="device_system_info_deviceupdate"> hardware upgrade detection </string>
+    <string name="device_system_info_sn"> serial number</string>
+    <string name="device_system_info_model"> device model</string>
+    <string name="device_system_info_hw_ver"> hardware version </string>
+    <string name="device_system_info_sw_ver"> software version </string>
+    <string name="device_system_info_pub_date"> release time</string>
+    <string name="device_system_info_pub_time"> device time </string>
+    <string name="device_system_info_run_time"> running time </string>
+    <string name="device_system_info_nat_code"> network mode</string>
+    <string name="device_system_info_nat_status"> cloud connection status </string>
+    <string name="device_system_info_upgrade"> firmware update </string>
+    <string name="device_system_info_time_sync"> time synchronization </string>
+    <string name="device_system_info_defealtconfig"> restore factory settings </string>
+    <string name="device_system_info_defaultconfigsucc"> restore factory settings successfully, restarting. . </string>
+    <string name="device_opt_set_preset"> set the preset point</string>
+    <string name="device_opt_get_preset"> preset point list </string>
+    <string name="device_camera_video_by_file"> search by file</string>
+    <string name="device_camera_video_by_time"> search by time</string>
+
+    <string name="device_pic_type_all"> all </string>
+    <string name="device_pic_type_alarm"> alarm </string>
+    <string name="device_pic_type_detect"> detection </string>
+    <string name="device_pic_type_regular"> ordinary </string>
+    <string name="device_pic_type_manual"> remote control</string>
+    <string name="device_pic_type_key"> key</string>
+    <string name="device_pic_type_burst_shoot"> Delay shooting </string>
+    <string name="device_pic_type_lapse"> continuous shooting</string>
+
+    <string name="user_input_preset_number"> Please enter the preset number to be set</string>
+    <string name="user_input_preset_number_warn"> Please set a preset number less than 200 </string>
+    <string name="user_select_preset"> please select a preset point</string>
+    <string name="user_set_preset_succeed"> preset point operation is successful </string>
+    <string name="user_set_preset_fail"> preset point operation failed </string>
+    <string name="user_set_debug_set"> local password setting </string>
+    <string name="common_cancel" tools:ignore="ButtonCase"> cancel </string>
+    <string name="common_confirm"> OK</string>
+    <string name="user_input_pwd_error"> password error</string>
+    <string name="user_input_pwd_hint"> please enter the password</string>
+    <string name="user_loading"> loading…</string>
+
+    <string name="dev_type_monitor"> monitoring equipment </string>
+    <string name="dev_type_intelligentsocket"> smart socket</string>
+    <string name="dev_type_scenelamp"> scene light bulb</string>
+    <string name="dev_type_lampholder"> smart lamp holder</string>
+    <string name="dev_type_carmate"> car companion</string>
+    <string name="dev_type_bigeye"> Big eyes driving recorder </string>
+    <string name="dev_type_smalleye"> small raindrops</string>
+    <string name="dev_type_boutiquerotot"> Xiongmai shaking his head machine</string>
+    <string name="dev_type_sportcamera"> sports camera</string>
+    <string name="dev_type_smallraindrops_fisheye"> fisheye small raindrops</string>
+    <string name="dev_type_lamp_fisheye"> fisheye bulb/panoramic smart bulb</string>
+    <string name="dev_type_minions"> Minions</string>
+    <string name="dev_type_musicbox"> WiFi music box </string>
+    <string name="dev_type_speaker"> WiFi audio</string>
+    <string name="dev_type_linkcenter"> Zhilian Center</string>
+    <string name="dev_type_dash_camera"> Warriors Driving Recorder</string>
+    <string name="dev_type_powerstarip"> Intelligent power strip </string>
+    <string name="dev_type_fish_fun"> fisheye module</string>
+    <string name="dev_type_ufo"> UFO equipment</string>
+    <string name="dev_type_idr"> smart doorbell</string>
+    <string name="dev_type_bullet"> E-type camera </string>
+    <string name="dev_type_drum"> drum kit </string>
+    <string name="dev_type_camera"> camera</string>
+
+    <string name="dev_type_unknown"> unknown device, please contact the manufacturer</string>
+    <string name="device_stauts_unknown"> in the status query</string>
+    <string name="device_stauts_online"> online </string>
+    <string name="device_stauts_offline"> offline </string>
+    <string name="add_dev"> add equipment</string>
+    <string name="device_setup_simple"> device configuration Json data simple interaction </string>
+    <string name="device_setup_hint_simple"> If you don’t know the interface call, you can look at the function first (recommended)</string>
+    <string name="recoding">Recording</string>
+    <string name="open_video_f"> failed to open the video</string>
+    <string name="record_s"> Recording success </string>
+    <string name="capture_s"> Capture the picture successfully</string>
+    <string name="capture"> capture pictures</string>
+    <string name="cut_video"> cut video</string>
+    <string name="ptz_ctrl"> PTZ control </string>
+    <string name="one_way_intercom"> one-way intercom</string>
+    <string name="remote_capture"> remote capture </string>
+    <string name="playback"> video playback</string>
+    <string name="main_stream"> main stream </string>
+    <string name="preset"> preset point settings</string>
+    <string name="not_support_tip"> temporarily not implemented, please refer to the old Demo</string>
+    <string name="add_dev_by_quick_config"> WiFi quick configuration </string>
+    <string name="add_dev_by_input_sn"> serial number connection device </string>
+    <string name="add_dev_by_router"> LAN connection equipment </string>
+    <string name="user_device_list">Device list for %s</string>
+    <string name="push_msg">Push Message</string>
+    <string name="cloud_service">Cloud Service</string>
+    <string name="network_push">Network services - push</string>
+    <string name="lights_and_tones">General equipment status lights and tones</string>
+    <string name="chnId">Channel</string>
+    <string name="add_s">Add success</string>
+    <string name="add_f">Add failed</string>
+    <string name="download">Download</string>
+    <string name="download_f">Download failed</string>
+    <string name="download_s">Download success</string>
+    <string name="download_start">Start Download</string>
+    <string name="download_progress">Download Progress:%d</string>
+    <string name="push_set">Push Settings</string>
+    <string name="push_switch">Push Switch</string>
+    <string name="door_setting">Door Settings</string>
+    <string name="contact_permissions">Contact Permissions</string>
+    <string name="video_flip">Video Flip</string>
+    <string name="auto_sleep">Auto Sleep</string>
+    <string name="open_door">Unlock</string>
+    <string name="password_manager">Password Management</string>
+    <string name="modify_name">Modify Name</string>
+    <string name="modify_s">Modify success</string>
+    <string name="modify_f">Modify failed</string>
+    <string name="delete_s">Delete success</string>
+    <string name="delete_f">Delete failed</string>
+    <string name="unlock_s">Unlock success</string>
+    <string name="unlock_f">Unlock failed</string>
+    <string name="input_door_unlock_pwd">Please enter the unlock password</string>
+    <string name="register_not_bind">Register directly without binding a mobile phone number or email address</string>
+    <string name="device_opt_custom_alarm_voice_by_dvr">Custom alarm sound for traditional equipment</string>
+    <string name="voice_recording">Audio Recording</string>
+    <string name="is_not_support_custom_alarm_voice">The current device does not support custom alarm sounds</string>
+    <string name="play_recording_voice">Play Audio</string>
+    <string name="upload_voice">Upload Audio File</string>
+    <string name="stop_play_recording_voice">Stop Play Audio</string>
+    <string name="start_recording">Start Audio Recording</string>
+    <string name="stop_recording">Stop Audio Recording</string>
+    <string name="upload_s">Upload success</string>
+    <string name="upload_f">Upload failed</string>
+    <string name="file_transfer">File transfer (for example: custom alarm sound upload)</string>
+    <string name="login_by_local">Local Login</string>
+    <string name="login_by_ap">AP Direct Connection</string>
+    <string name="get_channel_title_name">Get Channel Name</string>
+    <string name="error_code_list">Error Code List</string>
+    <string name="channel_list">Channel List</string>
+    <string name="channel">Channel</string>
+    <string name="get_channel_info">Get channel data...</string>
+    <string name="login_dev_failed">Login device failed</string>
+    <string name="scan_qr_code">Scan device QR code</string>
+    <string name="no_flash">No Flash</string>
+    <string name="open_camera_error">There was an error opening the camera, please try again later</string>
+    <string name="full_stream">Full Screen</string>
+    <string name="dev_type">Device Type</string>
+    <string name="dev_unwake">The device is in deep sleep and cannot be woken up!</string>
+    <string name="normal_ipc">Common Device</string>
+    <string name="low_power_dev">Low Power Device</string>
+    <string name="is_sure_delete_dev">Do you want to delete device?</string>
+    <string name="dev_offline">Off-line</string>
+    <string name="Add_Dev_Failed">Add device failed</string>
+    <string name="video_full_screen">Full Screen Display Of A Single Video</string>
+    <string name="video_fit_center">Video Display By Scale</string>
+    <string name="hunman_detect">Humanoid detection (intelligent analysis)</string>
+    <string name="date_second">s</string>
+    <string name="date_minute">m</string>
+    <string name="loaded_failed">Loading failed</string>
+    <string-array name="alarmouttype">
+        <item>Automatic</item>
+        <item>Manual</item>
+        <item>Close</item>
+    </string-array>
+
+    <string name="please_to_choose">Please Choose</string>
+    <string-array name="phone_in_country">
+        <item>China +86</item>
+        <item>Cambodia +855</item>
+        <item>Thailand +66</item>
+        <item>Vietnam +84</item>
+        <item>America +1</item>
+    </string-array>
+
+    <string-array name="fish_eye_camera_type">
+        <item>Ceiling</item>
+        <item>Desktop</item>
+        <item>Wall</item>
+    </string-array>
+
+    <string-array name="device_setup_camera_definition_values">
+        <item>Best</item>
+        <item>Very good</item>
+        <item>OK</item>
+        <item>General</item>
+        <item>Poor</item>
+        <item>Very bad</item>
+    </string-array>
+
+    <string-array name="device_setup_alarm_level">
+        <item>low level</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+    </string-array>
+
+    <string-array name="device_setup_record_mode_values">
+        <item>Never record</item>
+        <item>Manual record</item>
+        <item>Config record</item>
+    </string-array>
+
+    <string-array name="device_setup_camera_noise_reduction_values">
+        <item>Off</item>
+        <item>low level</item>
+        <item>Advanced</item>
+    </string-array>
+
+    <string-array name="device_setup_camera_metering_values">
+        <item>Average metering</item>
+        <item>Central metering</item>
+        <item>Spot metering</item>
+    </string-array>
+
+    <string-array name="device_setup_exposure_time_values">
+        <item>Automatic</item>
+        <item>1/50</item>
+        <item>1/120</item>
+        <item>1/250</item>
+        <item>1/500</item>
+        <item>1/1000</item>
+        <item>1/2000</item>
+        <item>1/4000</item>
+        <item>1/10000</item>
+    </string-array>
+
+    <string-array name="device_setup_scene_mode_values">
+        <item>Automatic</item>
+        <item>Indoor</item>
+        <item>Outdoor</item>
+    </string-array>
+
+    <string-array name="device_setup_electronic_slow_shutter_values">
+        <item>Off</item>
+        <item>low level</item>
+        <item>Advanced</item>
+    </string-array>
+
+    <string-array name="device_setup_color_mode_values">
+        <item>color</item>
+        <item>Black and white</item>
+    </string-array>
+
+    <string-array name="device_setup_gpio_values">
+        <item>Disable/Pull Down</item>
+        <item>Enable/Pull Up</item>
+        <item>Automatic periodic change every 500 milliseconds</item>
+    </string-array>
+
+    <string-array name="device_setup_defogging_values">
+        <item>Off</item>
+        <item>low level</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+    </string-array>
+
+    <string name="show_traces"> show trace </string>
+    <string name="perimeter_alert"> perimeter alert</string>
+    <string name="alert_line"> cordon </string>
+    <string name="alert_area"> alert area</string>
+    <string name="application_scenarios"> application scenarios </string>
+    <string name="boundary_alert_direction"> alert direction</string>
+    <string name="alert_line_trigger_direction"> alert trigger direction</string>
+    <string name="smart_analyze_restore"> restore </string>
+    <string name="smart_analyze_revoke"> revoke </string>
+    <string name="Done"> complete</string>
+    <string name="type_alert_area"> alert area</string>
+    <string name="smart_analyze"> cordon </string>
+    <string name="type_alert_line"> intelligent analysis </string>
+    <string name="smart_analyze_alarm"> intelligent analysis alarm </string>
+    <string name="smart_analyze_show_trace"> show trace </string>
+    <string name="smart_analyze_alert_type"> alert type</string>
+    <string name="smart_analyze_alert_boundary"> peripheral alert </string>
+    <string name="smart_analyze_goods_tend"> item care</string>
+    <string name="smart_analyze_video_judge"> video diagnosis</string>
+    <string name="smart_analyze_scene_change"> scene change detection </string>
+    <string name="smart_analyze_signal_loss_detection"> signal loss detection </string>
+    <string name="smart_analyze_sharpness_detection"> sharpness detection </string>
+    <string name="scene_change_set_success"> set successfully! \nWhen the scene changes, you will receive an alarm message</string>
+    <string name="signal_loss_detection_set_success"> set successfully! \nWhen signal loss is detected, an alarm message will be received</string>
+    <string name="sharpness_detection_set_success"> set successfully! \nWhen the clarity is detected, you will receive an alarm message</string>
+    <string name="camera_error"> Error opening camera, please try again later</string>
+    <string name="No_flash"> no flash </string>
+    <string name="type_goods_retention"> Item retention </string>
+    <string name="type_stolen_goods"> item theft </string>
+    <string name="smart_analyze_line_left"> positive direction</string>
+    <string name="smart_analyze_line_middle"> two-way alert </string>
+    <string name="smart_analyze_line_right"> the opposite direction</string>
+    <string name="smart_analyze_shape_triangle"> triangle </string>
+    <string name="smart_analyze_shape_rectangle"> rectangle </string>
+    <string name="smart_analyze_shape_pentagram"> Pentagon</string>
+    <string name="smart_analyze_shape_l_sel"> L shape</string>
+    <string name="smart_analyze_shape_concave"> concave type</string>
+    <string name="smart_analyze_store_car"> garage entrance</string>
+    <string name="smart_analyze_forbidden_parking"> no parking </string>
+    <string name="smart_analyze_corridor"> corridor </string>
+    <string name="smart_analyze_shape_customize"> custom </string>
+    <string name="smart_analyze_jewelry"> jewelry </string>
+    <string name="smart_analyze_baby_room"> baby room</string>
+    <string name="smart_analyze_book_room"> book room</string>
+    <string name="quit_alert_area"> Exit the alert area </string>
+    <string name="double_direction_alert"> two-way alert </string>
+    <string name="dev_set_human_detect_tip"> includes humanoid detection, cordon and guard area</string>
+    <string name="main_record_info"> main stream video configuration </string>
+    <string name="extra_record_info">extra stream video configuration</string>
+    <string name="dev_get_human_dissupport">the device dissupports human Detection</string>
+    <string name="get_dev_config_failed"> failed to obtain configuration </string>
+    <string name="set_dev_config_failed">Failed to save configuration</string>
+    <string name="set_dev_config_success">Configuration saved successfully</string>
+    <string name="camera_set">Camera parameters</string>
+    <string name="camera_set_ext">Camera parameters expand</string>
+    <string name="device_opt_transmission">Serial command transparent transmission</string>
+    <string name="data_send">Send Data</string>
+    <string name="send_data">Send Data</string>
+    <string name="data_receive">Receive Data</string>
+    <string name="open_serial_port">Open Serial Port</string>
+    <string name="close_serial_port">Close Serial Port</string>
+    <string name="open_serial_port_s">The serial port is opened successfully</string>
+    <string name="close_serial_port_s">The serial port is closed successfully</string>
+    <string name="check_dev_upgrade">Device firmware detection</string>
+    <string name="already_latest">Updated to the latest version</string>
+    <string name="have_new_version_click_to_upgrade">There is a new version, click to upgrade</string>
+    <string name="are_u_sure_to_upgrade_firmware">Are you sure you want to upgrade the firmware?</string>
+    <string name="download_dev_firmware">Download the upgrade package</string>
+    <string name="upload_dev_firmware">Uploading the upgrade package</string>
+    <string name="dev_upgrading">Upgrading</string>
+    <string name="completed_dev_upgrade">Upgrade Completed</string>
+    <string name="modify_dev_name">Modify Device Name</string>
+    <string name="Refresh_Dev_Status_F">Refresh device status failed</string>
+    <string name="TR_Modify_Dev_Name_S">Modify device name success</string>
+    <string name="TR_Modify_Dev_Name_F">Modify device name failed</string>
+    <string name="search_dev_pic">Device Image</string>
+    <string name="capture_pic_from_dev_and_save">The device captures the picture and saves it to the local storage of the device (the picture will not be sent back to the APP)</string>
+    <string name="not_all_dev_support">Special device supports this function</string>
+    <string name="tr_set_preset">Set</string>
+    <string name="tr_ctrl_preset">Transfer</string>
+    <string name="tr_preset_range">Preset point range 1~255</string>
+    <string name="TR_Input_Preset_Empty_Tip">Please enter the correct preset number</string>
+    <string name="realtime_play">Real-time preview real-time performance (LAN IP access only takes effect)</string>
+    <string name="light_ctrl">Light Control</string>
+    <string name="not_support_light_ctrl">The current device does not support lighting control!</string>
+    <string name="config_name_sel">Select Configuration Name</string>
+    <string name="one_key_open_door">One Key Unlock</string>
+    <string name="set_dev_to_router_by_qr_code">QR Code Distribution Network</string>
+    <string name="pir_alarm_settings">PIR Alarm Configuration</string>
+    <string name="idr_setting">Low Power Device Configuration</string>
+    <string name="speaker_type_normal">Normal Voice</string>
+    <string name="speaker_type_man">Male Voice</string>
+    <string name="speaker_type_woman">Female Voice</string>
+    <string name="add_dev_by_bluetooth">Bluetooth Distribution Network</string>
+    <string name="device_opt_set_wifi_simple">Quickly Configure WiFi(Not Recommended)</string>
+    <string name="share_dev">Share Device</string>
+    <string name="search">Search</string>
+    <string name="enter_need_share_account">Please enter the account you want to share</string>
+    <string name="not_found">Not data found</string>
+    <string name="share_s">Sharing success</string>
+    <string name="share_f">Sharing failed</string>
+    <string name="dev_share_account_list">List of accounts shared by the device</string>
+    <string name="device_share_manage">Device Share Management</string>
+    <string name="share_accept">Accepted to share</string>
+    <string name="share_not_yet_accept">Not yet accepted to share</string>
+    <string name="share_reject">Reject Share</string>
+    <string name="cancel_share_s">Cancel share success</string>
+    <string name="cancel_share_f">Cancel share failed</string>
+    <string name="is_sure_cancel_share">Do you want to cancel share?</string>
+    <string name="share_dev_list">Share Device List</string>
+    <string name="reject_share_s">Reject sharing success</string>
+    <string name="reject_share_f">Reject sharing failed</string>
+    <string name="reject_share">Reject Share</string>
+    <string name="accept_share">Accept Share</string>
+    <string name="accept_share_s">Accept sharing success</string>
+    <string name="accept_share_f">Accept sharing failed</string>
+    <string name="share_operation">Sharing Operation</string>
+    <string name="from_share_dev">From Sharing</string>
+    <string name="come_from">Come From</string>
+    <string name="see_error_code">View Error Code</string>
+    <string name="enter_error_code">Enter Error Code</string>
+    <string name="other_config">Please go to the "Device Configuration Json Data Interaction" page and find the function you want by searching for the configuration keyword</string>
+    <string name="funsdk_integration_tips">Please replace the AppKey and other information registered on the VIoT platform in time, the test key will be updated regularly!!!</string>
+    <string name="wifi_ssid_not_empty">WiFi SSID is not empty</string>
+    <string name="is_need_delete_dev_from_other_account">Start adding devices, do you want to remove this device from other accounts?</string>
+    <string name="input_correct_sn">Please enter the correct serial number, the length is 16 or 20</string>
+    <string name="total_capacity">Total Capacity</string>
+    <string name="residual_capacity">Residual Capacity</string>
+    <string name="battery_state_show">Battery level【%d】Is it stored 【%d】Whether it is charging【%d】</string>
+    <string name="wifi_state_show">WiFi signal level【%d】</string>
+    <string name="select_config_name">Please select a configuration name</string>
+    <string name="send_cmd">Send Command</string>
+    <string name="get_config">Get Configuration</string>
+    <string name="video_flip_normal">Normal</string>
+    <string name="video_flip_90">Flip 90 degrees</string>
+    <string name="video_flip_180">Flip 180 degrees</string>
+    <string name="video_flip_270">Flip 270 degrees</string>
+    <string name="simple_config">Simple interaction of device configuration Json data</string>
+    <string name="configuration_name">Configuration Name</string>
+    <string name="cmd_id">Command ID</string>
+    <string name="view_example">View Json interaction example</string>
+    <string name="start_push_service">Push service started</string>
+    <string name="start_push_service_error_tips">Before starting the push service, you need to log in to your account</string>
+    <string name="save_config">Save Configuration</string>
+    <string name="is_accept_share_dev">Whether to accept shared devices</string>
+    <string name="delete_all">Delete All</string>
+    <string name="incoming_call">Call notification</string>
+    <string name="show_alarm_pic_failed">Failed to display alarm picture</string>
+    <string name="playback_fast_play">Fast Play</string>
+    <string name="playback_slow_play">Slow Play</string>
+    <string name="search_record_failed">The query failed or the record file was not found. If the query failed, please see the error value of the callback in onFailed</string>
+    <string name="cloud_playback">Cloud Playback</string>
+    <string name="sd_playback">SD Playback</string>
+    <string name="playback_pause">Pause</string>
+    <string name="playback_play">Play</string>
+    <string name="play_speed">Speed</string>
+    <string name="pre_month">Last Month</string>
+    <string name="next_month">Next Month</string>
+    <string name="month">Month</string>
+    <string name="edit_local_user_password">Modify local device login name and password</string>
+    <string name="distribution_network_failure">Distribution network failure</string>
+    <string name="connect_ble_success">Bluetooth connection successful</string>
+    <string name="connect_ble_failed">Bluetooth connection failed</string>
+    <string name="start_ble_network">Start Bluetooth Pairing</string>
+    <string name="next">Next</string>
+    <string name="completed">Completed</string>
+    <string name="libfunsdk_operation_success">Operation success</string>
+    <string name="feeding">Feeding</string>
+    <string name="food_portions">Food Portions</string>
+    <string name="not_paired">Not paired</string>
+    <string name="have_no_search_ble_devs">No Bluetooth devices found.</string>
+    <string name="input_food_portions">Please enter the number of servings for the food.</string>
+    <string name="clear_dev_list">Delete All Devices</string>
+    <string name="is_sure_delete_all_devices">Are you sure you want to delete all devices?</string>
+    <string name="stop_ble_network">Stop Bluetooth Pairing</string>
+    <string name="search_ble_devs">Search Bluetooth Devices</string>
+    <string name="shadow_config">Shadow Service Configuration (Offline Configuration)</string>
+    <string name="start_config_monitor">Start configuration real-time monitoring</string>
+    <string name="stop_config_monitor">Stop configuration real-time monitoring</string>
+    <string name="feedback">Feedback</string>
+    <string name="select_date">Select Date</string>
+    <string name="delete_all_msg">Delete All Messages</string>
+    <string name="is_sure_feedback">Confirm feedback log?</string>
+    <string name="about_dev_tips">Device version information, firmware detection, and upgrade.</string>
+    <string name="select_local_file_upgrade">Upgrade By Selecting Local File</string>
+    <string name="unlock">Unlock</string>
+    <string name="direct_access_to_device">Accessing the device directly without requiring an account login</string>
+    <string name="not_account_login_tips">If your devices are all hosted on your cloud server and you don\'t want to go through our account system, you can simply add your devices to the app cache. Please refer to the example code in the demo for the specific implementation!</string>
+    <string name="sharing_code_has_expired">Sharing code has expired</string>
+    <string name="add_share_qr_code_error">Failed to add the shared device.</string>
+    <string name="turn_to_preset_list">Preset List</string>
+    <string name="is_sure_to_delete_preset">Confirm deletion of preset point?</string>
+    <string name="modify_preset_name">Modify preset name</string>
+    <string name="sync_dev_time_zone">Synchronize Time Zone</string>
+    <string name="sync_dev_time">Synchronize Time</string>
+    <string name="play_dev_voice">Playback Of Device-side Audio</string>
+    <string name="play_success">Play successful</string>
+    <string name="play_failed">Play failed</string>
+    <string name="talk_broadcast">Broadcast Intercom</string>
+    <string name="loading_local_voice">Load Local Test Audio File</string>
+    <string name="get_voice_list_failed">Failed to retrieve the audio list</string>
+    <string name="input_wifi_info">Enter Router Information</string>
+    <string name="file_size_exceed_max_size">The file size exceeds the maximum limit (cannot exceed 84KB).</string>
+    <string name="invalid_file">Invalid File</string>
+    <string name="transformat_s">Text successfully converted to speech.</string>
+    <string name="text_to_audio">Text-To-Speech</string>
+    <string name="input_context">Input Content</string>
+    <string name="camera_link_set">Camera Linkage</string>
+    <string name="camera_link_switch">Enable Linkage</string>
+    <string name="camera_link_aiming">Linkage Calibration</string>
+    <string name="input_right_error_code">Please enter the correct error code</string>
+    <string name="camera_link_init_tips">The camera is sitting in the motorized calibration gimbal, do not power off</string>
+    <string name="camera_point_ptz_tips">Tap the top half of the screen to rotate the gimbal to the desired position</string>
+    <string name="play_local_video">Play Local Video On The Phone</string>
+    <string name="only_near_dev">Show only nearby devices</string>
+    <string name="feed_the_dog">Feed the dog</string>
+    <string name="feed_the_fish">Feed the fish</string>
+    <string name="please_sel_feet_type">Select the feeding type</string>
+    <string name="factory_reset">Factory Reset</string>
+    <string name="factory_reset_and_delete_dev">Factory reset and delete device</string>
+    <string name="only_factory_reset">Factory reset only</string>
+    <string name="reset_failed">Factory reset failed</string>
+    <string name="media_disconnect">Media link disconnected, SDK is attempting to reconnect!</string>
+    <string name="click_to_open_two_way_talk">Click To Open Two-Way Talk</string>
+    <string name="long_press_open_one_way_talk">Long Press To Open One-Way Talk</string>
+    <string name="ircut">Invert IR cut</string>
+    <string name="look_where_you_point">Look Where You Point</string>
+    <string name="sel_record_file_type">Change Record File Type</string>
+    <string name="record_file_type">Record File Type</string>
+    <string name="record_file_all">All</string>
+    <string name="record_file_normal">Normal</string>
+    <string name="record_file_alarm">Alarm</string>
+    <string name="setting_all_day_video">24H Recording</string>
+    <string name="record_alarm">Alarm Recording</string>
+    <string name="manual_alarm">Manual Alert</string>
+    <string name="not_login_dev_list_tips">Not logged in using AccountManager (including XMAccountManager account login or LocalAccountManager local temporary login), only temporary caching of device information is possible. After restarting the application, device information cannot be retrieved</string>
+    <string name="is_modify_osd">"Would you like to synchronize device preview watermark information?"</string>
+    <string name="modify_dev_name_osd">Modify Device Watermark</string>
+    <string name="alarm_by_voice_light">Strobe Light and Audio Alarm</string>
+    <string name="control_mode">Control Mode</string>
+    <string name="intelligent_sensitivity">Sensitivity</string>
+    <string name="intelligent_duration">Light ON Duration</string>
+    <string name="intelligent_vigilance">Intelligent Alert</string>
+    <string name="full_color_vision">Full Light</string>
+    <string name="general_night_vision">Infrared Night Vision</string>
+    <string name="double_light_vision">Double Light Alert</string>
+    <string name="remote_capture_s">Remote capture successful and saved to local device storage.</string>
+    <string name="remote_capture_f">Remote capture failed.</string>
+    <string name="received_alarm_message">Received alarm message:</string>
+    <string name="settings_alarm_beep">Device Alarm Beep</string>
+    <string name="alarm_voice_name_list">Device Alarm Voice</string>
+    <string name="alarm_voice_interval_time">Alarm Voice Interval Time</string>
+    <string name="just_once">Only Once</string>
+    <string name="alarm_voice_repeat">"Loop Alarm"</string>
+    <string name="alarm_voice">Alarm Voice</string>
+    <string name="get_dev_ability_failed">Failed to retrieve device capabilities</string>
+    <string name="inter_device_linkage_link">Inter-Device Linkage</string>
+    <string name="inter_dev_linked_s">Successful device association</string>
+    <string name="inter_dev_linked_f">Failed device association</string>
+    <string name="is_sure_link_dev">Confirm association with this device?</string>
+    <string name="inter_dev_unlinked_s">Unbind successful</string>
+    <string name="inter_dev_unlinked_f">Unbind failed</string>
+    <string name="start_lan_check">Start LAN detection</string>
+    <string name="check_lan_s_and_check_port">LAN detection successful. Initiating port 34567 detection</string>
+    <string name="check_port_s">Port 34567 detection successful</string>
+    <string name="check_port_f">Port 34567 detection failed:</string>
+    <string name="check_lan_f">LAN detection failed：</string>
+    <string name="start_add_dev_to_account">Adding device to account—beginning</string>
+    <string name="add_dev_to_account_s">Device added to account—success</string>
+    <string name="add_dev_to_account_f">Failed to add device to account:</string>
+    <string name="start_get_random_user_pwd">Obtaining random username and password for the device—beginning</string>
+    <string name="get_random_user_pwd_s">Random username and password for the device obtained—success</string>
+    <string name="start_get_dev_token">Obtaining device token—beginning</string>
+    <string name="get_dev_token_s">Device token obtained—success</string>
+    <string name="get_dev_token_f">Failed to obtain device token:</string>
+    <string name="get_dev_random_user_pwd_f">Failed to obtain random username and password for the device:</string>
+    <string name="start_get_dev_verification_code">Obtaining verification code for the device—beginning</string>
+    <string name="get_dev_verification_s">Verification code for the device obtained—success</string>
+    <string name="get_dev_verification_f">Failed to obtain verification code for the device:</string>
+    <string name="sync_dev_timezone_s">Time zone synchronization for the device successful</string>
+    <string name="sync_dev_timezone_f">Failed to synchronize time zone for the device:</string>
+    <string name="sync_dev_time_s">Device time synchronization successful</string>
+    <string name="sync_dev_time_f">Failed to synchronize device time:</string>
+    <string name="qr_code_network_configuration_prompt">Align the device camera with the QR code for network configuration scanning. After successful network configuration of the device, wait for the server to return the result</string>
+    <string name="need_turn_to_monitor">You need to navigate to the preview page?</string>
+    <string name="the_dev_already_exist">The device is already associated with the current account</string>
+    <string name="the_ssid_is_not_empty">The hotspot name cannot be empty</string>
+    <string name="dev_income_call_mic_has_closed">Microphone Off</string>
+    <string name="dev_income_call_mic_has_opened">Microphone On</string>
+    <string name="dev_income_call_sound_has_closed">Speaker Off</string>
+    <string name="dev_income_call_sound_has_opened">Speaker On</string>
+    <string name="dev_income_call_camera_has_closed">Camera Off</string>
+    <string name="dev_income_call_camera_has_opened">Camera On</string>
+    <string name="common_refuse_call">Hang up</string>
+    <string name="dev_income_call_camera_invert">Switch Camera</string>
+    <string name="income_call_press_to_talk">Hold to talk</string>
+    <string name="sto_video_full">Full Storage:</string>
+    <string name="sto_video_stop">Stop Recording</string>
+    <string name="sto_video_cir">Cyclic Recording</string>
+    <string name="sto_video_part">Recording Partition</string>
+    <string name="sto_img_part">Image Partition</string>
+</resources>

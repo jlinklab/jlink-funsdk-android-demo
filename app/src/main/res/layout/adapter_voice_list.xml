@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xm.ui.widget.ListSelectItem xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lsi_voice_info"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceListItem"
+    app:Title=""
+    app:ItemTitleColor="@color/default_normal_text_color"
+    app:ItemTipSize="@dimen/normal_text_size"
+    app:Tip=""
+    app:ItemTipColor="@color/default_normal_text_color"
+    app:ImageRight1="@drawable/icon_play"
+    app:ImageRight2="@drawable/icon_play"
+    app:RightClickable="false"/>

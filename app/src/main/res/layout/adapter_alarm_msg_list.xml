@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@drawable/item_selector">
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lis_alarm_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ImageLeftWidth="160dp"
+        app:ImageLeftHeight="90dp"
+        app:Title=""
+        app:ItemTitleSize="@dimen/normal_text_size"
+        app:ItemTitleColor="@color/default_normal_text_color"
+        app:Tip=""
+        app:ItemTipColor="@color/hint_color"
+        app:ItemTipSize="@dimen/small_text_size"
+        app:LineColor="@color/line_color"
+        app:ShowBottomLine="true"
+        app:ShowTopLine="false" />
+    <include
+        layout="@layout/view_alarm_msg_fun"/>
+</LinearLayout>

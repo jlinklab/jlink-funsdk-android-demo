@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xm.ui.widget.ptzview.PtzView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    uilib:NormalBgSrc="@mipmap/ic_ptz_ctrl_nor"
+    uilib:SelectedDownBgSrc="@mipmap/ic_ptz_ctrl_down"
+    uilib:SelectedUpBgSrc="@mipmap/ic_ptz_ctrl_top"
+    uilib:SelectedLeftBgSrc="@mipmap/ic_ptz_ctrl_left"
+    uilib:SelectedRightBgSrc="@mipmap/ic_ptz_ctrl_right"/>

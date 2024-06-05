@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!--<include-->
+    <!--android:id="@+id/layoutTop"-->
+    <!--layout="@layout/layout_top_navigate_theme" />-->
+
+    <com.xm.ui.widget.XTitleBar
+        android:id="@+id/layoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color1"
+        uilib:LeftBtn_Nor="@mipmap/icon_back_normal"
+        uilib:LeftBtn_Sel="@mipmap/icon_back_pressed"
+        uilib:TitleText="@string/set_about"
+        uilib:TitleTextColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_below="@id/layoutTop"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:background="@color/transparent"
+        android:src="@mipmap/logo_app" />
+
+    <TextView
+        android:id="@+id/txtVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Version:1.4.0"
+        android:textColor="@color/demo_title"
+        android:textSize="18sp" />
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtVersion"
+        uilib:ImageRight1="@mipmap/icon_next"
+        uilib:ImageRight2="@mipmap/icon_next"
+        uilib:ItemTitleColor="@color/black"
+        uilib:ItemTitleSize="@dimen/middle_text_size"
+        uilib:Title="@string/feedback" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:gravity="center"
+        android:text="@string/app_welcome"
+        android:textColor="@color/demo_desc"
+        android:textSize="14sp"
+        android:textStyle="italic" />
+</RelativeLayout>

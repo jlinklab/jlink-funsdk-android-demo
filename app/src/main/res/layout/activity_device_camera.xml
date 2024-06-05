@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:longClickable="true">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <RelativeLayout
+        android:id="@+id/wnd_layout"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_below="@+id/layoutTop"
+        android:background="#ff000000">
+
+        <com.xm.ui.media.MultiWinLayout
+            android:id="@+id/layoutPlayWnd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/wnd_cover_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_battery_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:textColor="@color/white"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tv_wifi_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:textColor="@color/white"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tv_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:textColor="@color/white"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_monitor_fun"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/wnd_layout"/>
+
+</RelativeLayout>

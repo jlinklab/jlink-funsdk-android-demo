@@ -1,0 +1,873 @@
+<resources>
+    <string name="app_name">XMFunSDKDemo</string>
+    <string name="app_welcome">欢迎使用FunSDKDemo!\n©2024, Powered by JFTECH.</string>
+    <string name="set_user">用户相关</string>
+    <string name="set_dev">添加设备</string>
+    <string name="set_list">设备列表</string>
+    <string name="set_about">关于Demo</string>
+    <string name="set_user_register">用户注册</string>
+    <string name="set_user_login">用户登录</string>
+    <string name="set_user_modify_pwd">修改密码</string>
+    <string name="set_user_forget_pwd">忘记密码</string>
+    <string name="set_user_info">用户信息</string>
+    <string name="set_user_info_change">编辑</string>
+    <string name="set_user_info_change_save">保存</string>
+    <string name="set_user_save_local_pwd">密码本地保存</string>
+    <string name="user_name_repeat_btn">重复</string>
+    <string name="user_logout">登出</string>
+    <string name="guide_message_username_fine">用户名可用</string>
+    <string name="guide_message_request_phone_msg_success">请求发送验证码成功</string>
+    <string name="user_login_error_emptypassword">密码为空</string>
+    <string name="user_login_error_emptyverifycode">验证码为空</string>
+    <string name="guide_message_register_user_success">注册用户成功</string>
+    <string name="user_set_debug_info">此处选择是否使用本地密码保存功能（下次启动时有效），若使用该功能，则myapplication类初始化时设置保存路径，每次登陆设备成功时保存密码设置，若要获取本地密码可调用FunSDK.DevGetLocalPwd()接口</string>
+    <string name="test_qrcode_create">创建二维码</string>
+    <string name="input_something">输入信息</string>
+    <string name="start_lan_alarm">局域网报警</string>
+    <string name="device_lan_alarm_test">局域网报警</string>
+    <string name="user_info_id">ID</string>
+    <string name="user_info_username">用户名</string>
+    <string name="user_info_email">邮箱</string>
+    <string name="user_info_phone">手机</string>
+    <string name="user_info_sex">性别</string>
+    <string name="user_info_reg_time">注册时间</string>
+    <string name="user_login_error_emptyusername">用户名为空</string>
+    <string name="user_login_error_email">邮箱错误</string>
+    <string name="user_login_error_phone_number">手机号错误</string>
+    <string name="guide_message_error_call">接口调用返回错误,请检查</string>
+    <string name="user_forget_pwd_verify_code_format_erroe">验证码应该是四位整数</string>
+    <string name="user_forget_pwd_verify_code_first">请先提交验证码</string>
+    <string name="user_forget_pwd_new_password_error">请检查新密码的格式</string>
+    <string name="password_checker_weak_error"> 你输入的密码过于简单</string>
+    <string name="user_forget_pwd_new_password_confirm_error">请确认两次输入的密码相同</string>
+    <string name="user_forget_pwd_verify_success">验证成功</string>
+    <string name="user_forget_pwd_reset_passw_success">密码重置成功</string>
+
+    <string name="user_forget_pwd_email">请输入您的邮箱</string>
+    <string name="user_forget_pwd_phone">请输入您的手机号</string>
+    <string name="user_forget_pwd_verify_code">请输入您的验证码</string>
+    <string name="user_forget_pwd_send_verify_code">点击获取</string>
+    <string name="user_forget_pwd_verify_code_sent">验证码已发送</string>
+    <string name="user_forget_pwd_new_passw">请输入新密码</string>
+    <string name="user_forget_pwd_new_passw_confirm">请输入确认密码</string>
+    <string name="user_forget_pwd_submit">提交</string>
+    <string name="user_forget_pwd_verify">提交验证码</string>
+
+    <string name="password_checker_strong">强</string>
+    <string name="password_checker_medium">中</string>
+    <string name="password_checker_weak">弱</string>
+    <string name="password_checker_empty">空</string>
+    <string name="password_checker_short">短</string>
+    <string name="password_checker_long">长</string>
+
+    <string name="user_change_password">确认更改</string>
+    <string name="user_change_password_hint_username">帐号 6位以上字母/数字/符号</string>
+    <string name="user_change_password_hint_old_password">旧密码</string>
+    <string name="user_change_password_hint_new_password">新密码 6-16位数字/字母/符号</string>
+    <string name="user_change_password_hint_new_password_confirm">请再次输入密码</string>
+    <string name="user_change_password_sucess">修改密码成功,请使用新密码重新登录</string>
+    <string name="user_change_password_error_emptyusername">用户名不能为空</string>
+    <string name="user_change_password_error_emptypassw">任何密码不能为空</string>
+    <string name="user_change_password_error_passwtooshort">新密码不合规范</string>
+    <string name="user_change_password_error_passwnotequal">请确认你两次密码输入一致</string>
+
+    <string name="user_login_hint_username">帐号/手机号</string>
+    <string name="user_login_hint_password">密码</string>
+    <string name="user_login_forgot_passwd">忘记密码?</string>
+    <string name="user_login">账号登录</string>
+    <string name="user_login_save_password">保存密码</string>
+    <string name="user_login_auto_login">自动登录</string>
+    <string name="user_login_otherway">还可以选择以下方式登录</string>
+    <string name="user_login_byweibo">新浪微博登录</string>
+    <string name="user_login_byqq">QQ账号登录</string>
+    <string name="user_login_noaccount">没有账号?</string>
+    <string name="user_login_register">快速注册账号</string>
+    <string name="user_login_please_input_username_and_pwd">请输入账号和密码</string>
+
+    <string name="user_register_china">中国 +86</string>
+    <string name="user_register_get_verify_code">点击获取</string>
+    <string name="user_register_account">快速注册</string>
+    <string name="user_register_by_email">通过邮箱</string>
+    <string name="user_register_by_cellphone">通过手机</string>
+    <string name="user_register_error_password_unmatched">前后密码不匹配</string>
+    <string name="user_register_error_username_length">用户名长度不符</string>
+    <string name="user_register_error_password_length">密码长度不符</string>
+    <string name="user_register_hint_username">"帐号 6位以上字母/数字/符号"</string>
+    <string name="user_register_hint_email">"邮箱 正确填写/找回密码时使用"</string>
+    <string name="user_register_hint_phone">"请输入11位手机号"</string>
+    <string name="user_register_hint_verify_code">"输入验证码"</string>
+    <string name="user_register_hint_password">"密码 8-16位数字/字母/符号"</string>
+    <string name="user_register_hint_password_confirm">请再次输入密码</string>
+    <string name="user_registering">正在注册...</string>
+    <string name="user_register_success">注册成功, 正在登录...</string>
+    <string name="user_register_login_success">登录成功</string>
+    <string name="user_register_login_fail">登录失败</string>
+    <string name="user_not_login">未登录</string>
+    <string name="user_info_not_login">你还没有登录</string>
+    <string name="user_info_sex_man">男</string>
+    <string name="user_info_sex_female">女</string>
+
+    <string name="guide_module_title_device_sn">序列号连接设备</string>
+    <string name="guide_module_title_device_ap">AP直连设备</string>
+    <string name="guide_module_title_device_lan">局域网连接设备</string>
+    <string name="guide_module_title_device_add">用户添加设备</string>
+    <string name="guide_module_title_device_connect2">分享的设备</string>
+    <string name="guide_module_title_device_browse">查看设备文件</string>
+    <string name="guide_module_title_device_alarm">设备报警</string>
+    <string name="guide_module_title_device_setwifi">WiFi快速配置</string>
+
+    <string name="device_opt_alarm_config">报警配置</string>
+    <string name="device_setup">设备配置</string>
+    <string name="device_preview">设备预览</string>
+    <string name="device_setup_encode">编码配置</string>
+    <string name="device_setup_record">录像配置</string>
+    <string name="device_setup_image">图像配置</string>
+    <string name="device_setup_expert">高级配置</string>
+    <string name="device_setup_storage">设备存储管理</string>
+    <string name="device_setup_camerafisheye">鱼眼灯泡控制</string>
+    <string name="device_setup_change_password">密码修改</string>
+    <string name="device_setup_hint_encode_config_alarm">在这里，你可以配置分辨率，帧数，音频，视频</string>
+    <string name="device_setup_hint_alarm_config_alarm">设备支持各种报警触发和联动，您可以在这里进行配置</string>
+    <string name="device_setup_hint_record_config_alarm">该设置允许您改变录像方式，关掉音频，改变文件长度</string>
+    <string name="device_setup_hint_picture_config_alarm">通过该项设置，您可以改变图像的画质、图像字符叠加</string>
+    <string name="device_setup_hint_expert_config_alarm">该功能主要是一些更加专业化的设置项</string>
+    <string name="device_setup_hint_picture_config_sport_alarm">通过该项设置，您可以改变图像的分辨率、帧率、画质、图像字符叠加</string>
+    <string name="device_setup_hint_pwd_modify_alarm">您可以更改设备的访问密码，这对保护隐私非常关键</string>
+    <string name="device_setup_hint_pilot_light_config_alarm">如果关掉，设备的指示灯不再亮起，这意味着您会无法判断设备的运行状态(AP模式下无效)</string>
+    <string name="device_setup_hint_harddisk_config_alarm">该选项允许您查看和管理设备的存储空间，您可以对其进行格式化</string>
+    <string name="device_setup_hint_camerafisheye">鱼眼灯泡开关及亮度控制</string>
+    <string name="device_setup_hint_device_code_alarm">通过此功能，可以生成一个包含登录账户信息的二维码，微信端扫描一下就可以控制该设备</string>
+    <string name="device_setup_hint_workrecord_alarm">该功能可以简单统计大概的用电量情况，用电量仅供参考</string>
+    <string name="device_setup_hint_about_dev_alarm">包含设备基本信息</string>
+    <string name="device_setup_hint_dev_jsonset">结果显示并配置Json字符串(请严格检查格式，错误的格式和类型可能导致设备异常)</string>
+    <string name="device_setup_system_function">设备能力集</string>
+    <string name="device_setup_alarm_center">报警中心</string>
+    <string name="device_setup_frontctr">Front Panel Operate</string>
+    <string name="device_setup_jsonanddevcmd">Json 和 DevCmd 调试</string>
+    <string name="device_setup_spvmn_cfg_json">GB配置</string>
+    <string name="device_system_info">关于设备</string>
+    <string name="device_reboot">重启设备</string>
+    <string name="device_reboot_context">是否要重启设备？</string>
+
+    <string name="device_type">设备类型:</string>
+    <string name="device_mac">设备MAC:</string>
+    <string name="device_sn">设备SN:</string>
+    <string name="device_ip">设备IP:</string>
+    <string name="device_status">状态明细:</string>
+    <string name="device_login">设备登录</string>
+    <string name="device_login_sn">序列号</string>
+    <string name="device_login_ip">IP</string>
+    <string name="Enter_Device_Port">设备端口号(默认34567)</string>
+    <string name="device_login_name_hint">登录用户名, 默认为:admin</string>
+    <string name="device_login_password_hint">登录密码</string>
+    <string name="device_login_error_sn">序列号不正确</string>
+    <string name="device_login_input_password">请输入设备登录密码</string>
+    <string name="device_opt_add">添加</string>
+    <string name="device_opt_add_tip">除了可以手动输入设备序列号之外，\n以下是同一局域网内的设备,可选择其中一个测试:\n先执行[局域网内连接设备]</string>
+    <string name="device_opt_play">播放</string>
+    <string name="device_opt_stop">停止</string>
+    <string name="device_opt_capture">截图</string>
+    <string name="device_opt_record">录制</string>
+    <string name="device_opt_fullscreen">全屏</string>
+    <string name="device_opt_fisheye_info">信息</string>
+    <string name="media_stream_switch">码流切换</string>
+
+    <string name="device_opt_set_wifi">快速配置WiFi(自动获取WiFi热点)</string>
+    <string name="device_opt_set_wifi_hint_ssid">WiFi SSID</string>
+    <string name="device_opt_set_wifi_hint_passwd">WiFi 密码</string>
+    <string name="device_opt_set_wifi_success">设备[%s]WiFi配置成功</string>
+
+    <string name="stream_setting">码流设置</string>
+    <string name="media_stream_main">主码流</string>
+    <string name="media_stream_secondary">辅码流</string>
+    <string name="device_setup_encode_resolution">分辨率</string>
+    <string name="device_setup_encode_frames">帧数</string>
+    <string name="device_setup_encode_definition">清晰度</string>
+    <string name="device_setup_encode_audio">音频</string>
+    <string name="device_setup_encode_video">视频</string>
+
+    <string name="device_alarm_loss_video_loss">视频丢失警报</string>
+    <string name="device_alarm_human_alarm">人形检测</string>
+    <string name="device_alarm_motion_detection">移动侦测</string>
+    <string name="device_alarm_motion_detection_tip">开关打开时，设备如果检测到移动物体，会触发报警事件</string>
+    <string name="device_alarm_func_record">录像联动</string>
+    <string name="device_alarm_func_capture">拍照联动</string>
+    <string name="device_alarm_func_pushmsg">手机推送联动</string>
+    <string name="device_alarm_func_level">报警灵敏度</string>
+    <string name="device_alarm_func_record_motion_tip">开关打开时，设备如果检查到移动物体，就会开始录像</string>
+    <string name="device_alarm_func_capture_motion_tip">开关打开时，设备如果检查到移动物体，就会抓取一张图片</string>
+    <string name="device_alarm_func_pushmsg_motion_tip">设备触发报警时，会推送一条消息到手机</string>
+    <string name="device_alarm_func_level_motion_tip">报警灵敏度分三等级:低级、中级、高级</string>
+    <string name="device_alarm_video_block">视频遮挡</string>
+    <string name="device_alarm_video_block_tip">开关打开时，设备如果检测到前方被遮挡，会触发报警事件</string>
+    <string name="device_alarm_func_record_block_tip">开关打开时，设备镜头如果被遮挡，就会开始录像</string>
+    <string name="device_alarm_func_capture_block_tip">开关打开时，设备镜头如果被遮挡，就会抓取一张图片</string>
+    <string name="device_alarm_func_alarmout_tip">该设备不支持该功能</string>
+    <string name="device_alarm_func_pushmsg_block_tip">设备触发报警时，会推送一条消息到手机</string>
+    <string name="device_alarm_local_alarm">报警输入</string>
+    <string name="device_alarm_output">报警输出</string>
+    <string name="device_alarm_output_status">报警输出状态</string>
+    <string name="device_alarm_output_tipe">报警输出类型</string>
+    <string name="device_alarm_no_change">配置没有变化</string>
+    <string name="device_alarm_center_protocol">协议类型:</string>
+    <string name="device_alarm_center_enable">启用</string>
+    <string name="device_alarm_center_server_address">服务器地址</string>
+    <string name="device_alarm_center_server_port">端口</string>
+    <string name="device_alarm_center_alarm">警报上报</string>
+    <string name="device_alarm_center_log">日志上报</string>
+    <string name="device_opt_off">关闭</string>
+    <string name="device_opt_on">打开</string>
+    <string name="device_setup_record_prerecord">预录</string>
+    <string name="device_setup_record_prerecord_prompt">该功能只有在因报警或者无线遥控器产生的联动录像下才有效，它可以将报警产生之前的录像提前预录下来</string>
+    <string name="device_setup_record_length">长度</string>
+    <string name="device_setup_record_length_prompt">该功能允许您改变存放在设备里面的录像文件长度</string>
+    <string name="device_setup_record_mode">录像模式</string>
+    <string name="device_setup_record_type">录像方式</string>
+    <string name="device_setup_record_mode_prompt">如果选择配置录像可设置全天录像或者报警录像方式</string>
+    <string name="device_setup_record_type_prompt">如果选择报警录像，那意味着设备平时是不录像的，当有移动侦测等报警产生或者接收到专用遥控器发出的录像指令时才开始录像</string>
+    <string name="device_setup_record_audio">录像音频</string>
+    <string name="device_setup_record_audio_prompt">如果关闭，则录下来的文件没有音频</string>
+    <string name="device_setup_record_cloud">云存储</string>
+
+    <string name="device_setup_camera_definition">清晰度</string>
+    <string name="device_setup_camera_daynight">日夜模式</string>
+    <string name="device_setup_camera_daynight_prompt">若设备支持软光敏能力，则日夜模式可选择自动红外/白色全彩/黑白模式/智能暖光/智能红外，若不支持，则日夜模式可选择自动红外/白色全彩/黑白模式（选择效果仅供参考）</string>
+    <string name="device_setup_camera_get_failed">获取图像配置失败</string>
+    <string name="device_setup_camera_flip">图像上下翻转</string>
+    <string name="device_setup_camera_flip_prompt">如果打开，图像将翻转180度，对于设备倒装非常有用（在使用该功能的时候，如果出现图像左右颠倒，则需要使用”图像左右翻转“功能）</string>
+    <string name="device_setup_camera_mirror">图像左右翻转</string>
+    <string name="device_setup_camera_mirror_prompt">如果打开，图像将左右翻转</string>
+    <string name="device_setup_camera_osd_switch">自定义水印开关</string>
+    <string name="device_setup_camera_osd_timeswitch">时间水印开关</string>
+    <string name="device_setup_camera_osd_timeswitch_prompt">该功能设置是否显示水印时间</string>
+    <string name="device_setup_camera_osd_switch_prompt">该功能允许您将您喜欢的个性签名、地名、事件标题等叠加到图像中，可以丰富图像的信息，让视频带有情感</string>
+    <string name="device_setup_camera_osd">自定义文字水印</string>
+    <string name="device_setup_camera_blcmode">背光补偿</string>
+    <string name="device_setup_camera_blcmode_prompt">如果开启该功能，可以有效补偿摄像机在逆光环境下拍摄时画面主体黑暗的缺陷</string>
+    <string name="device_setup_camera_wide_dynamic">宽动态</string>
+    <string name="device_setup_camera_wide_dynamic_prompt">如果开启该功能，可以有效的解决摄取的图像在明暗反差过大的场合出现背景过亮或前景太暗的问题</string>
+    <string name="device_setup_camera_white_balance">白平衡</string>
+    <string name="device_setup_camera_white_balance_prompt">若在灯光底下使用白平衡，图片的色调就会恢复到原色状态，白平衡会按目前画像中图像特质，修正外部光线所造成的误差</string>
+    <string name="device_setup_camera_noise_reduction">降噪</string>
+    <string name="device_setup_camera_noise_reduction_prompt">光照不佳时，会出现噪点。降噪等级越高，噪点越少</string>
+    <string name="device_setup_camera_anti_shake">电子防抖</string>
+    <string name="device_setup_camera_anti_shake_prompt">减少高频抖动引起的画面模糊</string>
+    <string name="device_setup_camera_metering">测光模式</string>
+
+    <string name="device_setup_exposure_time">曝光时间</string>
+    <string name="device_setup_scene_mode">情景模式</string>
+    <string name="device_setup_electronic_slow_shutter">电子慢快门</string>
+    <string name="device_setup_electronic_slow_shutter_prompt">在低照度环境下，提升画面亮度。会引起动态图像模糊</string>
+    <string name="device_setup_color_mode">色彩模式</string>
+    <string name="device_setup_defogging">去雾</string>
+    <string name="device_setup_defogging_prompt">在有雾天气下，使图像效果变得通透</string>
+
+    <string name="device_setup_storage_capacity">存储容量</string>
+    <string name="device_setup_storage_snapshot">图片分区</string>
+    <string name="device_setup_storage_record">录像分区</string>
+    <string name="device_setup_storage_remain">剩余容量</string>
+    <string name="device_setup_storage_format">格式化存储设备</string>
+    <string name="device_setup_storage_record_full">录像满时:</string>
+    <string name="device_setup_storage_record_stop">停止录像</string>
+    <string name="device_setup_storage_record_cycle">循环录像</string>
+    <string name="device_setup_storage_format_tip">是否格式化设备磁盘?</string>
+    <string name="device_setup_storage_format_success">格式化成功</string>
+    <string name="device_setup_storage_format_failed">格式化失败</string>
+
+    <string name="EE_OK">OK</string>
+    <string name="setup_btn_left">Left</string>
+    <string name="setup_btn_right">Right</string>
+    <string name="setup_btn_up">Up</string>
+    <string name="setup_btn_down">Down</string>
+    <string name="setup_btn_menu">Menu</string>
+    <string name="setup_btn_esc">Esc</string>
+
+    <string name="device_setup_gb_config_bcsenable">使能标记</string>
+    <string name="device_setup_gb_config_szcsip">服务器地址（IP）</string>
+    <string name="device_setup_gb_config_scsport">服务器端口</string>
+    <string name="device_setup_gb_config_sudpport">本地服务器udp端口</string>
+    <string name="device_setup_gb_config_szserverno">服务器编号</string>
+    <string name="device_setup_gb_config_szserverdn">服务器域名（域名为28181编号）</string>
+    <string name="device_setup_gb_config_szdeviceno">设备编号</string>
+    <string name="device_setup_gb_config_szconnpass">设备注册密码</string>
+    <string name="device_setup_gb_config_ihsintervaltime">心跳间隔时间（秒）</string>
+    <string name="device_setup_gb_config_irsagedtime">注册有效期（秒）</string>
+    <string name="device_setup_gb_config_camreaid">通道编号</string>
+    <string name="device_setup_gb_config_camrealevel">报警级别（Camrea）</string>
+    <string name="device_setup_gb_config_alarmid">报警编号</string>
+    <string name="device_setup_gb_config_alarmlevel">报警级别（Alarm）</string>
+    <string name="device_setup_gb_config_uialarmstategpin">外部报警使能</string>
+    <string name="device_setup_gb_config_uialarmstatelose">视频丢失告警使能</string>
+    <string name="device_setup_gb_config_uialarmstatemotion">视频动态侦测告警使能</string>
+    <string name="device_setup_gb_config_uialarmstateblind">屏幕遮挡告警使能</string>
+    <string name="device_setup_gb_config_uialarmstateformance">系统异常告警使能</string>
+    <string name="device_setup_gb_config_uialarmstateconnect">用户连接告警使能</string>
+
+    <string name="device_setup_radio_byjson">GetConfigByJson</string>
+    <string name="device_setup_radio_bycmd">DevCmdGeneral</string>
+    <string name="device_setup_jsonsn">ConfigName:</string>
+    <string name="device_setup_channelno">ChannelNo：</string>
+    <string name="device_setup_optno">OptNo:</string>
+    <string name="device_setup_optnohint">No of CmdID</string>
+    <string name="device_setup_btn_getconfig">GetConfig</string>
+    <string name="device_setup_btn_setconfig">SetConfig</string>
+    <string name="device_setup_nullconfigname">ConfigName is null.</string>
+    <string name="device_setup_setconfigsuccess">Set config success</string>
+
+    <string name="device_setup_daynight_auto_color">自动红外</string>
+    <string name="device_setup_daynight_setting_color">白光全彩</string>
+    <string name="device_setup_daynight_setting_white_black">黑白模式</string>
+    <string name="device_setup_daynight_setting_whiteLamp_auto">智能暖光</string>
+    <string name="device_setup_daynight_setting_irLamp_auto">智能红外</string>
+
+    <string name="device_system_info_deviceupdate">硬件升级检测</string>
+    <string name="device_system_info_sn">序列号</string>
+    <string name="device_system_info_model">设备型号</string>
+    <string name="device_system_info_hw_ver">硬件版本</string>
+    <string name="device_system_info_sw_ver">软件版本</string>
+    <string name="device_system_info_pub_date">发布时间</string>
+    <string name="device_system_info_pub_time">设备时间</string>
+    <string name="device_system_info_run_time">运行时间</string>
+    <string name="device_system_info_nat_code">网络模式</string>
+    <string name="device_system_info_nat_status">云连接状态</string>
+    <string name="device_system_info_upgrade">固件更新</string>
+    <string name="device_system_info_time_sync">时间同步</string>
+    <string name="device_system_info_defealtconfig">恢复出厂设置</string>
+    <string name="device_system_info_defaultconfigsucc">恢复出厂设置成功,重启中。。</string>
+    <string name="device_opt_set_preset">设置预设点</string>
+    <string name="device_opt_get_preset">预设点列表</string>
+    <string name="device_camera_video_by_file">按文件搜索</string>
+    <string name="device_camera_video_by_time">按时间搜索</string>
+
+    <string name="device_pic_type_all">全部</string>
+    <string name="device_pic_type_alarm">报警</string>
+    <string name="device_pic_type_detect">侦测</string>
+    <string name="device_pic_type_regular">普通</string>
+    <string name="device_pic_type_manual">遥控</string>
+    <string name="device_pic_type_key">关键</string>
+    <string name="device_pic_type_burst_shoot">延时拍</string>
+    <string name="device_pic_type_lapse">连拍</string>
+
+    <string name="user_input_preset_number">请输入要设置的预置点编号</string>
+    <string name="user_input_preset_number_warn">请设置数字小于200的预设点</string>
+    <string name="user_select_preset">请选择预设点</string>
+    <string name="user_set_preset_succeed">预设点操作成功</string>
+    <string name="user_set_preset_fail">预设点操作失败</string>
+    <string name="user_set_debug_set">本地密码设置</string>
+    <string name="common_cancel">取消</string>
+    <string name="common_confirm">确定</string>
+    <string name="user_input_pwd_error">密码错误</string>
+    <string name="user_input_pwd_hint">请输入密码</string>
+    <string name="user_loading">加载中…</string>
+
+    <string name="dev_type_monitor">监控设备</string>
+    <string name="dev_type_intelligentsocket">智能插座</string>
+    <string name="dev_type_scenelamp">情景灯泡</string>
+    <string name="dev_type_lampholder">智能灯座</string>
+    <string name="dev_type_carmate">汽车伴侣</string>
+    <string name="dev_type_bigeye">大眼睛行车记录仪</string>
+    <string name="dev_type_smalleye">小雨点</string>
+    <string name="dev_type_boutiquerotot">雄迈摇头机</string>
+    <string name="dev_type_sportcamera">运动摄像机</string>
+    <string name="dev_type_smallraindrops_fisheye">鱼眼小雨点</string>
+    <string name="dev_type_lamp_fisheye">鱼眼灯泡/全景智能灯泡</string>
+    <string name="dev_type_minions">小黄人</string>
+    <string name="dev_type_musicbox">WiFi音乐盒</string>
+    <string name="dev_type_speaker">WiFi音响</string>
+    <string name="dev_type_linkcenter">智联中心</string>
+    <string name="dev_type_dash_camera">勇士行车记录仪</string>
+    <string name="dev_type_powerstarip">智能插排</string>
+    <string name="dev_type_fish_fun">鱼眼模组</string>
+    <string name="dev_type_ufo">飞碟设备</string>
+    <string name="dev_type_idr">智能门铃</string>
+    <string name="dev_type_bullet">E型枪机</string>
+    <string name="dev_type_drum">架子鼓</string>
+    <string name="dev_type_camera">摄像机</string>
+
+    <string name="dev_type_unknown">未知设备,请联系厂家</string>
+    <string name="device_stauts_unknown">状态查询中</string>
+    <string name="device_stauts_online">在线</string>
+    <string name="device_stauts_offline">离线</string>
+    <string name="add_dev">添加设备</string>
+    <string name="device_setup_simple">设备配置Json数据简单交互</string>
+    <string name="device_setup_hint_simple">不清楚接口调用的可以先看该功能(推荐)</string>
+    <string name="recoding">录制中</string>
+    <string name="open_video_f">打开视频失败</string>
+    <string name="record_s">录像成功</string>
+    <string name="capture_s">抓图成功</string>
+    <string name="capture">抓图</string>
+    <string name="cut_video">剪切视频</string>
+    <string name="ptz_ctrl">云台控制</string>
+    <string name="one_way_intercom">单向/双向对讲</string>
+    <string name="remote_capture">远程抓图</string>
+    <string name="playback">录像回放</string>
+    <string name="main_stream">主码流</string>
+    <string name="preset">预置点设置</string>
+    <string name="not_support_tip">暂时未实现，请参考老的Demo</string>
+    <string name="add_dev_by_quick_config">WiFi快速配置</string>
+    <string name="add_dev_by_input_sn">序列号连接设备</string>
+    <string name="add_dev_by_router">局域网连接设备</string>
+    <string name="user_device_list">%s的设备列表</string>
+    <string name="push_msg">推送消息</string>
+    <string name="cloud_service">云服务</string>
+    <string name="network_push">网络服务-推送</string>
+    <string name="lights_and_tones">普通设备状态灯和提示音</string>
+    <string name="chnId">通道号</string>
+    <string name="add_s">添加成功</string>
+    <string name="add_f">添加失败</string>
+    <string name="download">下载</string>
+    <string name="download_f">下载失败</string>
+    <string name="download_s">下载成功</string>
+    <string name="download_start">开始下载</string>
+    <string name="download_progress">下载进度:%d</string>
+    <string name="push_set">推送设置</string>
+    <string name="push_switch">推送开关</string>
+    <string name="door_setting">门锁配置</string>
+    <string name="contact_permissions">联系人权限</string>
+    <string name="video_flip">视频翻转</string>
+    <string name="auto_sleep">自动休眠</string>
+    <string name="open_door">密码解锁</string>
+    <string name="one_key_open_door">一键解锁</string>
+    <string name="password_manager">密码管理</string>
+    <string name="modify_name">修改名称</string>
+    <string name="modify_s">修改成功</string>
+    <string name="modify_f">修改失败</string>
+    <string name="delete_s">删除成功</string>
+    <string name="delete_f">删除失败</string>
+    <string name="unlock_s">解锁成功</string>
+    <string name="unlock_f">解锁失败</string>
+    <string name="input_door_unlock_pwd">请输入解锁密码</string>
+    <string name="register_not_bind">无需绑定手机号或邮箱直接注册</string>
+    <string name="device_opt_custom_alarm_voice_by_dvr">传统设备自定义报警声</string>
+    <string name="voice_recording">录音</string>
+    <string name="is_not_support_custom_alarm_voice">当前设备不支持自定义报警声</string>
+    <string name="play_recording_voice">播放录音</string>
+    <string name="upload_voice">上传音频</string>
+    <string name="stop_play_recording_voice">停止播放录音</string>
+    <string name="start_recording">开始录音</string>
+    <string name="stop_recording">停止录音</string>
+    <string name="upload_s">上传成功</string>
+    <string name="upload_f">上传失败</string>
+    <string name="file_transfer">文件传输(比如：自定义报警声上传)</string>
+    <string name="login_by_local">本地登录</string>
+    <string name="login_by_ap">AP直连</string>
+    <string name="get_channel_title_name">获取通道名(ChannelTitle)</string>
+    <string name="error_code_list">错误码列表</string>
+    <string name="channel_list">通道列表</string>
+    <string name="channel">通道</string>
+    <string name="get_channel_info">获取通道数据中…</string>
+    <string name="login_dev_failed">登录设备失败</string>
+    <string name="scan_qr_code">扫描设备二维码</string>
+    <string name="no_flash">没有闪光灯</string>
+    <string name="open_camera_error">相机打开出错，请稍后重试</string>
+    <string name="full_stream">全屏</string>
+    <string name="dev_type">设备类型</string>
+    <string name="dev_unwake">设备深度休眠，无法唤醒！</string>
+    <string name="normal_ipc">普通设备</string>
+    <string name="low_power_dev">低功耗设备</string>
+    <string name="is_sure_delete_dev">是否删除设备?</string>
+    <string name="dev_offline">设备离线</string>
+    <string name="Add_Dev_Failed">添加设备失败</string>
+    <string name="video_full_screen">单个视频满屏显示</string>
+    <string name="video_fit_center">视频画面按比例显示</string>
+    <string name="hunman_detect">人形检测(智能分析)</string>
+    <string name="date_second">秒</string>
+    <string name="date_minute">分</string>
+    <string name="loaded_failed">加载失败</string>
+    <string-array name="alarmouttype">
+        <item>自动</item>
+        <item>手动</item>
+        <item>关闭</item>
+    </string-array>
+
+    <string name="please_to_choose">请选择</string>
+    <string-array name="phone_in_country">
+        <item>中国 +86</item>
+        <item>柬埔寨 +855</item>
+        <item>泰国 +66</item>
+        <item>越南 +84</item>
+        <item>北美 +1</item>
+    </string-array>
+
+    <string-array name="fish_eye_camera_type">
+        <item>天花板</item>
+        <item>桌面</item>
+        <item>墙上</item>
+    </string-array>
+
+    <string-array name="device_setup_camera_definition_values">
+        <item>最好</item>
+        <item>很好</item>
+        <item>好</item>
+        <item>一般</item>
+        <item>较差</item>
+        <item>很差</item>
+    </string-array>
+
+    <string-array name="device_setup_alarm_level">
+        <item>低级</item>
+        <item>中级</item>
+        <item>高级</item>
+    </string-array>
+
+    <string-array name="device_setup_record_mode_values">
+        <item>从不录像</item>
+        <item>手动录像</item>
+        <item>配置录像</item>
+    </string-array>
+
+    <string-array name="device_setup_camera_noise_reduction_values">
+        <item>关</item>
+        <item>低级</item>
+        <item>高级</item>
+    </string-array>
+
+    <string-array name="device_setup_camera_metering_values">
+        <item>平均测光</item>
+        <item>中央测光</item>
+        <item>点测光</item>
+    </string-array>
+
+    <string-array name="device_setup_exposure_time_values">
+        <item>自动</item>
+        <item>1/50</item>
+        <item>1/120</item>
+        <item>1/250</item>
+        <item>1/500</item>
+        <item>1/1000</item>
+        <item>1/2000</item>
+        <item>1/4000</item>
+        <item>1/10000</item>
+    </string-array>
+
+    <string-array name="device_setup_scene_mode_values">
+        <item>自动</item>
+        <item>室内</item>
+        <item>室外</item>
+    </string-array>
+
+    <string-array name="device_setup_electronic_slow_shutter_values">
+        <item>关</item>
+        <item>低级</item>
+        <item>高级</item>
+    </string-array>
+
+    <string-array name="device_setup_color_mode_values">
+        <item>彩色</item>
+        <item>黑白</item>
+    </string-array>
+
+    <string-array name="device_setup_gpio_values">
+        <item>不使能/拉低</item>
+        <item>使能/拉高</item>
+        <item>每500毫秒自动周期性变化</item>
+    </string-array>
+
+    <string-array name="device_setup_defogging_values">
+        <item>关</item>
+        <item>低级</item>
+        <item>中级</item>
+        <item>高级</item>
+    </string-array>
+
+    <string name="show_traces">显示踪迹</string>
+    <string name="perimeter_alert">周界警戒</string>
+    <string name="alert_line">警戒线</string>
+    <string name="alert_area">警戒区域</string>
+    <string name="application_scenarios">应用场景</string>
+    <string name="boundary_alert_direction">警报方向</string>
+    <string name="alert_line_trigger_direction">警戒触发方向</string>
+    <string name="smart_analyze_restore">还原</string>
+    <string name="smart_analyze_revoke">撤销</string>
+    <string name="Done">完成</string>
+    <string name="type_alert_area">警戒区域</string>
+    <string name="smart_analyze">警戒线</string>
+    <string name="type_alert_line">智能分析</string>
+    <string name="smart_analyze_alarm">智能分析报警</string>
+    <string name="smart_analyze_show_trace">显示踪迹</string>
+    <string name="smart_analyze_alert_type">警戒类型</string>
+    <string name="smart_analyze_alert_boundary">周边警戒</string>
+    <string name="smart_analyze_goods_tend">物品看护</string>
+    <string name="smart_analyze_video_judge">视频诊断</string>
+    <string name="smart_analyze_scene_change">场景变换检测</string>
+    <string name="smart_analyze_signal_loss_detection">信号缺失检测</string>
+    <string name="smart_analyze_sharpness_detection">清晰度检测</string>
+    <string name="scene_change_set_success">设置成功！\n场景变换时,将收到报警消息</string>
+    <string name="signal_loss_detection_set_success">设置成功！\n信号缺失检测时,将收到报警消息</string>
+    <string name="sharpness_detection_set_success">设置成功！\n清晰度检测时,将收到报警消息</string>
+    <string name="camera_error">相机打开出错，请稍后重试</string>
+    <string name="No_flash">没有闪光灯</string>
+    <string name="type_goods_retention">物品滞留</string>
+    <string name="type_stolen_goods">物品盗移</string>
+    <string name="smart_analyze_line_left">正方向</string>
+    <string name="smart_analyze_line_middle">双向警戒</string>
+    <string name="smart_analyze_line_right">反方向</string>
+    <string name="smart_analyze_shape_triangle">三角形</string>
+    <string name="smart_analyze_shape_rectangle">长方形</string>
+    <string name="smart_analyze_shape_pentagram">五边形</string>
+    <string name="smart_analyze_shape_l_sel">L形状</string>
+    <string name="smart_analyze_shape_concave">凹型</string>
+    <string name="smart_analyze_store_car">车库入口</string>
+    <string name="smart_analyze_forbidden_parking">禁止停车</string>
+    <string name="smart_analyze_corridor">走廊</string>
+    <string name="smart_analyze_shape_customize">自定义</string>
+    <string name="smart_analyze_jewelry">珠宝首饰</string>
+    <string name="smart_analyze_baby_room">宝宝房</string>
+    <string name="smart_analyze_book_room">书屋</string>
+    <string name="quit_alert_area">退出警戒区域</string>
+    <string name="double_direction_alert">双向警戒</string>
+    <string name="dev_set_human_detect_tip">包含人形检测、警戒线和警戒区域</string>
+    <string name="dev_get_human_dissupport">该设备不支持人形检测</string>
+    <string name="get_dev_config_failed">获取配置失败</string>
+    <string name="set_dev_config_failed">保存配置失败</string>
+    <string name="set_dev_config_success">保存配置成功</string>
+    <string name="main_record_info">主码流录像配置</string>
+    <string name="extra_record_info">副码流录像配置</string>
+    <string name="camera_set">摄像机参数</string>
+    <string name="camera_set_ext">摄像机参数2</string>
+    <string name="device_opt_transmission">串口命令透传</string>
+    <string name="data_send">数据发送</string>
+    <string name="send_data">发送数据</string>
+    <string name="data_receive">数据接收</string>
+    <string name="open_serial_port">打开串口</string>
+    <string name="close_serial_port">关闭串口</string>
+    <string name="open_serial_port_s">串口打开成功</string>
+    <string name="close_serial_port_s">串口关闭成功</string>
+    <string name="check_dev_upgrade">设备固件检测</string>
+    <string name="already_latest">已更新到最新版本</string>
+    <string name="have_new_version_click_to_upgrade">有新版本，可点击升级</string>
+    <string name="are_u_sure_to_upgrade_firmware">您确定要升级固件么？</string>
+    <string name="download_dev_firmware">下载升级包</string>
+    <string name="upload_dev_firmware">正在上传升级包</string>
+    <string name="dev_upgrading">升级中</string>
+    <string name="completed_dev_upgrade">升级完成</string>
+    <string name="modify_dev_name">修改设备名</string>
+    <string name="Refresh_Dev_Status_F">刷新设备状态失败</string>
+    <string name="TR_Modify_Dev_Name_S">修改设备名成功</string>
+    <string name="TR_Modify_Dev_Name_F">修改设备名失败</string>
+    <string name="search_dev_pic">设备端图片</string>
+    <string name="capture_pic_from_dev_and_save">设备端抓图并保存到设备本地存储（图片不会回传给APP）</string>
+    <string name="not_all_dev_support">部分设备支持该功能</string>
+    <string name="tr_set_preset">设置</string>
+    <string name="tr_ctrl_preset">调用</string>
+    <string name="tr_preset_range">预置点范围1~255</string>
+    <string name="TR_Input_Preset_Empty_Tip">请输入正确的预置点号</string>
+    <string name="realtime_play">实时预览实时性（局域网IP访问才生效）</string>
+    <string name="light_ctrl">灯光控制</string>
+    <string name="not_support_light_ctrl">当前设备不支持灯光控制!</string>
+    <string name="config_name_sel">配置名称选择</string>
+    <string name="set_dev_to_router_by_qr_code">二维码配网</string>
+    <string name="pir_alarm_settings">PIR报警配置</string>
+    <string name="idr_setting">低功耗设备配置</string>
+    <string name="speaker_type_normal">正常</string>
+    <string name="speaker_type_man">男声</string>
+    <string name="speaker_type_woman">女声</string>
+    <string name="add_dev_by_bluetooth">蓝牙配网</string>
+    <string name="device_opt_set_wifi_simple">快速配置WiFi(手动写入WiFi热点，不推荐)</string>
+    <string name="share_dev">分享设备</string>
+    <string name="search">查找</string>
+    <string name="enter_need_share_account">请输入你要分享的账号</string>
+    <string name="not_found">未查询到数据</string>
+    <string name="share_s">分享成功</string>
+    <string name="share_f">分享失败</string>
+    <string name="dev_share_account_list">设备分享出去的账号列表</string>
+    <string name="device_share_manage">设备分享管理</string>
+    <string name="share_accept">已接受分享</string>
+    <string name="share_not_yet_accept">尚未接受分享</string>
+    <string name="share_reject">拒绝分享</string>
+    <string name="is_sure_cancel_share">是否取消分享</string>
+    <string name="share_dev_list">分享设备列表</string>
+    <string name="cancel_share_s">取消分享成功</string>
+    <string name="cancel_share_f">取消分享失败</string>
+    <string name="reject_share_s">拒绝分享成功</string>
+    <string name="reject_share_f">拒绝分享失败</string>
+    <string name="reject_share">拒绝分享</string>
+    <string name="accept_share">接受分享</string>
+    <string name="accept_share_s">接受分享成功</string>
+    <string name="accept_share_f">接受分享失败</string>
+    <string name="share_operation">分享操作</string>
+    <string name="come_from">来自</string>
+    <string name="from_share_dev">来自分享</string>
+    <string name="see_error_code">查看错误码</string>
+    <string name="enter_error_code">请输入错误码</string>
+    <string name="other_config">其他功能请跳转到【设备配置Json数据交互】页面，通过配置关键字搜索找到您想要的功能</string>
+    <string name="funsdk_integration_tips">请及时更换开放平台上注册的AppKey等信息，测试Key会定期更新，未替换后果自负!!!</string>
+    <string name="wifi_ssid_not_empty">热点名称不能为空</string>
+    <string name="is_need_delete_dev_from_other_account">开始添加设备，是否要将该设备从其他账号下移除?</string>
+    <string name="input_correct_sn">请输入正确的序列号，长度为16或者20</string>
+    <string name="total_capacity">总容量</string>
+    <string name="residual_capacity">剩余容量</string>
+    <string name="battery_state_show">电量等级【%d】是否有存储【%d】是否充电中【%d】</string>
+    <string name="wifi_state_show">WiFi信号等级【%d】</string>
+    <string name="select_config_name">请选择配置名称</string>
+    <string name="send_cmd">发送命令</string>
+    <string name="get_config">获取配置</string>
+    <string name="video_flip_normal">正常</string>
+    <string name="video_flip_90">翻转90度</string>
+    <string name="video_flip_180">翻转180度</string>
+    <string name="video_flip_270">翻转270度</string>
+    <string name="simple_config">设备配置Json数据简单交互</string>
+    <string name="configuration_name">配置名称</string>
+    <string name="cmd_id">命令Id</string>
+    <string name="view_example">查看Json交互示例</string>
+    <string name="start_push_service">推送服务已启动</string>
+    <string name="start_push_service_error_tips">启动推送服务之前，先需要登录账号</string>
+    <string name="save_config">保存配置</string>
+    <string name="is_accept_share_dev">是否接受分享的设备</string>
+    <string name="delete_all">删除所有</string>
+    <string name="incoming_call">来电通知</string>
+    <string name="show_alarm_pic_failed">显示报警图片失败</string>
+    <string name="playback_fast_play">快速播放</string>
+    <string name="playback_slow_play">慢速播放</string>
+    <string name="search_record_failed">查询失败或者未查询到录像文件,查询失败请看onFailed中回调的错误值</string>
+    <string name="cloud_playback">云回放</string>
+    <string name="sd_playback">SD卡回放</string>
+    <string name="playback_pause">暂停</string>
+    <string name="playback_play">播放</string>
+    <string name="play_speed">播放速度</string>
+    <string name="pre_month">上个月</string>
+    <string name="next_month">下个月</string>
+    <string name="month">月份</string>
+    <string name="edit_local_user_password">修改设备信息</string>
+    <string name="distribution_network_failure">配网失败</string>
+    <string name="connect_ble_success">连接蓝牙成功</string>
+    <string name="connect_ble_failed">连接蓝牙失败</string>
+    <string name="start_ble_network">开始批量蓝牙配网</string>
+    <string name="next">下一步</string>
+    <string name="completed">完成</string>
+    <string name="libfunsdk_operation_success">操作成功</string>
+    <string name="feeding">喂食</string>
+    <string name="food_portions">食物份数</string>
+    <string name="not_paired">未配对</string>
+    <string name="have_no_search_ble_devs">没有搜索到蓝牙设备</string>
+    <string name="input_food_portions">请输入食物份数</string>
+    <string name="clear_dev_list">清空设备列表</string>
+    <string name="is_sure_delete_all_devices">确定要删除所有设备么？</string>
+    <string name="stop_ble_network">停止批量蓝牙配对</string>
+    <string name="search_ble_devs">搜索蓝牙设备</string>
+    <string name="shadow_config">影子服务配置（离线配置）</string>
+    <string name="start_config_monitor">启动配置实时监听</string>
+    <string name="stop_config_monitor">停止配置实时监听</string>
+    <string name="feedback">日志反馈</string>
+    <string name="select_date">选择日期</string>
+    <string name="delete_all_msg">删除所有消息</string>
+    <string name="is_sure_feedback">确定反馈日志?</string>
+    <string name="about_dev_tips">包含设备的版本信息、固件检测及升级</string>
+    <string name="select_local_file_upgrade">选择本地文件升级</string>
+    <string name="unlock">开锁</string>
+    <string name="direct_access_to_device">无需账号登录直接访问设备(包括设备配网功能)</string>
+    <string name="not_account_login_tips">该方式配网成功的设备不会保存到Demo上，重启Demo后是看不到的，您参考的时候需要将设备信息保存到您的云端服务器，具体实现请查看Demo的示例代码！</string>
+    <string name="sharing_code_has_expired">分享码已经过期</string>
+    <string name="add_share_qr_code_error">添加分享设备失败</string>
+    <string name="turn_to_preset_list">预置点列表</string>
+    <string name="is_sure_to_delete_preset">是否确认删除预置点？</string>
+    <string name="modify_preset_name">修改预置点名称</string>
+    <string name="sync_dev_time_zone">同步时区</string>
+    <string name="sync_dev_time">同步时间</string>
+    <string name="play_dev_voice">播放设备端声音</string>
+    <string name="play_success">播放成功</string>
+    <string name="play_failed">播放失败</string>
+    <string name="talk_broadcast">广播对讲</string>
+    <string name="loading_local_voice">加载本地测试音频文件</string>
+    <string name="get_voice_list_failed">获取音频列表失败</string>
+    <string name="input_wifi_info">输入路由器信息</string>
+    <string name="file_size_exceed_max_size">文件大小超过最大限制(不能超过84KB)</string>
+    <string name="invalid_file">无效文件</string>
+    <string name="transformat_s">文字转换成功语音成功</string>
+    <string name="text_to_audio">文字转换成语音</string>
+    <string name="input_context">请输入内容</string>
+    <string name="camera_link_set">相机联动(多目枪球云台定位)</string>
+    <string name="camera_link_switch">开启联动</string>
+    <string name="camera_link_aiming">联动校准</string>
+    <string name="input_right_error_code">请输入正确的错误码</string>
+    <string name="camera_link_init_tips">摄像机正坐在电动校准云台中，请勿断电</string>
+    <string name="camera_point_ptz_tips">点击画面上半部分，即可使云台转动到想看的位置</string>
+    <string name="play_local_video">播放手机本地录像</string>
+    <string name="only_near_dev">仅显示近距离设备</string>
+    <string name="feed_the_dog">喂狗</string>
+    <string name="feed_the_fish">喂鱼</string>
+    <string name="please_sel_feet_type">选择喂食类型</string>
+    <string name="factory_reset">恢复出厂设置</string>
+    <string name="factory_reset_and_delete_dev">恢复出厂设置并删除设备</string>
+    <string name="only_factory_reset">仅恢复出厂设置</string>
+    <string name="reset_failed">恢复出厂设置失败</string>
+    <string name="media_disconnect">媒体链接已断开，SDK正在尝试重连中!</string>
+    <string name="click_to_open_two_way_talk">单击开启双向对讲</string>
+    <string name="long_press_open_one_way_talk">长按开始单向对讲</string>
+    <string name="ircut">irCut反序</string>
+    <string name="look_where_you_point">指哪看哪</string>
+    <string name="sel_record_file_type">切换录像类型</string>
+    <string name="record_file_type">录像类型</string>
+    <string name="record_file_all">全部录像</string>
+    <string name="record_file_normal">普通录像</string>
+    <string name="record_file_alarm">报警录像</string>
+    <string name="setting_all_day_video">全天录像</string>
+    <string name="record_alarm">报警录像</string>
+    <string name="manual_alarm">手动警戒</string>
+    <string name="not_login_dev_list_tips">未使用AccountManager(包括XMAccountManager账号登录或LocalAccountManager本地临时登录)登录，只能将设备信息临时缓存，重启应用后无法查到设备信息</string>
+    <string name="is_modify_osd">是否要同步设备预览水印信息?</string>
+    <string name="modify_dev_name_osd">修改设备水印</string>
+    <string name="alarm_by_voice_light">声光报警</string>
+    <string name="control_mode">控制模式</string>
+    <string name="intelligent_sensitivity">灵敏度</string>
+    <string name="intelligent_duration">持续亮灯时间</string>
+    <string name="intelligent_vigilance">智能警戒</string>
+    <string name="full_color_vision">星光全彩</string>
+    <string name="general_night_vision">紅外夜視</string>
+    <string name="double_light_vision">双光警戒</string>
+    <string name="remote_capture_s">"远程抓图成功并且保存到设备本地存储  "</string>
+    <string name="remote_capture_f">远程抓图失败</string>
+    <string name="received_alarm_message">接收到报警消息:</string>
+    <string name="settings_alarm_beep">设备警铃</string>
+    <string name="alarm_voice_name_list">设备警铃</string>
+    <string name="alarm_voice_interval_time">警铃间隔时间</string>
+    <string name="just_once">仅一次</string>
+    <string name="alarm_voice_repeat">循环报警</string>
+    <string name="alarm_voice">警铃</string>
+    <string name="get_dev_ability_failed">获取设备能力集失败</string>
+    <string name="inter_device_linkage_link">设备之间联动</string>
+    <string name="inter_dev_linked_s">设备间关联成功</string>
+    <string name="inter_dev_linked_f">设备间关联失败</string>
+    <string name="is_sure_link_dev">确定关联此设备？</string>
+    <string name="inter_dev_unlinked_s">解除设备间关联成功</string>
+    <string name="inter_dev_unlinked_f">解除设备间关联失败</string>
+    <string name="start_lan_check">开始局域网检测</string>
+    <string name="check_lan_s_and_check_port">局域网检测成功，开始34567端口检测</string>
+    <string name="check_port_s">34567端口检测成功</string>
+    <string name="check_port_f">34567端口检测失败:</string>
+    <string name="check_lan_f">局域网检测失败：</string>
+    <string name="start_add_dev_to_account">将设备添加到账号下--开始</string>
+    <string name="add_dev_to_account_s">将设备添加到账号下--成功</string>
+    <string name="add_dev_to_account_f">将设备添加到账号下--失败:</string>
+    <string name="start_get_random_user_pwd">获取设备的随机用户名和密码--开始</string>
+    <string name="get_random_user_pwd_s">获取设备的随机用户名和密码--成功</string>
+    <string name="start_get_dev_token">获取设备Token--开始</string>
+    <string name="get_dev_token_s">获取设备Token--成功</string>
+    <string name="get_dev_token_f">获取设备Token--失败:</string>
+    <string name="get_dev_random_user_pwd_f">获取设备的随机用户名和密码--失败:</string>
+    <string name="start_get_dev_verification_code">获取设备的校验码--开始</string>
+    <string name="get_dev_verification_s">获取设备的校验码--成功</string>
+    <string name="get_dev_verification_f">获取设备的校验码--失败:</string>
+    <string name="sync_dev_timezone_s">同步设备时区成功</string>
+    <string name="sync_dev_timezone_f">同步设备时区失败:</string>
+    <string name="sync_dev_time_s">同步设备时间成功</string>
+    <string name="sync_dev_time_f">同步设备时间失败:</string>
+    <string name="qr_code_network_configuration_prompt">将设备镜头对准二维码进行扫描配网，等设备配网成功后等待服务器返回结果</string>
+    <string name="need_turn_to_monitor">需要跳转到预览页面？</string>
+    <string name="the_dev_already_exist">设备已经在当前账号下</string>
+    <string name="the_ssid_is_not_empty">热点名称不能为空</string>
+    <string name="dev_income_call_mic_has_closed">麦克风已关</string>
+    <string name="dev_income_call_mic_has_opened">麦克风已开</string>
+    <string name="dev_income_call_sound_has_closed">扬声器已关</string>
+    <string name="dev_income_call_sound_has_opened">扬声器已开</string>
+    <string name="dev_income_call_camera_has_closed">手机镜头已关</string>
+    <string name="dev_income_call_camera_has_opened">手机镜头已开</string>
+    <string name="common_refuse_call">挂断</string>
+    <string name="dev_income_call_camera_invert">手机镜头切换</string>
+    <string name="income_call_press_to_talk">按住对讲</string>
+    <string name="sto_video_full">录像满时:</string>
+    <string name="sto_video_stop">停止录像</string>
+    <string name="sto_video_cir">循环录像</string>
+    <string name="sto_video_part">录像分区</string>
+    <string name="sto_img_part">图片分区</string>
+</resources>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <LinearLayout
+        android:id="@+id/ll_wifi_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutTop"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editWifiSSID"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:layout_margin="10dp"
+            android:background="#00000000"
+            android:gravity="center_vertical"
+            android:hint="@string/device_opt_set_wifi_hint_ssid"
+            android:singleLine="true"
+            android:textColor="#ff101010"
+            android:textColorHint="#ffe0e0e0"
+            android:textSize="16dp" />
+
+        <View
+            android:id="@+id/divLine"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/bg_gray" />
+
+        <EditText
+            android:id="@+id/editWifiPasswd"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:layout_margin="10dp"
+            android:background="#00000000"
+            android:gravity="center_vertical"
+            android:hint="@string/device_opt_set_wifi_hint_passwd"
+            android:singleLine="true"
+            android:textColor="#ff101010"
+            android:textColorHint="#ffe0e0e0"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/btn_show_qr_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/common_button_selector_white"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/libfunsdk_set_dev_to_router_by_qr_code"
+            android:textColor="@drawable/common_text_selector"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/btn_show_qr_code_simple"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/common_button_selector_white"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/libfunsdk_set_dev_to_router_by_qr_code"
+            android:textColor="@drawable/common_text_selector"
+            android:textSize="18dp"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rl_show_qr_code"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_wifi_info"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_result_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/qr_code_network_configuration_prompt" />
+
+        <ImageView
+            android:id="@+id/iv_qr_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/half_of_normal_padding"/>
+    </LinearLayout>
+</RelativeLayout>

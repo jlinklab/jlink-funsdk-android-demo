@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_preset_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:Title=""
+        app:ItemTitleSize="@dimen/normal_text_size"
+        app:ItemTitleColor="@color/default_normal_text_color"
+        app:ImageRight1="@mipmap/icon_next"
+        app:ImageRight2="@mipmap/icon_next"
+        app:RightClickable="false"
+        app:ShowBottomLine="true"
+        app:ShowTopLine="false"
+        app:LineColor="@color/line_color"/>
+</LinearLayout>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray">
+
+    <!--<include-->
+    <!--android:id="@+id/layoutTop"-->
+    <!--layout="@layout/layout_top_navigate_theme" />-->
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/layoutTop"
+        android:fadingEdge="none"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:scrollbarStyle="outsideInset">
+
+            <RelativeLayout
+                android:id="@+id/layoutDeviceSN"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutTop"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/layoutDeviceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_type"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16dp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerDeviceType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/layoutDeviceType"
+                    android:background="@color/bg_gray" />
+
+                <ImageButton
+                    android:id="@+id/btnScanCode"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/divLine"
+                    android:layout_margin="10dp"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/input_sn_core"
+                    android:visibility="visible"/>
+
+                <EditText
+                    android:id="@+id/editDeviceSN"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_below="@id/divLine"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_toLeftOf="@id/btnScanCode"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/device_login_sn"
+                    android:singleLine="true"
+                    android:textColor="#ff101010"
+                    android:textColorHint="#ffe0e0e0"
+                    android:textSize="16dp" />
+
+                <View
+                    android:id="@+id/divLine2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/editDeviceSN"
+                    android:background="@color/bg_gray" />
+
+                <EditText
+                    android:id="@+id/editDeviceLoginName"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_below="@id/divLine2"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/device_login_name_hint"
+                    android:singleLine="true"
+                    android:text="admin"
+                    android:textColor="#ff101010"
+                    android:textColorHint="#ffe0e0e0"
+                    android:textSize="16dp" />
+
+                <View
+                    android:id="@+id/divLine3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/editDeviceLoginName"
+                    android:background="@color/bg_gray" />
+
+                <EditText
+                    android:id="@+id/editDeviceLoginPasswd"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_below="@id/divLine3"
+                    android:layout_margin="10dp"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/device_login_password_hint"
+                    android:singleLine="true"
+                    android:textColor="#ff101010"
+                    android:textColorHint="#ffe0e0e0"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_dev_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                uilib:Title="@string/dev_type"
+                uilib:ItemTitleColor="@color/black"
+                uilib:ItemTitleSize="@dimen/small_text_size"
+                uilib:ExtraMode="Spinner"
+                uilib:Cap=""
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:CapSize="@dimen/small_text_size"
+                uilib:LineColor="@color/line_color"
+                uilib:ImageRight1="@mipmap/icon_next"
+                uilib:ImageRight2="@mipmap/icon_next"
+                uilib:RightClickable="false"/>
+            <Button
+                android:id="@+id/devLoginBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutDeviceSN"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/common_button_selector_white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/add_dev"
+                android:textColor="@drawable/common_text_selector"
+                android:textSize="18dp" />
+
+            <RelativeLayout
+                android:id="@+id/rl_dev_ip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/devLoginBtn"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/layoutDeviceIpType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_type"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16dp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerDeviceIpType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divLine10"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/layoutDeviceIpType"
+                    android:background="@color/bg_gray" />
+
+                <EditText
+                    android:id="@+id/editDeviceIP"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_below="@id/divLine10"
+                    android:layout_margin="10dp"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/device_login_ip"
+                    android:singleLine="true"
+                    android:textColor="#ff101010"
+                    android:textColorHint="#ffe0e0e0"
+                    android:textSize="16dp" />
+
+                <View
+                    android:id="@+id/divLine7"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/editDeviceIP"
+                    android:background="@color/bg_gray" />
+
+                <EditText
+                    android:id="@+id/editDevicePort"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_below="@id/divLine7"
+                    android:layout_margin="10dp"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/Enter_Device_Port"
+                    android:singleLine="true"
+                    android:textColor="#ff101010"
+                    android:textColorHint="#ffe0e0e0"
+                    android:textSize="16dp" />
+
+                <View
+                    android:id="@+id/divLine5"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/editDevicePort"
+                    android:background="@color/bg_gray" />
+
+                <EditText
+                    android:id="@+id/editDeviceIpLoginName"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_below="@id/divLine5"
+                    android:layout_margin="10dp"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/device_login_name_hint"
+                    android:singleLine="true"
+                    android:textColor="#ff101010"
+                    android:textColorHint="#ffe0e0e0"
+                    android:textSize="16dp" />
+
+                <View
+                    android:id="@+id/divLine6"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/editDeviceIpLoginName"
+                    android:background="@color/bg_gray" />
+
+                <EditText
+                    android:id="@+id/editDeviceIpLoginPasswd"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_below="@id/divLine6"
+                    android:layout_margin="10dp"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/device_login_password_hint"
+                    android:singleLine="true"
+                    android:textColor="#ff101010"
+                    android:textColorHint="#ffe0e0e0"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/devLoginBtnIP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_dev_ip"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/common_button_selector_white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/device_login"
+                android:textColor="@drawable/common_text_selector"
+                android:textSize="18dp"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dlg_calendar_date_bg">
+
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layoutTop"
+        android:footerDividersEnabled="true"
+        android:listSelector="@drawable/common_list_selector">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/stream_setting"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="RtlHardcoded" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:text="@string/media_stream_main"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="RelativeOverlap" />
+            </RelativeLayout>
+
+            <!-- 预录时间 -->
+            <RelativeLayout
+                style="@style/setup_sub_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_dev_video_setting_prerecord"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/device_setup_record_prerecord"
+                    android:textColor="@color/demo_title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_dev_set_record_main_preRecord"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/demo_title"
+                    android:textSize="16sp" />
+
+                <SeekBar
+                    android:id="@+id/sb_dev_set_record_main_preRecord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toStartOf="@+id/tv_dev_set_record_main_preRecord"
+                    android:layout_toEndOf="@+id/tv_dev_video_setting_prerecord"
+                    android:max="30"
+                    android:progress="0" />
+
+                <TextView
+                    android:id="@+id/st_0_iPreRecord_tv_Tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/sb_dev_set_record_main_preRecord"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/device_setup_record_prerecord_prompt"
+                    android:textColor="@color/demo_desc"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <!-- 录制长度 -->
+            <RelativeLayout
+                style="@style/setup_sub_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_dev_video_setting_length"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/device_setup_record_length"
+                    android:textColor="@color/demo_title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_dev_set_record_main_packetLength"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="right"
+                    android:text=""
+                    android:textColor="@color/theme"
+                    tools:ignore="RtlHardcoded" />
+
+                <SeekBar
+                    android:id="@+id/sb_dev_set_record_main_packetLength"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toStartOf="@+id/tv_dev_set_record_main_packetLength"
+                    android:layout_toEndOf="@+id/tv_dev_video_setting_length"
+                    android:max="120"
+                    android:progress="0" />
+
+                <TextView
+                    android:id="@+id/st_main_iPacketLength_tv_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/sb_dev_set_record_main_packetLength"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/device_setup_record_length_prompt"
+                    android:textColor="@color/demo_desc"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+            <!-- 录像方式 -->
+
+            <RelativeLayout
+                style="@style/setup_sub_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_record_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/device_setup_record_mode"
+                    android:textColor="@color/demo_title"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/sp_dev_set_record_main_record_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/spinner_ab_activated_holo_dark" />
+
+                <TextView
+                    android:id="@+id/tv_record_mode_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_record_mode"
+                    android:layout_marginTop="2dp"
+                    android:layout_toStartOf="@id/sp_dev_set_record_main_record_mode"
+                    android:text="@string/device_setup_record_mode_prompt"
+                    android:textColor="@color/demo_desc"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+
+            <RelativeLayout
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:id="@+id/layout_main_record_type"
+                style="@style/setup_sub_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_main_record_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/device_setup_record_type"
+                    android:textColor="@color/demo_title"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_main_record_type_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_main_record_type"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/device_setup_record_type_prompt"
+                    android:textColor="@color/demo_desc"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+
+
+                <RadioGroup
+                    android:layout_below="@id/tv_main_record_type_tip"
+                    android:id="@+id/rg_main_record_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:layout_weight="1"
+                        android:id="@+id/rb_main_all_day_record"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/setting_all_day_video"
+                        android:checked="true"/>
+                    <RadioButton
+                        android:layout_weight="1"
+                        android:id="@+id/rb_main_alarm_record"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/record_alarm"/>
+                </RadioGroup>
+            </RelativeLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/ll_sub_dev_video_setting_front"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="55dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rl_sub_dev_video_setting_recording"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/stream_setting"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:ignore="RtlHardcoded" />
+
+                    <TextView
+                        android:id="@+id/tv_sub_dev_video_setting_recording"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="15dp"
+                        android:text="@string/media_stream_secondary"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:ignore="RelativeOverlap" />
+                </RelativeLayout>
+
+                <!-- 预录时间 -->
+                <RelativeLayout
+                    android:id="@+id/rl_sub_dev_video_setting_prerecord"
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/tv_sub_dev_video_setting_prerecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_setup_record_prerecord"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_dev_set_record_sub_preRecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16sp" />
+
+                    <SeekBar
+                        android:id="@+id/sb_dev_set_record_sub_preRecord"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_toStartOf="@+id/tv_dev_set_record_sub_preRecord"
+                        android:layout_toEndOf="@+id/tv_sub_dev_video_setting_prerecord"
+                        android:max="30"
+                        android:progress="0" />
+
+                    <TextView
+                        android:id="@+id/st_sub_0_iPreRecord_tv_Tip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/sb_dev_set_record_sub_preRecord"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/device_setup_record_prerecord_prompt"
+                        android:textColor="@color/demo_desc"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+
+                <!-- 录制长度 -->
+                <RelativeLayout
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/tv_sub_dev_video_setting_length"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_setup_record_length"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_dev_set_record_sub_packetLength"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginRight="15dp"
+                        android:gravity="right"
+                        android:text=""
+                        android:textColor="@color/theme"
+                        tools:ignore="RtlHardcoded" />
+
+                    <SeekBar
+                        android:id="@+id/sb_dev_set_record_sub_packetLength"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_toStartOf="@+id/tv_dev_set_record_sub_packetLength"
+                        android:layout_toEndOf="@+id/tv_sub_dev_video_setting_length"
+                        android:max="15"
+                        android:progress="0" />
+
+                    <TextView
+                        android:id="@+id/st_sub_4_iPacketLength_tv_tip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/sb_dev_set_record_sub_packetLength"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/device_setup_record_length_prompt"
+                        android:textColor="@color/demo_desc"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+
+                <!-- 录像方式 -->
+
+                <RelativeLayout
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/tv_sub_record_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_setup_record_mode"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16sp" />
+
+                    <Spinner
+                        android:id="@+id/sp_dev_set_record_sub_record_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@mipmap/spinner_ab_activated_holo_dark" />
+
+                    <TextView
+                        android:id="@+id/tv_sub_record_mode_tip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_sub_record_mode"
+                        android:layout_marginTop="2dp"
+                        android:layout_toStartOf="@id/sp_dev_set_record_sub_record_mode"
+                        android:text="@string/device_setup_record_mode_prompt"
+                        android:textColor="@color/demo_desc"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp" />
+                </RelativeLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/demo_desc" />
+
+                <RelativeLayout
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:id="@+id/layout_sub_record_type"
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/tv_sub_record_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_setup_record_type"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16sp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_sub_record_type_tip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_sub_record_type"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/device_setup_record_type_prompt"
+                        android:textColor="@color/demo_desc"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp" />
+
+
+                    <RadioGroup
+                        android:layout_below="@id/tv_sub_record_type_tip"
+                        android:id="@+id/rg_sub_record_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <RadioButton
+                            android:layout_weight="1"
+                            android:id="@+id/rb_sub_all_day_record"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_all_day_video"
+                            android:checked="true"/>
+                        <RadioButton
+                            android:layout_weight="1"
+                            android:id="@+id/rb_sub_alarm_record"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/record_alarm"/>
+                    </RadioGroup>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/demo_desc" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
