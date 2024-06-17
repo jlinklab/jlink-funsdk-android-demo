@@ -1,10 +1,12 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.config.serialport.preseenter;
 
+import com.blankj.utilcode.util.ConvertUtils;
 import com.lib.SDKCONST;
 import com.manager.device.DeviceManager;
 import com.manager.device.config.DevConfigInfo;
 import com.manager.device.config.DevConfigManager;
 import com.manager.device.config.SerialPortsInfo;
+import com.utils.BleDistributionUtil;
 import com.xm.activity.base.XMBasePresenter;
 
 import demo.xm.com.xmfunsdkdemo.ui.device.config.serialport.contract.SerialPortContract;
@@ -145,7 +147,7 @@ public class SerialPortPresenter extends XMBasePresenter<DeviceManager> implemen
         SerialPortsInfo serialPortsInfo = new SerialPortsInfo();
         serialPortsInfo.setSerialPortsType(SDKCONST.SDK_CommTypes.SDK_COMM_TYPES_RS232);
         //传入数据并发送
-        serialPortsInfo.setSerialPortsData("06000865000004010970010E".getBytes());
+        serialPortsInfo.setSerialPortsData(data);
         devConfigInfo.setSerialPortsInfo(serialPortsInfo);
         devConfigManager.setSerialPortsData(devConfigInfo);
     }

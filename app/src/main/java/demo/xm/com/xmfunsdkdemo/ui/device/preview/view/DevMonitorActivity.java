@@ -97,6 +97,8 @@ import static com.manager.device.media.audio.XMAudioManager.SPEAKER_TYPE_MAN;
 import static com.manager.device.media.audio.XMAudioManager.SPEAKER_TYPE_NORMAL;
 import static com.manager.device.media.audio.XMAudioManager.SPEAKER_TYPE_WOMAN;
 
+import static demo.xm.com.xmfunsdkdemo.base.FunError.EE_DVR_ACCOUNT_PWD_NOT_VALID;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -528,7 +530,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             }
         } else {
             //密码错误后，会弹出密码输入框，需输入正确的密码重新登录
-            if (errorId == EFUN_ERROR.EE_DVR_PASSWORD_NOT_VALID) {
+            if (errorId == EFUN_ERROR.EE_DVR_PASSWORD_NOT_VALID || errorId == EE_DVR_ACCOUNT_PWD_NOT_VALID) {
                 XMDevInfo devInfo = DevDataCenter.getInstance().getDevInfo(presenter.getDevId());
                 //参考下方弹出密码输入框 输入正确的密码，如果不参加以下的弹框，可以按照以下方式操作：
                 //第一步让用户输入正确密码，拿到正确密码后，直接调用 FunSDK.DevSetLocalPwd(devId, userName, passWord); 其中 devId是设备序列号、userName是设备登录名（默认是admin），password是要传入的正确密码

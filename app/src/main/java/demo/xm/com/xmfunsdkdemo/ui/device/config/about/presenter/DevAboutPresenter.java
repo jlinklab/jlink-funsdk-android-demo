@@ -1,9 +1,16 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.config.about.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
+import com.lib.FunSDK;
+import com.lib.IFunSDKResult;
+import com.lib.MsgContent;
 import com.lib.sdk.bean.JsonConfig;
 import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.SysDevAbilityInfoBean;
+import com.manager.XMFunSDKManager;
+import com.manager.db.DevDataCenter;
+import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
 import com.manager.device.config.DevConfigInfo;
 import com.manager.device.config.DevConfigManager;
@@ -26,6 +33,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
@@ -38,6 +46,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 /**
@@ -46,7 +55,7 @@ import java.util.Locale;
  * Created by jiangping on 2018-10-23.
  */
 public class DevAboutPresenter extends XMBasePresenter<DeviceManager>
-        implements DevAboutContract.IDevAboutPresenter, DeviceManager.OnDevUpgradeListener {
+        implements DevAboutContract.IDevAboutPresenter, DeviceManager.OnDevUpgradeListener, IFunSDKResult {
 
     private DevAboutContract.IDevAboutView iDevAboutView;
     private DevConfigManager devConfigManager;
@@ -62,14 +71,22 @@ public class DevAboutPresenter extends XMBasePresenter<DeviceManager>
      * {@link com.manager.device.DeviceManager#UPGRADE_TYPE_LOCAL_FILE}
      */
     private int upgradeType;
+    private int userId;
+    private String sysInfoExJson;
+    private String firmwareType = "System";//升级类型 是主控还是锁板（单片机）
 
     public DevAboutPresenter(DevAboutContract.IDevAboutView iDevAboutView) {
         this.iDevAboutView = iDevAboutView;
+        userId = FunSDK.GetId(userId, this);
     }
 
     @Override
     public void setDevId(String devId) {
         devConfigManager = manager.getDevConfigManager(devId);
+        XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo(devId);
+        if (xmDevInfo != null) {
+            FunSDK.DevSetPid(xmDevInfo.getDevId(), xmDevInfo.getPid());//将PID信息保存到SDK缓存中
+        }
         super.setDevId(devId);
     }
 
@@ -79,40 +96,92 @@ public class DevAboutPresenter extends XMBasePresenter<DeviceManager>
     }
 
     @Override
-    public void getDevInfo() {
-        DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
-            @Override
-            public void onSuccess(String devId, int msgId, Object result) {
-                if (result instanceof String) {
-                    iDevAboutView.onUpdateView((String) result);
-                } else {
-                    iDevAboutView.onUpdateView(JSON.toJSONString(result));
+    public void getDevInfo(String type) {
+        this.firmwareType = type;
+        if (StringUtils.contrast(firmwareType, "System")) {
+            //获取SystemInfo信息
+            DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
+                @Override
+                public void onSuccess(String devId, int msgId, Object result) {
+                    if (result instanceof String) {
+                        iDevAboutView.onUpdateView((String) result);
+                    } else {
+                        iDevAboutView.onUpdateView(JSON.toJSONString(result));
+                    }
+
+                    XMFunSDKManager.getInstance().clearUpgradeFilesPath();//升级检测之前先将本地缓存的升级文件删除
+                    manager.checkDevUpgrade(getDevId(), DevAboutPresenter.this);
                 }
-            }
 
-            @Override
-            public void onFailed(String devId, int msgId, String s1, int errorId) {
-                iDevAboutView.onUpdateView("数据获取失败：" + errorId);
-            }
-        });
+                @Override
+                public void onFailed(String devId, int msgId, String s1, int errorId) {
+                    iDevAboutView.onUpdateView("数据获取失败：" + errorId);
+                }
+            });
 
-        devConfigInfo.setJsonName(JsonConfig.SYSTEM_INFO);
-        devConfigInfo.setChnId(-1);
-        devConfigManager.getDevConfig(devConfigInfo);
+            devConfigInfo.setJsonName(JsonConfig.SYSTEM_INFO);
+            devConfigInfo.setChnId(-1);
+            devConfigManager.getDevConfig(devConfigInfo);
+        } else {
+            //获取SystemInfoEx信息
+            DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
+                @Override
+                public void onSuccess(String devId, int msgId, Object result) {
+                    if (result instanceof String) {
+                        sysInfoExJson = (String) result;
+                        iDevAboutView.onUpdateView((String) result);
+                    } else {
+                        sysInfoExJson = JSON.toJSONString(result);
+                        iDevAboutView.onUpdateView(JSON.toJSONString(result));
+                    }
+
+                    checkDevUpgrade();
+                }
+
+                @Override
+                public void onFailed(String devId, int msgId, String s1, int errorId) {
+                    iDevAboutView.onUpdateView("数据获取失败：" + errorId);
+                }
+            });
+
+            devConfigInfo.setJsonName(JsonConfig.SYSTEM_EX_INFO);
+            devConfigInfo.setChnId(-1);
+            devConfigInfo.setCmdId(1020);
+            devConfigManager.setDevCmd(devConfigInfo);
+        }
     }
+
 
     @Override
     public void checkDevUpgrade() {
-        manager.checkDevUpgrade(getDevId(), this);
+        HashMap sysInfoExMap = new Gson().fromJson(sysInfoExJson, HashMap.class);
+        Object sysInfoExObj = sysInfoExMap.get("SystemInfoEx");
+        HashMap hashMap = new HashMap();
+        hashMap.put("DevID", getDevId());//设备序列号
+        hashMap.put("Type", "Mcu");//升级类型  这个字段用Mcu表示要升级的是单片机，也可以用来表示锁板程序
+        hashMap.put("SystemInfoEx", sysInfoExObj);
+        FunSDK.DevExModulesCheckUpgrade(userId, new Gson().toJson(hashMap), 0);
     }
 
     @Override
     public void startDevUpgrade() {
-        manager.startDevUpgrade(getDevId(), upgradeType, this);
+        if ("System".equals(firmwareType)) {
+            manager.startDevUpgrade(getDevId(), upgradeType, this);
+        } else {
+            HashMap hashMap = new HashMap();
+            hashMap.put("DevID", getDevId());//设备序列号
+            hashMap.put("Type", "Mcu");//升级类型  这个字段用Mcu表示要升级的是单片机，也可以用来表示锁板程序
+            FunSDK.DevExModulesStartUpgrade(userId, new Gson().toJson(hashMap), 0);
+        }
     }
 
     @Override
     public void stopDevUpgrade() {
+        if ("System".equals(firmwareType)) {
+            manager.stopDevUpgrade(getDevId(),this);
+        }else {
+            FunSDK.DevExModulesStopUpgrade(userId,getDevId(),0);
+        }
     }
 
     @Override
@@ -121,8 +190,44 @@ public class DevAboutPresenter extends XMBasePresenter<DeviceManager>
     }
 
     @Override
-    public void startDevLocalUpgrade(String filePath) {
-        manager.startDevUpgradeByLocalFile(getDevId(), filePath, this);
+    public void startDevLocalUpgrade(String type, String filePath) {
+        if ("System".equals(type)) {
+            manager.startDevUpgradeByLocalFile(getDevId(), filePath, this);
+        } else {
+            HashMap hashMap = new HashMap();
+            hashMap.put("DevID", getDevId());//设备序列号
+            hashMap.put("FileName", filePath);//固件绝对路径
+            hashMap.put("Type", "Mcu");//升级类型  这个字段用Mcu表示要升级的是单片机，也可以用来表示锁板程序
+            FunSDK.DevExModulesStartUpgradeByFile(userId, new Gson().toJson(hashMap), 0);
+        }
+    }
+
+    @Override
+    public void onUpgradeProgress(int state, int progress, int error, String msg) {
+        System.out.println("onUpgradeProgress error:" + error);
+        if (error >= 0) {
+            iDevAboutView.onDevUpgradeProgressResult(state, progress);
+        } else {
+            upgradeType = UPGRADE_TYPE_NONE;
+            iDevAboutView.onDevUpgradeFailed(error);
+        }
+    }
+
+    @Override
+    public void onCheckUpgradeResult(int upgradeType, String verInfo, int errorId) {
+        this.upgradeType = upgradeType;
+        switch (upgradeType) {
+            case UPGRADE_TYPE_NONE:
+                iDevAboutView.onCheckDevUpgradeResult(true, false);
+                break;
+            case UPGRADE_TYPE_CLOUD:
+            case UPGRADE_TYPE_FILE_DOWNLOAD:
+            case UPGRADE_TYPE_LOCAL_FILE:
+                iDevAboutView.onCheckDevUpgradeResult(true, true);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -173,29 +278,6 @@ public class DevAboutPresenter extends XMBasePresenter<DeviceManager>
         });
     }
 
-    @Override
-    public void onUpgradeProgress(int state, int progress, int error, String msg) {
-        iDevAboutView.onDevUpgradeProgressResult(state, progress);
-    }
-
-    @Override
-    public void onCheckUpgradeResult(int upgradeType, String verInfo, int errorId) {
-        this.upgradeType = upgradeType;
-        switch (upgradeType) {
-            case UPGRADE_TYPE_NONE:
-                iDevAboutView.onCheckDevUpgradeResult(true, false);
-                break;
-            case UPGRADE_TYPE_CLOUD:
-            case UPGRADE_TYPE_FILE_DOWNLOAD:
-                iDevAboutView.onCheckDevUpgradeResult(true, true);
-                break;
-            case UPGRADE_TYPE_LOCAL_FILE:
-                break;
-            default:
-                break;
-        }
-    }
-
     public String saveFileFromUri(Context context, Uri uri) {
         InputStream inputStream = null;
         OutputStream outputStream = null;
@@ -237,5 +319,27 @@ public class DevAboutPresenter extends XMBasePresenter<DeviceManager>
         return null;
     }
 
+    @Override
+    public int OnFunSDKResult(Message msg, MsgContent ex) {
+        switch (msg.what) {
+            case 5119:
+            case 5553://升级开始结果回调
+                onUpgradeProgress(0, 0, msg.arg1, "");
+                break;
+            case 5120:
+            case 5555://升级进度回调
+                onUpgradeProgress(msg.arg1, msg.arg2, msg.arg2, ex.str);
+                break;
+            case 5552://检测升级回调
+                onCheckUpgradeResult(msg.arg1, ex.str, msg.arg1);
+                break;
+            case 5513://链接断开
+                iDevAboutView.onDevUpgradeFailed(-1);
+                break;
+            default:
+                break;
+        }
+        return 0;
+    }
 }
 

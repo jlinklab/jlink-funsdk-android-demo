@@ -127,7 +127,18 @@
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
                 android:text="@string/unlock"
-                android:visibility="gone"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5"
+                android:visibility="gone"/>
+
+            <!--Ping-->
+            <com.xm.ui.widget.BtnColorBK
+                android:layout_marginRight="3dp"
+                android:id="@+id/btn_ping"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Ping"
                 app:no_press_solid="@color/white"
                 app:pressed_solid="#FCF0E5" />
 

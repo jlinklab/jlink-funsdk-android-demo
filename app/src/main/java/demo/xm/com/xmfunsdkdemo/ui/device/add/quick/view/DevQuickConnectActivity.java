@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,6 +19,7 @@ import androidx.annotation.NonNull;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lib.FunSDK;
 import com.lib.sdk.bean.StringUtils;
+import com.utils.LogUtils;
 import com.xm.activity.device.monitor.view.XMMonitorActivity;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.XTitleBar;
@@ -43,7 +46,7 @@ public class DevQuickConnectActivity extends DemoBaseActivity<DevQuickConnectPre
 
     private String settedWifiDevSN = "";
     private TextView settedText;
-
+    private TextView tvResult;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +83,8 @@ public class DevQuickConnectActivity extends DemoBaseActivity<DevQuickConnectPre
                 presenter.startQuickSetWiFiSimple(ssid, pwd, pwdType);
             }
         });
+
+        tvResult = findViewById(R.id.tv_result_info);
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -125,6 +130,17 @@ public class DevQuickConnectActivity extends DemoBaseActivity<DevQuickConnectPre
         if (isSuccess) {
             turnToActivity(DevMonitorActivity.class);
         }
+    }
+
+    @Override
+    public void onPrintConfigDev(String printLog) {
+        LogUtils.debugInfo("QrCodeConfig", printLog);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                tvResult.setText(tvResult.getText().toString() + "\n" + printLog);
+            }
+        });
     }
 
     @Override

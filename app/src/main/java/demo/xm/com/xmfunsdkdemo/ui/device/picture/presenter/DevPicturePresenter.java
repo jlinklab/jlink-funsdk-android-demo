@@ -123,6 +123,11 @@ public class DevPicturePresenter extends XMBasePresenter<FileManager> implements
     }
 
     @Override
+    public void onDeleteResult(String devId, boolean isSuccess, int errorId) {
+
+    }
+
+    @Override
     public void onDownload(DownloadInfo downloadInfo) {
         if (downloadInfo != null) {
             iDevPictureView.onDownloadResult(downloadInfo.getDownloadState(), downloadInfo.getSaveFileName());

@@ -13,6 +13,7 @@ public class DevQuickConnectContract {
 
         void onAddDevResult(boolean isSuccess);
 
+        void onPrintConfigDev(String printLog);
         Context getContext();
     }
 

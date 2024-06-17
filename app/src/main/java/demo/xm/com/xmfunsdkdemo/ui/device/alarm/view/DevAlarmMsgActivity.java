@@ -1,6 +1,9 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.alarm.view;
 
+import static com.manager.device.media.MediaManager.PLAY_CLOUD_PLAYBACK;
+
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -38,6 +41,7 @@ import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.alarm.listener.DevAlarmContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.alarm.presenter.DevAlarmPresenter;
+import demo.xm.com.xmfunsdkdemo.ui.device.record.view.DevRecordActivity;
 import io.reactivex.annotations.Nullable;
 
 /**
@@ -157,6 +161,15 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
     }
 
     @Override
+    public void onTurnToVideo(Calendar searchTime) {
+        Intent intent = new Intent(this, DevRecordActivity.class);
+        intent.putExtra("devId",presenter.getDevId());
+        intent.putExtra("searchTime",searchTime.getTime().getTime());
+        intent.putExtra("recordType",PLAY_CLOUD_PLAYBACK);
+        startActivity(intent);
+    }
+
+    @Override
     public DevAlarmPresenter getPresenter() {
         return new DevAlarmPresenter(this);
     }
@@ -231,6 +244,8 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
                 } else {
                     holder.btnPicture.setVisibility(View.GONE);
                 }
+
+                holder.btnVideo.setVisibility(alarmInfo.isVideoInfo() ? View.VISIBLE : View.GONE);
             }
         }
 
@@ -262,7 +277,7 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
                 btnVideo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        presenter.showVideo(getAdapterPosition());
                     }
                 });
 

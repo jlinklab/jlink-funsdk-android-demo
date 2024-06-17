@@ -176,13 +176,17 @@ public class DevQuickConnectPresenter extends XMBasePresenter<DeviceManager> imp
      * 获取设备的随机用户名和密码
      */
     private void getDevRandomUserPwd(XMDevInfo xmDevInfo) {
+        iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.start_get_random_user_pwd));
         DeviceManager.getInstance().getDevRandomUserPwd(xmDevInfo, new DeviceManager.OnDevManagerListener() {
             @Override
             public void onSuccess(String devId, int operationType, Object result) {
+                iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.get_random_user_pwd_s));
+                iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.start_get_dev_token));
                 //获取设备登录Token信息：先要登录设备，然后通过DevGetLocalEncToken来获取
                 DeviceManager.getInstance().loginDev(devId, new DeviceManager.OnDevManagerListener() {
                     @Override
                     public void onSuccess(String devId, int operationType, Object result) {
+                        iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.get_dev_token_s));
                         //获取设备登录Token信息
                         String devToken = FunSDK.DevGetLocalEncToken(devId);
                         if (!StringUtils.isStringNULL(devToken)) {
@@ -209,6 +213,8 @@ public class DevQuickConnectPresenter extends XMBasePresenter<DeviceManager> imp
                     @Override
                     public void onFailed(String devId, int msgId, String jsonName, int errorId) {
                         System.out.println("login:" + errorId);
+                        addDevice(xmDevInfo, true);
+                        iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.get_dev_token_f) + errorId);
                     }
                 });
             }
@@ -216,6 +222,7 @@ public class DevQuickConnectPresenter extends XMBasePresenter<DeviceManager> imp
             @Override
             public void onFailed(String devId, int msgId, String jsonName, int errorId) {
                 System.out.println("errorId:" + errorId);
+                iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.get_dev_random_user_pwd_f) + errorId);
                 if (isNeedGetDevRandomUserPwdAgain && (errorId == -10005 || errorId == -100000)) {
                     //如果获取随机用户名密码超时的话，可以延时1s重试一次
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -227,24 +234,13 @@ public class DevQuickConnectPresenter extends XMBasePresenter<DeviceManager> imp
 
                     isNeedGetDevRandomUserPwdAgain = false;
                     return;
-                }
-
-                if (errorId == -400009) {
-                    //如果不支持随机用户名密码的话，就以 用户名：admin 密码为空登录设备
-                    //是否要将该设备从其他账号下移除
-                    XMPromptDlg.onShow(iDevQuickConnectView.getContext(), iDevQuickConnectView.getContext().getString(R.string.is_need_delete_dev_from_other_account), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            addDevice(xmDevInfo, true);
-                        }
-                    }, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            addDevice(xmDevInfo, false);
-                        }
-                    });
-                } else {
-                    ToastUtils.showLong("配网失败：" + errorId);
+                }else {
+                    //如果Token不为空 就需要获取设备的特征码，否则无法缇娜加到账号下
+                    if (xmDevInfo.getDevToken() != null) {
+                        getCloudCryNum(xmDevInfo);
+                    }else {
+                        addDevice(xmDevInfo,true);
+                    }
                 }
             }
         });
@@ -255,10 +251,12 @@ public class DevQuickConnectPresenter extends XMBasePresenter<DeviceManager> imp
      * 获取设备配网成功后的校验码，这个校验码用来给服务器校验能否能进行弱绑定，将原来已经添加到其他账号的设备重新添加当前账号
      */
     private void getCloudCryNum(XMDevInfo xmDevInfo) {
+        iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.start_get_dev_verification_code));
         DevConfigManager devConfigManager = DeviceManager.getInstance().getDevConfigManager(xmDevInfo.getDevId());
         DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
             @Override
             public void onSuccess(String devId, int operationType, Object result) {
+                iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.get_dev_verification_s));
                 if (result instanceof String) {
                     try {
                         org.json.JSONObject jsonObject = new JSONObject((String) result);
@@ -278,6 +276,7 @@ public class DevQuickConnectPresenter extends XMBasePresenter<DeviceManager> imp
             @Override
             public void onFailed(String devId, int msgId, String jsonName, int errorId) {
                 System.out.println("errorId:" + errorId);
+                iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.get_dev_verification_f) + errorId);
                 if (isNeedGetCloudTryNum && (errorId == -10005 || errorId == -100000)) {
                     //如果获取随机用户名密码超时的话，可以延时1s重试一次
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -306,9 +305,11 @@ public class DevQuickConnectPresenter extends XMBasePresenter<DeviceManager> imp
      */
     private void addDevice(XMDevInfo xmDevInfo, boolean isUnbindDevUnderOther) {
         //未使用AccountManager(包括XMAccountManager或LocalAccountManager)登录（包括账号登录和本地临时登录），只能将设备信息临时缓存，重启应用后无法查到设备信息。
+        iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.start_add_dev_to_account));
         if (DevDataCenter.getInstance().getLoginType() == LOGIN_NONE) {
             DevDataCenter.getInstance().addDev(xmDevInfo);
             DeviceManager.getInstance().setLocalDevLoginInfo(xmDevInfo.getDevId(),xmDevInfo.getDevUserName(),xmDevInfo.getDevPassword(),xmDevInfo.getDevToken());
+            iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.add_dev_to_account_s));
             setDevId(xmDevInfo.getDevId());
             Toast.makeText(iDevQuickConnectView.getContext(), R.string.add_s, Toast.LENGTH_LONG).show();
             iDevQuickConnectView.onAddDevResult(true);
@@ -316,6 +317,7 @@ public class DevQuickConnectPresenter extends XMBasePresenter<DeviceManager> imp
             AccountManager.getInstance().addDev(xmDevInfo, isUnbindDevUnderOther, new BaseAccountManager.OnAccountManagerListener() {
                 @Override
                 public void onSuccess(int msgId) {
+                    iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.add_dev_to_account_s));
                     setDevId(xmDevInfo.getDevId());
                     Toast.makeText(iDevQuickConnectView.getContext(), R.string.add_s, Toast.LENGTH_LONG).show();
                     iDevQuickConnectView.onAddDevResult(true);
@@ -325,6 +327,7 @@ public class DevQuickConnectPresenter extends XMBasePresenter<DeviceManager> imp
                 public void onFailed(int msgId, int errorId) {
                     Toast.makeText(iDevQuickConnectView.getContext(), iDevQuickConnectView.getContext().getString(R.string.add_f) + ":" + errorId, Toast.LENGTH_LONG).show();
                     iDevQuickConnectView.onAddDevResult(false);
+                    iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.add_dev_to_account_f) + errorId);
                 }
 
                 @Override

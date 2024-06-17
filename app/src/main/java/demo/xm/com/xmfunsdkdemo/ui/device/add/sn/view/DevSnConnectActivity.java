@@ -68,7 +68,7 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
 
     private ListSelectItem lsiDevType;
     private ExtraSpinner spDevType;
-
+    private EditText devLoginTokenEdit;
     private final FunDevType[] devTypesSupport = {FunDevType.EE_DEV_NORMAL_MONITOR, FunDevType.EE_DEV_INTELLIGENTSOCKET, FunDevType.EE_DEV_SMALLEYE};
 
     @Override
@@ -139,6 +139,8 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
                 lsiDevType.toggleExtraView();
             }
         });
+
+        devLoginTokenEdit = findViewById(R.id.editDeviceLoginToken);
     }
 
     @Override
@@ -172,7 +174,12 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
         switch (view.getId()) {
             case R.id.devLoginBtn: {
                 String devId = devSNEdit.getText().toString().trim().toLowerCase();
-                presenter.addDev(devId, devLoginNameEdit.getText().toString().trim(), devLoginPasswdEdit.getText().toString().trim(), (Integer) spDevType.getSelectedValue());
+                presenter.addDev(
+                        devId,
+                        devLoginNameEdit.getText().toString().trim(),
+                        devLoginPasswdEdit.getText().toString().trim(),
+                        devLoginTokenEdit.getText().toString().trim(),
+                        (Integer) spDevType.getSelectedValue());
             }
             break;
             case R.id.devLoginBtnIP: {
@@ -197,6 +204,16 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
                 if (XUtils.isSn(result)) {
                     if (null != devSNEdit) {
                         devSNEdit.setText(result);
+                    }
+                } else if (result.startsWith("sn:")) {
+                    String[] devInfos = result.split(";");
+
+                    if (null != devSNEdit) {
+                        devSNEdit.setText(devInfos[0].split(":")[1]);
+                    }
+
+                    if (null != devLoginTokenEdit) {
+                        devLoginTokenEdit.setText(devInfos[1].split(":")[1]);
                     }
                 } else {
                     try {

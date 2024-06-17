@@ -40,6 +40,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.DevAlarmMsgActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.cloud.view.CloudStateActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.interdevlinkage.view.InterDevLinkageActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.shadow.view.DevShadowConfigActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.config.simpleconfig.view.DevSimpleConfigActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.view.DevMonitorActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.push.view.DevPushActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.record.view.DevRecordActivity;
@@ -438,6 +439,18 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
     public void onTurnToInterDevLinkage(int position, XMDevInfo xmDevInfo, Bundle bundle) {
         presenter.setDevId(xmDevInfo.getDevId());
         turnToActivity(InterDevLinkageActivity.class, "data", bundle);
+    }
+
+    @Override
+    public void onPingTest(int position, XMDevInfo xmDevInfo) {
+        turnToActivity(DevSimpleConfigActivity.class, new Object[][]{{"devId", xmDevInfo.getDevId()},{"jsonName", "Ping"}, {"configName", "Ping"}, {"cmdId", 1052},{"jsonData","{\n" +
+                "    \"Ping\": {\n" +
+                "        \"URL\": \"\",\n" +
+                "        \"Num\": 10,\n" +
+                "        \"Timeout\": 5\n" +
+                "    },\n" +
+                "    \"Name\": \"Ping\"\n" +
+                "}"}});
     }
 
     @Override

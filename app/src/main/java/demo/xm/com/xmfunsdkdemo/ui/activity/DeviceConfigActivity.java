@@ -129,7 +129,23 @@ public class DeviceConfigActivity extends DemoBaseActivity<DeviceConfigPresenter
                     intent = new Intent(view.getContext(), DevAdvanceActivity.class);
                     break;
                 case 13://关于设备
-                    intent = new Intent(view.getContext(), DevAboutActivity.class);
+                    XMPromptDlg.onShow(this, getString(R.string.is_multi_module_upgrade), getString(R.string.mcu), getString(R.string.main_control), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(view.getContext(), DevAboutActivity.class);
+                            intent.putExtra("firmwareType", "Mcu");
+                            intent.putExtra("devId", presenter.getDevId());
+                            startActivity(intent);
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(view.getContext(), DevAboutActivity.class);
+                            intent.putExtra("firmwareType", "System");
+                            intent.putExtra("devId", presenter.getDevId());
+                            startActivity(intent);
+                        }
+                    });
                     break;
                 case 14:
                     XMPromptDlg.onShow(DeviceConfigActivity.this,

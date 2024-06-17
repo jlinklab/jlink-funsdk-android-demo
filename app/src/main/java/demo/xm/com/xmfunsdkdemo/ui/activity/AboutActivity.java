@@ -7,14 +7,9 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.utils.LogUtils;
 import com.utils.XUtils;
-import com.xm.activity.base.XMBaseActivity;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.ListSelectItem;
-import com.xm.ui.widget.XTitleBar;
-
-import java.util.logging.LogManager;
 
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;

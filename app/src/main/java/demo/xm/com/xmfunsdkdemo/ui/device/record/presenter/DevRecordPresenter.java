@@ -16,6 +16,7 @@ import com.manager.db.DevDataCenter;
 import com.manager.db.DownloadInfo;
 import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
+import com.manager.device.media.MediaManager;
 import com.manager.device.media.attribute.PlayerAttribute;
 import com.manager.device.media.attribute.RecordPlayerAttribute;
 import com.manager.device.media.calendar.MediaFileCalendarManager;
@@ -78,6 +79,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     private int recordPlayType;
     private int playSpeed;
     private int recordFileType;
+    private boolean isEpitomeRecordEnable;//缩影录像开关
 
     public DevRecordPresenter(DevRecordContract.IDevRecordView iDevRecordView) {
         this.iDevRecordView = iDevRecordView;
@@ -107,9 +109,12 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
          * MediaManager.PLAY_CLOUD_PLAYBACK:云存储远程录像回放
          */
 
-        recordManager = manager.createRecordPlayer(playView, getDevId(), recordType);
-        //SD卡回放
-        if (recordManager instanceof DevRecordManager) {
+        RecordPlayerAttribute recordPlayerAttribute = new RecordPlayerAttribute(getDevId());
+        if (recordType == MediaManager.PLAY_CLOUD_PLAYBACK) {
+            recordManager = new CloudRecordManager(playView, recordPlayerAttribute);
+        } else {
+            //SD卡回放
+            recordManager = new DevRecordManager(playView, recordPlayerAttribute);
             //设备录像文件类型
             // subType对应的枚举参考:https://docs.jftech.com/docs?menusId=ab0ed73834f54368be3e375075e27fb2&siderid=9f6293ec863e46e6961cc85403b15ac4
             int subTypeMask = 1 << SDKCONST.EMSSubType.ALL;//多个类型参考:(1 << EMSSubType.DYNAMIC) | (1 << EMSSubType.STRANDED)
@@ -139,6 +144,14 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
                 subTypeMask = (1 << SDKCONST.EMSSubType.ORIGINAL) | (1 << SDKCONST.EMSSubType.HAND);
             }
             ((DevRecordManager) recordManager).setRecordFileType((SDKCONST.EMSType.h264 << 26) | (subTypeMask & 0x3FFFFFF));
+        }
+    }
+
+    @Override
+    public void setEpitomeRecordEnable(boolean isEnable) {
+        this.isEpitomeRecordEnable = isEnable;
+        if (recordManager instanceof DevRecordManager) {
+            ((DevRecordManager) recordManager).setRecordStreamType(isEnable ? 5 : 2);
         }
     }
 
@@ -388,6 +401,11 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     }
 
     @Override
+    public void updateVideoView(int width, int height) {
+
+    }
+
+    @Override
     public void searchMediaFileCalendar(Calendar searchCalendar) {
         if (recordPlayType == PLAY_CLOUD_PLAYBACK) {
             mediaFileCalendarManager.searchFile(searchCalendar, Define.MEDIA_TYPE_CLOUD, 0);
@@ -494,6 +512,13 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
         }
     }
 
+    @Override
+    public void deleteVideoResult(String devId, boolean isSuccess, int errorId) {
+        if (iDevRecordView != null) {
+            iDevRecordView.onDeleteVideoResult(isSuccess,errorId);
+        }
+    }
+
     private void dealWithRecordTimeList(char[][] minutes) {
         recordTimeList.clear();
         int count = 24 * 60 / timeUnit;
@@ -594,6 +619,18 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
         } else if (recordManager instanceof CloudRecordManager) {
             CloudMediaFileInfoBean cloudMediaFileInfoBean = JSON.parseObject(h264DvrFileData.getAlarmExFileInfo(), CloudMediaFileInfoBean.class);
             ((CloudRecordManager) recordManager).downloadVideoThumb(cloudMediaFileInfoBean, position);
+        }
+    }
+
+    /**
+     * 删除云视频
+     *
+     * @param position
+     */
+    public void deleteVideo(int position) {
+        if (recordManager instanceof CloudRecordManager) {
+            H264_DVR_FILE_DATA h264DvrFileData = recordList.get(position);
+            ((CloudRecordManager) recordManager).deleteVideo(h264DvrFileData.fileName);
         }
     }
 }
