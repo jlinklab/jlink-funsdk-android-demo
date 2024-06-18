@@ -70,7 +70,6 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     private List<H264_DVR_FILE_DATA> recordList;
     private List<Map<String, Object>> recordTimeList;
     private Map<String, Object> recordTimeMap;
-    private TreeMap<Object, Boolean> haveRecordMap;
     private Calendar searchTime;
     private int timeUnit = TIME_UNIT;
     private int timeCount = MN_COUNT;
@@ -147,11 +146,16 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
         }
     }
 
+    /**
+     * 设置是否开启缩影录像
+     *
+     * @param isEnable
+     */
     @Override
     public void setEpitomeRecordEnable(boolean isEnable) {
         this.isEpitomeRecordEnable = isEnable;
         if (recordManager instanceof DevRecordManager) {
-            ((DevRecordManager) recordManager).setRecordStreamType(isEnable ? 5 : 2);
+            ((DevRecordManager) recordManager).setRecordStreamType(isEnable ? SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_EPITOME_RECORD : SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_ALL_RECORD);
         }
     }
 
@@ -182,12 +186,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     @Override
     public void searchRecordByTime(Calendar searchTime) {
         this.searchTime = searchTime;
-        int[] times = new int[]{
-                searchTime.get(Calendar.YEAR),
-                searchTime.get(Calendar.MONTH) + 1,
-                searchTime.get(Calendar.DATE)
-        };
-        recordManager.searchFileByTime(times);
+        recordManager.searchFileByTime(searchTime);
     }
 
     @Override
@@ -505,8 +504,6 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
                 dealWithRecordTimeList((char[][]) data);
                 iDevRecordView.onSearchRecordByTimeResult(true);
             }
-
-            haveRecordMap = DevDataCenter.getInstance().getHasRecordFile();
         } else {
             iDevRecordView.onSearchRecordByFileResult(false);
         }
@@ -515,7 +512,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     @Override
     public void deleteVideoResult(String devId, boolean isSuccess, int errorId) {
         if (iDevRecordView != null) {
-            iDevRecordView.onDeleteVideoResult(isSuccess,errorId);
+            iDevRecordView.onDeleteVideoResult(isSuccess, errorId);
         }
     }
 

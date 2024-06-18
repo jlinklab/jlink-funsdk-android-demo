@@ -203,9 +203,8 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     @Override
     public void onSearchRecordByFileResult(boolean isSuccess) {
         hideWaitDialog();
-        if (isSuccess) {
-            recordListAdapter.notifyDataSetChanged();
-        } else {
+        recordListAdapter.notifyDataSetChanged();
+        if (!isSuccess) {
             showToast(getString(R.string.search_record_failed), Toast.LENGTH_LONG);
         }
     }
@@ -213,9 +212,9 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     @Override
     public void onSearchRecordByTimeResult(boolean isSuccess) {
         hideWaitDialog();
+        recordListAdapter.notifyDataSetChanged();
+        recordTimeAxisAdapter.notifyDataSetChanged();
         if (isSuccess) {
-            recordListAdapter.notifyDataSetChanged();
-            recordTimeAxisAdapter.notifyDataSetChanged();
             if (searchTime != 0) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(searchTime);
@@ -682,6 +681,9 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
             case 8:
                 if (!isSelected) {
                     XMPromptDlg.onShow(DevRecordActivity.this, getString(R.string.support_epitome_record_tips), null);
+                    findViewById(R.id.banner_rl).setVisibility(View.GONE);
+                }else {
+                    findViewById(R.id.banner_rl).setVisibility(View.VISIBLE);
                 }
                 showWaitDialog();
                 presenter.setEpitomeRecordEnable(!isSelected);
