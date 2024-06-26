@@ -19,6 +19,7 @@ import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.share.OtherShareDevUserBean;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
+import com.manager.device.config.mqtt.DevStateNotifyMqttManager;
 import com.manager.device.config.shadow.DevShadowManager;
 import com.manager.device.config.shadow.OnDevShadowManagerListener;
 import com.manager.device.config.shadow.ShadowConfigEnum;
@@ -42,11 +43,11 @@ import static com.manager.account.share.ShareInfo.SHARE_REJECT;
  */
 
 public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHolder> implements
-        DevStateNotifyManager.OnDevStateNotifyListener {
+        DevStateNotifyMqttManager.OnDevStateNotifyListener {
     private RecyclerView recyclerView;
     private List<HashMap<String, Object>> data;
     private HashMap<String, Bundle> isSupportInterDevLink = new HashMap<>();//缓存是否支持设备之间联动
-    private DevStateNotifyManager devStateNotifyManager;
+    private DevStateNotifyMqttManager devStateNotifyManager;
     public static final String[] DEV_STATE = new String[]{
             FunSDK.TS("Offline"),
             FunSDK.TS("Online"),
@@ -61,9 +62,9 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         this.recyclerView = recyclerView;
         this.data = data;
         this.onItemDevClickListener = ls;
-        devStateNotifyManager = DevStateNotifyManager.getInstance(application);
+        devStateNotifyManager = DevStateNotifyMqttManager.getInstance(application);
         devStateNotifyManager.addNotifyListener(this);
-        devStateNotifyManager.connectWebSocket();//连接WebSocket
+        devStateNotifyManager.connectMqtt();//连接MQTT
         DevShadowManager.getInstance().addDevShadowListener(onDevShadowManagerListener);
     }
 
@@ -172,6 +173,7 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
             }
         }
         holder.lsiDevInfo.setTitle(devName + " " + strShareState);
+        holder.lsiDevInfo.setTag(devId + ":state");
         holder.lsiDevInfo.setTag(devId);
         holder.btnInterDevLinkage.setTag("inter_dev_linkage:" + devId);
         //如果是来自分享的设备，需要隐藏分享管理
@@ -218,6 +220,7 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         Button btnTurnToShareManage;//跳转到分享管理  go to Share Management
         Button btnLocalDevUserPwd;//本地设备登录名和密码 local device login name and password
         Button btnUnlock;//开锁
+        Button btnPingTest;//Ping
         Button btnSdPlayback;//SD卡录像回放 SD Playback
         Button btnInterDevLinkage;//门锁和其他摇头机之间的联动，该功能通过影子服务来判断是否支持 "The linkage between the door lock and other pan-tilt cameras is determined by the shadow service to ascertain its support."
 
@@ -281,9 +284,7 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
                 }
             });
 
-//            btnTurnToCloudService.setVisibility(DevDataCenter.getInstance().isLoginByAccount() ? View.VISIBLE : View.GONE);
-            btnTurnToCloudService.setVisibility(View.VISIBLE);
-
+            btnTurnToCloudService.setVisibility(DevDataCenter.getInstance().isLoginByAccount() ? View.VISIBLE : View.GONE);
             btnModifyDevName = itemView.findViewById(R.id.btn_modify_dev_name);
             btnModifyDevName.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -355,6 +356,19 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
                     }
                 }
             });
+
+            //Ping
+
+            btnPingTest = itemView.findViewById(R.id.btn_ping);
+            btnPingTest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo((String) data.get(getAdapterPosition()).get("devId"));
+                    if (onItemDevClickListener != null) {
+                        onItemDevClickListener.onPingTest(getAdapterPosition(), xmDevInfo);
+                    }
+                }
+            });
         }
     }
 
@@ -363,8 +377,8 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
      */
     @Override
     public void onConnected() {
-        //订阅WebSocket 传入设备列表，groupId（用户组ID）没有的话传Null，userId（用户Id）没有的话传Null
-        devStateNotifyManager.subscribeByGroup(DevDataCenter.getInstance().getDevList(), null, null);
+        //订阅MQTT 传入设备列表
+        devStateNotifyManager.subscribeDevIdsByMqtt(DevDataCenter.getInstance().getDevList());
     }
 
     /**
@@ -380,8 +394,8 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
      */
     @Override
     public void onReconnected() {
-        //订阅WebSocket 传入设备列表，groupId（用户组ID）没有的话传Null，userId（用户Id）没有的话传Null
-        devStateNotifyManager.subscribeByGroup(DevDataCenter.getInstance().getDevList(), null, null);
+        //订阅MQTT 传入设备列表
+        devStateNotifyManager.subscribeDevIdsByMqtt(DevDataCenter.getInstance().getDevList());
     }
 
     /**
@@ -430,7 +444,7 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         }
 
         if (recyclerView != null) {
-            ListSelectItem lsiDevInfo = recyclerView.findViewWithTag(devId);
+            ListSelectItem lsiDevInfo = recyclerView.findViewWithTag(devId + ":state");
             if (lsiDevInfo != null) {
                 lsiDevInfo.setRightText(DEV_STATE[xmDevInfo.getDevState()]);
             }
@@ -487,12 +501,13 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         void onTurnToSdPlayback(int position, XMDevInfo xmDevInfo);
 
         /**
-         * 跳转到设备之间联动
+         * Ping
          *
          * @param position
          * @param xmDevInfo
-         * @param bundle
          */
+        void onPingTest(int position, XMDevInfo xmDevInfo);
+
         void onTurnToInterDevLinkage(int position, XMDevInfo xmDevInfo, Bundle bundle);
     }
 }

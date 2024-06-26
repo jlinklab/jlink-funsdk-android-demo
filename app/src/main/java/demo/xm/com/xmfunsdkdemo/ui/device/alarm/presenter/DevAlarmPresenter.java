@@ -11,6 +11,7 @@ import com.manager.device.DeviceManager;
 import com.manager.device.alarm.DevAlarmInfoManager;
 import com.manager.image.BaseImageManager;
 import com.manager.image.CloudImageManager;
+import com.utils.TimeUtils;
 import com.xm.activity.base.XMBasePresenter;
 
 import java.util.ArrayList;
@@ -158,7 +159,10 @@ public class DevAlarmPresenter extends XMBasePresenter<DeviceManager> implements
 
     @Override
     public void showVideo(int position) {
-
+        if (iDevAlarmView != null) {
+            AlarmInfo alarmInfo = getAlarmInfo(position);
+            iDevAlarmView.onTurnToVideo(TimeUtils.getNormalFormatCalender(alarmInfo.getStartTime()));
+        }
     }
 
     @Override

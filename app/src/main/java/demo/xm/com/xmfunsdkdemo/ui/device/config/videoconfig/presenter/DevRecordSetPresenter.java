@@ -66,6 +66,36 @@ public class DevRecordSetPresenter extends XMBasePresenter<DeviceManager> implem
         subConfigInfo.setJsonName(JsonConfig.EXRECORD);
         subConfigInfo.setChnId(-1);
         devConfigManager.getDevConfig(subConfigInfo);
+
+        DeviceManager.getInstance().getDevAbility(getDevId(), new DeviceManager.OnDevManagerListener<Boolean>() {
+            @Override
+            public void onSuccess(String devId, int operationType, Boolean result) {
+                //判断是否支持定时录像
+                if (result) {
+                    //获取定时录像
+                    DevConfigInfo epitomeRecordConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
+                        @Override
+                        public void onSuccess(String devId, int msgId, Object result) {
+                            iDevRecordSetView.onUpdateView(result instanceof String ? (String) result : JSON.toJSONString(result),
+                                    "Storage.EpitomeRecord", DevConfigState.DEV_CONFIG_VIEW_VISIABLE);
+                        }
+
+                        @Override
+                        public void onFailed(String devId, int msgId, String s1, int errorId) {
+                            iDevRecordSetView.onUpdateView(null, "Storage.EpitomeRecord", DevConfigState.DEV_CONFIG_VIEW_INVISIABLE);
+                        }
+                    });
+                    epitomeRecordConfigInfo.setJsonName("Storage.EpitomeRecord");
+                    epitomeRecordConfigInfo.setChnId(-1);
+                    devConfigManager.getDevConfig(epitomeRecordConfigInfo);
+                }
+            }
+
+            @Override
+            public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+
+            }
+        }, "OtherFunction", "SupportEpitomeRecord");
     }
 
     @Override

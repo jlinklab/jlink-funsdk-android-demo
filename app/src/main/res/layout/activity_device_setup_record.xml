@@ -505,6 +505,86 @@
                 android:layout_height="0.5dp"
                 android:background="@color/demo_desc" />
 
+            <LinearLayout
+                android:id="@+id/ll_epitome_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <!--定时录像-->
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_epitome_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="55dp"
+                    android:background="@color/white"
+                    uilib:Cap=""
+                    uilib:CapColor="@color/default_normal_text_color"
+                    uilib:CapSize="@dimen/small_text_size"
+                    uilib:ItemTipSize="@dimen/normal_text_size"
+                    uilib:ItemTitleColor="@color/default_normal_text_color"
+                    uilib:LineColor="@color/line_color"
+                    uilib:RightClickable="false"
+                    uilib:ShowBottomLine="true"
+                    uilib:Title="@string/epitome_record"
+                    uilib:leftMargin="0dp"
+                    uilib:ShowSwitch="true"/>
+                <!--抓图间隔-->
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_capture_interval"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    uilib:Cap=""
+                    uilib:CapColor="@color/default_normal_text_color"
+                    uilib:CapSize="@dimen/small_text_size"
+                    uilib:ImageRight1="@mipmap/icon_next"
+                    uilib:ImageRight2="@mipmap/icon_next"
+                    uilib:ItemTipSize="@dimen/normal_text_size"
+                    uilib:ItemTitleColor="@color/default_normal_text_color"
+                    uilib:LineColor="@color/line_color"
+                    uilib:RightClickable="false"
+                    uilib:ShowBottomLine="true"
+                    uilib:Title="@string/capture_interval"
+                    uilib:leftMargin="0dp" />
+                <!--开始时间-->
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_capture_start_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    uilib:Cap=""
+                    uilib:CapColor="@color/default_normal_text_color"
+                    uilib:CapSize="@dimen/small_text_size"
+                    uilib:ImageRight1="@mipmap/icon_next"
+                    uilib:ImageRight2="@mipmap/icon_next"
+                    uilib:ItemTipSize="@dimen/normal_text_size"
+                    uilib:ItemTitleColor="@color/default_normal_text_color"
+                    uilib:LineColor="@color/line_color"
+                    uilib:RightClickable="false"
+                    uilib:ShowBottomLine="true"
+                    uilib:Title="@string/start_time"
+                    uilib:leftMargin="0dp" />
+                <!--结束时间-->
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_capture_end_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    uilib:Cap=""
+                    uilib:CapColor="@color/default_normal_text_color"
+                    uilib:CapSize="@dimen/small_text_size"
+                    uilib:ImageRight1="@mipmap/icon_next"
+                    uilib:ImageRight2="@mipmap/icon_next"
+                    uilib:ItemTipSize="@dimen/normal_text_size"
+                    uilib:ItemTitleColor="@color/default_normal_text_color"
+                    uilib:LineColor="@color/line_color"
+                    uilib:RightClickable="false"
+                    uilib:ShowBottomLine="true"
+                    uilib:Title="@string/end_time"
+                    uilib:leftMargin="0dp" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

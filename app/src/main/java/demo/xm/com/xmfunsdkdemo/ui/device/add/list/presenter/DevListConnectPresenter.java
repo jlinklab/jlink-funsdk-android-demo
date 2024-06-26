@@ -1,5 +1,6 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.add.list.presenter;
 
+import android.content.Intent;
 import android.os.Message;
 
 import com.alibaba.fastjson.JSON;
@@ -31,6 +32,7 @@ import java.util.List;
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.list.listener.DevListConnectContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.share.listener.ShareDevListContract;
+import demo.xm.com.xmfunsdkdemo.ui.device.push.view.DevPushService;
 
 import static com.manager.account.share.ShareInfo.SHARE_ACCEPT;
 import static com.manager.account.share.ShareInfo.SHARE_NOT_YET_ACCEPT;
@@ -143,6 +145,7 @@ public class DevListConnectPresenter extends XMBasePresenter<AccountManager> imp
     @Override
     public void modifyDevNameFromServer(int position, String devName) {
         String devId = getDevId(position);
+        setDevId(devId);
         manager.modifyDevName(devId, devName, this);
     }
 
@@ -254,6 +257,14 @@ public class DevListConnectPresenter extends XMBasePresenter<AccountManager> imp
     @Override
     public void onSuccess(int msgId) {
         if (msgId == EUIMSG.SYS_CHANGEDEVINFO) {
+            XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo(getDevId());
+            String devName = xmDevInfo.getDevName();
+            Intent intent = new Intent(iDevListConnectView.getContext(), DevPushService.class);
+            intent.putExtra("devId",getDevId());
+            intent.putExtra("isUpdateDevName",true);
+            intent.putExtra("devName",devName);
+            iDevListConnectView.getContext().startService(intent);
+
             if (iDevListConnectView != null) {
                 iDevListConnectView.onModifyDevNameFromServerResult(true);
             }
@@ -261,6 +272,8 @@ public class DevListConnectPresenter extends XMBasePresenter<AccountManager> imp
             if (iDevListConnectView != null) {
                 iDevListConnectView.onDeleteDevResult(true);
             }
+        } else if (msgId == EUIMSG.SYS_GET_CURRENT_USER_DEV_LIST) {
+            updateDevState();
         }
     }
 

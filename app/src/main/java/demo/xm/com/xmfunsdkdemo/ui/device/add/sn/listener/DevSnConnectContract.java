@@ -15,6 +15,6 @@ public class DevSnConnectContract {
          *
          * @param devId
          */
-        void addDev(String devId, String userName, String pwd, int devType);
+        void addDev(String devId, String userName, String pwd,String devToken, int devType);
     }
 }

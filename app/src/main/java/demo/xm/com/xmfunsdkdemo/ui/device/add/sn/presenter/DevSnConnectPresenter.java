@@ -6,6 +6,7 @@ import android.os.Message;
 
 import com.basic.G;
 import com.lib.MsgContent;
+import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.struct.SDBDeviceInfo;
 import com.manager.account.AccountManager;
 import com.manager.account.BaseAccountManager;
@@ -48,9 +49,9 @@ public class DevSnConnectPresenter extends XMBasePresenter<AccountManager> imple
     /*序列号连接设备*/
     /*Connect the device by its sequence number*/
     @Override
-    public void addDev(String devId, String userName, String pwd, int devType) {
+    public void addDev(String devId, String userName, String pwd, String devToken, int devType) {
         SDBDeviceInfo deviceInfo = new SDBDeviceInfo();
-        G.SetValue(deviceInfo.st_0_Devmac, devId);
+        G.SetValue(deviceInfo.st_0_Devmac, devId);//设备序列号
         G.SetValue(deviceInfo.st_1_Devname, devId);
         G.SetValue(deviceInfo.st_4_loginName, userName);
         deviceInfo.st_7_nType = devType;
@@ -58,6 +59,9 @@ public class DevSnConnectPresenter extends XMBasePresenter<AccountManager> imple
         xmDevInfo.setDevPassword(pwd);
         xmDevInfo.setDevUserName(userName);
         xmDevInfo.sdbDevInfoToXMDevInfo(deviceInfo);
+        if (!StringUtils.isStringNULL(devToken)) {
+            xmDevInfo.setDevToken(devToken);
+        }
         //未使用AccountManager(包括XMAccountManager或LocalAccountManager)登录（包括账号登录和本地临时登录），只能将设备信息临时缓存，重启应用后无法查到设备信息。
         if (DevDataCenter.getInstance().getLoginType() == LOGIN_NONE) {
             DevDataCenter.getInstance().addDev(xmDevInfo);

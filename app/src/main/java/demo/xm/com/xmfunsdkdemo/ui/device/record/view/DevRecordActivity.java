@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.struct.H264_DVR_FILE_DATA;
 import com.manager.ScreenOrientationManager;
@@ -86,6 +87,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     private boolean isCanScroll = true;
     private byte[] lock = new byte[1];
     private int recordType;//录像类型，是本地卡回放还是云回放
+    private long searchTime;//初始查询时间
     private Calendar searchMonthCalendar = Calendar.getInstance();
     private int portraitWidth;
     private int portraitHeight;
@@ -154,8 +156,12 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
         Intent intent = getIntent();
         recordType = intent.getIntExtra("recordType", PLAY_DEV_PLAYBACK);
         int chnId = intent.getIntExtra("chnId", 0);
+        searchTime = intent.getLongExtra("searchTime", 0L);
         presenter.setChnId(chnId);
         calendarShow = Calendar.getInstance();
+        if (searchTime != 0) {
+            calendarShow.setTimeInMillis(searchTime);
+        }
         presenter.setRecordType(recordType);
         recordFunAdapter = new RecordFunAdapter();
         rvRecordFun.setLayoutManager(new GridLayoutManager(this, 4));
@@ -197,9 +203,8 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     @Override
     public void onSearchRecordByFileResult(boolean isSuccess) {
         hideWaitDialog();
-        if (isSuccess) {
-            recordListAdapter.notifyDataSetChanged();
-        } else {
+        recordListAdapter.notifyDataSetChanged();
+        if (!isSuccess) {
             showToast(getString(R.string.search_record_failed), Toast.LENGTH_LONG);
         }
     }
@@ -207,9 +212,15 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     @Override
     public void onSearchRecordByTimeResult(boolean isSuccess) {
         hideWaitDialog();
+        recordListAdapter.notifyDataSetChanged();
+        recordTimeAxisAdapter.notifyDataSetChanged();
         if (isSuccess) {
-            recordListAdapter.notifyDataSetChanged();
-            recordTimeAxisAdapter.notifyDataSetChanged();
+            if (searchTime != 0) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(searchTime);
+                int times = calendar.get(Calendar.HOUR_OF_DAY) * 3600 + calendar.get(Calendar.MINUTE) * 60 + calendar.get(Calendar.SECOND);
+                presenter.seekToTime(times);
+            }
         } else {
             showToast(getString(R.string.search_record_failed), Toast.LENGTH_LONG);
         }
@@ -246,6 +257,21 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
         if (!StringUtils.isStringNULL(time) && isCanScroll()) {
             Calendar playCalendar = TimeUtils.getNormalFormatCalender(time);
             if (playCalendar != null) {
+                //获取当前选择播放的日期，并将时间设置为00:00:00
+                //Get the currently selected playing date and set the time to 00:00:00
+                Calendar curDateTime = (Calendar) calendarShow.clone();
+                curDateTime.set(Calendar.HOUR_OF_DAY, 0);
+                curDateTime.set(Calendar.MINUTE, 0);
+                curDateTime.set(Calendar.SECOND, 0);
+
+                //如果当前播放的时间比当前选择的播放日期0点的时间还小，那就是跨天了，那时间轴默认显示最开始的位置
+                //If the current playback time is shorter than the 0 o'clock time of the currently selected
+                // playback date, it is a cross-day, and the time axis displays the initial position by default
+                if (playCalendar.getTimeInMillis() < curDateTime.getTimeInMillis()) {
+                    linearLayoutManager.scrollToPositionWithOffset(0, 0);
+                    return;
+                }
+
                 int hour = playCalendar.get(Calendar.HOUR_OF_DAY);
                 int minute = playCalendar.get(Calendar.MINUTE);
                 int second = playCalendar.get(Calendar.SECOND);
@@ -414,6 +440,18 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     }
 
     @Override
+    public void onDeleteVideoResult(boolean isSuccess, int errorId) {
+        if (isSuccess) {
+            presenter.searchRecordByFile(calendarShow);
+            presenter.searchRecordByTime(calendarShow);
+            ToastUtils.showLong(getString(R.string.delete_s));
+        } else {
+            hideWaitDialog();
+            ToastUtils.showLong(getString(R.string.delete_f) + ":" + errorId);
+        }
+    }
+
+    @Override
     public Context getContext() {
         return this;
     }
@@ -432,7 +470,8 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                 getString(R.string.playback_fast_play),
                 getString(R.string.playback_slow_play),
                 getString(R.string.device_opt_fullscreen),
-                getString(R.string.sel_record_file_type)};
+                getString(R.string.sel_record_file_type),
+                getString(R.string.is_enable_epitome_record)};
 
         @NonNull
         @Override
@@ -543,6 +582,21 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                     }
                 });
 
+                lsiRecordInfo.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        XMPromptDlg.onShow(DevRecordActivity.this, getString(R.string.is_sure_delete_cloud_video), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                showWaitDialog();
+                                presenter.stopPlay();
+                                presenter.deleteVideo(getAdapterPosition());
+                            }
+                        },null);
+                        return true;
+                    }
+                });
+
                 btnDownload.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -624,6 +678,18 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                     }
                 });
                 break;
+            case 8:
+                if (!isSelected) {
+                    XMPromptDlg.onShow(DevRecordActivity.this, getString(R.string.support_epitome_record_tips), null);
+                    findViewById(R.id.banner_rl).setVisibility(View.GONE);
+                }else {
+                    findViewById(R.id.banner_rl).setVisibility(View.VISIBLE);
+                }
+                showWaitDialog();
+                presenter.setEpitomeRecordEnable(!isSelected);
+                presenter.searchRecordByFile(calendarShow);
+                presenter.searchRecordByTime(calendarShow);
+                return true;
             default:
                 break;
         }

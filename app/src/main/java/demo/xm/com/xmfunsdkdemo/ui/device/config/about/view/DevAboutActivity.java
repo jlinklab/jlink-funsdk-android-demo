@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lib.ECONFIG;
+import com.lib.FunSDK;
 import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.SysDevAbilityInfoBean;
 import com.manager.db.DevDataCenter;
@@ -18,6 +19,7 @@ import com.manager.db.XMDevInfo;
 import com.manager.sysability.SysAbilityManager;
 import com.utils.FileUtils;
 import com.utils.XUtils;
+import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.ListSelectItem;
 
 import java.io.File;
@@ -57,7 +59,7 @@ public class DevAboutActivity extends BaseConfigActivity<DevAboutPresenter> impl
     private TextView tvDevInfo;
     private boolean isLocalUpgrade;//是否为本地升级
     private static final int SYS_LOCAL_FILE_REQUEST_CODE = 0x08;
-
+    private String firmwareType;//固件類型 默认是System（主控），Mcu（单片机）
     @Override
     public DevAboutPresenter getPresenter() {
         return new DevAboutPresenter(this);
@@ -139,8 +141,13 @@ public class DevAboutActivity extends BaseConfigActivity<DevAboutPresenter> impl
     }
 
     private void initData() {
-        presenter.getDevInfo();
-        presenter.checkDevUpgrade();
+        Intent intent = getIntent();
+        firmwareType = intent.getStringExtra("firmwareType");
+        if (StringUtils.isStringNULL(firmwareType)) {
+            firmwareType = "System";
+        }
+
+        presenter.getDevInfo(firmwareType);
         presenter.getDevOemId(this);
 
         XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo(presenter.getDevId());
@@ -230,14 +237,37 @@ public class DevAboutActivity extends BaseConfigActivity<DevAboutPresenter> impl
     }
 
     @Override
+    public void onDevUpgradeFailed(int errorId) {
+        //如果升级失败了，提示失败原因，然后重新检测升级
+        XMPromptDlg.onShow(this, FunSDK.TS("TR_download_failure_click") + ":" + errorId, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SYS_LOCAL_FILE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Uri uri = data.getData();
                 String filePath = presenter.saveFileFromUri(this, uri);
-                presenter.startDevLocalUpgrade(filePath);
-                isLocalUpgrade = true;
+                XMPromptDlg.onShow(DevAboutActivity.this, getString(R.string.please_sel_firmware_type), getString(R.string.main_control),getString(R.string.mcu), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        presenter.startDevLocalUpgrade(firmwareType, filePath);
+                        isLocalUpgrade = true;
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        presenter.startDevLocalUpgrade(firmwareType, filePath);
+                        isLocalUpgrade = true;
+                    }
+                });
+
             }
         }
     }

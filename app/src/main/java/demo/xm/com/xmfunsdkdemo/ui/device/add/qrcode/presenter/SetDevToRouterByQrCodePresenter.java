@@ -256,8 +256,8 @@ public class SetDevToRouterByQrCodePresenter extends XMBasePresenter<DeviceManag
                     @Override
                     public void onFailed(String devId, int msgId, String jsonName, int errorId) {
                         System.out.println("login:" + errorId);
-                        addDevice(xmDevInfo, true);
                         iSetDevToRouterByQrCodeView.onPrintConfigDev(iSetDevToRouterByQrCodeView.getContext().getString(R.string.get_dev_token_f) + errorId);
+                        addDevice(xmDevInfo, true);
                     }
                 });
             }

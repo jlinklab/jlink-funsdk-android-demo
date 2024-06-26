@@ -1,7 +1,14 @@
 package demo.xm.com.xmfunsdkdemo.ui.activity;
 
+import static android.Manifest.permission.CHANGE_WIFI_MULTICAST_STATE;
+
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,6 +26,7 @@ import com.manager.account.XMAccountManager;
 import com.manager.db.DevDataCenter;
 import com.utils.AESECBUtils;
 import com.utils.MacroUtils;
+import com.utils.XUtils;
 import com.xm.base.OkHttpManager;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.ItemSetLayout;
@@ -66,7 +74,8 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
     private static String APP_KEY = "0621ef206a1d4cafbe0c5545c3882ea8";
     private RecyclerView userlv;
     private RecyclerView devLv;
-
+    private WifiManager.MulticastLock multicastLock;
+    private NetworkConnectChangeReceiver networkConnectChangeReceiver;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +86,7 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
                 || DemoConstant.APP_KEY.equals(APP_KEY)) {
             XMPromptDlg.onShow(this, getString(R.string.funsdk_integration_tips), null);
         }
-        MainActivityPermissionsDispatcher.initDataWithPermissionCheck(this);
+//        MainActivityPermissionsDispatcher.initDataWithPermissionCheck(this);
     }
 
     /**
@@ -85,9 +94,24 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
      * Access to SD card read and write permissions, vibration permissions, recording permissions, etc
      */
     @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.VIBRATE
-            , Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO})
+            , Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO,CHANGE_WIFI_MULTICAST_STATE})
     protected void initData() {
+        allowMulticast();
+    }
 
+    /**
+     * 获取组播
+     */
+    private void allowMulticast() {
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager != null) {
+            networkConnectChangeReceiver = new NetworkConnectChangeReceiver();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            registerReceiver(networkConnectChangeReceiver, intentFilter);
+            multicastLock = wifiManager.createMulticastLock(XUtils.getAppName(getApplicationContext()));
+            multicastLock.acquire();
+        }
     }
 
     @Override
@@ -286,6 +310,27 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+//        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (multicastLock != null) {
+            multicastLock.release();
+        }
+    }
+
+    class NetworkConnectChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (StringUtils.contrast(action, ConnectivityManager.CONNECTIVITY_ACTION)) {
+                if (multicastLock != null) {
+                    multicastLock.release();
+                    multicastLock.acquire();
+                }
+            }
+        }
     }
 }

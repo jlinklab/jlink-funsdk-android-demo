@@ -52,8 +52,10 @@ import java.util.HashMap;
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.DevMonitorContract;
+import demo.xm.com.xmfunsdkdemo.utils.TypeConversion;
 
 import static com.lib.EFUN_ATTR.EDA_DEV_TANSPORT_COM_WRITE;
+import static com.lib.EUIMSG.DEV_ON_TRANSPORT_COM_DATA;
 import static com.lib.sdk.bean.JsonConfig.CAMERA_PARAM;
 import static com.lib.sdk.bean.JsonConfig.WHITE_LIGHT;
 import static com.manager.db.Define.MEDIA_DATA_TYPE_YUV_NOT_DISPLAY;
@@ -631,7 +633,13 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
 
         MonitorManager mediaManager = monitorManagers.get(chnId);
         if (mediaManager != null) {
-            mediaManager.openVoiceBySound();
+            //在对讲的情况下，开启的是对讲音量并且要关闭视频伴音
+            if (mediaManager.isTalking()) {
+                mediaManager.getTalkManager().doubleDirectionSound(SDKCONST.Switch.Open);
+                mediaManager.closeVoiceBySound();
+            }else {
+                mediaManager.openVoiceBySound();
+            }
         }
     }
 
@@ -648,7 +656,12 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
 
         MonitorManager mediaManager = monitorManagers.get(chnId);
         if (mediaManager != null) {
-            mediaManager.closeVoiceBySound();
+            //在对讲的情况下，关闭的是对讲音量
+            if (mediaManager.isTalking()) {
+                mediaManager.getTalkManager().doubleDirectionSound(SDKCONST.Switch.Close);
+            }else {
+                mediaManager.closeVoiceBySound();
+            }
         }
     }
 
@@ -1087,7 +1100,6 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         //发送串口数据
         // Send serial port data
         TransComManager.getInstance().sendSerialPortsData(devConfigInfo);
-
     }
 
     /**

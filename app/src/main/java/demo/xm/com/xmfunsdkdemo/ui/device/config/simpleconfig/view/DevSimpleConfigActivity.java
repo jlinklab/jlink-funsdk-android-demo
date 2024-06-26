@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.lib.sdk.bean.StringUtils;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.ItemSetLayout;
 import com.xm.ui.widget.ListSelectItem;
+import com.xm.ui.widget.XMEditText;
 import com.xm.ui.widget.listselectitem.extra.adapter.ExtraSpinnerAdapter;
 import com.xm.ui.widget.listselectitem.extra.view.ExtraSpinner;
 
@@ -44,6 +46,10 @@ import io.reactivex.annotations.Nullable;
  * Created by jiangping on 2018-10-23.
  */
 public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigPresenter> implements DevSimpleConfigContract.IDevSimpleConfigView, View.OnClickListener {
+    /**
+     * 和后端设备交互 透传前缀(通过NVR将数据透传给IPC前段)
+     */
+    private static final String DEV_CONFIG_PENETRATE_PREFIX = "bypass@";
     private ListSelectItem lsiConfigName;
     private ListSelectItem lsiConfigChn;
     private ListSelectItem lsiConfigCmdId;
@@ -56,6 +62,8 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
     private Button btnShowExample;
     private EditText etReceiveConfigContent;
     private EditText etSendConfigContent;
+    private XMEditText etInputJsonName;//可以手动输入jsonName信息
+    private CheckBox cbNvrPenetrate;//NVR将配置透传到IPC
     private String jsonExample;
     private String jsonName;
     private String configName;
@@ -101,6 +109,7 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
                 }
 
                 showWaitDialog();
+
                 presenter.saveConfig(jsonName, spConfigChn.getSelectedValue(), etReceiveConfigContent.getText().toString());
                 isReceiveConfigContent.setLeftTitle(jsonName);
             }
@@ -109,12 +118,22 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
         btnGetConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //如果手动输入jsonName的编辑框显示了，需要判断当前的jsonName是否获取到，如果没有的话，就以etInputJsonName编辑框中的内容为主
+                if (etInputJsonName.getVisibility() == View.VISIBLE && StringUtils.isStringNULL(jsonName)) {
+                    jsonName = etInputJsonName.getEditText().trim();
+                    //如果是NVR透传给IPC的，需要在前缀加bypass@
+                    if (cbNvrPenetrate.isSelected()) {
+                        jsonName = DEV_CONFIG_PENETRATE_PREFIX + jsonName;
+                    }
+                }
+
                 if (StringUtils.isStringNULL(jsonName)) {
                     showToast(getString(R.string.select_config_name), Toast.LENGTH_LONG);
                     return;
                 }
 
                 showWaitDialog();
+
                 isReceiveConfigContent.setLeftTitle(configName);
 
                 if (cmdId == null || cmdId == 1042) {
@@ -129,19 +148,36 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
                     jsonObject.put("SessionID", "0x08");
                     etSendConfigContent.setText(jsonObject.toJSONString());
                 } else {
-                    presenter.cmdConfig(jsonName, cmdId, spConfigChn.getSelectedValue(), jsonData);
-                    if (!StringUtils.isStringNULL(jsonData)) {
-                        etSendConfigContent.setText(jsonData);
+                    presenter.cmdConfig(jsonName, cmdId, spConfigChn.getSelectedValue(), etSendConfigContent.getText().toString());
+                }
+            }
+        });
+
+        lsiConfigCmdId = findViewById(R.id.lsi_config_cmd_id);
+        btnShowExample = findViewById(R.id.btn_look_json_demo);
+
+        etInputJsonName = findViewById(R.id.et_input_json_name);
+
+        cbNvrPenetrate = findViewById(R.id.cb_nvr_penetrate);
+        cbNvrPenetrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (jsonName != null) {
+                    if (jsonName.startsWith(DEV_CONFIG_PENETRATE_PREFIX)) {
+                        jsonName = jsonName.replace(DEV_CONFIG_PENETRATE_PREFIX, "");
+                    }
+
+                    if (cbNvrPenetrate.isChecked()) {
+                        jsonName = DEV_CONFIG_PENETRATE_PREFIX + jsonName;
                     }
                 }
+
+                initConfigChn();
             }
         });
 
         initConfigName();
         initConfigChn();
-
-        lsiConfigCmdId = findViewById(R.id.lsi_config_cmd_id);
-        btnShowExample = findViewById(R.id.btn_look_json_demo);
     }
 
     private void initConfigName() {
@@ -155,16 +191,30 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
 
     private void initConfigChn() {
         spConfigChn = lsiConfigChn.getExtraSpinner();
-        spConfigChn.initData(new String[]{getString(R.string.chnId) + ":-1",
-                getString(R.string.chnId) + ":0",
-                getString(R.string.chnId) + ":1",
-                getString(R.string.chnId) + ":2",
-                getString(R.string.chnId) + ":3",
-                getString(R.string.chnId) + ":4",
-                getString(R.string.chnId) + ":5",
-                getString(R.string.chnId) + ":6",
-                getString(R.string.chnId) + ":7",
-                getString(R.string.chnId) + ":8"}, new Integer[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8});
+        if (cbNvrPenetrate.isChecked()) {
+            spConfigChn.initData(new String[]{
+                    getString(R.string.chnId) + ":0",
+                    getString(R.string.chnId) + ":1",
+                    getString(R.string.chnId) + ":2",
+                    getString(R.string.chnId) + ":3",
+                    getString(R.string.chnId) + ":4",
+                    getString(R.string.chnId) + ":5",
+                    getString(R.string.chnId) + ":6",
+                    getString(R.string.chnId) + ":7",
+                    getString(R.string.chnId) + ":8"}, new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8});
+        } else {
+            spConfigChn.initData(new String[]{getString(R.string.chnId) + ":-1",
+                    getString(R.string.chnId) + ":0",
+                    getString(R.string.chnId) + ":1",
+                    getString(R.string.chnId) + ":2",
+                    getString(R.string.chnId) + ":3",
+                    getString(R.string.chnId) + ":4",
+                    getString(R.string.chnId) + ":5",
+                    getString(R.string.chnId) + ":6",
+                    getString(R.string.chnId) + ":7",
+                    getString(R.string.chnId) + ":8"}, new Integer[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8});
+        }
+
         lsiConfigChn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,6 +228,8 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
                 lsiConfigChn.setRightText(s);
             }
         });
+
+        lsiConfigChn.setRightText(spConfigChn.getSelectedName());
     }
 
 
@@ -226,6 +278,10 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
 
     private void dealWithSearchData(Intent data) {
         jsonName = data.getStringExtra("jsonName");
+        //如果是NVR透传给IPC的，需要在前缀加bypass@
+        if (cbNvrPenetrate.isChecked()) {
+            jsonName = DEV_CONFIG_PENETRATE_PREFIX + jsonName;
+        }
         configName = data.getStringExtra("configName");
         jsonData = data.getStringExtra("jsonData");
         cmdId = data.getIntExtra("cmdId", 1042);
@@ -235,6 +291,8 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
         if (jsonName == null) {
             return;
         }
+
+        etInputJsonName.setEditText(jsonName);
 
         /**
          * 如果命令ID不是 1042（配置）都是走命令方式的
@@ -261,5 +319,11 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
                 isSendConfigContent.setVisibility(View.GONE);
             }
         }
+
+        if (!StringUtils.isStringNULL(jsonExample)) {
+            jsonData = jsonExample;
+        }
+
+        etSendConfigContent.setText(jsonExample);
     }
 }

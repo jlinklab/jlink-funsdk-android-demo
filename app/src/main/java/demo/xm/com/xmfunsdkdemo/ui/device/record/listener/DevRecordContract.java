@@ -35,6 +35,8 @@ public class DevRecordContract {
          */
         void onUpdateVideoThumb(Bitmap bitmap, int pos);
 
+        void onDeleteVideoResult(boolean isSuccess,int errorId);
+
         Context getContext();
     }
 
@@ -52,6 +54,13 @@ public class DevRecordContract {
          * @param recordFileType 是否查询报警录像
          */
         void setSearchRecordFileType(int recordFileType);
+
+        /**
+         * 是否开启只查询播放缩影录像
+         *
+         * @param isEnable
+         */
+        void setEpitomeRecordEnable(boolean isEnable);
 
         /**
          * 按文件方式查询录像，以文件列表方式显示
@@ -189,7 +198,7 @@ public class DevRecordContract {
          */
         void downloadVideoByFile(int position);
 
-        void downloadVideoByTime(Calendar startTime,Calendar endTime);
+        void downloadVideoByTime(Calendar startTime, Calendar endTime);
 
         /**
          * 快速播放
@@ -201,5 +210,12 @@ public class DevRecordContract {
          * 慢速播放
          */
         void playSlow();
+
+        /**
+         * 更新视频播放布局
+         * @param width
+         * @param height
+         */
+        void updateVideoView(int width,int height);
     }
 }

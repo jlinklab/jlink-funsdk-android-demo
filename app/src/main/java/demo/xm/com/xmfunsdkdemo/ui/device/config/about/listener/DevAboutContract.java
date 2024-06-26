@@ -20,10 +20,12 @@ public class DevAboutContract {
         void syncDevTimeResult(boolean isSuccess, int errorId);
 
         void onGetDevOemIdResult(String oemId);
+
+        void onDevUpgradeFailed(int errorId);
     }
 
     public interface IDevAboutPresenter {
-        void getDevInfo();
+        void getDevInfo(String type);
 
         /**
          * 检测升级
@@ -48,16 +50,16 @@ public class DevAboutContract {
         boolean isDevUpgradeEnable();
 
         /**
+         * 同步设备时区
+         */
+        void syncDevTimeZone();
+
+        /**
          * 本地文件升级
          *
          * @param filePath 文件路径
          */
-        void startDevLocalUpgrade(String filePath);
-
-        /**
-         * 同步设备时区
-         */
-        void syncDevTimeZone();
+        void startDevLocalUpgrade(String type, String filePath);
 
         /**
          * 同步设备时间

@@ -49,7 +49,6 @@ public class RecordTimeAxisAdapter extends RecyclerView.Adapter<RecordTimeAxisAd
 
 	@Override
 	public int getItemCount() {
-		// TODO Auto-generated method stub
 		return null == mList ? 0 : mList.size();
 	}
 

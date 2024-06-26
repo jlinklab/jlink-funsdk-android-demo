@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import com.lib.sdk.bean.alarm.AlarmInfo;
 import com.manager.image.BaseImageManager;
 
+import java.util.Calendar;
+
 /**
  * 设备报警界面,显示相关的列表菜单.
  * Created by jiangping on 2018-10-23.
@@ -16,6 +18,8 @@ public class DevAlarmContract {
         void onDeleteAlarmMsgResult(boolean isSuccess);
 
         void onShowPicResult(boolean isSuccess, Bitmap bitmap);
+
+        void onTurnToVideo(Calendar searchTime);
     }
 
     public interface IDevAlarmPresenter {
