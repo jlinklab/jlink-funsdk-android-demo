@@ -145,79 +145,82 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     // PTZ control
     // 云台控制
     private static final int FUN_PTZ = 3;
+    //Gimbal Calibration
+    //云台校正
+    private static final int FUN_PTZ_CALIBRATION = 4;
 
     //  Intercom
     // 对讲
-    private static final int FUN_INTERCOM = 4;
+    private static final int FUN_INTERCOM = 5;
 
     // Playback
     // 回放
-    private static final int FUN_PLAYBACK = 5;
+    private static final int FUN_PLAYBACK = 6;
 
     // Stream switching
     // 码流切换
-    private static final int FUN_CHANGE_STREAM = 6;
+    private static final int FUN_CHANGE_STREAM = 7;
 
     // Preset point
     // 预置点
-    private static final int FUN_PRESET = 7;
+    private static final int FUN_PRESET = 8;
 
     // Full screen
     // 全屏
-    private static final int FUN_LANDSCAPE = 8;
+    private static final int FUN_LANDSCAPE = 9;
 
     // Full stream
     // 满屏
-    private static final int FUN_FULL_STREAM = 9;
+    private static final int FUN_FULL_STREAM = 10;
 
     // LAN alarm
     // 局域网报警
-    private static final int FUN_LAN_ALARM = 10;
+    private static final int FUN_LAN_ALARM = 11;
 
     // Device image
     // 设备端图片
-    private static final int FUN_DEV_PIC = 11;
+    private static final int FUN_DEV_PIC = 12;
 
     // Capture and save on the device side
     // 设备端抓图并保存
-    private static final int FUN_DEV_CAPTURE_SAVE = 12;
+    private static final int FUN_DEV_CAPTURE_SAVE = 13;
 
     // Real-time preview timeliness
     // 实时预览实时性
-    private static final int FUN_REAL_PLAY = 13;
+    private static final int FUN_REAL_PLAY = 14;
 
     // Simple data interaction
     // 简单数据交互
-    private static final int FUN_SIMPLE_DATA = 14;
+    private static final int FUN_SIMPLE_DATA = 15;
 
     // Video frame rotation
     // 视频画面旋转
-    private static final int FUN_VIDEO_ROTATE = 15;
+    private static final int FUN_VIDEO_ROTATE = 16;
 
     // Feeding
     // 喂食
-    private static final int FUN_FEET = 16;
+    private static final int FUN_FEET = 17;
 
     // irCut
     // irCut
-    private static final int FUN_IRCUT = 17;
+    private static final int FUN_IRCUT = 18;
 
     // Restore factory settings
     // 恢复出厂设置
-    private static final int FUN_RESET = 18;
+    private static final int FUN_RESET = 19;
 
     // Point-to-view
     // 指哪看哪
-    private static final int FUN_POINT = 19;
+    private static final int FUN_POINT = 20;
 
     // Manual alarm
     // 手动警戒
-    private static final int FUN_MANUAL_ALARM = 20;
+    private static final int FUN_MANUAL_ALARM = 21;
 
-    private static final int FUN_ALARM_BY_VOICE_LIGHT = 21;// 声光报警
+    private static final int FUN_ALARM_BY_VOICE_LIGHT = 22;// 声光报警
     //Camera linkage
     //相机联动
-    private static final int FUN_CAMERA_LINK = 22;
+    private static final int FUN_CAMERA_LINK = 23;
     private List<HashMap<String, Object>> monitorFunList = new ArrayList<>();//预览页面的功能列表
 
     @Override
@@ -581,6 +584,16 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         hashMap.put("itemName", getString(R.string.ptz_ctrl));
         monitorFunList.add(hashMap);
 
+        if (systemFunctionBean != null) {
+            //是否支持云台校正
+            if (systemFunctionBean.OtherFunction.SupportPtzAutoAdjust) {
+                hashMap = new HashMap<>();
+                hashMap.put("itemId", FUN_PTZ_CALIBRATION);
+                hashMap.put("itemName",getString(R.string.pzt_calibration));
+                monitorFunList.add(hashMap);
+            }
+        }
+
         hashMap = new HashMap<>();
         hashMap.put("itemId", FUN_INTERCOM);
         hashMap.put("itemName", getString(R.string.one_way_intercom));
@@ -914,6 +927,10 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                     }
                 });
                 XMPromptDlg.onShow(this, contentLayout);
+                break;
+            case FUN_PTZ_CALIBRATION://云台校正
+                showWaitDialog();
+                presenter.ptzCalibration();
                 break;
             case FUN_INTERCOM: //单向对讲，按下去说话，放开后听到设备端的声音，对话框消失后 对讲结束
             {
@@ -1430,6 +1447,17 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         } else {
             showToast(getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG);
         }
+    }
+
+    @Override
+    public void onPtzCalibrationResult(boolean isSuccess, int errorId) {
+        if (isSuccess) {
+            showToast(getString(R.string.libfunsdk_operation_success), Toast.LENGTH_LONG);
+        }else {
+            showToast(getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG);
+        }
+
+        hideWaitDialog();
     }
 
     private boolean isHomePress;//按了Home键，退到后台

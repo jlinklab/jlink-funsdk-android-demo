@@ -9,7 +9,7 @@ package demo.xm.com.xmfunsdkdemo.ui.device.config.serialport.contract;
 public interface SerialPortContract {
     interface ISerialPortView {
         void onOpenSerialPortResult(boolean isOpen);
-        void onSerialPortResult(String data);
+        void onSerialPortResult(byte[] data);
     }
 
     interface ISerialPortPresenter {

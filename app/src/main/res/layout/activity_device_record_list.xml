@@ -17,7 +17,14 @@
         <FrameLayout
             android:id="@+id/layoutPlayWnd"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+            <com.xm.ui.widget.XMSeekBar
+                android:id="@+id/xb_seek_to_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:visibility="gone"/>
+        </FrameLayout>
         <RelativeLayout
             android:id="@+id/videoProgressArea"
             android:layout_width="match_parent"

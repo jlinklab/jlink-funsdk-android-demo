@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.xm.ui.widget.ItemSetLayout
+        android:id="@+id/item_json"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/round_white_shape"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/normal_text_size"
+        android:textStyle="bold"
+        uilib:left_title_text="@string/dev_json_format"
+        uilib:main_layout="@layout/layout_show_json_tips"
+        android:layout_above="@+id/btn_ok"/>
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/ok"/>
+</RelativeLayout>

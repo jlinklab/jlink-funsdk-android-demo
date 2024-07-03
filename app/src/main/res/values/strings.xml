@@ -900,4 +900,9 @@
     <string name="please_input_capture_interval">Please enter the capture interval (1~86400, in seconds)</string>
     <string name="is_enable_epitome_record">Enable Epitome Record</string>
     <string name="support_epitome_record_tips">This feature is only supported on specific devices</string>
+    <string name="scan_json">Scan</string>
+    <string name="dev_json_format">Format of QR code content</string>
+    <string name="dev_settings">Device Settings</string>
+    <string name="share_dev_data">Share Device Configuration</string>
+    <string name="pzt_calibration">PTZ Calibration</string>
 </resources>

@@ -80,7 +80,8 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.3'//二维码扫描和生成需要集成的库
     implementation 'com.google.android.material:material:1.1.0' //为了防止不必要的依赖冲突，0.0.3开始需要自行依赖google material库
     implementation 'com.github.loper7:DateTimePicker:0.6.3'//具体版本请看顶部jitpack标识，如0.6.3,仅支持androidx
-
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     //-------------------------------以下是集成到项目中需要的依赖库--------------------------
     //-----------The following are the required libraries for integration into the project-----------------------
     implementation 'io.github.xmcamera:uilibrary:2.1'
@@ -89,4 +90,6 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'io.github.xmcamera:libxmfunsdk:4.7.3.2'
+
 }

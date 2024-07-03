@@ -1457,6 +1457,25 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         return isManualAlarmOpen;
     }
 
+    @Override
+    public void ptzCalibration() {
+        DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
+            @Override
+            public void onSuccess(String devId, int operationType, Object result) {
+                iDevMonitorView.onPtzCalibrationResult(true,0);
+            }
 
+            @Override
+            public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+                iDevMonitorView.onPtzCalibrationResult(false,errorId);
+            }
+        });
+
+        devConfigInfo.setChnId(-1);
+        devConfigInfo.setJsonName(JsonConfig.OP_PTZ_AUTO_ADJUST);
+        devConfigInfo.setCmdId(1450);
+        devConfigInfo.setTimeOut(60000);//超时1分钟
+        devConfigManager.setDevCmd(devConfigInfo);
+    }
 }
 

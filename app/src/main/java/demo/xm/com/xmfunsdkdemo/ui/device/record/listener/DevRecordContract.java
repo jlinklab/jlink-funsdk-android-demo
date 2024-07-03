@@ -173,6 +173,13 @@ public class DevRecordContract {
          *
          * @param times
          */
+        void seekToTime(Calendar calendar,int times);
+
+        /**
+         * 定位时间播放 24小时内换算的时间，单位秒
+         *
+         * @param times
+         */
         void seekToTime(int times);
 
         void setPlayTimeByMinute(int minute);

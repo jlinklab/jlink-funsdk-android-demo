@@ -1,8 +1,11 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.config.simpleconfig.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -12,19 +15,29 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
+
 import com.alibaba.fastjson.JSONObject;
+import com.blankj.utilcode.util.ToastUtils;
 import com.lib.sdk.bean.CameraFishEyeBean;
 import com.lib.sdk.bean.CameraParamBean;
 import com.lib.sdk.bean.ConfigJsonNameLink;
 import com.lib.sdk.bean.JsonConfig;
 import com.lib.sdk.bean.StringUtils;
+import com.manager.XMFunSDKManager;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.ItemSetLayout;
 import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.XMEditText;
+import com.xm.ui.widget.XTitleBar;
 import com.xm.ui.widget.listselectitem.extra.adapter.ExtraSpinnerAdapter;
 import com.xm.ui.widget.listselectitem.extra.view.ExtraSpinner;
 
+import org.json.JSONException;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -35,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import demo.xm.com.xmfunsdkdemo.R;
+import demo.xm.com.xmfunsdkdemo.ui.activity.scanqrcode.CaptureActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.BaseConfigActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.simpleconfig.listener.DevSimpleConfigContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.simpleconfig.presenter.DevSimpleConfigPresenter;
@@ -53,6 +67,7 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
     private ListSelectItem lsiConfigName;
     private ListSelectItem lsiConfigChn;
     private ListSelectItem lsiConfigCmdId;
+    private Button btnShareDevData;
     private ExtraSpinner<Integer> spConfigChn;
 
     private ItemSetLayout isReceiveConfigContent;
@@ -89,6 +104,52 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
         titleBar = findViewById(R.id.layoutTop);
         titleBar.setTitleText(getString(R.string.simple_config));
         titleBar.setLeftClick(this);
+        titleBar.setRightTitleText(getString(R.string.scan_json));
+        titleBar.setRightTvClick(new XTitleBar.OnRightClickListener() {
+            @Override
+            public void onRightClick() {
+                Dialog dialog = null;
+                View layout = LayoutInflater.from(DevSimpleConfigActivity.this).inflate(R.layout.layout_show_json_layout,null);
+
+                ItemSetLayout itemSetLayout = layout.findViewById(R.id.item_json);
+                TextView textView = itemSetLayout.findViewById(R.id.tv_content);
+                textView.setText("{\n" +
+                        "    \"data\": {\n" +
+                        "        //要发送给设备的json数据\n" +
+                        "    },\n" +
+                        "    \"cmdId\": //消息ID,\n" +
+                        "    \"jsonName\":,\n" +
+                        "    \"chn\"://通道号，-1表示针对设备，其他值表示具体的通道号\n" +
+                        "}\n" + "比如:\n" +
+                        "{\n" +
+                        "    \"data\": {\n" +
+                        "        \"OPLogQuery\": {\n" +
+                        "            \"Type\": \"LogAll\",\n" +
+                        "            \"BeginTime\": \"2023-10-23 00:00:00\",\n" +
+                        "            \"EndTime\": \"2023-10-23 24:00:00\"\n" +
+                        "        }\n" +
+                        "    },\n" +
+                        "    \"cmdId\": 1442,\n" +
+                        "    \"jsonName\": \"OPLogQuery\",\n" +
+                        "    \"chn\": -1\n" +
+                        "}");
+                Button button = layout.findViewById(R.id.btn_ok);
+
+                dialog = XMPromptDlg.onShow(DevSimpleConfigActivity.this,layout);
+                Dialog finalDialog = dialog;
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (finalDialog != null) {
+                            finalDialog.dismiss();
+                        }
+                        Intent intent = new Intent();
+                        intent.setClass(DevSimpleConfigActivity.this, CaptureActivity.class);
+                        startActivityForResult(intent, 1);
+                    }
+                });
+            }
+        });
         lsiConfigChn = findViewById(R.id.lis_config_chn);
         lsiConfigName = findViewById(R.id.lis_config_name);
         isReceiveConfigContent = findViewById(R.id.is_receive_config_content);
@@ -173,6 +234,30 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
                 }
 
                 initConfigChn();
+            }
+        });
+
+        btnShareDevData = isReceiveConfigContent.findViewById(R.id.btn_share_dev_data);
+        btnShareDevData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    File file = new File(XMFunSDKManager.getInstance().getAppFilePath() + File.separator + "devData.txt");
+                    FileOutputStream fos = new FileOutputStream(file);
+                    byte[] bytes = etReceiveConfigContent.getText().toString().getBytes();
+                    fos.write(bytes);
+                    fos.close();
+
+                    Uri fileUri = FileProvider.getUriForFile(DevSimpleConfigActivity.this, "demo.xm.com.xmfunsdkdemo.fileprovider", file);
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    DevSimpleConfigActivity.this.startActivity(Intent.createChooser(shareIntent, "分享设备配置"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    ToastUtils.showLong("分享失败!");
+                }
             }
         });
 
@@ -271,8 +356,42 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data != null) {
-            dealWithSearchData(data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 0) {
+                dealWithSearchData(data);
+            } else if (requestCode == 1) {
+                String result = data.getStringExtra("result");
+                try {
+                    org.json.JSONObject jsonObject = new org.json.JSONObject(result);
+                    if (jsonObject.has("cmdId")) {
+                        cmdId = (Integer) jsonObject.get("cmdId");
+                    }
+
+                    if (jsonObject.has("data")) {
+                        jsonData = (String) jsonObject.getString("data");
+                        etSendConfigContent.setText(jsonData);
+                    }
+
+                    if (jsonObject.has("jsonName")) {
+                        jsonName = (String) jsonObject.get("jsonName");
+                    }
+
+                    if (jsonObject.has("chn")) {
+                        int chn = (int) jsonObject.get("chn");
+                        spConfigChn.setValue(chn);
+                    }
+
+
+                    if (jsonData != null && jsonName != null && cmdId > 0) {
+                        btnGetConfig.performClick();
+                    }else {
+                        ToastUtils.showLong("数据解析异常，无法正常获取到有效数据");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    ToastUtils.showLong("数据解析异常，无法正常获取到有效数据");
+                }
+            }
         }
     }
 

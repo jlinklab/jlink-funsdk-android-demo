@@ -55,8 +55,7 @@ public class SerialPortPresenter extends XMBasePresenter<DeviceManager> implemen
                         //接收串口数据
                         if (operationType == DEV_ON_TRANSPORT_COM_DATA) {
                             if (result != null) {
-                                String info = TypeConversion.bytes2HexString(result,result.length);
-                                iSerialPortView.onSerialPortResult(info);
+                                iSerialPortView.onSerialPortResult(result);
                             }
                         }
                     }
