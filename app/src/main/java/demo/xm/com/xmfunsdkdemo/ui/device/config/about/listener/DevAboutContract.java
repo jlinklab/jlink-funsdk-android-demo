@@ -21,7 +21,13 @@ public class DevAboutContract {
 
         void onGetDevOemIdResult(String oemId);
 
+        void onGetICCIDResult(String iccid);
+
+        void onGetIMEIResult(String imei);
+
         void onDevUpgradeFailed(int errorId);
+
+        void onDevNetConnectMode(int netConnectType);
     }
 
     public interface IDevAboutPresenter {
@@ -67,8 +73,8 @@ public class DevAboutContract {
         void syncDevTime();
 
         /**
-         * 获取设备OemId
+         * 获取设备云服务能力
          */
-        void getDevOemId(Context context);
+        void getDevCapsAbility(Context context);
     }
 }

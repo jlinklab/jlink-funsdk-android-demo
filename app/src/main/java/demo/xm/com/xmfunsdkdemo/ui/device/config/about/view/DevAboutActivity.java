@@ -1,5 +1,11 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.config.about.view;
 
+import static com.lib.sdk.bean.SystemInfoBean.CONNECT_TYPE_P2P;
+import static com.lib.sdk.bean.SystemInfoBean.CONNECT_TYPE_RPS;
+import static com.lib.sdk.bean.SystemInfoBean.CONNECT_TYPE_RTS;
+import static com.lib.sdk.bean.SystemInfoBean.CONNECT_TYPE_RTS_P2P;
+import static com.lib.sdk.bean.SystemInfoBean.CONNECT_TYPE_TRANSMIT;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,7 +26,10 @@ import com.manager.sysability.SysAbilityManager;
 import com.utils.FileUtils;
 import com.utils.XUtils;
 import com.xm.ui.dialog.XMPromptDlg;
+import com.xm.ui.widget.ItemSetLayout;
 import com.xm.ui.widget.ListSelectItem;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,11 +64,15 @@ public class DevAboutActivity extends BaseConfigActivity<DevAboutPresenter> impl
     private ListSelectItem lsiSyncDevTime;//同步时间
     private ListSelectItem lsiSyncDevTimeZone;//同步时区
     private ListSelectItem lsiOemId;//OEMID信息
+    private ListSelectItem lsiICCID;//ICCID信息
+    private ListSelectItem lsiIMEI;//IMEI信息
+    private ListSelectItem lsiNetworkMode;//网络模式
     private Button defaltConfigBtn = null;
     private TextView tvDevInfo;
     private boolean isLocalUpgrade;//是否为本地升级
     private static final int SYS_LOCAL_FILE_REQUEST_CODE = 0x08;
     private String firmwareType;//固件類型 默认是System（主控），Mcu（单片机）
+
     @Override
     public DevAboutPresenter getPresenter() {
         return new DevAboutPresenter(this);
@@ -93,7 +106,7 @@ public class DevAboutActivity extends BaseConfigActivity<DevAboutPresenter> impl
         devUpdateText = findViewById(R.id.textDeviceUpgrade);
         defaltConfigBtn = findViewById(R.id.defealtconfig);
         defaltConfigBtn.setOnClickListener(this);
-        tvDevInfo = findViewById(R.id.tv_device_info);
+        tvDevInfo = ((ItemSetLayout) findViewById(R.id.isl_device_info)).getMainLayout().findViewById(R.id.tv_content);
 
         lsiDevUpgrade = findViewById(R.id.lsi_check_dev_upgrade);
         lsiDevUpgrade.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +151,9 @@ public class DevAboutActivity extends BaseConfigActivity<DevAboutPresenter> impl
         });
 
         lsiOemId = findViewById(R.id.lsi_dev_oemid);
+        lsiICCID = findViewById(R.id.lsi_iccid);
+        lsiIMEI = findViewById(R.id.lsi_imei);
+        lsiNetworkMode = findViewById(R.id.lsi_network_mode);
     }
 
     private void initData() {
@@ -148,7 +164,7 @@ public class DevAboutActivity extends BaseConfigActivity<DevAboutPresenter> impl
         }
 
         presenter.getDevInfo(firmwareType);
-        presenter.getDevOemId(this);
+        presenter.getDevCapsAbility(this);
 
         XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo(presenter.getDevId());
         if (xmDevInfo != null) {
@@ -231,8 +247,22 @@ public class DevAboutActivity extends BaseConfigActivity<DevAboutPresenter> impl
 
     @Override
     public void onGetDevOemIdResult(String oemId) {
-        if (oemId != null) {
-            lsiOemId.setRightText(oemId);
+        lsiOemId.setRightText(oemId);
+    }
+
+    @Override
+    public void onGetICCIDResult(String iccid) {
+        if (iccid != null) {
+            lsiICCID.setVisibility(View.VISIBLE);
+            lsiICCID.setRightText(iccid);
+        }
+    }
+
+    @Override
+    public void onGetIMEIResult(String imei) {
+        if (imei != null) {
+            lsiIMEI.setVisibility(View.VISIBLE);
+            lsiIMEI.setRightText(imei);
         }
     }
 
@@ -248,13 +278,30 @@ public class DevAboutActivity extends BaseConfigActivity<DevAboutPresenter> impl
     }
 
     @Override
+    public void onDevNetConnectMode(int netConnectType) {
+        if (netConnectType == CONNECT_TYPE_P2P) {
+            lsiNetworkMode.setRightText("P2P");
+        } else if (netConnectType == CONNECT_TYPE_TRANSMIT) {
+            lsiNetworkMode.setRightText(getString(R.string.settings_about_transmit_mode));
+        } else if (netConnectType == CONNECT_TYPE_RPS) {
+            lsiNetworkMode.setRightText(FunSDK.TS("RPS"));
+        } else if (netConnectType == CONNECT_TYPE_RTS_P2P) {
+            lsiNetworkMode.setRightText(FunSDK.TS("RTS P2P"));
+        } else if (netConnectType == CONNECT_TYPE_RTS) {
+            lsiNetworkMode.setRightText(FunSDK.TS("RTS Proxy"));
+        } else {
+            lsiNetworkMode.setRightText("IP");
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SYS_LOCAL_FILE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Uri uri = data.getData();
                 String filePath = presenter.saveFileFromUri(this, uri);
-                XMPromptDlg.onShow(DevAboutActivity.this, getString(R.string.please_sel_firmware_type), getString(R.string.main_control),getString(R.string.mcu), new View.OnClickListener() {
+                XMPromptDlg.onShow(DevAboutActivity.this, getString(R.string.please_sel_firmware_type), getString(R.string.main_control), getString(R.string.mcu), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         presenter.startDevLocalUpgrade(firmwareType, filePath);

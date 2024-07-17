@@ -726,7 +726,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             } else if (errorId < 0) {
                 showToast(getString(R.string.open_video_f) + errorId, Toast.LENGTH_LONG);
             } else {
-                monitorFunAdapter.changeBtnState(6, presenter.getStreamType(chnId) == SDKCONST.StreamType.Main);
+                monitorFunAdapter.changeBtnState(FUN_CHANGE_STREAM, presenter.getStreamType(chnId) == SDKCONST.StreamType.Main);
             }
         }
 
@@ -843,7 +843,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 String itemName = (String) hashMap.get("itemName");
                 int itemId = (int) hashMap.get("itemId");
                 holder.btnMonitorFun.setText(itemName);
-                holder.btnMonitorFun.setTag(position);
+                holder.btnMonitorFun.setTag(itemId);
                 if (FUN_FULL_STREAM == itemId) {
                     holder.btnMonitorFun.setSelected(!presenter.isVideoFullScreen(playWndLayout.getSelectedId()));
                 }
@@ -879,16 +879,16 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             }
         }
 
-        public void changeBtnState(int position, boolean isSelected) {
-            BtnColorBK btnMonitorFun = rvMonitorFun.findViewWithTag(position);
+        public void changeBtnState(int itemId, boolean isSelected) {
+            BtnColorBK btnMonitorFun = rvMonitorFun.findViewWithTag(itemId);
             if (btnMonitorFun != null) {
                 btnMonitorFun.setSelected(isSelected);
             }
         }
     }
 
-    private boolean dealWithMonitorFunction(int position, boolean isSelected) {
-        switch (position) {
+    private boolean dealWithMonitorFunction(int itemId, boolean isSelected) {
+        switch (itemId) {
             case FUN_VOICE://开启和关闭音频
                 if (isSelected) {
                     presenter.closeVoice(playWndLayout.getSelectedId());
@@ -1219,7 +1219,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 return true;
             case FUN_MANUAL_ALARM://手动警戒
                 boolean isManualAlarmOpen = presenter.changeManualAlarmSwitch();
-                monitorFunAdapter.changeBtnState(FUN_MANUAL_ALARM, isManualAlarmOpen);
+                monitorFunAdapter.changeBtnState(itemId, isManualAlarmOpen);
                 break;
             case FUN_ALARM_BY_VOICE_LIGHT: //声光报警
                 turnToActivity(AlarmByVoiceLightActivity.class);

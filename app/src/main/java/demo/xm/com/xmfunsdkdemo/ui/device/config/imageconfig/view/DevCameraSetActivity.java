@@ -2,16 +2,22 @@ package demo.xm.com.xmfunsdkdemo.ui.device.config.imageconfig.view;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.lib.SDKCONST;
 import com.lib.sdk.bean.JsonConfig;
 import com.lib.sdk.bean.StringUtils;
+import com.manager.device.DeviceManager;
+import com.manager.device.media.monitor.MonitorManager;
+import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.XTitleBar;
 
 import demo.xm.com.xmfunsdkdemo.R;
@@ -63,7 +69,9 @@ public class DevCameraSetActivity extends BaseConfigActivity<DevCameraSetPresent
      * 灵敏度选项：6：最好，5：很好，4：好，3：一般，2：较差，1：很差
      */
     private static final Integer[] defValues = {6, 5, 4, 3, 2, 1};
-
+    private ListSelectItem lsiWDR;
+    private MonitorManager monitorManager;
+    private FrameLayout playView;
     @Override
     public DevCameraSetPresenter getPresenter() {
         return new DevCameraSetPresenter(this);
@@ -109,6 +117,19 @@ public class DevCameraSetActivity extends BaseConfigActivity<DevCameraSetPresent
 
         spDayNightMode = findViewById(R.id.sp_dev_set_camera_day_night_mode);
         rlDayNightMode = findViewById(R.id.rl_camera_daynight_mode);
+
+        lsiWDR = findViewById(R.id.lsi_wdr);
+        lsiWDR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showWaitDialog();
+                boolean isOpen = !(lsiWDR.getRightValue() == SDKCONST.Switch.Open);
+                lsiWDR.setRightImage(isOpen ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
+                presenter.setWDRConfig(isOpen);
+            }
+        });
+
+        playView = findViewById(R.id.fl_monitor_surface);
     }
 
     @Override
@@ -162,6 +183,30 @@ public class DevCameraSetActivity extends BaseConfigActivity<DevCameraSetPresent
     }
 
     @Override
+    public void onWDRConfig(boolean isSupport, boolean isOpen) {
+        if (isSupport) {
+            findViewById(R.id.ll_wdr_layout).setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) playView.getLayoutParams();
+            params.height = screenWidth * 9 / 16;
+            lsiWDR.setRightImage(isOpen ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
+            monitorManager = DeviceManager.getInstance().createMonitorPlayer(playView,presenter.getDevId());
+            monitorManager.startMonitor();
+        }else {
+            lsiWDR.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onSetWDRConfigResult(boolean isSuccess, int errorId) {
+        hideWaitDialog();
+        if (isSuccess) {
+            showToast(getString(R.string.set_dev_config_success), Toast.LENGTH_SHORT);
+        } else {
+            showToast(getString(R.string.set_dev_config_failed) + ":" + errorId, Toast.LENGTH_SHORT);
+        }
+    }
+
+    @Override
     public void onSaveResult(int state) {
         hideWaitDialog();
         if (state == DevConfigState.DEV_CONFIG_UPDATE_SUCCESS) {
@@ -200,5 +245,13 @@ public class DevCameraSetActivity extends BaseConfigActivity<DevCameraSetPresent
         mCamera.setmBlcMode(btnBLCMode.isSelected());
         mCamera.setmDayNightColor(dayNightValues[spDayNightMode.getSelectedItemPosition()]);
         presenter.setCameraInfo(mCamera.getSendMsg());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (monitorManager != null) {
+            monitorManager.release();
+        }
     }
 }

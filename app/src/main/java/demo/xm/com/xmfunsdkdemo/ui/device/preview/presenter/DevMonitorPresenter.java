@@ -416,7 +416,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         if (mediaManager != null) {
             //设置码流类型（主码流、副码流）
             // Set stream type (main stream, sub stream)
-            mediaManager.setStreamType(SDKCONST.StreamType.Extra);
+            mediaManager.setStreamType(SDKCONST.StreamType.Main);
             //是否要开启实时预览实时性，只有局域网模式下才支持，开启后为了确保实时性可能会出现丢帧情况
             // Whether to enable real-time preview timeliness, only supported in LAN mode, enabling may cause frame loss to ensure real-time performance
             mediaManager.setRealTimeEnable(isRealTimeEnable);
@@ -821,7 +821,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
     @Override
     public int getStreamType(int chnId) {
         if (!monitorManagers.containsKey(chnId)) {
-            return SDKCONST.StreamType.Extra;
+            return SDKCONST.StreamType.Main;
         }
 
         MonitorManager mediaManager = monitorManagers.get(chnId);
@@ -829,7 +829,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
             return mediaManager.getStreamType();
         }
 
-        return SDKCONST.StreamType.Extra;
+        return SDKCONST.StreamType.Main;
     }
 
     /**

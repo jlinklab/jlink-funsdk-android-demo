@@ -905,4 +905,9 @@
     <string name="dev_settings">Device Settings</string>
     <string name="share_dev_data">Share Device Configuration</string>
     <string name="pzt_calibration">PTZ Calibration</string>
+    <string name="setting_broad_thrends_config">WDR Config</string>
+    <string name="dev_basic_information">Basic Information</string>
+    <string name="network_mode">Network Mode</string>
+    <string name="manufacturing_mode">Manufacturing Mode</string>
+    <string name="settings_about_transmit_mode">Forwarding Mode</string>
 </resources>
