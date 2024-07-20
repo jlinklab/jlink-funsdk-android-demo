@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,9 +42,12 @@ import com.manager.device.media.attribute.PlayerAttribute;
 import com.utils.TimeUtils;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.BtnColorBK;
+import com.xm.ui.widget.BubbleSeekBar;
 import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.XMRecyclerView;
+import com.xm.ui.widget.XMSeekBar;
 import com.xm.ui.widget.XTitleBar;
+import com.xm.ui.widget.data.BubbleIndicator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -78,6 +82,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     private RecyclerView rvRecordList;
     private RecyclerView rvRecordFun;
     private XMRecyclerView rvRecordTimeAxis;
+    private XMSeekBar xmSeekBar;
     private RecordListAdapter recordListAdapter;
     private RecordFunAdapter recordFunAdapter;
     private RecordTimeAxisAdapter recordTimeAxisAdapter;
@@ -92,7 +97,8 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     private int portraitWidth;
     private int portraitHeight;
     private ScreenOrientationManager screenOrientationManager;//Screen rotation manager
-
+    //是否正在拖动播放进度条
+    private boolean isSeekTouchPlayProgress = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,6 +156,74 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
         });
 
         wndLayout = findViewById(R.id.wnd_layout);
+
+        xmSeekBar = findViewById(R.id.xb_seek_to_record);
+        xmSeekBar.getSeekBar().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    H264_DVR_FILE_DATA data = presenter.getCurPlayFileInfo();
+                    if (null != data) {
+                        Calendar startCalendar =  Calendar.getInstance();
+                        startCalendar.set(Calendar.YEAR,data.st_3_beginTime.st_0_year);
+                        startCalendar.set(Calendar.MONTH,data.st_3_beginTime.st_1_month - 1);
+                        startCalendar.set(Calendar.DATE,data.st_3_beginTime.st_2_day);
+                        startCalendar.set(Calendar.HOUR_OF_DAY,data.st_3_beginTime.st_4_hour);
+                        startCalendar.set(Calendar.MINUTE,data.st_3_beginTime.st_5_minute);
+                        startCalendar.set(Calendar.SECOND,data.st_3_beginTime.st_6_second);
+                        long _stime = startCalendar.getTimeInMillis() / 1000;
+
+                        Calendar endCalendar =  Calendar.getInstance();
+                        endCalendar.set(Calendar.YEAR,data.st_4_endTime.st_0_year);
+                        endCalendar.set(Calendar.MONTH,data.st_4_endTime.st_1_month - 1);
+                        endCalendar.set(Calendar.DATE,data.st_4_endTime.st_2_day);
+                        endCalendar.set(Calendar.HOUR_OF_DAY,data.st_4_endTime.st_4_hour);
+                        endCalendar.set(Calendar.MINUTE,data.st_4_endTime.st_5_minute);
+                        endCalendar.set(Calendar.SECOND,data.st_4_endTime.st_6_second);
+                        long _etime = endCalendar.getTimeInMillis() / 1000;
+
+                        int times = ((int) (progress * (_etime - _stime)) / 100);
+                        ((BubbleSeekBar) seekBar).moveIndicator(TimeUtils.formatTimesV2((int) data.getLongStartTime() + times));
+                    }
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                isSeekTouchPlayProgress = true;
+                xmSeekBar.getSeekBar().showIndicator(BubbleIndicator.TOP, getResources().getColor(R.color.transparent));
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                isSeekTouchPlayProgress = false;
+                H264_DVR_FILE_DATA data = presenter.getCurPlayFileInfo();
+                if (null != data) {
+                    Calendar startCalendar =  Calendar.getInstance();
+                    startCalendar.set(Calendar.YEAR,data.st_3_beginTime.st_0_year);
+                    startCalendar.set(Calendar.MONTH,data.st_3_beginTime.st_1_month - 1);
+                    startCalendar.set(Calendar.DATE,data.st_3_beginTime.st_2_day);
+                    startCalendar.set(Calendar.HOUR_OF_DAY,data.st_3_beginTime.st_4_hour);
+                    startCalendar.set(Calendar.MINUTE,data.st_3_beginTime.st_5_minute);
+                    startCalendar.set(Calendar.SECOND,data.st_3_beginTime.st_6_second);
+                    long _stime = startCalendar.getTimeInMillis() / 1000;
+
+                    Calendar endCalendar =  Calendar.getInstance();
+                    endCalendar.set(Calendar.YEAR,data.st_4_endTime.st_0_year);
+                    endCalendar.set(Calendar.MONTH,data.st_4_endTime.st_1_month - 1);
+                    endCalendar.set(Calendar.DATE,data.st_4_endTime.st_2_day);
+                    endCalendar.set(Calendar.HOUR_OF_DAY,data.st_4_endTime.st_4_hour);
+                    endCalendar.set(Calendar.MINUTE,data.st_4_endTime.st_5_minute);
+                    endCalendar.set(Calendar.SECOND,data.st_4_endTime.st_6_second);
+                    long _etime = endCalendar.getTimeInMillis() / 1000;
+
+                    long playTimes = _etime - _stime;
+                    int times = (int) (playTimes * seekBar.getProgress() / 100 + data.getLongStartTime());
+                    presenter.seekToTime(startCalendar,times);
+                    ((BubbleSeekBar) seekBar).hideIndicator();
+                }
+            }
+        });
     }
 
     private void initData() {
@@ -219,7 +293,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(searchTime);
                 int times = calendar.get(Calendar.HOUR_OF_DAY) * 3600 + calendar.get(Calendar.MINUTE) * 60 + calendar.get(Calendar.SECOND);
-                presenter.seekToTime(times);
+                presenter.seekToTime(calendar,times);
             }
         } else {
             showToast(getString(R.string.search_record_failed), Toast.LENGTH_LONG);
@@ -247,6 +321,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
 
         if (playState == E_STATE_SAVE_RECORD_FILE_S) {
             showToast(getString(R.string.record_s), Toast.LENGTH_LONG);
+            recordFunAdapter.changeBtnState(3, getString(R.string.cut_video), false);
         } else if (playState == E_STATE_SAVE_PIC_FILE_S) {
             showToast(getString(R.string.capture_s), Toast.LENGTH_LONG);
         }
@@ -257,6 +332,36 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
         if (!StringUtils.isStringNULL(time) && isCanScroll()) {
             Calendar playCalendar = TimeUtils.getNormalFormatCalender(time);
             if (playCalendar != null) {
+                H264_DVR_FILE_DATA data = presenter.getCurPlayFileInfo();
+                if (null != data) {
+                    xmSeekBar.setVisibility(View.VISIBLE);
+                    long cutPlayTimes = playCalendar.getTimeInMillis() / 1000;
+                    Calendar startCalendar =  Calendar.getInstance();
+                    startCalendar.set(Calendar.YEAR,data.st_3_beginTime.st_0_year);
+                    startCalendar.set(Calendar.MONTH,data.st_3_beginTime.st_1_month - 1);
+                    startCalendar.set(Calendar.DATE,data.st_3_beginTime.st_2_day);
+                    startCalendar.set(Calendar.HOUR_OF_DAY,data.st_3_beginTime.st_4_hour);
+                    startCalendar.set(Calendar.MINUTE,data.st_3_beginTime.st_5_minute);
+                    startCalendar.set(Calendar.SECOND,data.st_3_beginTime.st_6_second);
+                    long _stime = startCalendar.getTimeInMillis() / 1000;
+
+                    Calendar endCalendar =  Calendar.getInstance();
+                    endCalendar.set(Calendar.YEAR,data.st_4_endTime.st_0_year);
+                    endCalendar.set(Calendar.MONTH,data.st_4_endTime.st_1_month - 1);
+                    endCalendar.set(Calendar.DATE,data.st_4_endTime.st_2_day);
+                    endCalendar.set(Calendar.HOUR_OF_DAY,data.st_4_endTime.st_4_hour);
+                    endCalendar.set(Calendar.MINUTE,data.st_4_endTime.st_5_minute);
+                    endCalendar.set(Calendar.SECOND,data.st_4_endTime.st_6_second);
+                    long _etime = endCalendar.getTimeInMillis() / 1000;
+
+                    if (_etime > _stime) {
+                        int progress = (int) ((cutPlayTimes - _stime) * 100 / (_etime - _stime));
+                        if (!isSeekTouchPlayProgress) {
+                            xmSeekBar.setProgress(progress);
+                        }
+                    }
+                }
+
                 //获取当前选择播放的日期，并将时间设置为00:00:00
                 //Get the currently selected playing date and set the time to 00:00:00
                 Calendar curDateTime = (Calendar) calendarShow.clone();

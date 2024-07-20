@@ -899,4 +899,14 @@
     <string name="ble_doorlock_fingervein">指静脉</string>
     <string name="ble_doorlock_card">卡</string>
     <string name="common_syntax_error">数据解析错误:请检查数据格式</string>
+    <string name="scan_json">扫描</string>
+    <string name="dev_json_format">二维码内容格式</string>
+    <string name="dev_settings">设备配置</string>
+    <string name="share_dev_data">分享设备信息</string>
+    <string name="pzt_calibration">云台校正</string>
+    <string name="setting_broad_thrends_config">宽动态开关</string>
+    <string name="dev_basic_information">设备基本信息</string>
+    <string name="network_mode">网络模式</string>
+    <string name="manufacturing_mode">制造方式</string>
+    <string name="settings_about_transmit_mode">转发模式</string>
 </resources>

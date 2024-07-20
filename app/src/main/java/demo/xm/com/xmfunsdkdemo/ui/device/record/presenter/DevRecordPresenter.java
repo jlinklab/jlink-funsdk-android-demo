@@ -1,6 +1,8 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.record.presenter;
 
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,6 +30,7 @@ import com.manager.image.BaseImageManager;
 import com.manager.image.CloudImageManager;
 import com.manager.path.PathManager;
 import com.utils.FileUtils;
+import com.utils.LogUtils;
 import com.utils.TimeUtils;
 import com.xm.activity.base.XMBasePresenter;
 import com.xm.ui.dialog.XMPromptDlg;
@@ -51,6 +54,7 @@ import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_CLOUD;
 import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_FILE;
 import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_TIME;
 import static com.manager.device.media.MediaManager.PLAY_CLOUD_PLAYBACK;
+import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_PLAY_COMPLETED;
 import static com.manager.device.media.attribute.RecordPlayerAttribute.PLAY_SPEED_FAST;
 import static com.manager.device.media.attribute.RecordPlayerAttribute.PLAY_SPEED_SLOW;
 import static com.manager.device.media.download.DownloadManager.DOWNLOAD_STATE_PROGRESS;
@@ -79,6 +83,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     private int playSpeed;
     private int recordFileType;
     private boolean isEpitomeRecordEnable;//缩影录像开关
+    private H264_DVR_FILE_DATA curPlayFileInfo;//当前播放的录像文件信息
 
     public DevRecordPresenter(DevRecordContract.IDevRecordView iDevRecordView) {
         this.iDevRecordView = iDevRecordView;
@@ -155,7 +160,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     public void setEpitomeRecordEnable(boolean isEnable) {
         this.isEpitomeRecordEnable = isEnable;
         if (recordManager instanceof DevRecordManager) {
-            ((DevRecordManager) recordManager).setRecordStreamType(isEnable ? SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_EPITOME_RECORD : SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_ALL_RECORD);
+//            ((DevRecordManager) recordManager).setRecordStreamType(isEnable ? SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_EPITOME_RECORD : SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_ALL_RECORD);
         }
     }
 
@@ -213,9 +218,9 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
      */
     @Override
     public void startPlayRecord(int position) {
-        H264_DVR_FILE_DATA recordInfo = recordList.get(position);
-        Calendar playCalendar = TimeUtils.getNormalFormatCalender(recordInfo.getStartTimeOfYear());
-        Calendar endCalendar = TimeUtils.getNormalFormatCalender(recordInfo.getEndTimeOfYear());
+        curPlayFileInfo = recordList.get(position);
+        Calendar playCalendar = TimeUtils.getNormalFormatCalender(curPlayFileInfo.getStartTimeOfYear());
+        Calendar endCalendar = TimeUtils.getNormalFormatCalender(curPlayFileInfo.getEndTimeOfYear());
 //        endCalendar = Calendar.getInstance();
 //        endCalendar.setTime(playCalendar.getTime());
 //        endCalendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -261,6 +266,8 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
 
     @Override
     public void pausePlay() {
+        //暂停之前把视频剪切动作结束
+        recordManager.stopRecord();
         recordManager.pausePlay();
     }
 
@@ -312,6 +319,15 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     /**
      * @param times 当前要播放的时间点（24小时内换算的时间，单位秒，比如：0点10分就是换成600秒）
      */
+    @Override
+    public void seekToTime(Calendar calendar,int times) {
+        //获取当前播放的日期
+        int[] dateTime = {calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0};
+        int absTime = FunSDK.ToTimeType(dateTime) + times;
+        recordManager.seekToTime(times, absTime);
+    }
+
     @Override
     public void seekToTime(int times) {
         //获取当前播放的日期
@@ -451,6 +467,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     @Override
     public void onFailed(PlayerAttribute attribute, int msgId, int errorId) {
         //TODO 处理查询和播放失败的返回结果
+        LogUtils.debugInfo("PlayBack", "msgId:" + msgId + " errorId:" + errorId);
     }
 
     /**
@@ -629,5 +646,9 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
             H264_DVR_FILE_DATA h264DvrFileData = recordList.get(position);
             ((CloudRecordManager) recordManager).deleteVideo(h264DvrFileData.fileName);
         }
+    }
+
+    public H264_DVR_FILE_DATA getCurPlayFileInfo() {
+        return curPlayFileInfo;
     }
 }

@@ -36,6 +36,7 @@ import android.os.Environment;
 import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.view.View;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * 关于设备界面,包含设备基本信息(序列号,设备型号,硬件版本,软件版本,
@@ -100,7 +102,7 @@ public class DevAboutPresenter extends XMBasePresenter<DeviceManager>
         this.firmwareType = type;
         if (StringUtils.contrast(firmwareType, "System")) {
             //获取SystemInfo信息
-            DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
+            DevConfigInfo devConfigInfo = DevConfigInfo.create(new DevConfigManager.OnDevConfigResultListener() {
                 @Override
                 public void onSuccess(String devId, int msgId, Object result) {
                     if (result instanceof String) {
@@ -116,6 +118,13 @@ public class DevAboutPresenter extends XMBasePresenter<DeviceManager>
                 @Override
                 public void onFailed(String devId, int msgId, String s1, int errorId) {
                     iDevAboutView.onUpdateView("数据获取失败：" + errorId);
+                }
+
+                @Override
+                public void onFunSDKResult(Message msg, MsgContent ex) {
+                    if (msg.arg1 >= 0) {
+                        iDevAboutView.onDevNetConnectMode(msg.arg2);
+                    }
                 }
             });
 
@@ -267,13 +276,33 @@ public class DevAboutPresenter extends XMBasePresenter<DeviceManager>
     }
 
     @Override
-    public void getDevOemId(Context context) {
-        SysAbilityManager.getInstance().getSysDevAbilityInfos(context, getDevId(), false, new OnSysAbilityResultListener<SysDevAbilityInfoBean>() {
+    public void getDevCapsAbility(Context context) {
+        SysAbilityManager.getInstance().isSupports(context, getDevId(), false, new OnSysAbilityResultListener<Map<String, Object>>() {
             @Override
-            public void onSupportResult(SysDevAbilityInfoBean sysDevAbilityInfoBean, boolean b) {
-                if (sysDevAbilityInfoBean != null) {
-                    iDevAboutView.onGetDevOemIdResult(sysDevAbilityInfoBean.getMfrsOemId());
+            public void onSupportResult(Map<String, Object> isSupport, boolean isFromServer) {
+                if (isSupport != null) {
+                    if (isSupport.containsKey("net.cellular.iccid")) {
+                        Object iccid = isSupport.get("net.cellular.iccid");
+                        if (iccid instanceof String) {
+                            iDevAboutView.onGetICCIDResult((String) iccid);
+                        }
+                    }
+
+                    if (isSupport.containsKey("net.cellular.imei")) {
+                        Object iccid = isSupport.get("net.cellular.imei");
+                        if (iccid instanceof String) {
+                            iDevAboutView.onGetIMEIResult((String) iccid);
+                        }
+                    }
+
+                    if (isSupport.containsKey("mfrsOemId")) {
+                        Object mfrsOemId = isSupport.get("mfrsOemId");
+                        if (mfrsOemId instanceof String) {
+                            iDevAboutView.onGetDevOemIdResult((String) mfrsOemId);
+                        }
+                    }
                 }
+
             }
         });
     }

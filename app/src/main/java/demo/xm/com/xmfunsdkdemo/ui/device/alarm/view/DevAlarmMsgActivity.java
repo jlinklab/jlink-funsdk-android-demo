@@ -23,11 +23,16 @@ import androidx.appcompat.widget.MenuPopupWindow;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.alarm.AlarmInfo;
 import com.manager.image.BaseImageManager;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
+import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.xm.activity.base.XMBaseActivity;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.ListSelectItem;
@@ -35,10 +40,13 @@ import com.xm.ui.widget.XTitleBar;
 
 import org.apache.commons.lang3.time.CalendarUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
+import demo.xm.com.xmfunsdkdemo.ui.adapter.SliderAdapter;
 import demo.xm.com.xmfunsdkdemo.ui.device.alarm.listener.DevAlarmContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.alarm.presenter.DevAlarmPresenter;
 import demo.xm.com.xmfunsdkdemo.ui.device.record.view.DevRecordActivity;
@@ -270,7 +278,24 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
                     @Override
                     public void onClick(View v) {
                         showWaitDialog();
-                        presenter.showPicture(getAdapterPosition());
+//                        presenter.showPicture(getAdapterPosition());
+                        SliderView sliderView = new SliderView(DevAlarmMsgActivity.this);
+                        sliderView.setInfiniteAdapterEnabled(false);
+                        AlarmInfo alarmInfo = presenter.getAlarmInfo(getAdapterPosition());
+                        List<AlarmInfo.AlarmPicInfo> alarmPicInfos = alarmInfo.getAlarmPicInfos();
+                        List<String> imageUrls = new ArrayList<>();
+                        for (AlarmInfo.AlarmPicInfo alarmPicInfo : alarmPicInfos) {
+                            imageUrls.add(alarmPicInfo.getUrl());
+                        }
+
+                        SliderAdapter adapter = new SliderAdapter(imageUrls);
+                        sliderView.setSliderAdapter(adapter);
+                        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+                        sliderView.setAutoCycle(false);
+                        XMPromptDlg.onShow(DevAlarmMsgActivity.this, sliderView,
+                                (int) (DevAlarmMsgActivity.this.screenWidth * 0.6),
+                                (int)  (DevAlarmMsgActivity.this.screenHeight * 0.6),true,null);
                     }
                 });
 

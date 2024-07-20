@@ -215,6 +215,32 @@
                     android:textColor="@color/demo_desc"
                     android:textSize="10sp" />
             </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wdr_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical"
+                tools:visibility="visible">
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_wdr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    uilib:ImageRight1="@mipmap/icon_checked_no"
+                    uilib:ImageRight2="@mipmap/icon_checked_yes"
+                    uilib:ItemTitleColor="@color/black"
+                    uilib:ItemTitleSize="@dimen/middle_text_size"
+                    uilib:leftMargin="0dp"
+                    uilib:Title="@string/setting_broad_thrends_config"
+                    uilib:RightClickable="false"/>
+                <FrameLayout
+                    android:id="@+id/fl_monitor_surface"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

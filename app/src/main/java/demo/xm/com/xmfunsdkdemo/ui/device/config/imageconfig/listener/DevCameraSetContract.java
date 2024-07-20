@@ -7,6 +7,8 @@ package demo.xm.com.xmfunsdkdemo.ui.device.config.imageconfig.listener;
 public class DevCameraSetContract {
     public interface IDevCameraSetView {
         void onUpdateView(String result, boolean isSupportSoftPhotosensitive);
+        void onWDRConfig(boolean isSupport,boolean isOpen);
+        void onSetWDRConfigResult(boolean isSuccess,int errorId);
         void onSaveResult(int state);
         void error(String errorMsg);
     }
@@ -14,5 +16,6 @@ public class DevCameraSetContract {
     public interface IDevCameraSetPresenter {
         void getCameraInfo();
         void setCameraInfo(String jsonData);
+        void setWDRConfig(boolean isOpen);
     }
 }

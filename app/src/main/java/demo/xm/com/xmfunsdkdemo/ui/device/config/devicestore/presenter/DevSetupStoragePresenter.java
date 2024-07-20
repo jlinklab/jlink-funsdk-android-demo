@@ -99,7 +99,7 @@ public class DevSetupStoragePresenter extends XMBasePresenter<DeviceManager> imp
     @Override
     public void getStorageInfo() {
         //根据能力判断是否按百分比显示存储空间
-        mIsShowPercent = FunSDK.GetDevAbility(getDevId(), "PreviewFunction/StorageSpaceUsePercent") == SDKCONST.Switch.Open;
+        mIsShowPercent = false;//= FunSDK.GetDevAbility(getDevId(), "PreviewFunction/StorageSpaceUsePercent") == SDKCONST.Switch.Open;
         DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
             @Override
             public void onSuccess(String devId, int msgId, Object result) {

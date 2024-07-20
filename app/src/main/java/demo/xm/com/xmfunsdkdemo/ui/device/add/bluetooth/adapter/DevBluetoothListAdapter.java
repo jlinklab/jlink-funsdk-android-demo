@@ -54,7 +54,7 @@ public class DevBluetoothListAdapter extends RecyclerView.Adapter<DevBluetoothLi
     public void onBindViewHolder(@NonNull DevBluetoothListAdapter.ViewHolder viewHolder, int i) {
         XMBleInfo xmBleInfo = xmBleInfoList.get(i);
         viewHolder.lsiDevBluetooth.setTip(xmBleInfo.getMac() + " " + rssiMap.get(xmBleInfo.getMac()));
-        viewHolder.lsiDevBluetooth.setTitle(xmBleInfo.getSn());
+        viewHolder.lsiDevBluetooth.setTitle(xmBleInfo.getDevSn());
         viewHolder.pbWaiting.setTag("waiting:" + xmBleInfo.getMac());
         viewHolder.lsiDevBluetooth.setTag("completed:" + xmBleInfo.getMac());
 

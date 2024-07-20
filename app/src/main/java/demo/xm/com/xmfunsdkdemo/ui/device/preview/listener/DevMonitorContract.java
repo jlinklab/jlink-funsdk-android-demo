@@ -76,11 +76,19 @@ public class DevMonitorContract {
 
         /**
          * 切换手动警戒结果返回
-         *
+         * Switch Manual Alarm Result Return
          * @param isSuccess
          * @param errorId
          */
         void onChangeManualAlarmResult(boolean isSuccess, int errorId);
+
+        /**
+         * 云台校正结果回调
+         * Gimbal calibration result callback
+         * @param isSuccess 是否成功 Indicates if the calibration was successful
+         * @param errorId 错误码 Error code
+         */
+        void onPtzCalibrationResult(boolean isSuccess,int errorId);
     }
 
     public interface IDevMonitorPresenter {
@@ -369,6 +377,11 @@ public class DevMonitorContract {
          * 切换手动警戒开启/关闭
          */
         boolean changeManualAlarmSwitch();
+
+        /**
+         * 云台校正
+         */
+        void ptzCalibration();
     }
 }
 

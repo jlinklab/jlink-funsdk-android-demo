@@ -5,6 +5,8 @@ import android.os.Message;
 
 import com.lib.MsgContent;
 import com.lib.SDKCONST;
+//import com.lib.sdk.bean.AlarmQueryBean;
+import com.lib.sdk.bean.AlarmQueryBean;
 import com.lib.sdk.bean.alarm.AlarmGroup;
 import com.lib.sdk.bean.alarm.AlarmInfo;
 import com.manager.device.DeviceManager;
@@ -109,8 +111,21 @@ public class DevAlarmPresenter extends XMBasePresenter<DeviceManager> implements
      */
     @Override
     public void searchAlarmMsg() {
-        Date searchDate = searchTime.getTime();
-        devAlarmInfoManager.searchAlarmInfo(getDevId()/*设备序列号*/, 0 /*通道ID*/, 0/*报警类型*/, searchDate/*查询开始时间*/, 1/*查询的天数*/, 270/*缩略图-宽 原图默认传0*/, 640/*缩略图-高 原图默认传0*/);
+//        Date searchDate = searchTime.getTime();
+//        devAlarmInfoManager.searchAlarmInfo(getDevId()/*设备序列号*/, 0 /*通道ID*/, 0/*报警类型*/, searchDate/*查询开始时间*/, 1/*查询的天数*/, 270/*缩略图-宽 原图默认传0*/, 640/*缩略图-高 原图默认传0*/);
+        AlarmQueryBean alarmQueryBean = new AlarmQueryBean();
+        alarmQueryBean.setDevId(getDevId());
+        alarmQueryBean.setChnId(0);
+        alarmQueryBean.setSearchMorePic(true);
+        searchTime.set(Calendar.HOUR_OF_DAY,0);
+        searchTime.set(Calendar.MINUTE,0);
+        searchTime.set(Calendar.SECOND,0);
+        alarmQueryBean.setStartSearchTime((Calendar) searchTime.clone());
+        searchTime.set(Calendar.HOUR_OF_DAY,23);
+        searchTime.set(Calendar.MINUTE,59);
+        searchTime.set(Calendar.SECOND,59);
+        alarmQueryBean.setEndSearchTime((Calendar) searchTime.clone());
+        devAlarmInfoManager.searchAlarmInfoByPage(alarmQueryBean,true);
     }
 
     @Override
