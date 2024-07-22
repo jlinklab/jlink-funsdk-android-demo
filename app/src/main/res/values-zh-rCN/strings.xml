@@ -909,4 +909,6 @@
     <string name="network_mode">网络模式</string>
     <string name="manufacturing_mode">制造方式</string>
     <string name="settings_about_transmit_mode">转发模式</string>
+    <string name="dev_ability">设备能力集</string>
+    <string name="wake_up_master">唤醒主控</string>
 </resources>

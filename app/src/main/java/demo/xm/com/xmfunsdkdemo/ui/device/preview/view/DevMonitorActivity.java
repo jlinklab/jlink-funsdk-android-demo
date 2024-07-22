@@ -65,6 +65,7 @@ import com.manager.device.idr.IDRManager;
 import com.utils.XUtils;
 import com.xm.linke.face.FaceFeature;
 import com.xm.ui.dialog.XMPromptDlg;
+import com.xm.ui.manager.AutoHideManager;
 import com.xm.ui.media.MultiWinLayout;
 import com.xm.ui.widget.BtnColorBK;
 import com.xm.ui.widget.ListSelectItem;
@@ -222,6 +223,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     //相机联动
     private static final int FUN_CAMERA_LINK = 23;
     private List<HashMap<String, Object>> monitorFunList = new ArrayList<>();//预览页面的功能列表
+    private AutoHideManager autoHideManager;//自动隐藏控件
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -256,6 +258,10 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         tvWiFiState = findViewById(R.id.tv_wifi_state);
         tvRate = findViewById(R.id.tv_rate);
         initPresetLayout();
+
+        autoHideManager = new AutoHideManager();
+        autoHideManager.addView(findViewById(R.id.ll_dev_state));
+        autoHideManager.show();
     }
 
     /**
@@ -281,16 +287,6 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
             @Override
             public boolean onTouchEvent(int wndId, MotionEvent motionEvent) {
-
-                if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
-
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-
-
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-
-
-                }
                 return false;
             }
 
@@ -312,6 +308,12 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
             @Override
             public boolean onSingleTapConfirmed(int i, MotionEvent motionEvent, boolean b) {
+                if (autoHideManager.isVisible()) {
+                    autoHideManager.hide();
+                }else {
+                    autoHideManager.show();
+                }
+
                 if (isOpenPointPtz) {
                     // 上下分屏的时候 打开指哪看哪才会触发
                     // "When in split-screen mode, triggering 'point-to-view' will activate the view corresponding to the direction pointed at."
@@ -366,60 +368,60 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
             @Override
             public void onFling(View view, MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-                float x = motionEvent1.getX() - motionEvent.getX();
-                float y = motionEvent1.getY() - motionEvent.getY();
-                int chnId = view.getId();
-                System.out.println("onFling:" + presenter.getTwoLensesScreen(0) + " " + x + " " + y);
-                if (Math.abs(x) > Math.abs(y)) {
-                    if (Math.abs(x) > 100) {
-                        if (x > 0) {
-                            // 向右滑动
-                            if (presenter.getTwoLensesScreen(0) == VRSoftDefine.XMTwoLensesScreen.ScreenRightOnly) {
-                                presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenDouble);
-                            } else {
-                                presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenLeftOnly);
-                            }
-
-                            if (--chnId < 0) {
-                                chnId = 0;
-                            }
-                        } else {
-                            //向左滑动
-                            if (presenter.getTwoLensesScreen(0) == VRSoftDefine.XMTwoLensesScreen.ScreenLeftOnly) {
-                                presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenDouble);
-                            } else {
-                                presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenRightOnly);
-                            }
-
-
-                            if (++chnId >= chnCount) {
-                                chnId = chnCount - 1;
-                            }
-                        }
-
-                        //是否为多窗口设备，并且当前是单窗口没有缩放显示，才支持切换窗口
-                        if (chnCount > 1 && playWndLayout.getSelectedId() != chnId && playWndLayout.isSingleWnd() && !presenter.isVideoScale()) {
-                            playWndLayout.changeChannel(chnId);
-                        }
-                    }
-
-                } else {
-                    if (y > 0) {
-                        // 向下滑动
-                        if (presenter.getTwoLensesScreen(0) == VRSoftDefine.XMTwoLensesScreen.ScreenRightOnly) {
-                            presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenDouble);
-                        } else {
-                            presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenLeftOnly);
-                        }
-                    } else {
-                        // 下上滑动
-                        if (presenter.getTwoLensesScreen(0) == VRSoftDefine.XMTwoLensesScreen.ScreenLeftOnly) {
-                            presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenDouble);
-                        } else {
-                            presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenRightOnly);
-                        }
-                    }
-                }
+//                float x = motionEvent1.getX() - motionEvent.getX();
+//                float y = motionEvent1.getY() - motionEvent.getY();
+//                int chnId = view.getId();
+//                System.out.println("onFling:" + presenter.getTwoLensesScreen(0) + " " + x + " " + y);
+//                if (Math.abs(x) > Math.abs(y)) {
+//                    if (Math.abs(x) > 100) {
+//                        if (x > 0) {
+//                            // 向右滑动
+//                            if (presenter.getTwoLensesScreen(0) == VRSoftDefine.XMTwoLensesScreen.ScreenRightOnly) {
+//                                presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenDouble);
+//                            } else {
+//                                presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenLeftOnly);
+//                            }
+//
+//                            if (--chnId < 0) {
+//                                chnId = 0;
+//                            }
+//                        } else {
+//                            //向左滑动
+//                            if (presenter.getTwoLensesScreen(0) == VRSoftDefine.XMTwoLensesScreen.ScreenLeftOnly) {
+//                                presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenDouble);
+//                            } else {
+//                                presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenRightOnly);
+//                            }
+//
+//
+//                            if (++chnId >= chnCount) {
+//                                chnId = chnCount - 1;
+//                            }
+//                        }
+//
+//                        //是否为多窗口设备，并且当前是单窗口没有缩放显示，才支持切换窗口
+//                        if (chnCount > 1 && playWndLayout.getSelectedId() != chnId && playWndLayout.isSingleWnd() && !presenter.isVideoScale()) {
+//                            playWndLayout.changeChannel(chnId);
+//                        }
+//                    }
+//
+//                } else {
+//                    if (y > 0) {
+//                        // 向下滑动
+//                        if (presenter.getTwoLensesScreen(0) == VRSoftDefine.XMTwoLensesScreen.ScreenRightOnly) {
+//                            presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenDouble);
+//                        } else {
+//                            presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenLeftOnly);
+//                        }
+//                    } else {
+//                        // 下上滑动
+//                        if (presenter.getTwoLensesScreen(0) == VRSoftDefine.XMTwoLensesScreen.ScreenLeftOnly) {
+//                            presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenDouble);
+//                        } else {
+//                            presenter.changeTwoLensesScreen(0, VRSoftDefine.XMTwoLensesScreen.ScreenRightOnly);
+//                        }
+//                    }
+//                }
             }
         });
     }
@@ -589,7 +591,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             if (systemFunctionBean.OtherFunction.SupportPtzAutoAdjust) {
                 hashMap = new HashMap<>();
                 hashMap.put("itemId", FUN_PTZ_CALIBRATION);
-                hashMap.put("itemName",getString(R.string.pzt_calibration));
+                hashMap.put("itemName", getString(R.string.pzt_calibration));
                 monitorFunList.add(hashMap);
             }
         }
@@ -1453,7 +1455,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     public void onPtzCalibrationResult(boolean isSuccess, int errorId) {
         if (isSuccess) {
             showToast(getString(R.string.libfunsdk_operation_success), Toast.LENGTH_LONG);
-        }else {
+        } else {
             showToast(getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG);
         }
 

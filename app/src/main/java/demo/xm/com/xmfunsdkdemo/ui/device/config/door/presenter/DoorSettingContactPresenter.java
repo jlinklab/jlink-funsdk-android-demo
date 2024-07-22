@@ -118,8 +118,6 @@ public class DoorSettingContactPresenter extends XMBasePresenter<DeviceManager> 
 
         OPDoorLockProCmd opDoorLockProCmd = new OPDoorLockProCmd();
         opDoorLockProCmd.Cmd = "RemoteOneKeyUnlock";
-        opDoorLockProCmd.Arg1 = doorLockBeans.get(0).DoorLockID;
-        opDoorLockProCmd.Arg2 = "222";
         devConfigInfo.setCmdId(OPDoorLockProCmd.JSON_ID);
         devConfigInfo.setTimeOut(10000);
         devConfigInfo.setJsonData(HandleConfigData.getSendData(OPDoorLockProCmd.JSON_NAME, "0x08", opDoorLockProCmd));

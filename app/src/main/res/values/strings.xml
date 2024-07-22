@@ -910,4 +910,6 @@
     <string name="network_mode">Network Mode</string>
     <string name="manufacturing_mode">Manufacturing Mode</string>
     <string name="settings_about_transmit_mode">Forwarding Mode</string>
+    <string name="dev_ability">Device Ability</string>
+    <string name="wake_up_master">唤醒主控</string>
 </resources>

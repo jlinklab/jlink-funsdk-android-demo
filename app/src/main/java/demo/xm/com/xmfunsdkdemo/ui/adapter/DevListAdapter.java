@@ -191,6 +191,12 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
             holder.btnInterDevLinkage.setVisibility(View.GONE);
             DevShadowManager.getInstance().getDevCfgsFromShadowService(devId, ShadowConfigEnum.FunEnum.LAN_LINK_BIND_INFO.getFieldName());
         }
+
+        if (DevDataCenter.getInstance().isLowPowerDev(devId)) {
+            holder.btnWakUpMaster.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnWakUpMaster.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -219,10 +225,11 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         Button btnModifyDevName;//修改设备名称  change the device name
         Button btnTurnToShareManage;//跳转到分享管理  go to Share Management
         Button btnLocalDevUserPwd;//本地设备登录名和密码 local device login name and password
-        Button btnUnlock;//开锁
+        Button btnWakUpMaster;//唤醒主控
         Button btnPingTest;//Ping
         Button btnSdPlayback;//SD卡录像回放 SD Playback
         Button btnInterDevLinkage;//门锁和其他摇头机之间的联动，该功能通过影子服务来判断是否支持 "The linkage between the door lock and other pan-tilt cameras is determined by the shadow service to ascertain its support."
+        Button btnDevAbility;//设备能力集
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -321,8 +328,8 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
 
             //唤醒设备（包括主控)
 
-            btnUnlock = itemView.findViewById(R.id.btn_un_lock);
-            btnUnlock.setOnClickListener(new View.OnClickListener() {
+            btnWakUpMaster = itemView.findViewById(R.id.btn_wake_up_master);
+            btnWakUpMaster.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo((String) data.get(getAdapterPosition()).get("devId"));
@@ -331,6 +338,7 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
                     }
                 }
             });
+
 
             //SD卡录像回放
             btnSdPlayback = itemView.findViewById(R.id.btn_sd_playback);
@@ -366,6 +374,18 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
                     XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo((String) data.get(getAdapterPosition()).get("devId"));
                     if (onItemDevClickListener != null) {
                         onItemDevClickListener.onPingTest(getAdapterPosition(), xmDevInfo);
+                    }
+                }
+            });
+
+            //Device Ability
+            btnDevAbility = itemView.findViewById(R.id.btn_dev_ability);
+            btnDevAbility.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo((String) data.get(getAdapterPosition()).get("devId"));
+                    if (onItemDevClickListener != null) {
+                        onItemDevClickListener.onTurnToDevAbility(getAdapterPosition(), xmDevInfo);
                     }
                 }
             });
@@ -509,5 +529,13 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         void onPingTest(int position, XMDevInfo xmDevInfo);
 
         void onTurnToInterDevLinkage(int position, XMDevInfo xmDevInfo, Bundle bundle);
+
+        /**
+         * 跳转到设备能力集
+         *
+         * @param position
+         * @param xmDevInfo
+         */
+        void onTurnToDevAbility(int position, XMDevInfo xmDevInfo);
     }
 }
