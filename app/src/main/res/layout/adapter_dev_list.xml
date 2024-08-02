@@ -119,14 +119,14 @@
                 app:no_press_solid="@color/white"
                 app:pressed_solid="#FCF0E5" />
 
-            <!--开锁-->
+            <!--唤醒主控-->
             <com.xm.ui.widget.BtnColorBK
-                android:id="@+id/btn_un_lock"
+                android:id="@+id/btn_wake_up_master"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
-                android:text="@string/unlock"
+                android:text="@string/wake_up_master"
                 app:no_press_solid="@color/white"
                 app:pressed_solid="#FCF0E5"
                 android:visibility="gone"/>
@@ -151,6 +151,18 @@
                 android:layout_weight="1"
                 android:text="@string/inter_device_linkage_link"
                 android:visibility="gone"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
+
+            <!--设备能力集-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_dev_ability"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/dev_ability"
+                android:visibility="visible"
                 app:no_press_solid="@color/white"
                 app:pressed_solid="#FCF0E5" />
         </LinearLayout>

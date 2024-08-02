@@ -70,7 +70,7 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
     private ExtraSpinner spDevType;
     private EditText devLoginTokenEdit;
     private final FunDevType[] devTypesSupport = {FunDevType.EE_DEV_NORMAL_MONITOR, FunDevType.EE_DEV_INTELLIGENTSOCKET, FunDevType.EE_DEV_SMALLEYE};
-
+    private int devType;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -217,50 +217,67 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
                     }
                 } else {
                     try {
-                        //如果不是纯序列号的话，需要解析一下是否为分享的Json数据
-                        DevShareQrCodeInfo devShareQrCodeInfo = JSON.parseObject(result, DevShareQrCodeInfo.class);
-                        if (devShareQrCodeInfo != null) {
-                            long nowTimes = System.currentTimeMillis() / 1000;
-                            long oldTimes = devShareQrCodeInfo.getShareTimes();
-                            //判断分享的时间和当前扫描的时间差是否超过30分钟
-                            if ((nowTimes - oldTimes) > 30 * 60) {
-                                Toast.makeText(this, R.string.sharing_code_has_expired, Toast.LENGTH_LONG).show();
-                                finish();
-                                return;
-                            }
+                        if (result.startsWith("{")) {
+                            //如果不是纯序列号的话，需要解析一下是否为分享的Json数据
+                            DevShareQrCodeInfo devShareQrCodeInfo = JSON.parseObject(result, DevShareQrCodeInfo.class);
+                            if (devShareQrCodeInfo != null) {
+                                long nowTimes = System.currentTimeMillis() / 1000;
+                                long oldTimes = devShareQrCodeInfo.getShareTimes();
+                                //判断分享的时间和当前扫描的时间差是否超过30分钟
+                                if ((nowTimes - oldTimes) > 30 * 60) {
+                                    Toast.makeText(this, R.string.sharing_code_has_expired, Toast.LENGTH_LONG).show();
+                                    finish();
+                                    return;
+                                }
 
-                            showWaitDialog();
-                            devSNEdit.setText(devShareQrCodeInfo.getDevId());
-                            //扫描并添加分享设备
-                            ShareManager shareManager = ShareManager.getInstance(this);
-                            shareManager.addDevFromShared(
-                                    devShareQrCodeInfo.getDevId(),
-                                    devShareQrCodeInfo.getUserId(),
-                                    devShareQrCodeInfo.getLoginName(),
-                                    devShareQrCodeInfo.getPwd(),
-                                    devShareQrCodeInfo.getDevType(),
-                                    devShareQrCodeInfo.getPermissions());
-                            shareManager.addShareManagerListener(new ShareManager.OnShareManagerListener() {
-                                @Override
-                                public void onShareResult(ShareInfo shareInfo) {
-                                    if (shareInfo != null && shareInfo.isSuccess()) {
-                                        OtherShareDevUserBean otherShareDevUser = new OtherShareDevUserBean();
-                                        otherShareDevUser.setDevId(devShareQrCodeInfo.getDevId());
-                                        otherShareDevUser.setDevType(devShareQrCodeInfo.getDevType() + "");
-                                        otherShareDevUser.setPassword(devShareQrCodeInfo.getPwd());
-                                        otherShareDevUser.setUsername(devShareQrCodeInfo.getLoginName());
-                                        otherShareDevUser.setShareState(SHARE_ACCEPT);
-                                        otherShareDevUser.setDevName(devShareQrCodeInfo.getDevId());//设备名称，这里默认是设备序列号
-                                        otherShareDevUser.setDevPermissions(devShareQrCodeInfo.getPermissions());
-                                        XMDevInfo xmDevInfo = new XMDevInfo();
-                                        xmDevInfo.shareDevInfoToXMDevInfo(otherShareDevUser);
-                                        DevDataCenter.getInstance().addDev(xmDevInfo);
-                                        onAddDevResult(true, 0);
-                                    } else {
-                                        Toast.makeText(DevSnConnectActivity.this, R.string.add_share_qr_code_error, Toast.LENGTH_LONG).show();
+                                showWaitDialog();
+                                devSNEdit.setText(devShareQrCodeInfo.getDevId());
+                                //扫描并添加分享设备
+                                ShareManager shareManager = ShareManager.getInstance(this);
+                                shareManager.addDevFromShared(
+                                        devShareQrCodeInfo.getDevId(),
+                                        devShareQrCodeInfo.getUserId(),
+                                        devShareQrCodeInfo.getLoginName(),
+                                        devShareQrCodeInfo.getPwd(),
+                                        devShareQrCodeInfo.getDevType(),
+                                        devShareQrCodeInfo.getPermissions());
+                                shareManager.addShareManagerListener(new ShareManager.OnShareManagerListener() {
+                                    @Override
+                                    public void onShareResult(ShareInfo shareInfo) {
+                                        if (shareInfo != null && shareInfo.isSuccess()) {
+                                            OtherShareDevUserBean otherShareDevUser = new OtherShareDevUserBean();
+                                            otherShareDevUser.setDevId(devShareQrCodeInfo.getDevId());
+                                            otherShareDevUser.setDevType(devShareQrCodeInfo.getDevType() + "");
+                                            otherShareDevUser.setPassword(devShareQrCodeInfo.getPwd());
+                                            otherShareDevUser.setUsername(devShareQrCodeInfo.getLoginName());
+                                            otherShareDevUser.setShareState(SHARE_ACCEPT);
+                                            otherShareDevUser.setDevName(devShareQrCodeInfo.getDevId());//设备名称，这里默认是设备序列号
+                                            otherShareDevUser.setDevPermissions(devShareQrCodeInfo.getPermissions());
+                                            XMDevInfo xmDevInfo = new XMDevInfo();
+                                            xmDevInfo.shareDevInfoToXMDevInfo(otherShareDevUser);
+                                            DevDataCenter.getInstance().addDev(xmDevInfo);
+                                            onAddDevResult(true, 0);
+                                        } else {
+                                            Toast.makeText(DevSnConnectActivity.this, R.string.add_share_qr_code_error, Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                            }
+                        }else {
+                            String[] splitResults = result.split(",");
+                            if (splitResults != null && splitResults.length >= 4) {
+                                if (null != devSNEdit) {
+                                    devSNEdit.setText(splitResults[0]);
+                                }
+
+                                if (XUtils.isInteger(splitResults[3])) {
+                                    int devType = Integer.parseInt(splitResults[3]);
+                                    if (DevDataCenter.getInstance().isLowPowerDev(devType)) {
+                                        spDevType.setValue(21);
+                                        lsiDevType.setRightText(spDevType.getSelectedName());
                                     }
                                 }
-                            });
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

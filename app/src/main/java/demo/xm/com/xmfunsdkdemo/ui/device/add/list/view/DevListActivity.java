@@ -22,6 +22,7 @@ import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.device.config.PwdErrorManager;
 import com.utils.XUtils;
+import com.xm.activity.device.devset.ability.view.XMDevAbilityActivity;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.XTitleBar;
 import com.xm.ui.widget.dialog.EditDialog;
@@ -283,11 +284,9 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
                 presenter.getChannelList();
             }
         } else {
-
             showToast(FunSDK.TS(getString(R.string.dev_offline)), Toast.LENGTH_LONG);
             presenter.setDevId(xmDevInfo.getDevId());
-            turnToActivity(DevMonitorActivity.class);
-//            turnToActivity(DevShadowConfigActivity.class);
+            turnToActivity(DevShadowConfigActivity.class);
         }
 
 
@@ -439,6 +438,17 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
     public void onTurnToInterDevLinkage(int position, XMDevInfo xmDevInfo, Bundle bundle) {
         presenter.setDevId(xmDevInfo.getDevId());
         turnToActivity(InterDevLinkageActivity.class, "data", bundle);
+    }
+
+    /**
+     * 跳转到设备能力集页面
+     * @param position
+     * @param xmDevInfo
+     */
+    @Override
+    public void onTurnToDevAbility(int position, XMDevInfo xmDevInfo) {
+        presenter.setDevId(xmDevInfo.getDevId());
+        turnToActivity(XMDevAbilityActivity.class);
     }
 
     @Override

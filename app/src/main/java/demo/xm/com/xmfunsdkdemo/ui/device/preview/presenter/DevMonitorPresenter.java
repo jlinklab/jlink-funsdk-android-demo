@@ -44,6 +44,7 @@ import com.video.opengl.OnPlayViewTouchListener;
 import com.xm.activity.base.XMBasePresenter;
 import com.xm.base.code.ErrorCodeManager;
 import com.xmgl.vrsoft.VRSoftDefine;
+import com.xmgl.vrsoft.VRSoftGLView;
 
 import java.io.File;
 import java.io.IOException;
@@ -343,7 +344,6 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
                 }
             }
         });
-
 
         mediaManager.setOnPlayViewTouchListener(new OnPlayViewTouchListener() {
             @Override
