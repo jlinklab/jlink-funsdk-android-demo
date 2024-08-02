@@ -911,5 +911,16 @@
     <string name="manufacturing_mode">Manufacturing Mode</string>
     <string name="settings_about_transmit_mode">Forwarding Mode</string>
     <string name="dev_ability">Device Ability</string>
-    <string name="wake_up_master">唤醒主控</string>
+    <string name="wake_up_master">Wake UP Main Controller</string>
+    <string name="capture_pic_from_dev_and_to_app">Capture an image on the device and return it to the app (the image is not saved on the device)</string>
+    <string name="detect_track">Motion Tracking (Human Tracking)</string>
+    <string name="watch_time">Watch Time</string>
+    <string name="low">Low</string>
+    <string name="middle">Middle</string>
+    <string name="high">High</string>
+    <string name="cruise">Cruise</string>
+    <string name="start_cruise">Start Cruising</string>
+    <string name="stop_cruise">Stop Cruising</string>
+    <string name="tour_end">Cruising End</string>
+    <string name="set_watch_preset">Set The Watch Preset</string>
 </resources>

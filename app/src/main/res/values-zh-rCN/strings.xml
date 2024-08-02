@@ -911,4 +911,15 @@
     <string name="settings_about_transmit_mode">转发模式</string>
     <string name="dev_ability">设备能力集</string>
     <string name="wake_up_master">唤醒主控</string>
+    <string name="capture_pic_from_dev_and_to_app">设备端抓图并将图片回传给APP（图片不保存到设备端）</string>
+    <string name="detect_track">移动追踪(人形跟随)</string>
+    <string name="watch_time">守望时间</string>
+    <string name="low">低</string>
+    <string name="middle">中</string>
+    <string name="high">高</string>
+    <string name="cruise">巡航</string>
+    <string name="start_cruise">开始巡航</string>
+    <string name="stop_cruise">结束巡航</string>
+    <string name="tour_end">巡航结束</string>
+    <string name="set_watch_preset">设置守望位置</string>
 </resources>

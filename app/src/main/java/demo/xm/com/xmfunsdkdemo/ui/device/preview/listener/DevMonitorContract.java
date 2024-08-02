@@ -6,8 +6,11 @@ import android.view.ViewGroup;
 import com.lib.sdk.bean.ElectCapacityBean;
 import com.lib.sdk.bean.SystemFunctionBean;
 import com.lib.sdk.bean.WifiRouteInfo;
+import com.lib.sdk.bean.tour.TourBean;
 import com.manager.device.DeviceManager;
 import com.xm.linke.face.FaceFeature;
+
+import java.util.List;
 
 /**
  * 设备预览界面,可以控制播放,停止,码流切换,截图,录制,全屏,信息.
@@ -77,6 +80,7 @@ public class DevMonitorContract {
         /**
          * 切换手动警戒结果返回
          * Switch Manual Alarm Result Return
+         *
          * @param isSuccess
          * @param errorId
          */
@@ -85,10 +89,20 @@ public class DevMonitorContract {
         /**
          * 云台校正结果回调
          * Gimbal calibration result callback
+         *
          * @param isSuccess 是否成功 Indicates if the calibration was successful
-         * @param errorId 错误码 Error code
+         * @param errorId   错误码 Error code
          */
-        void onPtzCalibrationResult(boolean isSuccess,int errorId);
+        void onPtzCalibrationResult(boolean isSuccess, int errorId);
+
+        void onShowTour(List<TourBean> tourBeans, int errorId);
+
+        void onTourCtrlResult(boolean isSuccess,int tourCmd, int errorId);
+
+        /**
+         * 巡航结束回调
+         */
+        void onTourEndResult();
     }
 
     public interface IDevMonitorPresenter {
@@ -251,6 +265,12 @@ public class DevMonitorContract {
         void capturePicFromDevAndSave(int chnId);
 
         /**
+         * 设备端抓图并回传给APP，图片不保存到设备端
+         * Capture an image on the device and return it to the app (the image is not saved on the device).
+         */
+        void capturePicFromDevAndToApp(int chnId);
+
+        /**
          * 设备云台控制
          * Equipment head control
          *
@@ -260,6 +280,43 @@ public class DevMonitorContract {
          * @param bStop       是否停止
          */
         void devicePTZControl(int chnId, int nPTZCommand, int speed, boolean bStop);
+
+        /**
+         * 获取巡航线
+         *
+         * @param chnId 通道号
+         */
+        void getTour(int chnId);
+
+        /**
+         * 添加巡航点
+         *
+         * @param chnId
+         * @param presetId
+         */
+        void addTour(int chnId, int presetId);
+
+        /**
+         * 删除巡航点
+         *
+         * @param chnId
+         * @param presetId
+         */
+        void deleteTour(int chnId, int presetId);
+
+        /**
+         * 开始巡航
+         *
+         * @param chnId
+         */
+        void startTour(int chnId);
+
+        /**
+         * 停止巡航
+         *
+         * @param chnId
+         */
+        void stopTour(int chnId);
 
         void addPreset(int chnId, int presetId);
 

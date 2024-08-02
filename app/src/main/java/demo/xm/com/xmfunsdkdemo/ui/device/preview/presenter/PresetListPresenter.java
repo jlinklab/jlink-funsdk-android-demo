@@ -44,7 +44,7 @@ public class PresetListPresenter extends XMBasePresenter<BaseManager> implements
 
     @Override
     public void updatePresetList() {
-        presetManager.getPresetList(0);
+        presetManager.getPresetList(getChnId());
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PresetListPresenter extends XMBasePresenter<BaseManager> implements
 
     @Override
     public void modifyPresetName(int presetId, String presetName) {
-        presetManager.modifyPresetName(0, presetId, presetName);
+        presetManager.modifyPresetName(getChnId(), presetId, presetName);
     }
 
     @Override

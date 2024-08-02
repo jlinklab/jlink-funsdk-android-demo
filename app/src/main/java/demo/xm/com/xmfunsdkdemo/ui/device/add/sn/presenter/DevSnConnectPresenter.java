@@ -5,6 +5,7 @@ import static com.manager.db.Define.LOGIN_NONE;
 import android.os.Message;
 
 import com.basic.G;
+import com.lib.FunSDK;
 import com.lib.MsgContent;
 import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.struct.SDBDeviceInfo;
@@ -62,14 +63,15 @@ public class DevSnConnectPresenter extends XMBasePresenter<AccountManager> imple
         if (!StringUtils.isStringNULL(devToken)) {
             xmDevInfo.setDevToken(devToken);
         }
+
         //未使用AccountManager(包括XMAccountManager或LocalAccountManager)登录（包括账号登录和本地临时登录），只能将设备信息临时缓存，重启应用后无法查到设备信息。
         if (DevDataCenter.getInstance().getLoginType() == LOGIN_NONE) {
             DevDataCenter.getInstance().addDev(xmDevInfo);
-            DeviceManager.getInstance().setLocalDevLoginInfo(xmDevInfo.getDevId(),xmDevInfo.getDevUserName(),xmDevInfo.getDevPassword(),xmDevInfo.getDevToken());
+            FunSDK.AddDevInfoToDataCenter(G.ObjToBytes(xmDevInfo.getSdbDevInfo()), 0, 0, "");
             if (iDevSnConnectView != null) {
                 iDevSnConnectView.onAddDevResult(true, 0);
             }
-        }else {
+        } else {
             manager.addDev(xmDevInfo, new BaseAccountManager.OnAccountManagerListener() {  //The WiFi-paired addDev is missing a parameter to unbind the current device
                 @Override
                 public void onSuccess(int i) {

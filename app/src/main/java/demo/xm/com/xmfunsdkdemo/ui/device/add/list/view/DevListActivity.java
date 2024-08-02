@@ -469,5 +469,7 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
         if (adapter != null) {
             adapter.release();
         }
+
+        presenter.clear();
     }
 }

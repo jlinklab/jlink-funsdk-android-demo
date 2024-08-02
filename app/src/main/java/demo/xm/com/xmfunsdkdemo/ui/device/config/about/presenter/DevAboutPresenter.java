@@ -277,26 +277,26 @@ public class DevAboutPresenter extends XMBasePresenter<DeviceManager>
 
     @Override
     public void getDevCapsAbility(Context context) {
-        SysAbilityManager.getInstance().isSupports(context, getDevId(), false, new OnSysAbilityResultListener<Map<String, Object>>() {
+        SysAbilityManager.getInstance().getCellularAbility(context, getDevId(), false, new OnSysAbilityResultListener<Map<String, Object>>() {
             @Override
-            public void onSupportResult(Map<String, Object> isSupport, boolean isFromServer) {
-                if (isSupport != null) {
-                    if (isSupport.containsKey("net.cellular.iccid")) {
-                        Object iccid = isSupport.get("net.cellular.iccid");
+            public void onSupportResult(Map<String, Object> supportMap, boolean isFromServer) {
+                if (supportMap != null) {
+                    if (supportMap.containsKey("net.cellular.iccid")) {
+                        Object iccid = supportMap.get("net.cellular.iccid");
                         if (iccid instanceof String) {
                             iDevAboutView.onGetICCIDResult((String) iccid);
                         }
                     }
 
-                    if (isSupport.containsKey("net.cellular.imei")) {
-                        Object iccid = isSupport.get("net.cellular.imei");
+                    if (supportMap.containsKey("net.cellular.imei")) {
+                        Object iccid = supportMap.get("net.cellular.imei");
                         if (iccid instanceof String) {
                             iDevAboutView.onGetIMEIResult((String) iccid);
                         }
                     }
 
-                    if (isSupport.containsKey("mfrsOemId")) {
-                        Object mfrsOemId = isSupport.get("mfrsOemId");
+                    if (supportMap.containsKey("mfrsOemId")) {
+                        Object mfrsOemId = supportMap.get("mfrsOemId");
                         if (mfrsOemId instanceof String) {
                             iDevAboutView.onGetDevOemIdResult((String) mfrsOemId);
                         }

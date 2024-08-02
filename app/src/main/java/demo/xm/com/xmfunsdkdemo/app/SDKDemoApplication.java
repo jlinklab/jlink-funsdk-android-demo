@@ -61,54 +61,58 @@ public class SDKDemoApplication extends Application {
          * XMFunSDKManager.getInstance(0,"",customServerAddr,customPort).initXMCloudPlatform(this,appUuid,appKey,appSecret,appMovedCard,true);
          */
         xmFunSDKManager = XMFunSDKManager.getInstance();
-        xmFunSDKManager.initXMCloudPlatform(
-                this,
-                DemoConstant.APP_UUID,
-                DemoConstant.APP_KEY,
-                DemoConstant.APP_SECRET,
-                DemoConstant.APP_MOVEDCARD,
-                true);
+        if (xmFunSDKManager.isLoadLibrarySuccess()) {
+            xmFunSDKManager.initXMCloudPlatform(
+                    this,
+                    DemoConstant.APP_UUID,
+                    DemoConstant.APP_KEY,
+                    DemoConstant.APP_SECRET,
+                    DemoConstant.APP_MOVEDCARD,
+                    true);
 
-        /**
-         * 有其他定制的服务，在initXMCloudPlatform之后再按照你的需求调用不同的接口
-         * There are other customized services, after initXMCloudPlatform call different interfaces according to your needs
-         *
-         * FunSDK.SysSetServerIPPort("APP_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port);
-         * FunSDK.SysSetServerIPPort("STATUS_P2P_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // P2P状态查询/P2P Status Query
-         * FunSDK.SysSetServerIPPort("STATUS_DSS_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // DSS状态查询/DSS Status Query
-         * FunSDK.SysSetServerIPPort("STATUS_RPS_SERVER","服务器域名或IP/Domain name or IP", 服务器端口/Port); // RPS状态查询/RPS Status Query
-         * FunSDK.SysSetServerIPPort("STATUS_IDR_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // WPS状态查询/WPS Status Query
-         *
-         * FunSDK.SysSetServerIPPort("HLS_DSS_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // DSS码流请求/DSS stream request
-         * FunSDK.SysSetServerIPPort("CONFIG_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // 配置管理中心/Configuration Management Center
-         * FunSDK.SysSetServerIPPort("UPGRADE_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // 固件升级/Firmware Upgrade
-         * FunSDK.SysSetServerIPPort("CAPS_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // 能力集控制（和云存储有关）/Capability set control (cloud storage)
-         */
+            /**
+             * 有其他定制的服务，在initXMCloudPlatform之后再按照你的需求调用不同的接口
+             * There are other customized services, after initXMCloudPlatform call different interfaces according to your needs
+             *
+             * FunSDK.SysSetServerIPPort("APP_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port);
+             * FunSDK.SysSetServerIPPort("STATUS_P2P_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // P2P状态查询/P2P Status Query
+             * FunSDK.SysSetServerIPPort("STATUS_DSS_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // DSS状态查询/DSS Status Query
+             * FunSDK.SysSetServerIPPort("STATUS_RPS_SERVER","服务器域名或IP/Domain name or IP", 服务器端口/Port); // RPS状态查询/RPS Status Query
+             * FunSDK.SysSetServerIPPort("STATUS_IDR_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // WPS状态查询/WPS Status Query
+             *
+             * FunSDK.SysSetServerIPPort("HLS_DSS_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // DSS码流请求/DSS stream request
+             * FunSDK.SysSetServerIPPort("CONFIG_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // 配置管理中心/Configuration Management Center
+             * FunSDK.SysSetServerIPPort("UPGRADE_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // 固件升级/Firmware Upgrade
+             * FunSDK.SysSetServerIPPort("CAPS_SERVER", "服务器域名或IP/Domain name or IP", 服务器端口/Port); // 能力集控制（和云存储有关）/Capability set control (cloud storage)
+             */
 
-        /**
-         * 初始化 logcat上的日志，可以通过SDK_LOG过滤
-         * Initialize the logs on logcat, which can be filtered by SDK_LOG
-         */
+            /**
+             * 初始化 logcat上的日志，可以通过SDK_LOG过滤
+             * Initialize the logs on logcat, which can be filtered by SDK_LOG
+             */
 
-        xmFunSDKManager.initLog();
+            xmFunSDKManager.initLog();
 
-        /**
-         * 初始化翻译文件，仅适用于Demo
-         * Initialize the translation file, only for Demo
-         */
-        initLanguage();
+            /**
+             * 初始化翻译文件，仅适用于Demo
+             * Initialize the translation file, only for Demo
+             */
+            initLanguage();
 
-        /**
-         * 初始化配置路径
-         * Initialize the configuration path
-         */
-        initPath();
-        /**
-         * 低功耗设备：包括 门铃、门锁等，需要调用此方法否则可能无法登录设备，其他设备无需调用
-         * Low-power devices: including doorbells, door locks, etc., you need to call this method,
-         * otherwise you may not be able to log in to the device, and other devices do not need to call
-         */
-        FunSDK.SetFunIntAttr(EFUN_ATTR.SUP_RPS_VIDEO_DEFAULT, SDKCONST.Switch.Open);
+            /**
+             * 初始化配置路径
+             * Initialize the configuration path
+             */
+            initPath();
+            /**
+             * 低功耗设备：包括 门铃、门锁等，需要调用此方法否则可能无法登录设备，其他设备无需调用
+             * Low-power devices: including doorbells, door locks, etc., you need to call this method,
+             * otherwise you may not be able to log in to the device, and other devices do not need to call
+             */
+            FunSDK.SetFunIntAttr(EFUN_ATTR.SUP_RPS_VIDEO_DEFAULT, SDKCONST.Switch.Open);
+        }else {
+            throw new RuntimeException("Failed to load dynamic library");
+        }
     }
 
     /**

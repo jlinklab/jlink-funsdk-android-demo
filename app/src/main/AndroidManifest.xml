@@ -318,6 +318,10 @@
         <activity android:name="com.xm.activity.device.devset.ability.view.XMDevAbilityActivity"
             android:screenOrientation="portrait"
             />
+        <activity android:name=".ui.device.config.detecttrack.DetectTrackActivity"
+            android:screenOrientation="portrait"
+            />
+
         <service
             android:name="com.manager.device.idr.IDRSleepService"
             android:screenOrientation="portrait" />

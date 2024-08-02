@@ -160,7 +160,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     public void setEpitomeRecordEnable(boolean isEnable) {
         this.isEpitomeRecordEnable = isEnable;
         if (recordManager instanceof DevRecordManager) {
-//            ((DevRecordManager) recordManager).setRecordStreamType(isEnable ? SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_EPITOME_RECORD : SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_ALL_RECORD);
+            ((DevRecordManager) recordManager).setRecordStreamType(isEnable ? SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_EPITOME_RECORD : SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_ALL_RECORD);
         }
     }
 
@@ -284,6 +284,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     @Override
     public void destroyPlay() {
         recordManager.destroyPlay();
+        downloadManager.stopDownload();
     }
 
     @Override
@@ -365,12 +366,15 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
 
         H264_DVR_FILE_DATA data = recordList.get(position);
         if (data != null) {
+            int streamType = isEpitomeRecordEnable ? SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_EPITOME_RECORD : SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_ALL_RECORD;
+            data.st_6_StreamType = streamType;
             String fileName = data.getLongStartTime() + "_" + data.getLongEndTime() + ".mp4";
             DownloadInfo downloadInfo = new DownloadInfo();
             downloadInfo.setStartTime(TimeUtils.getNormalFormatCalender(data.getStartTimeOfYear()));
             downloadInfo.setEndTime(TimeUtils.getNormalFormatCalender(data.getEndTimeOfYear()));
             downloadInfo.setDevId(getDevId());
             downloadInfo.setObj(data);
+            downloadInfo.setStreamType(streamType);
             //下载类型：0->卡存按文件下载 1->云存储下载 2->卡存按时间下载
             //Download type: 0->Download by file from SD card 1->Download from cloud storage 2->Download by time from SD card
             downloadInfo.setDownloadType(recordPlayType == PLAY_CLOUD_PLAYBACK
@@ -586,7 +590,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
                 iDevRecordView.onDownloadState(downloadInfo.getDownloadState(), downloadInfo.getSaveFileName());
             }
 
-            System.out.println("download-->" + downloadInfo.getDownloadState() + " progress:" + downloadInfo.getDownloadProgress());
+            System.out.println("download-->" +  downloadInfo.getDownloadState() + " progress:" + downloadInfo.getDownloadProgress());
         }
     }
 

@@ -183,7 +183,14 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                         long _etime = endCalendar.getTimeInMillis() / 1000;
 
                         int times = ((int) (progress * (_etime - _stime)) / 100);
-                        ((BubbleSeekBar) seekBar).moveIndicator(TimeUtils.formatTimesV2((int) data.getLongStartTime() + times));
+                        Calendar calendar = (Calendar) startCalendar.clone();
+                        calendar.set(Calendar.HOUR_OF_DAY,0);
+                        calendar.set(Calendar.MINUTE,0);
+                        calendar.set(Calendar.SECOND,0);
+
+                        calendar.add(Calendar.SECOND,(int) data.getLongStartTime() + times);
+
+                        ((BubbleSeekBar) seekBar).moveIndicator(TimeUtils.showNormalFormat(calendar.getTimeInMillis()));
                     }
                 }
             }
