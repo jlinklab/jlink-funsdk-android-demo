@@ -421,6 +421,7 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
 
                         //如果设备支持Token的话，需要获取设备特征码
                         if (!StringUtils.isStringNULL(xmDevInfo.getDevToken())) {
+                            showWaitDialog();
                             presenter.getCloudCryNum(xmDevInfo);
                         }
 

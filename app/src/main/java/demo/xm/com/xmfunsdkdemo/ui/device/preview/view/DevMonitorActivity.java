@@ -619,10 +619,15 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         hashMap.put("itemName", getString(R.string.preset));
         monitorFunList.add(hashMap);
 
-        hashMap = new HashMap<>();
-        hashMap.put("itemId", FUN_CRUISE);
-        hashMap.put("itemName", getString(R.string.cruise));
-        monitorFunList.add(hashMap);
+        if (systemFunctionBean != null) {
+            //是否支持巡航
+            if (systemFunctionBean.OtherFunction.SupportPTZTour) {
+                hashMap = new HashMap<>();
+                hashMap.put("itemId", FUN_CRUISE);
+                hashMap.put("itemName", getString(R.string.cruise));
+                monitorFunList.add(hashMap);
+            }
+        }
 
         hashMap = new HashMap<>();
         hashMap.put("itemId", FUN_LANDSCAPE);

@@ -266,7 +266,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
                     });
 
                     devConfigInfo.setJsonName(PTZTourBean.JSON_NAME);
-                    devConfigInfo.setChnId(-1);
+                    devConfigInfo.setChnId(getChnId());
                     devConfigManager.getDevConfig(devConfigInfo);
                 }
             }
