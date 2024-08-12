@@ -1356,6 +1356,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                         Intent GardenDoubleLightIntent = new Intent(DevMonitorActivity.this, GardenDoubleLightActivity.class);
                         GardenDoubleLightIntent.putExtra("devId", presenter.getDevId());
                         startActivity(GardenDoubleLightIntent);
+                        break;
                     default:
                         break;
                 }

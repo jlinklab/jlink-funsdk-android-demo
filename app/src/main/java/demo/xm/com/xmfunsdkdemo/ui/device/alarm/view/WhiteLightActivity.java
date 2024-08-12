@@ -188,8 +188,6 @@ public class WhiteLightActivity extends BaseConfigActivity<WhiteLightPresenter> 
 		initSmartAlarmListener();
 
 		initSmartAlarmDuration();
-		resetView();
-		presenter.getVoiceLightAlarmConfig();
 
 	}
 
