@@ -17,19 +17,19 @@ import com.xm.ui.widget.listselectitem.extra.adapter.ExtraSpinnerAdapter;
 import com.xm.ui.widget.listselectitem.extra.view.ExtraSpinner;
 
 import demo.xm.com.xmfunsdkdemo.R;
-import demo.xm.com.xmfunsdkdemo.ui.device.alarm.listener.AlarmByVoiceLightContract;
-import demo.xm.com.xmfunsdkdemo.ui.device.alarm.presenter.AlarmByVoiceLightPresenter;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.listener.DoubleLightBoxContract;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.presenter.DoubleLightBoxPresenter;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.BaseConfigActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.view.IntelligentVigilanceActivity;
 
 
 /**
- * 声光报警界面,可改变控制模式
+ * 声光报警：双光枪机界面,可改变控制模式
  */
-public class AlarmByVoiceLightActivity extends BaseConfigActivity<AlarmByVoiceLightPresenter> implements
-		AlarmByVoiceLightContract.IAlarmByVoiceLightView{
+public class DoubleLightBoxActivity extends BaseConfigActivity<DoubleLightBoxPresenter> implements
+		DoubleLightBoxContract.IDoubleLightBoxView{
 
-	private static final String TAG = "AlarmByVoiceLight";
+	private static final String TAG = "DoubleLightBox";
 
 
 	private XTitleBar titleBar;
@@ -80,8 +80,8 @@ public class AlarmByVoiceLightActivity extends BaseConfigActivity<AlarmByVoiceLi
 
 
 	@Override
-	public AlarmByVoiceLightPresenter getPresenter() {
-		return new AlarmByVoiceLightPresenter(this);
+	public DoubleLightBoxPresenter getPresenter() {
+		return new DoubleLightBoxPresenter(this);
 	}
 	
 	@Override
@@ -113,7 +113,7 @@ public class AlarmByVoiceLightActivity extends BaseConfigActivity<AlarmByVoiceLi
 		mListIntelligentVigilance.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(AlarmByVoiceLightActivity.this, IntelligentVigilanceActivity.class);
+				Intent intent = new Intent(DoubleLightBoxActivity.this, IntelligentVigilanceActivity.class);
 				intent.putExtra("devId", presenter.getDevId());
 				startActivity(intent);
 			}
@@ -222,7 +222,7 @@ public class AlarmByVoiceLightActivity extends BaseConfigActivity<AlarmByVoiceLi
 					mWhiteLight.getMoveTrigLight().setDuration(Integer.parseInt(mDurationArray[position].substring(0, mDurationArray[position].length() - 1)));
 					saveConfig();
 				} else {
-					Toast.makeText(AlarmByVoiceLightActivity.this, getString(R.string.EE_DVR_OPT_CAPS_ERROR), Toast.LENGTH_SHORT).show();
+					Toast.makeText(DoubleLightBoxActivity.this, getString(R.string.EE_DVR_OPT_CAPS_ERROR), Toast.LENGTH_SHORT).show();
 				}
 				mListIntelligentDuration.setRightText(key);
 				mListIntelligentDuration.toggleExtraView(true);
@@ -256,7 +256,7 @@ public class AlarmByVoiceLightActivity extends BaseConfigActivity<AlarmByVoiceLi
 					mWhiteLight.getMoveTrigLight().setLevel(position * 2 + 1);/**注:位置0,1,2对应值1,3,5 ***/
 					saveConfig();
 				} else {
-					Toast.makeText(AlarmByVoiceLightActivity.this, getString(R.string.EE_DVR_OPT_CAPS_ERROR), Toast.LENGTH_SHORT).show();
+					Toast.makeText(DoubleLightBoxActivity.this, getString(R.string.EE_DVR_OPT_CAPS_ERROR), Toast.LENGTH_SHORT).show();
 				}
 
 				mListIntelligentSensitivity.setRightText(key);
@@ -304,10 +304,10 @@ public class AlarmByVoiceLightActivity extends BaseConfigActivity<AlarmByVoiceLi
 					}
 				}
 			} else {
-				Toast.makeText(AlarmByVoiceLightActivity.this, getString(R.string.get_dev_config_failed), Toast.LENGTH_SHORT).show();
+				Toast.makeText(DoubleLightBoxActivity.this, getString(R.string.get_dev_config_failed), Toast.LENGTH_SHORT).show();
 			}
 		} else {
-			Toast.makeText(AlarmByVoiceLightActivity.this, getString(R.string.get_dev_config_failed), Toast.LENGTH_SHORT).show();
+			Toast.makeText(DoubleLightBoxActivity.this, getString(R.string.get_dev_config_failed), Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -315,9 +315,9 @@ public class AlarmByVoiceLightActivity extends BaseConfigActivity<AlarmByVoiceLi
 	public void onSaveResult(boolean isSuccess) {
 		hideWaitDialog();
 		if(!isSuccess){
-			Toast.makeText(AlarmByVoiceLightActivity.this, getString(R.string.set_dev_config_failed), Toast.LENGTH_SHORT).show();
+			Toast.makeText(DoubleLightBoxActivity.this, getString(R.string.set_dev_config_failed), Toast.LENGTH_SHORT).show();
 		} else {
-			Toast.makeText(AlarmByVoiceLightActivity.this, getString(R.string.set_dev_config_success), Toast.LENGTH_SHORT).show();
+			Toast.makeText(DoubleLightBoxActivity.this, getString(R.string.set_dev_config_success), Toast.LENGTH_SHORT).show();
 		}
 
 	}

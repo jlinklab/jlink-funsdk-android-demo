@@ -473,6 +473,8 @@
     <string name="hunman_detect">Humanoid detection (intelligent analysis)</string>
     <string name="date_second">s</string>
     <string name="date_minute">m</string>
+    <string name="date_hour">h</string>
+    <string name="pir_detection">PIR Motion Detection</string>
     <string name="loaded_failed">Loading failed</string>
     <string-array name="alarmouttype">
         <item>Automatic</item>

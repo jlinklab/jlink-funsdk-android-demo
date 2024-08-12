@@ -4,10 +4,10 @@ import com.lib.sdk.bean.WhiteLightBean;
 
 
 /**
- * 声光报警界面,可改变控制模式
+ * 声光报警：双光枪机界面,可改变控制模式
  */
-public class AlarmByVoiceLightContract {
-    public interface IAlarmByVoiceLightView {
+public class DoubleLightBoxContract {
+    public interface IDoubleLightBoxView {
         /**
          * 根据result获取的数据显示到控件上
          */
@@ -19,7 +19,7 @@ public class AlarmByVoiceLightContract {
         void onSaveResult(boolean isSuccess);
     }
 
-    public interface IAlarmByVoiceLightPresenter {
+    public interface IDoubleLightBoxPresenter {
         /**
          * 获取声光报警配置
          */

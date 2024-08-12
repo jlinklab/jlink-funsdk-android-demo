@@ -8,19 +8,19 @@ import com.manager.device.config.DevConfigInfo;
 import com.manager.device.config.DevConfigManager;
 import com.xm.activity.base.XMBasePresenter;
 
-import demo.xm.com.xmfunsdkdemo.ui.device.alarm.listener.AlarmByVoiceLightContract;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.listener.DoubleLightBoxContract;
 
 /**
- * 声光报警界面,可改变控制模式
+ * 声光报警：双光枪机界面,可改变控制模式
  */
-public class AlarmByVoiceLightPresenter extends XMBasePresenter<DeviceManager> implements AlarmByVoiceLightContract.IAlarmByVoiceLightPresenter {
-    private AlarmByVoiceLightContract.IAlarmByVoiceLightView iDevRecordSetView;
+public class DoubleLightBoxPresenter extends XMBasePresenter<DeviceManager> implements DoubleLightBoxContract.IDoubleLightBoxPresenter {
+    private DoubleLightBoxContract.IDoubleLightBoxView iDoubleLightBoxView;
     private DevConfigManager mDevConfigManager;
 
     protected WhiteLightBean mWhiteLight;
 
-    public AlarmByVoiceLightPresenter(AlarmByVoiceLightContract.IAlarmByVoiceLightView iDevRecordSetView) {
-        this.iDevRecordSetView = iDevRecordSetView;
+    public DoubleLightBoxPresenter(DoubleLightBoxContract.IDoubleLightBoxView iDoubleLightBoxView) {
+        this.iDoubleLightBoxView = iDoubleLightBoxView;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class AlarmByVoiceLightPresenter extends XMBasePresenter<DeviceManager> i
                 System.out.println("result:" + result);
                 if (result != null) {
                     mWhiteLight = result;
-                    iDevRecordSetView.onUpdateView(true,mWhiteLight);
+                    iDoubleLightBoxView.onUpdateView(true,mWhiteLight);
                 } else {
                     mWhiteLight = null;
                 }
@@ -54,7 +54,7 @@ public class AlarmByVoiceLightPresenter extends XMBasePresenter<DeviceManager> i
             @Override
             public void onFailed(String devId, int msgId, String s1, int errorId) {
                 mWhiteLight = null;
-                iDevRecordSetView.onUpdateView(false, null);
+                iDoubleLightBoxView.onUpdateView(false, null);
             }
         });
         mainConfigInfo.setJsonName(JsonConfig.WHITE_LIGHT);
@@ -70,12 +70,12 @@ public class AlarmByVoiceLightPresenter extends XMBasePresenter<DeviceManager> i
         DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
             @Override
             public void onSuccess(String devId, int msgId, Object result) {
-                iDevRecordSetView.onSaveResult(true);
+                iDoubleLightBoxView.onSaveResult(true);
             }
 
             @Override
             public void onFailed(String devId, int msgId, String s1, int errorId) {
-                iDevRecordSetView.onSaveResult(false);
+                iDoubleLightBoxView.onSaveResult(false);
             }
         });
         devConfigInfo.setJsonName(JsonConfig.WHITE_LIGHT);

@@ -79,7 +79,11 @@ import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
 import demo.xm.com.xmfunsdkdemo.ui.activity.DeviceConfigActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.ActivityGuideDeviceLanAlarm;
-import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.AlarmByVoiceLightActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.DoubleLightActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.DoubleLightBoxActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.GardenDoubleLightActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.MusicLightActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.WhiteLightActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.cameralink.view.CameraLinkSetActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.detecttrack.DetectTrackActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.simpleconfig.view.DevSimpleConfigActivity;
@@ -87,6 +91,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.picture.view.DevPictureActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.DevMonitorContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.presenter.DevMonitorPresenter;
 import demo.xm.com.xmfunsdkdemo.ui.device.record.view.DevRecordActivity;
+import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 import io.reactivex.annotations.Nullable;
 
 import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_MEDIA_DISCONNECT;
@@ -106,6 +111,7 @@ import java.util.List;
  * Save images and videos, engage in voice conversations, set presets, and control directions.
  */
 public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> implements DevMonitorContract.IDevMonitorView, OnClickListener {
+    private static final String TAG = "DevMonitorActivity";
     private MultiWinLayout playWndLayout;
     private RecyclerView rvMonitorFun;
     private ViewGroup wndLayout;
@@ -713,7 +719,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             }
 
             //是否支持声光警戒功能
-            if (systemFunctionBean.OtherFunction.SupportDoubleLightBoxCamera) {
+            if (getSupportLightType()!=NO_LIGHT_CAMERA) {
                 hashMap = new HashMap<>();
                 hashMap.put("itemId", FUN_ALARM_BY_VOICE_LIGHT);
                 hashMap.put("itemName", getString(R.string.alarm_by_voice_light));
@@ -731,6 +737,56 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             showToast(getString(R.string.get_dev_ability_failed) + ":" + errorId, Toast.LENGTH_LONG);
         }
     }
+
+
+    //不支持灯光
+    public static final int NO_LIGHT_CAMERA = -1;
+    //支持双光
+    public static final int DOUBLE_LIGHT_CAMERA = 0;
+    //支持双光枪机
+    public static final int DOUBLE_LIGHT_BOX_CAMERA = 1;
+    //支持音乐灯
+    public static final int MUSIC_LIGHT_CAMERA = 2;
+    //支持庭院双光灯
+    public static final int GARDEN_DOUBLE_LIGHT_CAMERA = 3;
+    //支持白光灯
+    public static final int WHITE_LIGHT_CAMERA = 4;
+    //支持低功耗设备灯光能力 / 支持单品智能警戒
+    public static final int LOW_POWER_WHITE_LIGHT_CAMERA = 5;
+    /**
+     * 支持的灯光类型
+     */
+    private int getSupportLightType(){
+        if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportCameraWhiteLight") > 0) {
+            Log.d(TAG, "支持基础白光灯");
+            if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportDoubleLightBulb") > 0) {
+                Log.d(TAG, "支持双光      " + presenter.getDevId());
+                return DOUBLE_LIGHT_CAMERA;
+            } else if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportDoubleLightBoxCamera") > 0) {
+                Log.d(TAG, "支持双光枪机   " + presenter.getDevId());
+                return DOUBLE_LIGHT_BOX_CAMERA;
+            } else if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportMusicLightBulb") > 0) {
+                Log.d(TAG, "支持音乐灯     " + presenter.getDevId());
+                return MUSIC_LIGHT_CAMERA;
+            } else if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportBoxCameraBulb") > 0) {
+                Log.d(TAG, "支持庭院双光灯     " + presenter.getDevId());
+                return GARDEN_DOUBLE_LIGHT_CAMERA;
+            } else {
+                Log.d(TAG, "支持白光灯     " + presenter.getDevId());
+                return WHITE_LIGHT_CAMERA;
+            }
+        } else if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/LP4GSupportDoubleLightSwitch") > 0
+                || FunSDK.GetDevAbility(presenter.getDevId(), "AlarmFunction/IntellAlertAlarm") > 0
+                || FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportLowPowerDoubleLightToLightingSwitch") > 0) {
+            //支持低功耗设备灯光能力 / 支持单品智能警戒
+            Log.d(TAG, "支持低功耗设备灯光能力 / 支持单品智能警戒 / 庭院灯照明开关   " + presenter.getDevId());
+            return LOW_POWER_WHITE_LIGHT_CAMERA;
+
+        }
+        return NO_LIGHT_CAMERA;
+    }
+
+
 
     /**
      * 播放状态回调
@@ -1261,7 +1317,42 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 monitorFunAdapter.changeBtnState(itemId, isManualAlarmOpen);
                 break;
             case FUN_ALARM_BY_VOICE_LIGHT: //声光报警
-                turnToActivity(AlarmByVoiceLightActivity.class);
+                switch (getSupportLightType()){
+                    case DOUBLE_LIGHT_BOX_CAMERA:
+                        turnToActivity(DoubleLightBoxActivity.class);
+                        break;
+                    case LOW_POWER_WHITE_LIGHT_CAMERA:
+                        Intent intent = new Intent(DevMonitorActivity.this, WhiteLightActivity.class);
+                        intent.putExtra("devId", presenter.getDevId());
+                        intent.putExtra("supportLightSwitch", false);
+                        startActivity(intent);
+                        break;
+
+                    case WHITE_LIGHT_CAMERA:
+                        Intent whiteLightIntent = new Intent(DevMonitorActivity.this, WhiteLightActivity.class);
+                        whiteLightIntent.putExtra("devId", presenter.getDevId());
+                        whiteLightIntent.putExtra("supportLightSwitch", true);
+                        startActivity(whiteLightIntent);
+                        break;
+                    case DOUBLE_LIGHT_CAMERA:
+                        Intent doubleLightIntent = new Intent(DevMonitorActivity.this, DoubleLightActivity.class);
+                        doubleLightIntent.putExtra("devId", presenter.getDevId());
+                        doubleLightIntent.putExtra("supportLightSwitch", true);
+                        startActivity(doubleLightIntent);
+                        break;
+                    case MUSIC_LIGHT_CAMERA:
+                        Intent musicLightIntent = new Intent(DevMonitorActivity.this, MusicLightActivity.class);
+                        musicLightIntent.putExtra("devId", presenter.getDevId());
+                        musicLightIntent.putExtra("supportLightSwitch", true);
+                        startActivity(musicLightIntent);
+                        break;
+                    case GARDEN_DOUBLE_LIGHT_CAMERA:
+                        Intent GardenDoubleLightIntent = new Intent(DevMonitorActivity.this, GardenDoubleLightActivity.class);
+                        GardenDoubleLightIntent.putExtra("devId", presenter.getDevId());
+                        startActivity(GardenDoubleLightIntent);
+                    default:
+                        break;
+                }
                 break;
             case FUN_CAMERA_LINK://相机联动
                 turnToActivity(CameraLinkSetActivity.class);

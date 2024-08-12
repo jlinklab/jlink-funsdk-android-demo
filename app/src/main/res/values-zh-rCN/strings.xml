@@ -473,6 +473,8 @@
     <string name="hunman_detect">人形检测(智能分析)</string>
     <string name="date_second">秒</string>
     <string name="date_minute">分</string>
+    <string name="date_hour">时</string>
+    <string name="pir_detection">PIR移动侦测</string>
     <string name="loaded_failed">加载失败</string>
     <string-array name="alarmouttype">
         <item>自动</item>

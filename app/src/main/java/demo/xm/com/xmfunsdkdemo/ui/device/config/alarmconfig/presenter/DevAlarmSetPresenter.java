@@ -1,6 +1,7 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.config.alarmconfig.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.lib.FunSDK;
 import com.lib.sdk.bean.AlarmInfoBean;
 import com.lib.sdk.bean.HandleConfigData;
 import com.lib.sdk.bean.HumanDetectionBean;
@@ -10,6 +11,8 @@ import com.manager.device.config.DevConfigInfo;
 import com.manager.device.config.DevConfigManager;
 
 import com.xm.activity.base.XMBasePresenter;
+
+import java.util.ArrayList;
 
 import demo.xm.com.xmfunsdkdemo.ui.device.config.DevConfigState;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.alarmconfig.listener.DevAlarmSetContract;
@@ -34,6 +37,8 @@ public class DevAlarmSetPresenter extends XMBasePresenter<DeviceManager> impleme
     private AlarmInfoBean mMotion;
     private DevAlarmSetContract.IDevAlarmSetView iDevAlarmSetView;
     private DevConfigManager devConfigManager;
+
+    private AlarmInfoBean mPirAlarm;
     /**
      * 是否支持人形检测
      */
@@ -61,6 +66,13 @@ public class DevAlarmSetPresenter extends XMBasePresenter<DeviceManager> impleme
         checkSupportHumanDetect();
         checkSupportAlarmVoiceTips();
         checkSupportAlarmVoiceTipsType();
+        if (FunSDK.GetDevAbility(getDevId(), "OtherFunction/SupportPirAlarm") > 0) {
+            getPIRAlarm();
+        } else {
+            iDevAlarmSetView.updateUI(null,
+                    JsonConfig.ALARM_PIR, DevConfigState.DEV_CONFIG_VIEW_INVISIABLE);
+        }
+
     }
 
     /**
@@ -204,6 +216,71 @@ public class DevAlarmSetPresenter extends XMBasePresenter<DeviceManager> impleme
         lossInfo.setJsonName(JsonConfig.DETECT_LOSSDETECT);
         lossInfo.setChnId(0);  //通道号
         devConfigManager.getDevConfig(lossInfo);
+    }
+
+    /**
+     * 获取PIR报警设置
+     */
+    private void getPIRAlarm(){
+        DevConfigInfo mainConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
+            @Override
+            public void onSuccess(String devId, int msgId, Object result) {
+                //单品智能警戒
+
+                if(result instanceof ArrayList){
+                    ArrayList<AlarmInfoBean> list = (ArrayList<AlarmInfoBean>)result;
+                    if(list!=null && list.size()>0){
+                        mPirAlarm = list.get(0);
+                        iDevAlarmSetView.updateUI(mPirAlarm,
+                                JsonConfig.ALARM_PIR, DevConfigState.DEV_CONFIG_VIEW_VISIABLE);
+                        return;
+                    }
+                } else if (result instanceof AlarmInfoBean){
+                    mPirAlarm = (AlarmInfoBean)result;
+                    iDevAlarmSetView.updateUI(mPirAlarm,
+                            JsonConfig.ALARM_PIR, DevConfigState.DEV_CONFIG_VIEW_VISIABLE);
+                    return;
+                }
+                iDevAlarmSetView.updateUI(null,
+                        JsonConfig.ALARM_PIR, DevConfigState.DEV_CONFIG_VIEW_INVISIABLE);
+            }
+
+            @Override
+            public void onFailed(String devId, int msgId, String s1, int errorId) {
+                iDevAlarmSetView.updateUI(null,
+                        JsonConfig.ALARM_PIR, DevConfigState.DEV_CONFIG_VIEW_INVISIABLE);
+            }
+        });
+        mainConfigInfo.setJsonName(JsonConfig.ALARM_PIR);
+        mainConfigInfo.setChnId(getChnId());
+        devConfigManager.getDevConfig(mainConfigInfo);
+    }
+
+
+    @Override
+    public void savePIRAlarm() {
+        if (mPirAlarm == null) {
+            return;
+        }
+
+        DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
+            @Override
+            public void onSuccess(String devId, int msgId, Object result) {
+                iDevAlarmSetView.savePirAlarmResult(DevConfigState.DEV_CONFIG_UPDATE_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(String devId, int msgId, String s1, int errorId) {
+                iDevAlarmSetView.savePirAlarmResult(DevConfigState.DEV_CONFIG_UPDATE_FAILED);
+            }
+        });
+        devConfigInfo.setJsonName(JsonConfig.ALARM_PIR);
+        devConfigInfo.setChnId(0);
+
+        HandleConfigData handleConfigData = new HandleConfigData();
+        String jsonData = handleConfigData.getSendData(HandleConfigData.getFullName(JsonConfig.ALARM_PIR, 0), "0x08", mPirAlarm);
+        devConfigInfo.setJsonData(jsonData);
+        devConfigManager.setDevConfig(devConfigInfo);
     }
 
     @Override
@@ -357,6 +434,11 @@ public class DevAlarmSetPresenter extends XMBasePresenter<DeviceManager> impleme
 
     public boolean isSupportHumanDetect() {
         return isSupportHumanDetect;
+    }
+
+
+    public AlarmInfoBean getPirAlarm() {
+        return mPirAlarm;
     }
 }
 

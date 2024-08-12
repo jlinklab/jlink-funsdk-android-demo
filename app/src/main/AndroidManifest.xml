@@ -69,6 +69,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="Support_XM_Language"
+            android:value="true" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="demo.xm.com.xmfunsdkdemo.fileprovider"
@@ -159,7 +164,19 @@
             android:name=".ui.device.alarm.view.ActivityGuideDeviceLanAlarm"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.device.alarm.view.AlarmByVoiceLightActivity"
+            android:name=".ui.device.alarm.view.DoubleLightBoxActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.WhiteLightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.DoubleLightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.MusicLightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.GardenDoubleLightActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.device.config.imageconfig.view.DevCameraSetActivity"

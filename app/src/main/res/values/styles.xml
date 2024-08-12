@@ -75,4 +75,27 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:backgroundDimAmount">0.6</item>
     </style>
+
+    <style name="baseListSelectItemStyle">
+        <item name="ImageRight1">@drawable/icon_next</item>
+        <item name="ImageRight2">@drawable/icon_next</item>
+        <item name="ItemTitleColor">@color/item_text_color</item>
+        <item name="ItemTitleSize">@dimen/item_text_size</item>
+        <item name="LineColor">@color/line_color</item>
+        <item name="ItemTipColor">@color/item_bottom_tip_text_color</item>
+        <item name="ItemTipSize">@dimen/to_small_text_size</item>
+        <item name="CapSize">@dimen/item_right_cap_size</item>
+        <item name="CapColor">@color/item_right_cap_text_color</item>
+        <item name="leftMargin">0dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+
+
+    <style name="ThemeLayoutStyle">
+        <item name="android:background">@drawable/corner_white_bg</item>
+        <item name="android:layout_marginTop">@dimen/half_of_normal_margin</item>
+    </style>
+
+
+
 </resources>

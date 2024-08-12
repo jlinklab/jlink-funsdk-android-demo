@@ -51,6 +51,13 @@
     <color name="text_color">#353535</color>
 
     <color name="bg_color">#F5F5F5</color>
+    <!-- 主要字体 -->
+    <color name="login_page_color">#353535</color>
+    <color name="color_transparent_1f">#5E000000</color>
+    <color name="item_text_color">#5A5A5A</color>
+    <color name="item_right_cap_text_color">#A5A5A5</color>
+    <color name="item_bottom_tip_text_color">#A6A6A6</color>
+    <color name="lighter_grey">#DDDDDD</color>
     
     
    

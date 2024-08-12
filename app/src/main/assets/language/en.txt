@@ -1670,3 +1670,32 @@ EE_WRITE_FILE=Failed to write file
 Data_exception=Data exception
 TR_Translation_Rules=翻译规则:所有的翻译都是TR开头的，命名按照驼峰规则(例：TR_Phone_Video=手机影像            放于最后)
 
+
+
+bulb_switch=Bulb Switch
+TR_White_Light=Full-Color Night Vision
+TR_White_Light_Switch=White light switch
+TR_LightSettingSwitch=Light switch
+TR_Light_Alarm=Light Alert
+TR_Light_Alarm_Tip=Set Light Alert
+TR_Light_Settings=Light Settings
+TR_Light_Switch=Light Switching
+TR_Light_Up_Switch=Light switch
+TR_Alarm_ringtone=Alarm Tone Settings
+TR_Alarm_tone_do_not_disturb=Alarm sound disabled
+TR_Alarm_volume=Alarm Volume Settings
+TR_Infrared_Light=Night Vision Infrared
+TR_Human_body_induction_alarm=Human sensing alarm
+TR_Human_shape_induction_alarm=Human detection alarm
+TR_Continuous_alarm_time=Alarm Time Settings
+TR_PIR_Alarm=PIR Alarm
+TR_PIR_Detection=PIR Motion Detection
+TR_Turn_light_off=Light Off
+TR_Turn_light_on=Light On
+Intelligent_Vigilance=Intelligent Alert
+IrLamp_Auto=Intelligent IR
+WhiteLamp_Auto=Smart Warm Light
+Setting_Color=Color
+Setting_White_Black=Black & White
+TR_Open_Alarm=On
+TR_Intelligent_Warning_Switch=Smart Alert Switch
