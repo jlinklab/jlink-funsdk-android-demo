@@ -97,6 +97,8 @@ public class InputWiFiInfoActivity extends DemoBaseActivity {
         wifiPasswdEdit = findViewById(R.id.editWifiPasswd);
 
         InputWiFiInfoActivityPermissionsDispatcher.initDataWithPermissionCheck(this);
+
+        mac = getIntent().getStringExtra("mac");
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
