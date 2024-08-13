@@ -574,7 +574,7 @@ public class WhiteLightPresenter extends XMBasePresenter<DeviceManager> implemen
             if ((int) value == -2 || (int) value == 550) {
                 //选择自定义报警音
                 Intent intent = new Intent(iWhiteLightView.getActivity(), FileTransferActivity.class);
-                intent.putExtra("getDevId()", getDevId());
+                intent.putExtra("devId", getDevId());
                 intent.putExtra("chnId", getChnId());
                 iWhiteLightView.getActivity().startActivity(intent);
 
