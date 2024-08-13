@@ -925,4 +925,5 @@
     <string name="stop_cruise">Stop Cruising</string>
     <string name="tour_end">Cruising End</string>
     <string name="set_watch_preset">Set The Watch Preset</string>
+    <string name="view_doc">View Documentation</string>
 </resources>

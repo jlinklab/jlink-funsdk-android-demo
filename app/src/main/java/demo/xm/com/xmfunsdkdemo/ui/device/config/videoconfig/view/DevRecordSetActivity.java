@@ -393,7 +393,8 @@ public class DevRecordSetActivity extends BaseConfigActivity<DevRecordSetPresent
                 }else {
                     HashMap<String, Object> resultMap = new Gson().fromJson(result, HashMap.class);
                     if (resultMap != null && resultMap.containsKey("Storage.EpitomeRecord")) {
-                        LinkedTreeMap<String, Object> epitomeRecordMap = (LinkedTreeMap<String, Object>) resultMap.get("Storage.EpitomeRecord");
+                        List<LinkedTreeMap<String, Object>> epitomeRecordList = (List<LinkedTreeMap<String, Object>>) resultMap.get("Storage.EpitomeRecord");
+                        LinkedTreeMap<String, Object> epitomeRecordMap = epitomeRecordList.get(presenter.getChnId());
                         if (epitomeRecordMap != null) {
                             isEnable = (boolean) epitomeRecordMap.get("Enable");
                             Double intervalDouble = (Double) epitomeRecordMap.get("Interval");

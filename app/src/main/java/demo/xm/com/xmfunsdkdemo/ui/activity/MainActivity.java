@@ -270,6 +270,14 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
             }
         });
 
+        ItemSetLayout viewDocLayout = findViewById(R.id.item_view_doc);
+        viewDocLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openBrowser(androidDoc);
+            }
+        });
+
         ItemSetLayout AboutLayout = findViewById(R.id.item_set_about);
         AboutLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -310,7 +318,7 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @Override

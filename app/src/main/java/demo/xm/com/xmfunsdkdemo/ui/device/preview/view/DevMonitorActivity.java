@@ -869,7 +869,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 tvWiFiState.setVisibility(View.VISIBLE);
             }
 
-            tvWiFiState.setText(tvWiFiState.getText().toString() + String.format(getString(R.string.wifi_state_show), wifiRouteInfo.getSignalLevel()));
+            tvWiFiState.setText(String.format(getString(R.string.wifi_state_show), wifiRouteInfo.getSignalLevel()));
         }
     }
 
