@@ -233,6 +233,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     private List<HashMap<String, Object>> monitorFunList = new ArrayList<>();//预览页面的功能列表
     private AutoHideManager autoHideManager;//自动隐藏控件
     private Dialog tourDlg;
+    private SystemFunctionBean systemFunctionBean;//设备能力集
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -573,6 +574,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
      */
     @Override
     public void onGetDevAbilityResult(SystemFunctionBean systemFunctionBean, int errorId) {
+        this.systemFunctionBean = systemFunctionBean;
         monitorFunList.clear();
         hideWaitDialog();
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -719,7 +721,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             }
 
             //是否支持声光警戒功能
-            if (getSupportLightType()!=NO_LIGHT_CAMERA) {
+            if (getSupportLightType(systemFunctionBean) != NO_LIGHT_CAMERA) {
                 hashMap = new HashMap<>();
                 hashMap.put("itemId", FUN_ALARM_BY_VOICE_LIGHT);
                 hashMap.put("itemName", getString(R.string.alarm_by_voice_light));
@@ -753,31 +755,36 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     public static final int WHITE_LIGHT_CAMERA = 4;
     //支持低功耗设备灯光能力 / 支持单品智能警戒
     public static final int LOW_POWER_WHITE_LIGHT_CAMERA = 5;
+
     /**
      * 支持的灯光类型
      */
-    private int getSupportLightType(){
-        if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportCameraWhiteLight") > 0) {
+    private int getSupportLightType(SystemFunctionBean systemFunctionBean) {
+        if (systemFunctionBean == null) {
+            return NO_LIGHT_CAMERA;
+        }
+
+        if (systemFunctionBean.OtherFunction.SupportCameraWhiteLight) {
             Log.d(TAG, "支持基础白光灯");
-            if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportDoubleLightBulb") > 0) {
+            if (systemFunctionBean.OtherFunction.SupportDoubleLightBulb) {
                 Log.d(TAG, "支持双光      " + presenter.getDevId());
                 return DOUBLE_LIGHT_CAMERA;
-            } else if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportDoubleLightBoxCamera") > 0) {
+            } else if (systemFunctionBean.OtherFunction.SupportDoubleLightBoxCamera) {
                 Log.d(TAG, "支持双光枪机   " + presenter.getDevId());
                 return DOUBLE_LIGHT_BOX_CAMERA;
-            } else if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportMusicLightBulb") > 0) {
+            } else if (systemFunctionBean.OtherFunction.SupportMusicLightBulb) {
                 Log.d(TAG, "支持音乐灯     " + presenter.getDevId());
                 return MUSIC_LIGHT_CAMERA;
-            } else if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportBoxCameraBulb") > 0) {
+            } else if (systemFunctionBean.OtherFunction.SupportBoxCameraBulb) {
                 Log.d(TAG, "支持庭院双光灯     " + presenter.getDevId());
                 return GARDEN_DOUBLE_LIGHT_CAMERA;
             } else {
                 Log.d(TAG, "支持白光灯     " + presenter.getDevId());
                 return WHITE_LIGHT_CAMERA;
             }
-        } else if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/LP4GSupportDoubleLightSwitch") > 0
-                || FunSDK.GetDevAbility(presenter.getDevId(), "AlarmFunction/IntellAlertAlarm") > 0
-                || FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportLowPowerDoubleLightToLightingSwitch") > 0) {
+        } else if (systemFunctionBean.OtherFunction.LP4GSupportDoubleLightSwitch
+                || systemFunctionBean.AlarmFunction.IntellAlertAlarm
+                || systemFunctionBean.OtherFunction.SupportLowPowerDoubleLightToLightingSwitch) {
             //支持低功耗设备灯光能力 / 支持单品智能警戒
             Log.d(TAG, "支持低功耗设备灯光能力 / 支持单品智能警戒 / 庭院灯照明开关   " + presenter.getDevId());
             return LOW_POWER_WHITE_LIGHT_CAMERA;
@@ -785,7 +792,6 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         }
         return NO_LIGHT_CAMERA;
     }
-
 
 
     /**
@@ -1317,7 +1323,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 monitorFunAdapter.changeBtnState(itemId, isManualAlarmOpen);
                 break;
             case FUN_ALARM_BY_VOICE_LIGHT: //声光报警
-                switch (getSupportLightType()){
+                switch (getSupportLightType(systemFunctionBean)) {
                     case DOUBLE_LIGHT_BOX_CAMERA:
                         turnToActivity(DoubleLightBoxActivity.class);
                         break;

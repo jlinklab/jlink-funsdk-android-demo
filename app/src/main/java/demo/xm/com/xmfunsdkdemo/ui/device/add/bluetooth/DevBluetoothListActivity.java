@@ -88,6 +88,10 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
      * 是否要停止蓝牙配对
      */
     private boolean isStopBlePairing;
+    /**
+     * 是否批量操作
+     */
+    private boolean isMassCtrl;
 
     @Override
     public DevBluetoothConnectPresenter getPresenter() {
@@ -121,6 +125,8 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
                     Intent intent = new Intent(DevBluetoothListActivity.this, InputWiFiInfoActivity.class);
                     startActivityForResult(intent, REQUEST_INPUT_WIFI_INFO_CODE);
                 }
+
+                isMassCtrl = true;
             }
         });
 
@@ -276,7 +282,7 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
                     presenter.connectWiFi(mac, ssid, password);
                 }
             }, 100);
-        } else {
+        } else{
             ToastUtils.showLong(getString(R.string.connect_ble_failed) + ":" + resultCode);
             startNextBelNetwork();
         }
@@ -360,7 +366,6 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
             return;
         }
 
-        XMBleInfo xmBleInfo = devBluetoothListAdapter.getData(isBleNetworkSuccess.size());
         if (!StringUtils.isStringNULL(mac)) {
             presenter.connectBle(mac);
         } else {
@@ -371,9 +376,11 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
     }
 
     private void startNextBelNetwork() {
-        XMBleInfo xmBleInfo = devBluetoothListAdapter.getData(isBleNetworkSuccess.size());
-        if (xmBleInfo != null) {
-            startNextBelNetwork(xmBleInfo.getMac());
+        if (isMassCtrl) {
+            XMBleInfo xmBleInfo = devBluetoothListAdapter.getData(isBleNetworkSuccess.size());
+            if (xmBleInfo != null) {
+                startNextBelNetwork(xmBleInfo.getMac());
+            }
         }
     }
 
