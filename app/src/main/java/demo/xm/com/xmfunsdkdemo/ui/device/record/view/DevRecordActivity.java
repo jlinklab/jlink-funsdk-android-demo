@@ -582,8 +582,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                 getString(R.string.playback_fast_play),
                 getString(R.string.playback_slow_play),
                 getString(R.string.device_opt_fullscreen),
-                getString(R.string.sel_record_file_type),
-                getString(R.string.is_enable_epitome_record)};
+                getString(R.string.sel_record_file_type)};
 
         @NonNull
         @Override
@@ -760,7 +759,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                 textView.setText(getString(R.string.record_file_type) + ":");
                 Spinner spinner = new Spinner(this);
                 spinner.setBackgroundColor(Color.WHITE);
-                String[] data = {getString(R.string.record_file_all), getString(R.string.record_file_normal), getString(R.string.record_file_alarm)};
+                String[] data = {getString(R.string.record_file_all), getString(R.string.record_file_normal), getString(R.string.record_file_alarm),getString(R.string.EpitomeRecord)};
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);

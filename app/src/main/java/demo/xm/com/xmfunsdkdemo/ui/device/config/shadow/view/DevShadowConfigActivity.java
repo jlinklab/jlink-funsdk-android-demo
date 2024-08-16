@@ -41,7 +41,6 @@ public class DevShadowConfigActivity extends BaseConfigActivity<DevShadowConfigP
     private ItemSetLayout isSendConfigContent;
     private Button btnGetConfig;
     private Button btnSaveConfig;
-    private Button btnStartConfigMonitor;
     private EditText etReceiveConfigContent;
     private EditText etSendConfigContent;
     private String fieldName;
@@ -103,22 +102,6 @@ public class DevShadowConfigActivity extends BaseConfigActivity<DevShadowConfigP
                 isReceiveConfigContent.setLeftTitle(fieldName);
                 presenter.getConfig(fieldName);
                 etSendConfigContent.setText(fieldName);
-            }
-        });
-
-        btnStartConfigMonitor = isReceiveConfigContent.findViewById(R.id.btn_start_config_monitor);
-        btnStartConfigMonitor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Boolean.TRUE.equals(btnStartConfigMonitor.getTag())) {
-                    presenter.stopConfigMonitoring();
-                    btnStartConfigMonitor.setTag(false);
-                    btnStartConfigMonitor.setText(R.string.start_config_monitor);
-                } else {
-                    presenter.startConfigMonitoring(fieldName);
-                    btnStartConfigMonitor.setTag(true);
-                    btnStartConfigMonitor.setText(R.string.stop_config_monitor);
-                }
             }
         });
 
@@ -190,11 +173,6 @@ public class DevShadowConfigActivity extends BaseConfigActivity<DevShadowConfigP
             btnSaveConfig.setVisibility(View.GONE);
             isSendConfigContent.setVisibility(View.GONE);
         }
-
-        presenter.stopConfigMonitoring();
-        btnStartConfigMonitor.setTag(false);
-        btnStartConfigMonitor.setText(R.string.start_config_monitor);
-        btnStartConfigMonitor.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -22,18 +22,6 @@ public class DevShadowConfigContract {
          */
         void setConfig(String configName, Object jsonData);
 
-        /**
-         * 开始配置实时监听
-         *
-         * @param configName
-         */
-        void startConfigMonitoring(String configName);
-
-        /**
-         * 停止配置实时监听
-         */
-        void stopConfigMonitoring();
-
         void release();
     }
 }

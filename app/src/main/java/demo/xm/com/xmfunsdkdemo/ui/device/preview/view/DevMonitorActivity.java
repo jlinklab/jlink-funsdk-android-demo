@@ -95,6 +95,7 @@ import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 import io.reactivex.annotations.Nullable;
 
 import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_MEDIA_DISCONNECT;
+import static com.xm.ui.dialog.PasswordErrorDlg.INPUT_TYPE_DEV_USER_PWD;
 
 import static demo.xm.com.xmfunsdkdemo.base.FunError.EE_DVR_ACCOUNT_PWD_NOT_VALID;
 
@@ -813,6 +814,16 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                         presenter.startMonitor(chnId);
                     }
                 });
+            }else if (errorId == EFUN_ERROR.EE_DVR_LOGIN_USER_NOEXIST) {
+                XMDevInfo devInfo = DevDataCenter.getInstance().getDevInfo(presenter.getDevId());
+                XMPromptDlg.onShowPasswordErrorDialog(this, devInfo.getSdbDevInfo(),
+                        0,getString(R.string.input_username_password),INPUT_TYPE_DEV_USER_PWD, true,new PwdErrorManager.OnRepeatSendMsgListener() {
+                            @Override
+                            public void onSendMsg(int msgId) {
+                                showWaitDialog();
+                                presenter.startMonitor(chnId);
+                            }
+                        }, false);
             } else if (errorId < 0) {
                 showToast(getString(R.string.open_video_f) + errorId, Toast.LENGTH_LONG);
             } else {

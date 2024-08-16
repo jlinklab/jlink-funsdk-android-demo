@@ -54,6 +54,8 @@ import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_CLOUD;
 import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_FILE;
 import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_TIME;
 import static com.manager.device.media.MediaManager.PLAY_CLOUD_PLAYBACK;
+import static com.manager.device.media.attribute.PlayerAttribute.EE_STATE_SD_SEARCH_RECORD_BY_FILE;
+import static com.manager.device.media.attribute.PlayerAttribute.EE_STATE_SD_SEARCH_RECORD_BY_TIME;
 import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_PLAY_COMPLETED;
 import static com.manager.device.media.attribute.RecordPlayerAttribute.PLAY_SPEED_FAST;
 import static com.manager.device.media.attribute.RecordPlayerAttribute.PLAY_SPEED_SLOW;
@@ -64,9 +66,10 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
         MediaFileCalendarManager.OnMediaFileCalendarListener, DownloadManager.OnDownloadListener, BaseImageManager.OnImageManagerListener {
     public static final int MN_COUNT = 8;
     public static final int TIME_UNIT = 60;
-    public static final int RECORD_TYPE_ALL = 0;//所有录像
-    public static final int RECORD_TYPE_ONLY_NORMAL = 1;//普通录像
-    public static final int RECORD_TYPE_ONLY_ALARM = 2;//报警录像
+    public static final int RECORD_TYPE_SEL_ALL = 0;//所有录像
+    public static final int RECORD_TYPE_SEL_ONLY_NORMAL = 1;//普通录像
+    public static final int RECORD_TYPE_SEL_ONLY_ALARM = 2;//报警录像
+    public static final int RECORD_TYPE_SEL_ONLY_EPITOME = 3;//缩影录像
     private DevRecordContract.IDevRecordView iDevRecordView;
     private RecordManager recordManager;
     private MediaFileCalendarManager mediaFileCalendarManager;
@@ -119,11 +122,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
         } else {
             //SD卡回放
             recordManager = new DevRecordManager(playView, recordPlayerAttribute);
-            //设备录像文件类型
-            // subType对应的枚举参考:https://docs.jftech.com/docs?menusId=ab0ed73834f54368be3e375075e27fb2&siderid=9f6293ec863e46e6961cc85403b15ac4
-            int subTypeMask = 1 << SDKCONST.EMSSubType.ALL;//多个类型参考:(1 << EMSSubType.DYNAMIC) | (1 << EMSSubType.STRANDED)
-            int recordFileType = (SDKCONST.EMSType.h264 << 26) | (subTypeMask & 0x3FFFFFF);
-            ((DevRecordManager) recordManager).setRecordFileType(recordFileType);
+            ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_ALL);
         }
 
         recordManager.setChnId(getChnId());
@@ -136,18 +135,15 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     public void setSearchRecordFileType(int recordFileType) {
         this.recordFileType = recordFileType;
         if (recordManager instanceof DevRecordManager) {
-            //设备录像文件类型
-            // subType对应的枚举参考:https://docs.jftech.com/docs?menusId=ab0ed73834f54368be3e375075e27fb2&siderid=9f6293ec863e46e6961cc85403b15ac4
-            // 多个类型参考:(1 << EMSSubType.DYNAMIC) | (1 << EMSSubType.STRANDED)
-            int subTypeMask = 0;
-            if (recordFileType == RECORD_TYPE_ALL) {//所有录像
-                subTypeMask = 1 << SDKCONST.EMSSubType.ALL;
-            } else if (recordFileType == RECORD_TYPE_ONLY_ALARM) {//报警录像
-                subTypeMask = (1 << SDKCONST.EMSSubType.ALERT) | (1 << SDKCONST.EMSSubType.DYNAMIC) | (1 << SDKCONST.EMSSubType.INVASION) | (1 << SDKCONST.EMSSubType.STRANDED);
-            } else if (recordFileType == RECORD_TYPE_ONLY_NORMAL) {//普通录像
-                subTypeMask = (1 << SDKCONST.EMSSubType.ORIGINAL) | (1 << SDKCONST.EMSSubType.HAND);
+            if (recordFileType == RECORD_TYPE_SEL_ALL) {//所有录像
+                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_ALL);
+            } else if (recordFileType == RECORD_TYPE_SEL_ONLY_ALARM) {//报警录像
+                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_A, DevRecordManager.RECORD_TYPE_M);
+            } else if (recordFileType == RECORD_TYPE_SEL_ONLY_NORMAL) {//普通录像
+                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_R, DevRecordManager.RECORD_TYPE_H);
+            } else if (recordFileType == RECORD_TYPE_SEL_ONLY_EPITOME) {//缩影录像
+                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_E);
             }
-            ((DevRecordManager) recordManager).setRecordFileType((SDKCONST.EMSType.h264 << 26) | (subTypeMask & 0x3FFFFFF));
         }
     }
 
@@ -321,7 +317,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
      * @param times 当前要播放的时间点（24小时内换算的时间，单位秒，比如：0点10分就是换成600秒）
      */
     @Override
-    public void seekToTime(Calendar calendar,int times) {
+    public void seekToTime(Calendar calendar, int times) {
         //获取当前播放的日期
         int[] dateTime = {calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
                 calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0};
@@ -526,7 +522,15 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
                 iDevRecordView.onSearchRecordByTimeResult(true);
             }
         } else {
-            iDevRecordView.onSearchRecordByFileResult(false);
+            //按文件查询失败回调
+            if (attribute.getPlayState() == EE_STATE_SD_SEARCH_RECORD_BY_FILE) {
+                recordList.clear();
+                iDevRecordView.onSearchRecordByFileResult(false);
+            } else if (attribute.getPlayState() == EE_STATE_SD_SEARCH_RECORD_BY_TIME) {
+                //按时间查询失败回调
+                dealWithRecordTimeList(new char[144][]);
+                iDevRecordView.onSearchRecordByTimeResult(false);
+            }
         }
     }
 
@@ -590,7 +594,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
                 iDevRecordView.onDownloadState(downloadInfo.getDownloadState(), downloadInfo.getSaveFileName());
             }
 
-            System.out.println("download-->" +  downloadInfo.getDownloadState() + " progress:" + downloadInfo.getDownloadProgress());
+            System.out.println("download-->" + downloadInfo.getDownloadState() + " progress:" + downloadInfo.getDownloadProgress());
         }
     }
 

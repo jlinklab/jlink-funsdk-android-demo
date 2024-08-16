@@ -88,16 +88,6 @@ public class DevShadowConfigPresenter extends XMBasePresenter<DeviceManager> imp
     }
 
     @Override
-    public void startConfigMonitoring(String configName) {
-        iDevShadowManager.startRealTimeDataCallback(getDevId(), configName);
-    }
-
-    @Override
-    public void stopConfigMonitoring() {
-        iDevShadowManager.stopRealTimeDataCallback(getDevId());
-    }
-
-    @Override
     public void release() {
         if (iDevShadowManager != null) {
             iDevShadowManager.removeDevShadowListener(onDevShadowManagerListener);

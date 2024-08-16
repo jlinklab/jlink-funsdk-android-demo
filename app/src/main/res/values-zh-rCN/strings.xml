@@ -925,4 +925,6 @@
     <string name="tour_end">巡航结束</string>
     <string name="set_watch_preset">设置守望位置</string>
     <string name="view_doc">查看文档</string>
+    <string name="EpitomeRecord">缩影录像</string>
+    <string name="input_username_password">请输入用户名和密码</string>
 </resources>

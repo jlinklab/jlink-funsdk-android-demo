@@ -926,4 +926,6 @@
     <string name="tour_end">Cruising End</string>
     <string name="set_watch_preset">Set The Watch Preset</string>
     <string name="view_doc">View Documentation</string>
+    <string name="EpitomeRecord">Epitome Record</string>
+    <string name="input_username_password">Please enter your username and password</string>
 </resources>
