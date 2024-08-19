@@ -60,6 +60,8 @@ import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_PLAY_CO
 import static com.manager.device.media.attribute.RecordPlayerAttribute.PLAY_SPEED_FAST;
 import static com.manager.device.media.attribute.RecordPlayerAttribute.PLAY_SPEED_SLOW;
 import static com.manager.device.media.download.DownloadManager.DOWNLOAD_STATE_PROGRESS;
+import static com.manager.device.media.playback.DevRecordManager.RECORD_TYPE_ALL;
+import static com.manager.device.media.playback.DevRecordManager.RECORD_TYPE_E;
 
 public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implements
         DevRecordContract.IDevRecordPresenter, RecordManager.OnRecordManagerListener,
@@ -85,7 +87,6 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     private int recordPlayType;
     private int playSpeed;
     private int recordFileType;
-    private boolean isEpitomeRecordEnable;//缩影录像开关
     private H264_DVR_FILE_DATA curPlayFileInfo;//当前播放的录像文件信息
 
     public DevRecordPresenter(DevRecordContract.IDevRecordView iDevRecordView) {
@@ -122,7 +123,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
         } else {
             //SD卡回放
             recordManager = new DevRecordManager(playView, recordPlayerAttribute);
-            ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_ALL);
+            ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_ALL);
         }
 
         recordManager.setChnId(getChnId());
@@ -136,27 +137,14 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
         this.recordFileType = recordFileType;
         if (recordManager instanceof DevRecordManager) {
             if (recordFileType == RECORD_TYPE_SEL_ALL) {//所有录像
-                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_ALL);
+                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_ALL);
             } else if (recordFileType == RECORD_TYPE_SEL_ONLY_ALARM) {//报警录像
                 ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_A, DevRecordManager.RECORD_TYPE_M);
             } else if (recordFileType == RECORD_TYPE_SEL_ONLY_NORMAL) {//普通录像
                 ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_R, DevRecordManager.RECORD_TYPE_H);
             } else if (recordFileType == RECORD_TYPE_SEL_ONLY_EPITOME) {//缩影录像
-                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_E);
+                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_E);
             }
-        }
-    }
-
-    /**
-     * 设置是否开启缩影录像
-     *
-     * @param isEnable
-     */
-    @Override
-    public void setEpitomeRecordEnable(boolean isEnable) {
-        this.isEpitomeRecordEnable = isEnable;
-        if (recordManager instanceof DevRecordManager) {
-            ((DevRecordManager) recordManager).setRecordStreamType(isEnable ? SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_EPITOME_RECORD : SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_ALL_RECORD);
         }
     }
 
@@ -362,15 +350,13 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
 
         H264_DVR_FILE_DATA data = recordList.get(position);
         if (data != null) {
-            int streamType = isEpitomeRecordEnable ? SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_EPITOME_RECORD : SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_ALL_RECORD;
-            data.st_6_StreamType = streamType;
             String fileName = data.getLongStartTime() + "_" + data.getLongEndTime() + ".mp4";
             DownloadInfo downloadInfo = new DownloadInfo();
             downloadInfo.setStartTime(TimeUtils.getNormalFormatCalender(data.getStartTimeOfYear()));
             downloadInfo.setEndTime(TimeUtils.getNormalFormatCalender(data.getEndTimeOfYear()));
             downloadInfo.setDevId(getDevId());
             downloadInfo.setObj(data);
-            downloadInfo.setStreamType(streamType);
+            downloadInfo.setFileType(RECORD_TYPE_E);
             //下载类型：0->卡存按文件下载 1->云存储下载 2->卡存按时间下载
             //Download type: 0->Download by file from SD card 1->Download from cloud storage 2->Download by time from SD card
             downloadInfo.setDownloadType(recordPlayType == PLAY_CLOUD_PLAYBACK
@@ -637,7 +623,11 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     public void downloadVideoThumb(int position) {
         H264_DVR_FILE_DATA h264DvrFileData = recordList.get(position);
         if (recordManager instanceof DevRecordManager) {
-            ((DevRecordManager) recordManager).downloadVideoThumb(h264DvrFileData, position);
+            if (recordFileType == RECORD_TYPE_SEL_ONLY_EPITOME) {//缩影录像
+                ((DevRecordManager) recordManager).downloadVideoThumb(h264DvrFileData, position, RECORD_TYPE_E);
+            } else {
+                ((DevRecordManager) recordManager).downloadVideoThumb(h264DvrFileData,position,RECORD_TYPE_ALL);
+            }
         } else if (recordManager instanceof CloudRecordManager) {
             CloudMediaFileInfoBean cloudMediaFileInfoBean = JSON.parseObject(h264DvrFileData.getAlarmExFileInfo(), CloudMediaFileInfoBean.class);
             ((CloudRecordManager) recordManager).downloadVideoThumb(cloudMediaFileInfoBean, position);

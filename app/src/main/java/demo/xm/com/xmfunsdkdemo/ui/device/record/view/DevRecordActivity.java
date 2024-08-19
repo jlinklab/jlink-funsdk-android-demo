@@ -789,18 +789,6 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                     }
                 });
                 break;
-            case 8:
-                if (!isSelected) {
-                    XMPromptDlg.onShow(DevRecordActivity.this, getString(R.string.support_epitome_record_tips), null);
-                    findViewById(R.id.banner_rl).setVisibility(View.GONE);
-                }else {
-                    findViewById(R.id.banner_rl).setVisibility(View.VISIBLE);
-                }
-                showWaitDialog();
-                presenter.setEpitomeRecordEnable(!isSelected);
-                presenter.searchRecordByFile(calendarShow);
-                presenter.searchRecordByTime(calendarShow);
-                return true;
             default:
                 break;
         }

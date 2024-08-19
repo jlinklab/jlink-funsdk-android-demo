@@ -56,13 +56,6 @@ public class DevRecordContract {
         void setSearchRecordFileType(int recordFileType);
 
         /**
-         * 是否开启只查询播放缩影录像
-         *
-         * @param isEnable
-         */
-        void setEpitomeRecordEnable(boolean isEnable);
-
-        /**
          * 按文件方式查询录像，以文件列表方式显示
          */
         void searchRecordByFile(Calendar searchTime);
