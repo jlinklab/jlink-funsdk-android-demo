@@ -289,9 +289,9 @@ public class DevAboutPresenter extends XMBasePresenter<DeviceManager>
                     }
 
                     if (supportMap.containsKey("net.cellular.imei")) {
-                        Object iccid = supportMap.get("net.cellular.imei");
-                        if (iccid instanceof String) {
-                            iDevAboutView.onGetIMEIResult((String) iccid);
+                        Object imei = supportMap.get("net.cellular.imei");
+                        if (imei instanceof String) {
+                            iDevAboutView.onGetIMEIResult((String) imei);
                         }
                     }
 

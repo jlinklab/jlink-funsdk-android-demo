@@ -35,6 +35,7 @@ import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.utils.LogUtils;
 import com.xm.activity.base.XMBaseActivity;
+import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.XTitleBar;
 
 import java.util.HashMap;
@@ -275,14 +276,24 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
         hideWaitDialog();
         if (resultCode == REQUEST_SUCCESS) {
             ToastUtils.showLong(R.string.connect_ble_success);
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            XMPromptDlg.onShow(this, "请选择是否进行WiFi配网，还是直接蓝牙交互？", "蓝牙交互", "WiFi配网", new View.OnClickListener() {
                 @Override
-                public void run() {
-                    devBluetoothListAdapter.setProgress(mac, 50);
-                    presenter.connectWiFi(mac, ssid, password);
+                public void onClick(View v) {
+                    turnToActivity(DevBluetoothCtrlActivity.class, new String[][]{{"bleMac", mac}});
                 }
-            }, 100);
-        } else{
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            devBluetoothListAdapter.setProgress(mac, 50);
+                            presenter.connectWiFi(mac, ssid, password);
+                        }
+                    }, 100);
+                }
+            });
+        } else {
             ToastUtils.showLong(getString(R.string.connect_ble_failed) + ":" + resultCode);
             startNextBelNetwork();
         }

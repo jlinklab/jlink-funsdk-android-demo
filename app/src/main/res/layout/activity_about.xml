@@ -51,6 +51,52 @@
         uilib:ItemTitleSize="@dimen/middle_text_size"
         uilib:Title="@string/feedback" />
 
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_save_media_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lsi_feedback"
+        uilib:ImageRight1="@mipmap/icon_checked_no"
+        uilib:ImageRight2="@mipmap/icon_checked_yes"
+        uilib:RightClickable="false"
+        uilib:ItemTitleColor="@color/black"
+        uilib:ItemTitleSize="@dimen/middle_text_size"
+        uilib:Title="@string/save_media_data" />
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_share_media_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lsi_save_media_data"
+        uilib:ImageRight1="@mipmap/icon_next"
+        uilib:ImageRight2="@mipmap/icon_next"
+        uilib:ItemTitleColor="@color/black"
+        uilib:ItemTitleSize="@dimen/middle_text_size"
+        uilib:Title="@string/share_media_data" />
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_save_talk_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lsi_share_media_data"
+        uilib:ImageRight1="@mipmap/icon_checked_no"
+        uilib:ImageRight2="@mipmap/icon_checked_yes"
+        uilib:RightClickable="false"
+        uilib:ItemTitleColor="@color/black"
+        uilib:ItemTitleSize="@dimen/middle_text_size"
+        uilib:Title="@string/save_talk_data" />
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lsi_share_talk_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lsi_save_talk_data"
+        uilib:ImageRight1="@mipmap/icon_next"
+        uilib:ImageRight2="@mipmap/icon_next"
+        uilib:ItemTitleColor="@color/black"
+        uilib:ItemTitleSize="@dimen/middle_text_size"
+        uilib:Title="@string/share_talk_data" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

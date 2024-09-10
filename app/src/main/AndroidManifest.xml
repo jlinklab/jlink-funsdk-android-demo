@@ -57,6 +57,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <!--密码解锁权限-->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
@@ -332,12 +333,15 @@
             android:name=".ui.device.config.powersavingmode.view.PowerSavingModeActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.xm.activity.device.devset.ability.view.XMDevAbilityActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".ui.device.config.detecttrack.DetectTrackActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name="com.xm.activity.device.devset.ability.view.XMDevAbilityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.detecttrack.DetectTrackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.bluetooth.DevBluetoothCtrlActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="com.manager.device.idr.IDRSleepService"

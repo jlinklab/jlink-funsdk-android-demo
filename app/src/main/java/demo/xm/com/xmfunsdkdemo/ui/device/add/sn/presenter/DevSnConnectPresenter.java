@@ -3,6 +3,7 @@ package demo.xm.com.xmfunsdkdemo.ui.device.add.sn.presenter;
 import static com.manager.db.Define.LOGIN_NONE;
 
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.basic.G;
 import com.lib.FunSDK;
@@ -50,7 +51,7 @@ public class DevSnConnectPresenter extends XMBasePresenter<AccountManager> imple
     /*序列号连接设备*/
     /*Connect the device by its sequence number*/
     @Override
-    public void addDev(String devId, String userName, String pwd, String devToken, int devType) {
+    public void addDev(String devId, String userName, String pwd, String devToken, int devType, String pid) {
         SDBDeviceInfo deviceInfo = new SDBDeviceInfo();
         G.SetValue(deviceInfo.st_0_Devmac, devId);//设备序列号
         G.SetValue(deviceInfo.st_1_Devname, devId);
@@ -62,6 +63,10 @@ public class DevSnConnectPresenter extends XMBasePresenter<AccountManager> imple
         xmDevInfo.sdbDevInfoToXMDevInfo(deviceInfo);
         if (!StringUtils.isStringNULL(devToken)) {
             xmDevInfo.setDevToken(devToken);
+        }
+
+        if (!TextUtils.isEmpty(pid)) {
+            xmDevInfo.setPid(pid);
         }
 
         //未使用AccountManager(包括XMAccountManager或LocalAccountManager)登录（包括账号登录和本地临时登录），只能将设备信息临时缓存，重启应用后无法查到设备信息。

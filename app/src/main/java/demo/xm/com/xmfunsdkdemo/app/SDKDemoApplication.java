@@ -1,6 +1,7 @@
 package demo.xm.com.xmfunsdkdemo.app;
 
 import static com.lib.EFUN_ATTR.LOGIN_SUP_RSA_ENC;
+import static com.utils.FileUtils.makeRootDirectory;
 
 import android.app.Activity;
 import android.app.Application;
@@ -15,6 +16,7 @@ import com.lib.FunSDK;
 import com.lib.SDKCONST;
 import com.lib.sdk.bean.StringUtils;
 import com.manager.XMFunSDKManager;
+import com.manager.path.PathManager;
 import com.utils.FileUtils;
 import com.utils.PathUtils;
 
@@ -34,6 +36,14 @@ public class SDKDemoApplication extends Application {
     public static String PATH_PHOTO_TEMP;
     public static String PATH_PHOTO;
     public static String PATH_VIDEO;
+    /**
+     * 保存实时预览/录像回放的原始媒体数据
+     */
+    public static String PATH_ORIGINAL_MEDIA_DATA;
+    /**
+     * 保存对讲的原始数据
+     */
+    public static String PATH_ORIGINAL_TALK_DATA;
     private LinkedHashMap<String, Activity> actMap;
     private XMFunSDKManager xmFunSDKManager;
 
@@ -216,6 +226,19 @@ public class SDKDemoApplication extends Application {
         }
 
         pFile = new File(PATH_VIDEO);
+        if (!pFile.exists()) {
+            makeRootDirectory(pFile.getPath());
+        }
+
+
+        PATH_ORIGINAL_MEDIA_DATA = PathManager.getInstance(this).getAppPath() + File.separator + "original_media_data";
+        pFile = new File(PATH_ORIGINAL_MEDIA_DATA);
+        if (!pFile.exists()) {
+            makeRootDirectory(pFile.getPath());
+        }
+
+        PATH_ORIGINAL_TALK_DATA = PathManager.getInstance(this).getAppPath() + File.separator + "talk_data";
+        pFile = new File(PATH_ORIGINAL_TALK_DATA);
         if (!pFile.exists()) {
             makeRootDirectory(pFile.getPath());
         }

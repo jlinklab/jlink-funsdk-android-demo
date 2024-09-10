@@ -736,6 +736,11 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 hashMap.put("itemName", getString(R.string.detect_track));
                 monitorFunList.add(hashMap);
             }
+
+            hashMap = new HashMap<>();
+            hashMap.put("itemId", 27);
+            hashMap.put("itemName", "联系家人");
+            monitorFunList.add(hashMap);
         } else {
             showToast(getString(R.string.get_dev_ability_failed) + ":" + errorId, Toast.LENGTH_LONG);
         }
@@ -1377,6 +1382,9 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 break;
             case FUN_DETECT_TRACK://移动追踪
                 turnToActivity(DetectTrackActivity.class);
+                break;
+            case 27://联系家人
+                turnToActivity(VideoIntercomActivity.class);
                 break;
             default:
                 Toast.makeText(DevMonitorActivity.this, getString(R.string.not_support_tip), Toast.LENGTH_LONG).show();

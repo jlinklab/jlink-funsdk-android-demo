@@ -928,4 +928,9 @@
     <string name="view_doc">View Documentation</string>
     <string name="EpitomeRecord">Epitome Record</string>
     <string name="input_username_password">Please enter your username and password</string>
+    <string name="ble_ctrl"></string>
+    <string name="save_media_data">Save Real-time Preview Media Data</string>
+    <string name="save_talk_data">Save Intercom Data</string>
+    <string name="share_media_data">Share Real-time Preview Media Data</string>
+    <string name="share_talk_data">Share Intercom Data</string>
 </resources>

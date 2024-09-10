@@ -31,6 +31,7 @@ import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.dialog.EditDialog;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -525,6 +526,7 @@ public class DevRecordSetActivity extends BaseConfigActivity<DevRecordSetPresent
         }
 
         if (findViewById(R.id.ll_epitome_record).getVisibility() == View.VISIBLE) {
+            ArrayList arrayList = new ArrayList();
             HashMap<String, Object> sendDataMap = new HashMap<>();
             HashMap<String, Object> epitomeRecordMap = new HashMap<>();
             epitomeRecordMap.put("Enable", isEnable);
@@ -532,7 +534,9 @@ public class DevRecordSetActivity extends BaseConfigActivity<DevRecordSetPresent
             epitomeRecordMap.put("StartTime", startTime);
             epitomeRecordMap.put("EndTime", endTime);
             epitomeRecordMap.put("TimeSection",timeSection);
-            sendDataMap.put("Storage.EpitomeRecord", epitomeRecordMap);
+
+            arrayList.add(epitomeRecordMap);
+            sendDataMap.put("Storage.EpitomeRecord",arrayList);
             sendDataMap.put("SessionID", "0x08");
             sendDataMap.put("Name", "Storage.EpitomeRecord");
             presenter.setRecordInfo("Storage.EpitomeRecord", new Gson().toJson(sendDataMap));

@@ -65,6 +65,7 @@ import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.DevMonitorContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.PresetListContract;
+import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 import demo.xm.com.xmfunsdkdemo.utils.TypeConversion;
 
 import static com.lib.EFUN_ATTR.EDA_DEV_TANSPORT_COM_WRITE;
@@ -417,6 +418,18 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
             //设置是否满屏显示 Set whether to display in full screen
             mediaManager.setVideoFullScreen(true);
             monitorManagers.put(chnId, mediaManager);
+
+            // 是否要保存原始媒体数据
+            boolean isSaveOriginalMediaData = SPUtil.getInstance(iDevMonitorView.getContext()).getSettingParam("IS_SAVE_ORIGINAL_MEDIA_DATA", false);
+            if (isSaveOriginalMediaData) {
+                mediaManager.initStorePlayingMediaData(SDKDemoApplication.PATH_ORIGINAL_MEDIA_DATA);
+            }
+
+            // 是否要保存对讲数据
+            boolean isSaveTalkData = SPUtil.getInstance(iDevMonitorView.getContext()).getSettingParam("IS_SAVE_TALK_DATA", false);
+            if (isSaveTalkData) {
+                mediaManager.initStoreTalkData(SDKDemoApplication.PATH_ORIGINAL_TALK_DATA);
+            }
         } else {
             mediaManager = monitorManagers.get(chnId);
         }

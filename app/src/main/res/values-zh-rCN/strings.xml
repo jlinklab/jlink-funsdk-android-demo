@@ -927,4 +927,9 @@
     <string name="view_doc">查看文档</string>
     <string name="EpitomeRecord">缩影录像</string>
     <string name="input_username_password">请输入用户名和密码</string>
+    <string name="ble_ctrl">蓝牙控制</string>
+    <string name="save_media_data">保存实时预览媒体数据</string>
+    <string name="save_talk_data">保存对讲数据</string>
+    <string name="share_media_data">分享实时预览数据</string>
+    <string name="share_talk_data">分享对讲数据</string>
 </resources>

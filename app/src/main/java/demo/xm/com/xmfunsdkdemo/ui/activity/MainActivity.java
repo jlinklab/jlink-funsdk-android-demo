@@ -76,6 +76,7 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
     private RecyclerView devLv;
     private WifiManager.MulticastLock multicastLock;
     private NetworkConnectChangeReceiver networkConnectChangeReceiver;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +87,7 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
                 || DemoConstant.APP_KEY.equals(APP_KEY)) {
             XMPromptDlg.onShow(this, getString(R.string.funsdk_integration_tips), null);
         }
-//        MainActivityPermissionsDispatcher.initDataWithPermissionCheck(this);
+        MainActivityPermissionsDispatcher.initDataWithPermissionCheck(this);
     }
 
     /**
@@ -94,7 +95,7 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
      * Access to SD card read and write permissions, vibration permissions, recording permissions, etc
      */
     @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.VIBRATE
-            , Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO,CHANGE_WIFI_MULTICAST_STATE})
+            , Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO, CHANGE_WIFI_MULTICAST_STATE})
     protected void initData() {
         allowMulticast();
     }
@@ -246,7 +247,7 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, DevListActivity.class);
                     MainActivity.this.startActivity(intent);
-                }else {
+                } else {
                     XMPromptDlg.onShow(MainActivity.this, getString(R.string.not_login_dev_list_tips), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
