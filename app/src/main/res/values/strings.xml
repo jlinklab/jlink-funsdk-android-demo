@@ -933,4 +933,9 @@
     <string name="save_talk_data">Save Intercom Data</string>
     <string name="share_media_data">Share Real-time Preview Media Data</string>
     <string name="share_talk_data">Share Intercom Data</string>
+    <string name="continuous_alarm_time">Alarm Time Settings</string>
+    <string name="alarm_volume">Alarm Volume Settings</string>
+    <string name="alarm_ringtone">Alarm Tone Settings</string>
+    <string name="intelligent_warning_switch">Smart Alert Switch</string>
+    <string name="intelligent_dual_light">Intelligent dual light</string>
 </resources>

@@ -19,11 +19,12 @@
             android:id="@+id/lsi_smart_alarm_switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             uilib:RightClickable="false"
             uilib:ShowBottomLine="true"
             uilib:ShowSwitch="true"
             uilib:ShowTopLine="false"
-            uilib:Title="TR_Linked_Alarm" />
+            uilib:Title="TR_Intelligent_Warning_Switch" />
 
         <LinearLayout
             android:id="@+id/ll_smart_alarm_set"

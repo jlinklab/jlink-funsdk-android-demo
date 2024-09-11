@@ -932,4 +932,9 @@
     <string name="save_talk_data">保存对讲数据</string>
     <string name="share_media_data">分享实时预览数据</string>
     <string name="share_talk_data">分享对讲数据</string>
+    <string name="continuous_alarm_time">报警时间设置</string>
+    <string name="alarm_volume">报警音量设置</string>
+    <string name="alarm_ringtone">报警铃声设置</string>
+    <string name="intelligent_warning_switch">智能警戒开关</string>
+    <string name="intelligent_dual_light">智能双光</string>
 </resources>

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 /**
  * 工作模式
+ * ModeType //工作模式（0：低功耗模式（超级省电模式）、1：智能模式（电量高时为常电模式，电量低切换为低功耗模式））
+ * WorkStateNow //当前实际模式，在智能模式下和ModeType字段的值可能不一样（0：低功耗模式、1：常电模式）
+ * PowerThreshold //智能模式下切换到低功耗模式的电池电量阈值（不允许修改）
  */
 public class WorkModeBean {
     public static final int WORK_MODE_LOW_POWER = 0;
@@ -69,6 +72,7 @@ public class WorkModeBean {
 
     /**
      * 是否支持时间段设置
+     *
      * @return
      */
     @JSONField(serialize = false)
@@ -129,7 +133,7 @@ public class WorkModeBean {
             if (noSleepTimeSection != null) {
                 noSleepTimeSection.setStartTime(String.format("%02d:%02d", startTime[0], startTime[1]));
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -164,7 +168,7 @@ public class WorkModeBean {
             if (noSleepTimeSection != null) {
                 noSleepTimeSection.setEndTime(String.format("%02d:%02d", endTime[0], endTime[1]));
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -198,7 +202,7 @@ public class WorkModeBean {
             if (noSleepTimeSection != null) {
                 noSleepTimeSection.setWeekMask(weekMask);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -232,7 +236,7 @@ public class WorkModeBean {
             if (noSleepTimeSection != null) {
                 noSleepTimeSection.setEnable(enable);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
