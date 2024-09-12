@@ -153,7 +153,7 @@ public class AOVWorkingModePresenter extends XMBasePresenter<DeviceManager> impl
                     powerThreshold = asJsonObject.getIntValue("PowerThreshold");
                     if (powerThreshold != 0 && percent != 0) {
                         if (powerThreshold != 0 && percent != 0) {
-                            iAOVWorkingModeView.showTips(powerThreshold > percent, powerThreshold);
+                            iAOVWorkingModeView.showTips(percent > 0 && powerThreshold > percent, powerThreshold);
                         }
                     }
                 }catch (Exception e){
