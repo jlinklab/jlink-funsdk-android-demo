@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/xm_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/layoutTop">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_light_switch"
+                style="@style/ThemeLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_light_switch"
+                    style="@style/baseListSelectItemStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:RightClickable="false"
+                    app:ShowSwitch="true"
+                    app:ShowTopLine="false"
+                    app:Title="TR_White_Light_Switch"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_bright"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/lsi_light_switch"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_bright"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="15dp"
+                        android:text="Bright"
+                        android:textColor="@color/color_5A5A5A"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <demo.xm.com.xmfunsdkdemo.ui.widget.MySeekBar
+                        android:id="@+id/seekbar_bright"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="15dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_bright" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/line_color"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_light_mode"
+                style="@style/ThemeLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/cl_light_switch">
+
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_auto_light"
+                    style="@style/baseListSelectItemStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ImageRight1="@drawable/select_normal"
+                    app:ImageRight2="@drawable/select_press"
+                    app:RightClickable="false"
+                    app:ShowBottomLine="true"
+                    app:ShowTopLine="false"
+                    app:Tip="TR_AutoLightDetail"
+                    app:Title="TR_AutoLight"
+
+                    app:layout_constraintTop_toTopOf="parent" />
+                <!--                    app:contentMinHeight="70dp"-->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_sensitive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/lsi_auto_light"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_sensitive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="15dp"
+                        android:text="Intelligent_sensitivity"
+                        android:textColor="@color/color_5A5A5A"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <demo.xm.com.xmfunsdkdemo.ui.widget.MySeekBar
+                        android:id="@+id/seekbar_sensitivity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_sensitive" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/line_color"
+                        app:layout_constraintTop_toBottomOf="@+id/seekbar_sensitivity" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_time_light"
+                    style="@style/baseListSelectItemStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ImageRight1="@drawable/select_normal"
+                    app:ImageRight2="@drawable/select_press"
+                    app:RightClickable="false"
+                    app:ShowTopLine="false"
+                    app:Tip="TR_TimingLightDetail"
+                    app:Title="TR_TimingLight"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_sensitive" />
+                <!--                    app:contentMinHeight="70dp"-->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/lsi_time_light"
+                    tools:visibility="visible">
+
+                    <View
+                        android:id="@+id/time_line1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/line_color"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_start_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:layout_marginStart="30dp"
+                        android:gravity="center_vertical"
+                        android:text="start_time"
+                        android:textColor="@color/color_5A5A5A"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/time_line1" />
+
+                    <View
+                        android:id="@+id/time_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/line_color"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_start_time" />
+
+                    <TextView
+                        android:id="@+id/tv_end_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:layout_marginStart="30dp"
+                        android:gravity="center_vertical"
+                        android:text="end_time"
+                        android:textColor="@color/color_5A5A5A"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/time_line" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- 常亮开关默认隐藏 -->
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_keep_on"
+                    style="@style/baseListSelectItemStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:ImageRight1="@drawable/select_normal"
+                    app:ImageRight2="@drawable/select_press"
+                    app:RightClickable="false"
+                    app:ShowBottomLine="false"
+                    app:ShowTopLine="true"
+                    app:Tip="TR_ConstantLightDetail"
+                    app:Title="TR_ConstantLight"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_time" />
+                <!--                    app:contentMinHeight="70dp"-->
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--          指示灯开关-->
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lis_indicator_light"
+                style="@style/baseListSelectItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/ripple_round_btn_selector"
+                android:visibility="gone"
+                app:RightClickable="false"
+                app:ShowBottomLine="false"
+                app:ShowSwitch="true"
+                app:ShowTopLine="false"
+                app:Title="TR_Setting_Device_Indicator_Light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_light_mode"
+                app:singleClick="false" />
+            <!--            微光补灯-->
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lis_Micro_light"
+                style="@style/baseListSelectItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/ripple_round_btn_selector"
+                android:visibility="visible"
+                app:RightClickable="false"
+                app:ShowBottomLine="false"
+                app:ShowSwitch="true"
+                app:ShowTopLine="false"
+                app:Tip="TR_Low_Light_Control_Tip"
+                app:Title="TR_Low_Light_Control"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lis_indicator_light"
+                app:singleClick="false" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/alarm_setting_buttom_timepick"
+        layout="@layout/activity_taskadd_timepicker"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/xm_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color">
+
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+
+
+    <LinearLayout
+        android:id="@+id/llMain"
+        style="@style/ThemeLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"
+        uilib:layout_constraintEnd_toEndOf="parent"
+        uilib:layout_constraintStart_toStartOf="parent"
+        uilib:layout_constraintTop_toBottomOf="@+id/layoutTop">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPowerSaveing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvPowerSaveingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="16dp"
+                android:text="TR_Setting_Power_Saving_Mode"
+                android:textColor="#ff5a5a5a"
+                android:textSize="15sp"
+                uilib:layout_constraintStart_toStartOf="parent"
+                uilib:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvPowerSaveingTip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="16dp"
+                android:text=""
+                android:textColor="#ff999999"
+                android:textSize="11sp"
+                uilib:layout_constraintBottom_toBottomOf="parent"
+                uilib:layout_constraintEnd_toStartOf="@+id/ivPowerSaveingSelect"
+                uilib:layout_constraintHorizontal_bias="0.0"
+                uilib:layout_constraintStart_toStartOf="@+id/tvPowerSaveingTitle"
+                uilib:layout_constraintTop_toBottomOf="@+id/tvPowerSaveingTitle"
+                uilib:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/ivPowerSaveingSelect"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/check_nor"
+                uilib:layout_constraintBottom_toBottomOf="parent"
+                uilib:layout_constraintEnd_toEndOf="parent"
+                uilib:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line_color" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPerformanceMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvPerformanceModeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="16dp"
+                android:text="TR_Setting_Performance"
+                android:textColor="#ff5a5a5a"
+                android:textSize="15sp"
+                uilib:layout_constraintStart_toStartOf="parent"
+                uilib:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvPerformanceModeTip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="16dp"
+                android:text=""
+                android:textColor="#ff999999"
+                android:textSize="11sp"
+                uilib:layout_constraintBottom_toBottomOf="parent"
+                uilib:layout_constraintEnd_toStartOf="@+id/ivPerformanceModeSelect"
+                uilib:layout_constraintHorizontal_bias="0.0"
+                uilib:layout_constraintStart_toStartOf="@+id/tvPerformanceModeTitle"
+                uilib:layout_constraintTop_toBottomOf="@+id/tvPerformanceModeTitle"
+                uilib:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/ivPerformanceModeSelect"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/check_nor"
+                uilib:layout_constraintBottom_toBottomOf="parent"
+                uilib:layout_constraintEnd_toEndOf="parent"
+                uilib:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line_color" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clCustomMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvCustomModeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="16dp"
+                android:text="mode_customize"
+                android:textColor="#ff5a5a5a"
+                android:textSize="15sp"
+                uilib:layout_constraintStart_toStartOf="parent"
+                uilib:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCustomModeTip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="16dp"
+                android:text="TR_Setting_Event_Record_Delay"
+                android:textColor="#ff999999"
+                android:textSize="11sp"
+                uilib:layout_constraintBottom_toBottomOf="parent"
+                uilib:layout_constraintEnd_toStartOf="@+id/ivCustomModeSelect"
+                uilib:layout_constraintHorizontal_bias="0.0"
+                uilib:layout_constraintStart_toStartOf="@+id/tvCustomModeTitle"
+                uilib:layout_constraintTop_toBottomOf="@+id/tvCustomModeTitle"
+                uilib:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/ivCustomModeSelect"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/check_nor"
+                uilib:layout_constraintBottom_toBottomOf="parent"
+                uilib:layout_constraintEnd_toEndOf="parent"
+                uilib:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/llCustomModeSetting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lisRecordSetting"
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ripple_round_btn_selector"
+                uilib:ItemTitleSize="15sp"
+                uilib:ShowTopLine="true"
+                uilib:Cap=""
+                uilib:Title="TR_Setting_Event_Record_Delay"
+                uilib:singleClick="true" />
+
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lisFpsSetting"
+                uilib:CapColor="@color/default_normal_text_color"
+                uilib:ItemTitleColor="@color/default_normal_text_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ripple_round_btn_selector"
+                uilib:ItemTitleSize="15sp"
+                uilib:ShowTopLine="true"
+                uilib:Cap=""
+                uilib:Title="TR_AOV_Fps"
+                uilib:singleClick="true" />
+        </LinearLayout>
+    </LinearLayout>
+
+<!--    aov报警间隔-->
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/lisAovAlarmTimeInterval"
+        uilib:CapColor="@color/default_normal_text_color"
+        uilib:ItemTitleColor="@color/default_normal_text_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_round_btn_selector"
+        uilib:ItemTitleSize="15sp"
+        uilib:layout_constraintTop_toBottomOf="@+id/llMain"
+        uilib:layout_constraintStart_toStartOf="parent"
+        uilib:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/dp_10"
+        uilib:ShowTopLine="false"
+        uilib:Cap=""
+        uilib:Title="TR_AOV_Alarm_interval"
+        uilib:singleClick="true" />
+
+    <TextView
+        android:id="@+id/tvTips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14.5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="14.5dp"
+        android:drawableLeft="@drawable/set_icon_notice"
+        android:drawablePadding="5dp"
+        android:text=""
+        android:visibility="gone"
+        tools:visibility="visible"
+        uilib:layout_constraintEnd_toEndOf="parent"
+        uilib:layout_constraintHorizontal_bias="0.0"
+        uilib:layout_constraintStart_toStartOf="parent"
+        uilib:layout_constraintTop_toBottomOf="@+id/lisAovAlarmTimeInterval" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

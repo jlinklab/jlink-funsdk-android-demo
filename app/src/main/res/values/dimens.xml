@@ -57,5 +57,6 @@
     <dimen name="dev_setting_margin">14.5dp</dimen>
     <dimen name="item_text_size">15sp</dimen>
     <dimen name="radius">5dp</dimen>
+    <dimen name="di_20">20dp</dimen>
 
 </resources>

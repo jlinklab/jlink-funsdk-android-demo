@@ -349,6 +349,25 @@
         <service
             android:name="com.manager.device.idr.IDRSleepService$InnerService"
             android:screenOrientation="portrait" />
+
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVWorkingModeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVBlackLightSettingActivity"
+            android:theme="@style/NumberPickerAppTheme"
+            android:screenOrientation="portrait" />
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVDoubleLightSettingActivity"
+            android:screenOrientation="portrait" />
+<!--        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVIntelligentAlarmActivity"-->
+<!--            android:screenOrientation="portrait" />-->
+<!--        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVIntelligentDetectActivity"-->
+<!--            android:screenOrientation="portrait" />-->
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.SetFPSActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AovBatteryManagerActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AovSettingActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
