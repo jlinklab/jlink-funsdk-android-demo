@@ -1,15 +1,19 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.preview.presenter;
 
 import android.graphics.Point;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.basic.G;
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ImageUtils;
 import com.google.gson.Gson;
 import com.lib.FunSDK;
 import com.lib.MsgContent;
@@ -18,11 +22,15 @@ import com.lib.sdk.bean.CameraParamBean;
 import com.lib.sdk.bean.ElectCapacityBean;
 import com.lib.sdk.bean.HandleConfigData;
 import com.lib.sdk.bean.JsonConfig;
+import com.lib.sdk.bean.OPPTZControlBean;
 import com.lib.sdk.bean.PtzCtrlInfoBean;
 import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.SystemFunctionBean;
 import com.lib.sdk.bean.WhiteLightBean;
 import com.lib.sdk.bean.WifiRouteInfo;
+import com.lib.sdk.bean.preset.ConfigGetPreset;
+import com.lib.sdk.bean.tour.PTZTourBean;
+import com.lib.sdk.bean.tour.TourBean;
 import com.lib.sdk.struct.SDK_FishEyeFrame;
 import com.manager.account.code.AccountCode;
 import com.manager.db.DevDataCenter;
@@ -37,26 +45,33 @@ import com.manager.device.media.MediaManager;
 import com.manager.device.media.TalkManager;
 import com.manager.device.media.attribute.PlayerAttribute;
 import com.manager.device.media.monitor.MonitorManager;
+import com.utils.BitmapUtils;
 import com.utils.BleDistributionUtil;
 import com.utils.FileUtils;
 import com.video.opengl.GLSurfaceView20;
 import com.video.opengl.OnPlayViewTouchListener;
 import com.xm.activity.base.XMBasePresenter;
 import com.xm.base.code.ErrorCodeManager;
+import com.xm.ui.dialog.XMPromptDlg;
 import com.xmgl.vrsoft.VRSoftDefine;
 import com.xmgl.vrsoft.VRSoftGLView;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.DevMonitorContract;
+import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.PresetListContract;
+import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 import demo.xm.com.xmfunsdkdemo.utils.TypeConversion;
 
 import static com.lib.EFUN_ATTR.EDA_DEV_TANSPORT_COM_WRITE;
+import static com.lib.EUIMSG.DEV_CMD_EN;
 import static com.lib.EUIMSG.DEV_ON_TRANSPORT_COM_DATA;
+import static com.lib.EUIMSG.DEV_PTZ_CONTROL;
 import static com.lib.sdk.bean.JsonConfig.CAMERA_PARAM;
 import static com.lib.sdk.bean.JsonConfig.WHITE_LIGHT;
 import static com.manager.db.Define.MEDIA_DATA_TYPE_YUV_NOT_DISPLAY;
@@ -121,6 +136,9 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
      * Is manual alert enabled
      */
     private boolean isManualAlarmOpen;
+    private List<PTZTourBean> ptzTourBeans;
+    private PresetListPresenter presetListPresenter;
+    private List<ConfigGetPreset> configGetPresets;
 
     public DevMonitorPresenter(DevMonitorContract.IDevMonitorView iDevMonitorView) {
         this.iDevMonitorView = iDevMonitorView;
@@ -186,18 +204,90 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         super.setDevId(devId);
         TransComManager.getInstance().initDevConfigManager(devId);
         devConfigManager = manager.getDevConfigManager(devId);
-        presetManager = manager.createPresetManager(devId, new DeviceManager.OnDevManagerListener() {
+        presetManager = manager.createPresetManager(devId, new DevConfigManager.OnDevConfigResultListener() {
             @Override
-            public void onSuccess(String s, int i, Object abilityKey) {
-                Toast.makeText(iDevMonitorView.getContext(), iDevMonitorView.getContext().getString(R.string.libfunsdk_operation_success), Toast.LENGTH_LONG).show();
+            public void onSuccess(String devId, int operationType, Object result) {
+
             }
 
             @Override
-            public void onFailed(String s, int i, String s1, int i1) {
-                Toast.makeText(iDevMonitorView.getContext(), iDevMonitorView.getContext().getString(R.string.libfunsdk_operation_failed), Toast.LENGTH_LONG).show();
+            public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+
+            }
+
+            @Override
+            public void onFunSDKResult(Message msg, MsgContent ex) {
+                if (msg.what == DEV_CMD_EN) {
+                    if (msg.arg1 < 0) {
+                        iDevMonitorView.onTourCtrlResult(false,ex.seq, msg.arg1);
+                    }else {
+                        iDevMonitorView.onTourCtrlResult(true,ex.seq,0);
+                    }
+                }else if (msg.what == DEV_PTZ_CONTROL){
+                    if (msg.arg1 == OPPTZControlBean.PTZ_TOUR_END_RSP_ID) {
+                        iDevMonitorView.onTourEndResult();
+                    }
+                }
             }
         });
+
         getIrCutInfo();
+
+        presetListPresenter = new PresetListPresenter(new PresetListContract.IPresetListView() {
+            @Override
+            public void onGetPresetListResult(List<ConfigGetPreset> presetList) {
+                DevMonitorPresenter.this.configGetPresets = presetList;
+                DevConfigManager devConfigManager = manager.getDevConfigManager(getDevId());
+                if (devConfigManager != null) {
+                    DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener<String>() {
+                        @Override
+                        public void onSuccess(String devId, int operationType, String jsonData) {
+                            HandleConfigData handleConfigData = new HandleConfigData();
+                            if (handleConfigData.getDataObj(jsonData, PTZTourBean.class)) {
+                                ptzTourBeans = (List<PTZTourBean>) handleConfigData.getObj();
+                            }
+
+
+                            if (iDevMonitorView != null) {
+                                if (ptzTourBeans != null && ptzTourBeans.size() > getChnId()) {
+                                    PTZTourBean ptzTourBean = ptzTourBeans.get(getChnId());
+                                    iDevMonitorView.onShowTour(ptzTourBean.Tour, 0);
+                                } else {
+                                    iDevMonitorView.onShowTour(null, 0);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+                            if (iDevMonitorView != null) {
+                                iDevMonitorView.onShowTour(null, errorId);
+                            }
+                        }
+                    });
+
+                    devConfigInfo.setJsonName(PTZTourBean.JSON_NAME);
+                    devConfigInfo.setChnId(getChnId());
+                    devConfigManager.getDevConfig(devConfigInfo);
+                }
+            }
+
+            @Override
+            public void onDeletePresetResult(boolean isSuccess, int errorId) {
+
+            }
+
+            @Override
+            public void onModifyPresetNameResult(boolean isSuccess, int errorId) {
+
+            }
+        });
+
+        presetListPresenter.setDevId(getDevId());
+    }
+
+    public List<TourBean> getTourBeans(int chnId) {
+        return ptzTourBeans != null && ptzTourBeans.size() > chnId ? ptzTourBeans.get(chnId).Tour : null;
     }
 
     private void initData() {
@@ -210,12 +300,12 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
                     getDevWiFiSignalLevel();
                 }
 
-                iDevMonitorView.onGetDevAbilityResult(result,0);
+                iDevMonitorView.onGetDevAbilityResult(result, 0);
             }
 
             @Override
             public void onFailed(String s, int i, String s1, int errorId) {
-                iDevMonitorView.onGetDevAbilityResult(null,errorId);
+                iDevMonitorView.onGetDevAbilityResult(null, errorId);
             }
         });
 
@@ -328,12 +418,24 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
             //设置是否满屏显示 Set whether to display in full screen
             mediaManager.setVideoFullScreen(true);
             monitorManagers.put(chnId, mediaManager);
+
+            // 是否要保存原始媒体数据
+            boolean isSaveOriginalMediaData = SPUtil.getInstance(iDevMonitorView.getContext()).getSettingParam("IS_SAVE_ORIGINAL_MEDIA_DATA", false);
+            if (isSaveOriginalMediaData) {
+                mediaManager.initStorePlayingMediaData(SDKDemoApplication.PATH_ORIGINAL_MEDIA_DATA);
+            }
+
+            // 是否要保存对讲数据
+            boolean isSaveTalkData = SPUtil.getInstance(iDevMonitorView.getContext()).getSettingParam("IS_SAVE_TALK_DATA", false);
+            if (isSaveTalkData) {
+                mediaManager.initStoreTalkData(SDKDemoApplication.PATH_ORIGINAL_TALK_DATA);
+            }
         } else {
             mediaManager = monitorManagers.get(chnId);
         }
 
-        //设置设备列表缩略图保存路径，必须要在视频出图之前调用
-        mediaManager.setSaveThumbnailPath(SDKDemoApplication.PATH_PHOTO_TEMP);
+        //设置设备列表缩略图保存路径，必须要在视频出图之前调用,传入的路径建议使用私有目录，如果使用外部存储的话，在Android 11及以上系统上需要MANAGE_EXTERNAL_STORAGE这个权限
+//        mediaManager.setSaveThumbnailPath(SDKDemoApplication.PATH_PHOTO_TEMP);
         //设置媒体播放监听（包括播放状态回调、实时码流、时间戳回调等）
         mediaManager.setOnMediaManagerListener(this);
         mediaManager.setOnFrameInfoListener(new MediaManager.OnFrameInfoListener() {
@@ -637,7 +739,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
             if (mediaManager.isTalking()) {
                 mediaManager.getTalkManager().doubleDirectionSound(SDKCONST.Switch.Open);
                 mediaManager.closeVoiceBySound();
-            }else {
+            } else {
                 mediaManager.openVoiceBySound();
             }
         }
@@ -659,7 +761,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
             //在对讲的情况下，关闭的是对讲音量
             if (mediaManager.isTalking()) {
                 mediaManager.getTalkManager().doubleDirectionSound(SDKCONST.Switch.Close);
-            }else {
+            } else {
                 mediaManager.closeVoiceBySound();
             }
         }
@@ -888,6 +990,60 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
                 Toast.makeText(iDevMonitorView.getContext(), R.string.remote_capture_f, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void capturePicFromDevAndToApp(int chnId) {
+        String saveFilePath = SDKDemoApplication.PATH_PHOTO_TEMP + File.separator + "capture" + System.currentTimeMillis() + ".jpg";
+        manager.captureFromDevAndToApp(getDevId(), chnId, saveFilePath, new DeviceManager.OnDevManagerListener() {
+            @Override
+            public void onSuccess(String devId, int operationType, Object result) {
+                ImageView imageView = new ImageView(iDevMonitorView.getContext());
+                imageView.setImageBitmap(ImageUtils.getBitmap(saveFilePath));
+                XMPromptDlg.onShow(iDevMonitorView.getContext(), imageView);
+            }
+
+            @Override
+            public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+                Toast.makeText(iDevMonitorView.getContext(), R.string.remote_capture_f, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /**
+     * 获取巡航线
+     */
+    @Override
+    public void getTour(int chnId) {
+        presetListPresenter.updatePresetList();
+    }
+
+    @Override
+    public void addTour(int chnId, int presetId) {
+        if (presetManager != null) {
+            presetManager.controlTour(chnId, presetId, 0, OPPTZControlBean.ADD_TOUR, 3, 1);
+        }
+    }
+
+    @Override
+    public void deleteTour(int chnId, int presetId) {
+        if (presetManager != null) {
+            presetManager.controlTour(chnId, presetId, 0, OPPTZControlBean.DELETE_TOUR, 3, 1);
+        }
+    }
+
+    @Override
+    public void startTour(int chnId) {
+        if (presetManager != null) {
+            presetManager.controlTour(chnId, 0, 0, OPPTZControlBean.START_TOUR, 3, 1);
+        }
+    }
+
+    @Override
+    public void stopTour(int chnId) {
+        if (presetManager != null) {
+            presetManager.controlTour(chnId, 0, 0, OPPTZControlBean.STOP_TOUR, 3, 1);
+        }
     }
 
     /**
@@ -1462,12 +1618,12 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
             @Override
             public void onSuccess(String devId, int operationType, Object result) {
-                iDevMonitorView.onPtzCalibrationResult(true,0);
+                iDevMonitorView.onPtzCalibrationResult(true, 0);
             }
 
             @Override
             public void onFailed(String devId, int msgId, String jsonName, int errorId) {
-                iDevMonitorView.onPtzCalibrationResult(false,errorId);
+                iDevMonitorView.onPtzCalibrationResult(false, errorId);
             }
         });
 

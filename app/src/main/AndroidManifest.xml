@@ -57,6 +57,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <!--密码解锁权限-->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
@@ -69,6 +70,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="Support_XM_Language"
+            android:value="true" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="demo.xm.com.xmfunsdkdemo.fileprovider"
@@ -159,7 +165,19 @@
             android:name=".ui.device.alarm.view.ActivityGuideDeviceLanAlarm"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.device.alarm.view.AlarmByVoiceLightActivity"
+            android:name=".ui.device.alarm.view.DoubleLightBoxActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.WhiteLightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.DoubleLightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.MusicLightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.alarm.view.GardenDoubleLightActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.device.config.imageconfig.view.DevCameraSetActivity"
@@ -315,15 +333,41 @@
             android:name=".ui.device.config.powersavingmode.view.PowerSavingModeActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.xm.activity.device.devset.ability.view.XMDevAbilityActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name="com.xm.activity.device.devset.ability.view.XMDevAbilityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.config.detecttrack.DetectTrackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.device.add.bluetooth.DevBluetoothCtrlActivity"
+            android:screenOrientation="portrait" />
+
         <service
             android:name="com.manager.device.idr.IDRSleepService"
             android:screenOrientation="portrait" />
         <service
             android:name="com.manager.device.idr.IDRSleepService$InnerService"
             android:screenOrientation="portrait" />
+
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVWorkingModeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVBlackLightSettingActivity"
+            android:theme="@style/NumberPickerAppTheme"
+            android:screenOrientation="portrait" />
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVDoubleLightSettingActivity"
+            android:screenOrientation="portrait" />
+<!--        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVIntelligentAlarmActivity"-->
+<!--            android:screenOrientation="portrait" />-->
+<!--        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AOVIntelligentDetectActivity"-->
+<!--            android:screenOrientation="portrait" />-->
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.SetFPSActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AovBatteryManagerActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AovSettingActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

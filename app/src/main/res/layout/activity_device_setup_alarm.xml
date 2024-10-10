@@ -60,6 +60,36 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
+
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_pir_alarm"
+                    style="@style/setup_sub_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pir_detection"
+                        android:textColor="@color/demo_title"
+                        android:textSize="16sp"
+                        tools:ignore="RelativeOverlap" />
+
+                    <ImageButton
+                        android:id="@+id/btn_dev_alarm_pir_alarm"
+                        android:layout_width="48dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_switch_check" />
+                </RelativeLayout>
+
                 <RelativeLayout
                     style="@style/setup_sub_layout"
                     android:layout_width="match_parent"

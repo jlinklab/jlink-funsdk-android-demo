@@ -50,6 +50,7 @@ import io.reactivex.annotations.Nullable;
 
 import static com.manager.account.share.ShareInfo.SHARE_NOT_YET_ACCEPT;
 import static com.manager.db.Define.LOGIN_BY_LOCAL;
+import static com.xm.ui.dialog.PasswordErrorDlg.INPUT_TYPE_DEV_USER_PWD;
 
 
 /**
@@ -223,6 +224,16 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
                 XMDevInfo devInfo = DevDataCenter.getInstance().getDevInfo(presenter.getDevId());
                 XMPromptDlg.onShowPasswordErrorDialog(this, devInfo.getSdbDevInfo(),
                         0, new PwdErrorManager.OnRepeatSendMsgListener() {
+                            @Override
+                            public void onSendMsg(int msgId) {
+                                showWaitDialog();
+                                presenter.getChannelList();
+                            }
+                        }, false);
+            }  else if (resultId == EFUN_ERROR.EE_DVR_LOGIN_USER_NOEXIST) {
+                XMDevInfo devInfo = DevDataCenter.getInstance().getDevInfo(presenter.getDevId());
+                XMPromptDlg.onShowPasswordErrorDialog(this, devInfo.getSdbDevInfo(),
+                        0,getString(R.string.input_username_password),INPUT_TYPE_DEV_USER_PWD, true,new PwdErrorManager.OnRepeatSendMsgListener() {
                             @Override
                             public void onSendMsg(int msgId) {
                                 showWaitDialog();
@@ -469,5 +480,7 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
         if (adapter != null) {
             adapter.release();
         }
+
+        presenter.clear();
     }
 }

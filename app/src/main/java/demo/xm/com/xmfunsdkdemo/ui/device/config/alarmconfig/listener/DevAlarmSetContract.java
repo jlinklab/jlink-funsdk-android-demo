@@ -20,6 +20,7 @@ public class DevAlarmSetContract {
         void updateUI(AlarmInfoBean alarmInfoBean, final String key, final int state);
 
         void saveLossResult(final int state);   //保存视频丢失警报回调
+        void savePirAlarmResult(final int state);   //保存pir警报回调
 
         void saveMotionResult(final int state);
 
@@ -53,6 +54,7 @@ public class DevAlarmSetContract {
         void getDevAlarm();
 
         void saveLossDetect();
+        void savePIRAlarm();
 
         void saveMotionDetect();
 

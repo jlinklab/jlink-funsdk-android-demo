@@ -44,6 +44,10 @@ public class DevAlarmSetActivity extends BaseConfigActivity<DevAlarmSetPresenter
      * 视频丢失警报
      */
     private ImageButton btnLossVideo;
+    /**
+     * PIR移动侦测
+     */
+    private ImageButton btnPirAlarm;
 
 
     /**
@@ -126,6 +130,9 @@ public class DevAlarmSetActivity extends BaseConfigActivity<DevAlarmSetPresenter
         btnLossVideo = findViewById(R.id.btn_dev_alarm_loss_video);//视频丢失警报
         btnLossVideo.setOnClickListener(this);
 
+        btnPirAlarm = findViewById(R.id.btn_dev_alarm_pir_alarm);//PIR移动侦测
+        btnPirAlarm.setOnClickListener(this);
+
         btnMotion = findViewById(R.id.btn_dev_alarm_motion);//移动侦测
         btnMotion.setOnClickListener(this);
         btnMotionRecord = findViewById(R.id.btn_dev_alarm_motion_record);
@@ -174,6 +181,9 @@ public class DevAlarmSetActivity extends BaseConfigActivity<DevAlarmSetPresenter
         switch (view.getId()) {
             case R.id.btn_dev_alarm_loss_video:                     // 视频丢失警报
                 btnLossVideo.setSelected(!btnLossVideo.isSelected());   //点击打开，再点击关闭
+                break;
+            case R.id.btn_dev_alarm_pir_alarm:                     // PIR移动侦测
+                btnPirAlarm.setSelected(!btnPirAlarm.isSelected());   //点击打开，再点击关闭
                 break;
             case R.id.btn_dev_alarm_motion:                // 移动侦测总按钮
                 btnMotion.setSelected(!btnMotion.isSelected());
@@ -235,6 +245,14 @@ public class DevAlarmSetActivity extends BaseConfigActivity<DevAlarmSetPresenter
     @Override
     public void updateUI(final AlarmInfoBean alarmInfoBean, final String key, final int state) {
         switch (key) {
+            case JsonConfig.ALARM_PIR:      //视频丢失警报
+                if (state == DevConfigState.DEV_CONFIG_VIEW_VISIABLE && alarmInfoBean != null) { //onParse：判断json数据格式是否正确，并且若正确即处理
+                    btnPirAlarm.setSelected(alarmInfoBean.Enable);
+                    findViewById(R.id.rl_pir_alarm).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.rl_pir_alarm).setVisibility(View.GONE);
+                }
+                break;
             case JsonConfig.DETECT_LOSSDETECT:      //视频丢失警报
                 if (state == DevConfigState.DEV_CONFIG_VIEW_VISIABLE && alarmInfoBean != null) { //onParse：判断json数据格式是否正确，并且若正确即处理
                     btnLossVideo.setSelected(alarmInfoBean.Enable);
@@ -279,6 +297,18 @@ public class DevAlarmSetActivity extends BaseConfigActivity<DevAlarmSetPresenter
 
     @Override
     public void saveLossResult(int state) {
+        hideWaitDialog();
+        if (state == DevConfigState.DEV_CONFIG_UPDATE_SUCCESS) {
+            showToast(getResources().getString(R.string.set_dev_config_success), Toast.LENGTH_SHORT);
+            finish();
+        } else {
+            showToast(getResources().getString(R.string.get_dev_config_failed), Toast.LENGTH_SHORT);
+        }
+    }
+
+
+    @Override
+    public void savePirAlarmResult(int state) {
         hideWaitDialog();
         if (state == DevConfigState.DEV_CONFIG_UPDATE_SUCCESS) {
             showToast(getResources().getString(R.string.set_dev_config_success), Toast.LENGTH_SHORT);
@@ -364,6 +394,7 @@ public class DevAlarmSetActivity extends BaseConfigActivity<DevAlarmSetPresenter
         presenter.saveLossDetect();
         presenter.saveMotionDetect();
         presenter.saveBlindDetect();
+        presenter.savePIRAlarm();
     }
 
     /**
@@ -430,6 +461,10 @@ public class DevAlarmSetActivity extends BaseConfigActivity<DevAlarmSetPresenter
         if (presenter.getmLoss() != null) {
             presenter.getmLoss().Enable = btnLossVideo.isSelected();
         }
+        if (presenter.getPirAlarm() != null) {
+            presenter.getPirAlarm().Enable = btnPirAlarm.isSelected();
+        }
+
 
         if (presenter.getmMotion() != null) {
             presenter.getmMotion().Enable = btnMotion.isSelected();

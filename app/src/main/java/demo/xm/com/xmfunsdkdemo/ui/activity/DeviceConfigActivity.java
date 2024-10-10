@@ -18,6 +18,7 @@ import java.util.List;
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
 import demo.xm.com.xmfunsdkdemo.ui.adapter.DevConfigAdapter;
+import demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AovSettingActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.about.view.DevAboutActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.advance.view.DevAdvanceActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.alarmconfig.view.DevAlarmSetActivity;
@@ -154,6 +155,9 @@ public class DeviceConfigActivity extends DemoBaseActivity<DeviceConfigPresenter
                 case 15://影子服务配置
                     intent = new Intent(view.getContext(), DevShadowConfigActivity.class);
                     break;
+                case 16:// aov设备配置
+                    intent = new Intent(view.getContext(), AovSettingActivity.class);
+                    break;
                 default:
                     break;
             }
@@ -229,6 +233,10 @@ public class DeviceConfigActivity extends DemoBaseActivity<DeviceConfigPresenter
         //影子服务
         DevConfigViewModel item15 = new DevConfigViewModel(R.string.shadow_config, -1);
         deviceList.add(item15);
+
+        //aov设备配置
+        DevConfigViewModel item16 = new DevConfigViewModel(R.string.aov_device, -1);
+        deviceList.add(item16);
     }
 
     @Override

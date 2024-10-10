@@ -60,6 +60,7 @@ public class UserLoginPresenter extends XMBasePresenter<AccountManager> implemen
     public void loginByLocal() {
         String dbPath = PathUtils.getAndroidPath(iUserLoginView.getContext()) + File.separator + "CSFile.db";
         LocalAccountManager.getInstance().login(dbPath, this);
+
     }
 
     /*AP登录*/

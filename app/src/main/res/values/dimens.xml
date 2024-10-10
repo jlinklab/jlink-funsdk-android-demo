@@ -51,4 +51,12 @@
     <dimen name="font_small">12sp</dimen>
     <dimen name="normal_left_right_margin">15dp</dimen>
 
+
+    <dimen name="button_margin">18dp</dimen>
+    <dimen name="half_of_normal_margin">9dp</dimen>
+    <dimen name="dev_setting_margin">14.5dp</dimen>
+    <dimen name="item_text_size">15sp</dimen>
+    <dimen name="radius">5dp</dimen>
+    <dimen name="di_20">20dp</dimen>
+
 </resources>

@@ -1670,3 +1670,107 @@ EE_WRITE_FILE=Failed to write file
 Data_exception=Data exception
 TR_Translation_Rules=翻译规则:所有的翻译都是TR开头的，命名按照驼峰规则(例：TR_Phone_Video=手机影像            放于最后)
 
+
+
+bulb_switch=Bulb Switch
+TR_White_Light=Full-Color Night Vision
+TR_White_Light_Switch=White light switch
+TR_LightSettingSwitch=Light switch
+TR_Light_Alarm=Light Alert
+TR_Light_Alarm_Tip=Set Light Alert
+TR_Light_Settings=Light Settings
+TR_Light_Switch=Light Switching
+TR_Light_Up_Switch=Light switch
+TR_Alarm_ringtone=Alarm Tone Settings
+TR_Alarm_tone_do_not_disturb=Alarm sound disabled
+TR_Alarm_volume=Alarm Volume Settings
+TR_Infrared_Light=Night Vision Infrared
+TR_Human_body_induction_alarm=Human sensing alarm
+TR_Human_shape_induction_alarm=Human detection alarm
+TR_Continuous_alarm_time=Alarm Time Settings
+TR_PIR_Alarm=PIR Alarm
+TR_PIR_Detection=PIR Motion Detection
+TR_Turn_light_off=Light Off
+TR_Turn_light_on=Light On
+Intelligent_Vigilance=Intelligent Alert
+IrLamp_Auto=Intelligent IR
+WhiteLamp_Auto=Smart Warm Light
+Setting_Color=Color
+Setting_White_Black=Black & White
+TR_Open_Alarm=On
+TR_Intelligent_Warning_Switch=Smart Alert Switch
+
+
+TR_AOV_Alarm_interval=AOV Alarm Interval
+TR_AOV_Fps=AOV frame rate
+TR_Low_Light_Control=Low light control
+TR_Low_Light_Control_Tip=When the low-light switch is turned on, the night scene will undergo low-light supplementation in AOV mode
+TR_Set_Aov_Fps_Tips=Zeige %s Bilder in %s Sekunden.
+TR_Setting_AOV_BlackLight_FPS_Description=AOV frame rate is %sfps, with card recording
+TR_Setting_AOV_FPS_Description=AOV frame rate %sfps, with infrared illumination and card recording
+TR_Setting_AOV_Low_Battery_Mode_Description=Current battery level is below %s. In a low battery mode, recording and alarm notifications will stop, and preview is only available through remote wake-up via app.
+TR_Setting_Power_Level=Battery level
+TR_Setting_Power_Saving_Mode=Power saving mode
+TR_Setting_Power_Supply_Mode=Power supply method
+TR_Setting_Preview_Time=Preview time
+TR_Setting_Battery=Battery
+TR_Setting_Battery_Management=Battery management
+TR_Setting_Battery_Statistic=Battery statistics
+TR_Setting_Blue_Button_Management=Bluetooth Button Management
+TR_Setting_Current_Battery_Level=Current battery level
+
+TR_Setting_Low_Power_Mode=Low battery mode
+TR_Setting_Mode_Of_Work=Working mode
+TR_Setting_Performance=Performance mode
+mode_customize=Custom Mode
+
+
+TR_Setting_Event_Record_And_Delay_Time=Configuration of event recording delay time
+TR_Setting_Event_Record_Delay=Event recording delay
+TR_Setting_Device_Indicator_Light=Indicator light
+TR_Smart_Mode=Smart Mode
+TR_Smart_PowerReal=Real-time
+TR_Intelligent_Dual_Light=Intelligent dual light
+TR_Setting_Wake_Up_Time=Wake-up time
+TR_Setting_Number_Of_Alarms=Number of alarms
+TR_Today=Today
+TR_Setting_Last_Week=Last week
+TR_Setting_Low_Power_Mode_Description=When the battery level falls below the set threshold, the device operating mode will automatically switch to the low-power mode.
+sDay=Day
+sHour=Hour
+sMin=Minute(s)
+sMonth=Month
+sSec=Second
+sYear=Year
+TR_Setting_Signal=Signal
+TR_Setting_Sound_Alarm=Audio alarm
+TR_Setting_Time_Setting=Time setting
+day=Day
+days=Day
+TR_AutoLight=Automatic lighting
+TR_AutoLightDetail=Automatically turn lights on and off based on ambient conditions
+Bright=Brightness
+start_time=Start
+end_time=End Time
+TR_Alarm_Period_End_Time_Can_Not_Less_Than_Or_Equal_To_Start_Time=The end time can't before the start time
+TR_Alarm_Period_Repeat_Time=Repeat Time
+TR_Alarm_Period_Select_End_Time=Select the end time
+TR_Alarm_Period_Select_Start_Time=Select the start time
+TR_Alarm_Period_Start_Time_Can_Not_Great_Than_Or_Equal_To_End_Time=Start time can not after the end time
+TR_TimingLight=Scheduled lighting
+TR_TimingLightDetail=Customize your light on/off time
+TR_PIR_Higher=Higher
+TR_PIR_Hightext=Highest
+TR_PIR_Lower=Lower
+TR_PIR_Medium=Medium
+TR_PIR_lowest=Lowest
+cancel=Cancel
+confirm=OK
+not_support_aov_ability=Not support aov ability
+
+
+
+
+
+
+

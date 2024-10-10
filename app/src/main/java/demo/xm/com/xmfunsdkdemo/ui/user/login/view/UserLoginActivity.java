@@ -133,12 +133,14 @@ public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> impl
                 XMPromptDlg.onShow(UserLoginActivity.this, getString(R.string.not_account_login_tips), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //同步数据给本地缓存,如果有多台设备的话，需要循环添加
+                        //不用JF账号添加设备并获取设备的话，需要调用一下初始化接口
+                        LocalAccountManager.getInstance().init();
+                        //并且从第三方服务器获取到的设备列表同步数据给本地缓存,如果有多台设备的话，需要循环添加
 //                        SDBDeviceInfo sdbDeviceInfo = new SDBDeviceInfo();
 //                        G.SetValue(sdbDeviceInfo.st_0_Devmac, "");//设备序列号
 //                        G.SetValue(sdbDeviceInfo.st_5_loginPsw, "");//设置设备登录密码
 //                        G.SetValue(sdbDeviceInfo.st_4_loginName, "admin");//设置设备登录名，默认一般是admin
-//                        sdbDeviceInfo.st_7_nType = 0;//设备类型，如果设备是低功耗需要唤醒的，必须要设置，比如门铃设备是21，具体值参考https://docs.jftech.com/docs?menusId=ab9a6dddd50c46a6af8a913b472ed015&siderid=1e394db91bc34d908839eeee09cdf5ec
+//                        sdbDeviceInfo.st_7_nType = 21;//设备类型，如果设备是低功耗需要唤醒的，必须要设置，比如门铃设备是21，具体值参考https://docs.jftech.com/docs?menusId=ab9a6dddd50c46a6af8a913b472ed015&siderid=1e394db91bc34d908839eeee09cdf5ec
 //                        sdbDeviceInfo.setDevToken("");//设备登录Token，如果设备支持Token的话需要设置，不支持的话不需要设置
 //                        sdbDeviceInfo.setPid("");//如果设备有PID的话，需要设置
 //                        DevDataCenter.getInstance().addDev(sdbDeviceInfo);
@@ -256,7 +258,7 @@ public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> impl
             case R.id.btn_user_login:
                 if (etPwd.getText().toString().trim().length() != 0 && etUserName.getText().toString().trim().length() != 0) {
                     try {
-                            showWaitDialog();
+                        showWaitDialog();
                         presenter.loginByAccount(etUserName.getText().toString(), etPwd.getText().toString());
                     } catch (Exception e) {
                         e.printStackTrace();

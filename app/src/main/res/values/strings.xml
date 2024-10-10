@@ -473,6 +473,8 @@
     <string name="hunman_detect">Humanoid detection (intelligent analysis)</string>
     <string name="date_second">s</string>
     <string name="date_minute">m</string>
+    <string name="date_hour">h</string>
+    <string name="pir_detection">PIR Motion Detection</string>
     <string name="loaded_failed">Loading failed</string>
     <string-array name="alarmouttype">
         <item>Automatic</item>
@@ -911,5 +913,30 @@
     <string name="manufacturing_mode">Manufacturing Mode</string>
     <string name="settings_about_transmit_mode">Forwarding Mode</string>
     <string name="dev_ability">Device Ability</string>
-    <string name="wake_up_master">唤醒主控</string>
+    <string name="wake_up_master">Wake UP Main Controller</string>
+    <string name="capture_pic_from_dev_and_to_app">Capture an image on the device and return it to the app (the image is not saved on the device)</string>
+    <string name="detect_track">Motion Tracking (Human Tracking)</string>
+    <string name="watch_time">Watch Time</string>
+    <string name="low">Low</string>
+    <string name="middle">Middle</string>
+    <string name="high">High</string>
+    <string name="cruise">Cruise</string>
+    <string name="start_cruise">Start Cruising</string>
+    <string name="stop_cruise">Stop Cruising</string>
+    <string name="tour_end">Cruising End</string>
+    <string name="set_watch_preset">Set The Watch Preset</string>
+    <string name="aov_device">AOV Device Configuration</string>
+    <string name="view_doc">View Documentation</string>
+    <string name="EpitomeRecord">Epitome Record</string>
+    <string name="input_username_password">Please enter your username and password</string>
+    <string name="ble_ctrl"></string>
+    <string name="save_media_data">Save Real-time Preview Media Data</string>
+    <string name="save_talk_data">Save Intercom Data</string>
+    <string name="share_media_data">Share Real-time Preview Media Data</string>
+    <string name="share_talk_data">Share Intercom Data</string>
+    <string name="continuous_alarm_time">Alarm Time Settings</string>
+    <string name="alarm_volume">Alarm Volume Settings</string>
+    <string name="alarm_ringtone">Alarm Tone Settings</string>
+    <string name="intelligent_warning_switch">Smart Alert Switch</string>
+    <string name="intelligent_dual_light">Intelligent dual light</string>
 </resources>

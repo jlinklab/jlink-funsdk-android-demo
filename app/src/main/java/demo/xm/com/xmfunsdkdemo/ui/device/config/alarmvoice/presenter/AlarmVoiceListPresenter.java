@@ -1,7 +1,11 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.config.alarmvoice.presenter;
 
+import android.os.Message;
+
 import com.alibaba.fastjson.JSON;
+import com.basic.G;
 import com.google.gson.Gson;
+import com.lib.MsgContent;
 import com.lib.sdk.bean.BrowserLanguageBean;
 import com.lib.sdk.bean.HandleConfigData;
 import com.lib.sdk.bean.JsonConfig;
@@ -79,7 +83,12 @@ public class AlarmVoiceListPresenter extends XMBasePresenter<DeviceManager> impl
      * 设置警铃列表语言
      */
     private void setVoiceListLanguage() {
-        DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
+        DevConfigInfo devConfigInfo = DevConfigInfo.create(new DevConfigManager.OnDevConfigResultListener() {
+            @Override
+            public void onFunSDKResult(Message msg, MsgContent ex) {
+                String jsonData = G.ToStringJson(ex.pData);
+            }
+
             @Override
             public void onSuccess(String devId, int operationType, Object result) {
                 getVoiceNameList();
@@ -89,6 +98,7 @@ public class AlarmVoiceListPresenter extends XMBasePresenter<DeviceManager> impl
             public void onFailed(String devId, int msgId, String jsonName, int errorId) {
                 iAlarmVoiceListView.onGetVoiceNameListResult(null, errorId);
             }
+
         });
 
         BrowserLanguageBean bean = new BrowserLanguageBean();

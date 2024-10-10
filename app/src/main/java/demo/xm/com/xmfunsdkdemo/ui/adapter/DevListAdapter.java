@@ -23,7 +23,6 @@ import com.manager.device.config.mqtt.DevStateNotifyMqttManager;
 import com.manager.device.config.shadow.DevShadowManager;
 import com.manager.device.config.shadow.OnDevShadowManagerListener;
 import com.manager.device.config.shadow.ShadowConfigEnum;
-import com.manager.device.config.websocket.DevStateNotifyManager;
 import com.utils.LogUtils;
 import com.xm.ui.widget.ListSelectItem;
 

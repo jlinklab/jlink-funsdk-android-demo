@@ -22,6 +22,7 @@ import com.manager.account.share.ShareManager;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
+import com.utils.LogUtils;
 import com.xm.activity.base.XMBasePresenter;
 import com.xm.ui.dialog.XMPromptDlg;
 
@@ -233,6 +234,7 @@ public class DevListConnectPresenter extends XMBasePresenter<AccountManager> imp
     @Override
     public void clear() {
         shareManager.removeShareManagerListener(this);
+        manager.removeDevStateListener(this);
     }
 
     @Override
@@ -302,11 +304,12 @@ public class DevListConnectPresenter extends XMBasePresenter<AccountManager> imp
     /**
      * 单个设备状态获取回调
      * Callback for retrieving the status of a single device
-     * @param s
+     * @param devId
      */
     @Override
-    public void onUpdateDevState(String s) {//UpdateAllDevStateFromServer callback
+    public void onUpdateDevState(String devId) {//UpdateAllDevStateFromServer callback
 
+        System.out.println("onUpdateDevState:" + devId +"[" + AccountManager.getInstance().getDevState(devId) + "]");
     }
 
     /**
@@ -315,6 +318,7 @@ public class DevListConnectPresenter extends XMBasePresenter<AccountManager> imp
      */
     @Override
     public void onUpdateCompleted() {      //UpdateAllDevStateFromServer callback
+        LogUtils.debugInfo("onUpdateCompleted","onUpdateCompleted");
         if (iDevListConnectView != null) {
             iDevListConnectView.onUpdateDevStateResult(true);
         }

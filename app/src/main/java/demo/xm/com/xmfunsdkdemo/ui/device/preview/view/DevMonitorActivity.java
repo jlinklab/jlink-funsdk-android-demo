@@ -1,6 +1,5 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.preview.view;
 
-import static com.lib.sdk.bean.JsonConfig.ALARM_INTEL_ALERT_ALARM;
 import static com.manager.db.Define.LOGIN_NONE;
 import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_PlAY;
 import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_SAVE_PIC_FILE_S;
@@ -34,6 +33,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,15 +52,15 @@ import com.lib.sdk.bean.ElectCapacityBean;
 import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.SystemFunctionBean;
 import com.lib.sdk.bean.WifiRouteInfo;
+import com.lib.sdk.bean.tour.TourBean;
 import com.manager.ScreenOrientationManager;
 import com.manager.account.AccountManager;
 import com.manager.account.BaseAccountManager;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
-import com.manager.device.config.DevConfigInfo;
-import com.manager.device.config.DevConfigManager;
 import com.manager.device.config.PwdErrorManager;
+import com.manager.device.config.preset.PresetManager;
 import com.manager.device.idr.IDRManager;
 import com.utils.XUtils;
 import com.xm.linke.face.FaceFeature;
@@ -74,29 +74,28 @@ import com.xm.ui.widget.XTitleBar;
 import com.xm.ui.widget.dialog.EditDialog;
 import com.xm.ui.widget.listselectitem.extra.adapter.ExtraSpinnerAdapter;
 import com.xm.ui.widget.ptzview.PtzView;
-import com.xmgl.vrsoft.VRSoftDefine;
 
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
 import demo.xm.com.xmfunsdkdemo.ui.activity.DeviceConfigActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.ActivityGuideDeviceLanAlarm;
-import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.AlarmByVoiceLightActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.DoubleLightActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.DoubleLightBoxActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.GardenDoubleLightActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.MusicLightActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.WhiteLightActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.cameralink.view.CameraLinkSetActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.config.detecttrack.DetectTrackActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.simpleconfig.view.DevSimpleConfigActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.picture.view.DevPictureActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.DevMonitorContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.presenter.DevMonitorPresenter;
 import demo.xm.com.xmfunsdkdemo.ui.device.record.view.DevRecordActivity;
-import demo.xm.com.xmfunsdkdemo.ui.dialog.ManualAlarmDlg;
+import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 import io.reactivex.annotations.Nullable;
 
 import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_MEDIA_DISCONNECT;
-import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_PlAY;
-import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_SAVE_PIC_FILE_S;
-import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_SAVE_RECORD_FILE_S;
-import static com.manager.device.media.audio.XMAudioManager.SPEAKER_TYPE_MAN;
-import static com.manager.device.media.audio.XMAudioManager.SPEAKER_TYPE_NORMAL;
-import static com.manager.device.media.audio.XMAudioManager.SPEAKER_TYPE_WOMAN;
+import static com.xm.ui.dialog.PasswordErrorDlg.INPUT_TYPE_DEV_USER_PWD;
 
 import static demo.xm.com.xmfunsdkdemo.base.FunError.EE_DVR_ACCOUNT_PWD_NOT_VALID;
 
@@ -113,6 +112,7 @@ import java.util.List;
  * Save images and videos, engage in voice conversations, set presets, and control directions.
  */
 public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> implements DevMonitorContract.IDevMonitorView, OnClickListener {
+    private static final String TAG = "DevMonitorActivity";
     private MultiWinLayout playWndLayout;
     private RecyclerView rvMonitorFun;
     private ViewGroup wndLayout;
@@ -185,45 +185,56 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     // Capture and save on the device side
     // 设备端抓图并保存
     private static final int FUN_DEV_CAPTURE_SAVE = 13;
-
+    //设备远程抓图传回给APP（设备端不保存图片）
+    private static final int FUN_DEV_CAPTURE_TO_APP = 14;
     // Real-time preview timeliness
     // 实时预览实时性
-    private static final int FUN_REAL_PLAY = 14;
+    private static final int FUN_REAL_PLAY = 15;
 
     // Simple data interaction
     // 简单数据交互
-    private static final int FUN_SIMPLE_DATA = 15;
+    private static final int FUN_SIMPLE_DATA = 16;
 
     // Video frame rotation
     // 视频画面旋转
-    private static final int FUN_VIDEO_ROTATE = 16;
+    private static final int FUN_VIDEO_ROTATE = 17;
 
     // Feeding
     // 喂食
-    private static final int FUN_FEET = 17;
+    private static final int FUN_FEET = 18;
 
     // irCut
     // irCut
-    private static final int FUN_IRCUT = 18;
+    private static final int FUN_IRCUT = 19;
 
     // Restore factory settings
     // 恢复出厂设置
-    private static final int FUN_RESET = 19;
+    private static final int FUN_RESET = 20;
 
     // Point-to-view
     // 指哪看哪
-    private static final int FUN_POINT = 20;
+    private static final int FUN_POINT = 21;
 
     // Manual alarm
     // 手动警戒
-    private static final int FUN_MANUAL_ALARM = 21;
+    private static final int FUN_MANUAL_ALARM = 22;
 
-    private static final int FUN_ALARM_BY_VOICE_LIGHT = 22;// 声光报警
+    private static final int FUN_ALARM_BY_VOICE_LIGHT = 23;// 声光报警
     //Camera linkage
     //相机联动
-    private static final int FUN_CAMERA_LINK = 23;
+    private static final int FUN_CAMERA_LINK = 24;
+
+    //Mobile Tracking (Humanoid Tracking)
+    //移动追踪（人形跟随）
+    private static final int FUN_DETECT_TRACK = 25;
+
+    //cruise
+    //巡航
+    private static final int FUN_CRUISE = 26;
     private List<HashMap<String, Object>> monitorFunList = new ArrayList<>();//预览页面的功能列表
     private AutoHideManager autoHideManager;//自动隐藏控件
+    private Dialog tourDlg;
+    private SystemFunctionBean systemFunctionBean;//设备能力集
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -310,7 +321,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             public boolean onSingleTapConfirmed(int i, MotionEvent motionEvent, boolean b) {
                 if (autoHideManager.isVisible()) {
                     autoHideManager.hide();
-                }else {
+                } else {
                     autoHideManager.show();
                 }
 
@@ -564,6 +575,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
      */
     @Override
     public void onGetDevAbilityResult(SystemFunctionBean systemFunctionBean, int errorId) {
+        this.systemFunctionBean = systemFunctionBean;
         monitorFunList.clear();
         hideWaitDialog();
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -616,6 +628,16 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         hashMap.put("itemName", getString(R.string.preset));
         monitorFunList.add(hashMap);
 
+        if (systemFunctionBean != null) {
+            //是否支持巡航
+            if (systemFunctionBean.OtherFunction.SupportPTZTour) {
+                hashMap = new HashMap<>();
+                hashMap.put("itemId", FUN_CRUISE);
+                hashMap.put("itemName", getString(R.string.cruise));
+                monitorFunList.add(hashMap);
+            }
+        }
+
         hashMap = new HashMap<>();
         hashMap.put("itemId", FUN_LANDSCAPE);
         hashMap.put("itemName", getString(R.string.full_stream));
@@ -639,6 +661,11 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         hashMap = new HashMap<>();
         hashMap.put("itemId", FUN_DEV_CAPTURE_SAVE);
         hashMap.put("itemName", getString(R.string.capture_pic_from_dev_and_save));
+        monitorFunList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("itemId", FUN_DEV_CAPTURE_TO_APP);
+        hashMap.put("itemName", getString(R.string.capture_pic_from_dev_and_to_app));
         monitorFunList.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -695,16 +722,83 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             }
 
             //是否支持声光警戒功能
-            if (systemFunctionBean.OtherFunction.SupportDoubleLightBoxCamera) {
+            if (getSupportLightType(systemFunctionBean) != NO_LIGHT_CAMERA) {
                 hashMap = new HashMap<>();
                 hashMap.put("itemId", FUN_ALARM_BY_VOICE_LIGHT);
                 hashMap.put("itemName", getString(R.string.alarm_by_voice_light));
                 monitorFunList.add(hashMap);
             }
+
+            //是否支持移动追踪
+            if (systemFunctionBean.AlarmFunction.MotionHumanDection) {
+                hashMap = new HashMap<>();
+                hashMap.put("itemId", FUN_DETECT_TRACK);
+                hashMap.put("itemName", getString(R.string.detect_track));
+                monitorFunList.add(hashMap);
+            }
+
+            hashMap = new HashMap<>();
+            hashMap.put("itemId", 27);
+            hashMap.put("itemName", "联系家人");
+            monitorFunList.add(hashMap);
         } else {
             showToast(getString(R.string.get_dev_ability_failed) + ":" + errorId, Toast.LENGTH_LONG);
         }
     }
+
+
+    //不支持灯光
+    public static final int NO_LIGHT_CAMERA = -1;
+    //支持双光
+    public static final int DOUBLE_LIGHT_CAMERA = 0;
+    //支持双光枪机
+    public static final int DOUBLE_LIGHT_BOX_CAMERA = 1;
+    //支持音乐灯
+    public static final int MUSIC_LIGHT_CAMERA = 2;
+    //支持庭院双光灯
+    public static final int GARDEN_DOUBLE_LIGHT_CAMERA = 3;
+    //支持白光灯
+    public static final int WHITE_LIGHT_CAMERA = 4;
+    //支持低功耗设备灯光能力 / 支持单品智能警戒
+    public static final int LOW_POWER_WHITE_LIGHT_CAMERA = 5;
+
+    /**
+     * 支持的灯光类型
+     */
+    private int getSupportLightType(SystemFunctionBean systemFunctionBean) {
+        if (systemFunctionBean == null) {
+            return NO_LIGHT_CAMERA;
+        }
+
+        if (systemFunctionBean.OtherFunction.SupportCameraWhiteLight) {
+            Log.d(TAG, "支持基础白光灯");
+            if (systemFunctionBean.OtherFunction.SupportDoubleLightBulb) {
+                Log.d(TAG, "支持双光      " + presenter.getDevId());
+                return DOUBLE_LIGHT_CAMERA;
+            } else if (systemFunctionBean.OtherFunction.SupportDoubleLightBoxCamera) {
+                Log.d(TAG, "支持双光枪机   " + presenter.getDevId());
+                return DOUBLE_LIGHT_BOX_CAMERA;
+            } else if (systemFunctionBean.OtherFunction.SupportMusicLightBulb) {
+                Log.d(TAG, "支持音乐灯     " + presenter.getDevId());
+                return MUSIC_LIGHT_CAMERA;
+            } else if (systemFunctionBean.OtherFunction.SupportBoxCameraBulb) {
+                Log.d(TAG, "支持庭院双光灯     " + presenter.getDevId());
+                return GARDEN_DOUBLE_LIGHT_CAMERA;
+            } else {
+                Log.d(TAG, "支持白光灯     " + presenter.getDevId());
+                return WHITE_LIGHT_CAMERA;
+            }
+        } else if (systemFunctionBean.OtherFunction.LP4GSupportDoubleLightSwitch
+                || systemFunctionBean.AlarmFunction.IntellAlertAlarm
+                || systemFunctionBean.OtherFunction.SupportLowPowerDoubleLightToLightingSwitch) {
+            //支持低功耗设备灯光能力 / 支持单品智能警戒
+            Log.d(TAG, "支持低功耗设备灯光能力 / 支持单品智能警戒 / 庭院灯照明开关   " + presenter.getDevId());
+            return LOW_POWER_WHITE_LIGHT_CAMERA;
+
+        }
+        return NO_LIGHT_CAMERA;
+    }
+
 
     /**
      * 播放状态回调
@@ -725,6 +819,16 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                         presenter.startMonitor(chnId);
                     }
                 });
+            }else if (errorId == EFUN_ERROR.EE_DVR_LOGIN_USER_NOEXIST) {
+                XMDevInfo devInfo = DevDataCenter.getInstance().getDevInfo(presenter.getDevId());
+                XMPromptDlg.onShowPasswordErrorDialog(this, devInfo.getSdbDevInfo(),
+                        0,getString(R.string.input_username_password),INPUT_TYPE_DEV_USER_PWD, true,new PwdErrorManager.OnRepeatSendMsgListener() {
+                            @Override
+                            public void onSendMsg(int msgId) {
+                                showWaitDialog();
+                                presenter.startMonitor(chnId);
+                            }
+                        }, false);
             } else if (errorId < 0) {
                 showToast(getString(R.string.open_video_f) + errorId, Toast.LENGTH_LONG);
             } else {
@@ -781,7 +885,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 tvWiFiState.setVisibility(View.VISIBLE);
             }
 
-            tvWiFiState.setText(tvWiFiState.getText().toString() + String.format(getString(R.string.wifi_state_show), wifiRouteInfo.getSignalLevel()));
+            tvWiFiState.setText(String.format(getString(R.string.wifi_state_show), wifiRouteInfo.getSignalLevel()));
         }
     }
 
@@ -831,7 +935,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
     }
 
-    class MonitorFunAdapter extends RecyclerView.Adapter<MonitorFunAdapter.ViewHolder> {
+    public class MonitorFunAdapter extends RecyclerView.Adapter<MonitorFunAdapter.ViewHolder> {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -909,6 +1013,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 }
                 return true;
             case FUN_PTZ://云台控制
+            {
                 PtzView contentLayout = (PtzView) LayoutInflater.from(this).inflate(R.layout.view_ptz, null);
                 if (presenter.isOnlyHorizontal() && !presenter.isOnlyVertically()) {//Horizontal display
                     contentLayout.setOnlyHorizontal(true);
@@ -930,6 +1035,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 });
                 XMPromptDlg.onShow(this, contentLayout);
                 break;
+            }
             case FUN_PTZ_CALIBRATION://云台校正
                 showWaitDialog();
                 presenter.ptzCalibration();
@@ -1039,6 +1145,12 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             case FUN_PRESET://预置点
                 presetViewHolder.showPresetDlg = XMPromptDlg.onShow(getContext(), presetViewHolder.presetLayout, (int) (screenWidth * 0.8), ViewGroup.LayoutParams.WRAP_CONTENT, true, null);
                 break;
+            case FUN_CRUISE://巡航
+            {
+                showWaitDialog();
+                presenter.getTour(playWndLayout.getSelectedId());
+                break;
+            }
             case FUN_LANDSCAPE://全屏
                 screenOrientationManager.landscapeScreen(this, true);
                 break;
@@ -1062,6 +1174,9 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                         presenter.capturePicFromDevAndSave(playWndLayout.getSelectedId());
                     }
                 });
+                break;
+            case FUN_DEV_CAPTURE_TO_APP://设备端抓图并回传给APP，但是不会将图片保存到设备本地
+                presenter.capturePicFromDevAndToApp(playWndLayout.getSelectedId());
                 break;
             case FUN_REAL_PLAY://实时预览实时性（局域网IP访问才生效）
                 showWaitDialog();
@@ -1224,10 +1339,52 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 monitorFunAdapter.changeBtnState(itemId, isManualAlarmOpen);
                 break;
             case FUN_ALARM_BY_VOICE_LIGHT: //声光报警
-                turnToActivity(AlarmByVoiceLightActivity.class);
+                switch (getSupportLightType(systemFunctionBean)) {
+                    case DOUBLE_LIGHT_BOX_CAMERA:
+                        turnToActivity(DoubleLightBoxActivity.class);
+                        break;
+                    case LOW_POWER_WHITE_LIGHT_CAMERA:
+                        Intent intent = new Intent(DevMonitorActivity.this, WhiteLightActivity.class);
+                        intent.putExtra("devId", presenter.getDevId());
+                        intent.putExtra("supportLightSwitch", false);
+                        startActivity(intent);
+                        break;
+
+                    case WHITE_LIGHT_CAMERA:
+                        Intent whiteLightIntent = new Intent(DevMonitorActivity.this, WhiteLightActivity.class);
+                        whiteLightIntent.putExtra("devId", presenter.getDevId());
+                        whiteLightIntent.putExtra("supportLightSwitch", true);
+                        startActivity(whiteLightIntent);
+                        break;
+                    case DOUBLE_LIGHT_CAMERA:
+                        Intent doubleLightIntent = new Intent(DevMonitorActivity.this, DoubleLightActivity.class);
+                        doubleLightIntent.putExtra("devId", presenter.getDevId());
+                        doubleLightIntent.putExtra("supportLightSwitch", true);
+                        startActivity(doubleLightIntent);
+                        break;
+                    case MUSIC_LIGHT_CAMERA:
+                        Intent musicLightIntent = new Intent(DevMonitorActivity.this, MusicLightActivity.class);
+                        musicLightIntent.putExtra("devId", presenter.getDevId());
+                        musicLightIntent.putExtra("supportLightSwitch", true);
+                        startActivity(musicLightIntent);
+                        break;
+                    case GARDEN_DOUBLE_LIGHT_CAMERA:
+                        Intent GardenDoubleLightIntent = new Intent(DevMonitorActivity.this, GardenDoubleLightActivity.class);
+                        GardenDoubleLightIntent.putExtra("devId", presenter.getDevId());
+                        startActivity(GardenDoubleLightIntent);
+                        break;
+                    default:
+                        break;
+                }
                 break;
             case FUN_CAMERA_LINK://相机联动
                 turnToActivity(CameraLinkSetActivity.class);
+                break;
+            case FUN_DETECT_TRACK://移动追踪
+                turnToActivity(DetectTrackActivity.class);
+                break;
+            case 27://联系家人
+                turnToActivity(VideoIntercomActivity.class);
                 break;
             default:
                 Toast.makeText(DevMonitorActivity.this, getString(R.string.not_support_tip), Toast.LENGTH_LONG).show();
@@ -1460,6 +1617,175 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         }
 
         hideWaitDialog();
+    }
+
+    /**
+     * 新建预置点ID取值252、253、254，将这三个预置点作为巡航点
+     *
+     * @param tourBeans
+     * @param errorId
+     */
+    @Override
+    public void onShowTour(List<TourBean> tourBeans, int errorId) {
+        hideWaitDialog();
+        if (errorId == 0) {
+            LinearLayout contentLayout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.view_criuse, null);
+            BtnColorBK btnOne = contentLayout.findViewById(R.id.btn_keypad_1);
+            BtnColorBK btnTwo = contentLayout.findViewById(R.id.btn_keypad_2);
+            BtnColorBK btnThree = contentLayout.findViewById(R.id.btn_keypad_3);
+            BtnColorBK btnStartCruise = contentLayout.findViewById(R.id.btn_start_cruise);
+            BtnColorBK btnStopCruise = contentLayout.findViewById(R.id.btn_stop_cruise);
+
+            if (tourBeans != null && !tourBeans.isEmpty()) {
+                for (TourBean tourBean : tourBeans) {
+                    if (tourBean != null) {
+                        if (tourBean.Id == 252) {
+                            btnOne.setText("1");
+                        } else if (tourBean.Id == 253) {
+                            btnTwo.setText("2");
+                        } else if (tourBean.Id == 254) {
+                            btnThree.setText("3");
+                        }
+                    }
+                }
+            }
+
+            btnOne.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dealWithTourCtrl(252);
+                }
+            });
+
+            btnOne.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    dealWithDeleteTour(252);
+                    return true;
+                }
+            });
+
+            btnTwo.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dealWithTourCtrl(253);
+                }
+            });
+
+            btnTwo.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    dealWithDeleteTour(253);
+                    return true;
+                }
+            });
+
+            btnThree.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dealWithTourCtrl(254);
+                }
+            });
+
+            btnThree.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    dealWithDeleteTour(254);
+                    return true;
+                }
+            });
+
+            btnStartCruise.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    presenter.startTour(0);
+                }
+            });
+
+            btnStopCruise.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    presenter.stopTour(0);
+                }
+            });
+
+            PtzView ptzView = contentLayout.findViewById(R.id.ptz_view);
+            ptzView.setOnPtzViewListener(new PtzView.OnPtzViewListener() {
+                @Override
+                public void onPtzDirection(int direction, boolean stop) {
+                    presenter.devicePTZControl(playWndLayout.getSelectedId(), direction, 4, stop);
+                }
+            });
+
+
+            tourDlg = XMPromptDlg.onShow(this, contentLayout);
+        }
+    }
+
+    @Override
+    public void onTourCtrlResult(boolean isSuccess, int tourCmd, int errorId) {
+        if (isSuccess) {
+            Toast.makeText(this, getString(R.string.libfunsdk_operation_success), Toast.LENGTH_LONG).show();
+            if (tourCmd == PresetManager.PRESET_ADD_TOUR || tourCmd == PresetManager.PRESET_DELETE_TOUR) {
+                tourDlg.dismiss();
+                presenter.getTour(0);
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onTourEndResult() {
+        Toast.makeText(this, R.string.tour_end, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * 处理巡航点操作
+     */
+    private void dealWithTourCtrl(int presetId) {
+        List<TourBean> tourBeans = presenter.getTourBeans(0);
+        if (tourBeans != null) {
+            for (TourBean tourBean : tourBeans) {
+                if (tourBean != null) {
+                    if (tourBean.Id == presetId) {
+                        presenter.turnToPreset(0, tourBean.Id);
+                        return;
+                    }
+                }
+            }
+        }
+
+        XMPromptDlg.onShow(DevMonitorActivity.this, "是否设置巡航点?", new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.addTour(0, presetId);
+            }
+        }, null);
+    }
+
+    /**
+     * 处理删除巡航点操作
+     *
+     * @param presetId
+     */
+    private void dealWithDeleteTour(int presetId) {
+        List<TourBean> tourBeans = presenter.getTourBeans(0);
+        if (tourBeans != null) {
+            for (TourBean tourBean : tourBeans) {
+                if (tourBean != null) {
+                    if (tourBean.Id == presetId) {//判断巡航点是否设置了
+                        XMPromptDlg.onShow(DevMonitorActivity.this, "确定删除该巡航点?", new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                presenter.deleteTour(0, presetId);
+                            }
+                        }, null);
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     private boolean isHomePress;//按了Home键，退到后台

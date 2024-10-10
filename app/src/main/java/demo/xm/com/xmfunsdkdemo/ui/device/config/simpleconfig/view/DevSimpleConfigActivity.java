@@ -25,6 +25,7 @@ import com.lib.sdk.bean.ConfigJsonNameLink;
 import com.lib.sdk.bean.JsonConfig;
 import com.lib.sdk.bean.StringUtils;
 import com.manager.XMFunSDKManager;
+import com.utils.XUtils;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.ItemSetLayout;
 import com.xm.ui.widget.ListSelectItem;
@@ -46,6 +47,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.ui.activity.scanqrcode.CaptureActivity;
@@ -68,6 +70,7 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
     private ListSelectItem lsiConfigChn;
     private ListSelectItem lsiConfigCmdId;
     private Button btnShareDevData;
+    private Button btnViewDoc;//查看文档
     private ExtraSpinner<Integer> spConfigChn;
 
     private ItemSetLayout isReceiveConfigContent;
@@ -109,7 +112,7 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
             @Override
             public void onRightClick() {
                 Dialog dialog = null;
-                View layout = LayoutInflater.from(DevSimpleConfigActivity.this).inflate(R.layout.layout_show_json_layout,null);
+                View layout = LayoutInflater.from(DevSimpleConfigActivity.this).inflate(R.layout.layout_show_json_layout, null);
 
                 ItemSetLayout itemSetLayout = layout.findViewById(R.id.item_json);
                 TextView textView = itemSetLayout.findViewById(R.id.tv_content);
@@ -135,7 +138,7 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
                         "}");
                 Button button = layout.findViewById(R.id.btn_ok);
 
-                dialog = XMPromptDlg.onShow(DevSimpleConfigActivity.this,layout);
+                dialog = XMPromptDlg.onShow(DevSimpleConfigActivity.this, layout);
                 Dialog finalDialog = dialog;
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -258,6 +261,14 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
                     e.printStackTrace();
                     ToastUtils.showLong("分享失败!");
                 }
+            }
+        });
+
+        btnViewDoc = isReceiveConfigContent.findViewById(R.id.btn_view_doc);
+        btnViewDoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openBrowser(androidJsonDoc);
             }
         });
 
@@ -384,7 +395,7 @@ public class DevSimpleConfigActivity extends BaseConfigActivity<DevSimpleConfigP
 
                     if (jsonData != null && jsonName != null && cmdId > 0) {
                         btnGetConfig.performClick();
-                    }else {
+                    } else {
                         ToastUtils.showLong("数据解析异常，无法正常获取到有效数据");
                     }
                 } catch (JSONException e) {

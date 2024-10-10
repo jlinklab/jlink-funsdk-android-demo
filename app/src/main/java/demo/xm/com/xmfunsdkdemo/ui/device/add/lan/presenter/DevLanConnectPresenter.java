@@ -4,7 +4,9 @@ import static com.manager.db.Define.LOGIN_NONE;
 
 import android.os.Message;
 
+import com.basic.G;
 import com.lib.EUIMSG;
+import com.lib.FunSDK;
 import com.lib.MsgContent;
 import com.manager.account.AccountManager;
 import com.manager.account.BaseAccountManager;
@@ -76,7 +78,7 @@ public class DevLanConnectPresenter extends XMBasePresenter<DeviceManager>
         //未使用AccountManager(包括XMAccountManager或LocalAccountManager)登录（包括账号登录和本地临时登录），只能将设备信息临时缓存，重启应用后无法查到设备信息。
         if (DevDataCenter.getInstance().getLoginType() == LOGIN_NONE) {
             DevDataCenter.getInstance().addDev(xmDevInfo);
-            DeviceManager.getInstance().setLocalDevLoginInfo(xmDevInfo.getDevId(),xmDevInfo.getDevUserName(),xmDevInfo.getDevPassword(),xmDevInfo.getDevToken());
+            FunSDK.AddDevInfoToDataCenter(G.ObjToBytes(xmDevInfo.getSdbDevInfo()), 0, 0, "");
             if (iDevLanConnectView != null) {
                 iDevLanConnectView.onAddDevResult(true,0);
             }

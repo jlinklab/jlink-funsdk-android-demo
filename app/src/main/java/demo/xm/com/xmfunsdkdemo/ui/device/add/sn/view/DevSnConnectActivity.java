@@ -69,6 +69,7 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
     private ListSelectItem lsiDevType;
     private ExtraSpinner spDevType;
     private EditText devLoginTokenEdit;
+    private EditText devPidEdit;
     private final FunDevType[] devTypesSupport = {FunDevType.EE_DEV_NORMAL_MONITOR, FunDevType.EE_DEV_INTELLIGENTSOCKET, FunDevType.EE_DEV_SMALLEYE};
     private int devType;
     @Override
@@ -141,6 +142,7 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
         });
 
         devLoginTokenEdit = findViewById(R.id.editDeviceLoginToken);
+        devPidEdit = findViewById(R.id.editDevicePid);
     }
 
     @Override
@@ -179,7 +181,7 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
                         devLoginNameEdit.getText().toString().trim(),
                         devLoginPasswdEdit.getText().toString().trim(),
                         devLoginTokenEdit.getText().toString().trim(),
-                        (Integer) spDevType.getSelectedValue());
+                        (Integer) spDevType.getSelectedValue(),devPidEdit.getText().toString());
             }
             break;
             case R.id.devLoginBtnIP: {

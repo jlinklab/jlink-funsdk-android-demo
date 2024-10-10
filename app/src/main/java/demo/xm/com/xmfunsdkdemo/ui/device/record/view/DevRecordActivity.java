@@ -183,7 +183,14 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                         long _etime = endCalendar.getTimeInMillis() / 1000;
 
                         int times = ((int) (progress * (_etime - _stime)) / 100);
-                        ((BubbleSeekBar) seekBar).moveIndicator(TimeUtils.formatTimesV2((int) data.getLongStartTime() + times));
+                        Calendar calendar = (Calendar) startCalendar.clone();
+                        calendar.set(Calendar.HOUR_OF_DAY,0);
+                        calendar.set(Calendar.MINUTE,0);
+                        calendar.set(Calendar.SECOND,0);
+
+                        calendar.add(Calendar.SECOND,(int) data.getLongStartTime() + times);
+
+                        ((BubbleSeekBar) seekBar).moveIndicator(TimeUtils.showNormalFormat(calendar.getTimeInMillis()));
                     }
                 }
             }
@@ -575,8 +582,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                 getString(R.string.playback_fast_play),
                 getString(R.string.playback_slow_play),
                 getString(R.string.device_opt_fullscreen),
-                getString(R.string.sel_record_file_type),
-                getString(R.string.is_enable_epitome_record)};
+                getString(R.string.sel_record_file_type)};
 
         @NonNull
         @Override
@@ -753,7 +759,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                 textView.setText(getString(R.string.record_file_type) + ":");
                 Spinner spinner = new Spinner(this);
                 spinner.setBackgroundColor(Color.WHITE);
-                String[] data = {getString(R.string.record_file_all), getString(R.string.record_file_normal), getString(R.string.record_file_alarm)};
+                String[] data = {getString(R.string.record_file_all), getString(R.string.record_file_normal), getString(R.string.record_file_alarm),getString(R.string.EpitomeRecord)};
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
@@ -783,18 +789,6 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                     }
                 });
                 break;
-            case 8:
-                if (!isSelected) {
-                    XMPromptDlg.onShow(DevRecordActivity.this, getString(R.string.support_epitome_record_tips), null);
-                    findViewById(R.id.banner_rl).setVisibility(View.GONE);
-                }else {
-                    findViewById(R.id.banner_rl).setVisibility(View.VISIBLE);
-                }
-                showWaitDialog();
-                presenter.setEpitomeRecordEnable(!isSelected);
-                presenter.searchRecordByFile(calendarShow);
-                presenter.searchRecordByTime(calendarShow);
-                return true;
             default:
                 break;
         }

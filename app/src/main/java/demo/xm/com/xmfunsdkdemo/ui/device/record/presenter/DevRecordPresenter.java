@@ -54,19 +54,24 @@ import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_CLOUD;
 import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_FILE;
 import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_TIME;
 import static com.manager.device.media.MediaManager.PLAY_CLOUD_PLAYBACK;
+import static com.manager.device.media.attribute.PlayerAttribute.EE_STATE_SD_SEARCH_RECORD_BY_FILE;
+import static com.manager.device.media.attribute.PlayerAttribute.EE_STATE_SD_SEARCH_RECORD_BY_TIME;
 import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_PLAY_COMPLETED;
 import static com.manager.device.media.attribute.RecordPlayerAttribute.PLAY_SPEED_FAST;
 import static com.manager.device.media.attribute.RecordPlayerAttribute.PLAY_SPEED_SLOW;
 import static com.manager.device.media.download.DownloadManager.DOWNLOAD_STATE_PROGRESS;
+import static com.manager.device.media.playback.DevRecordManager.RECORD_TYPE_ALL;
+import static com.manager.device.media.playback.DevRecordManager.RECORD_TYPE_E;
 
 public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implements
         DevRecordContract.IDevRecordPresenter, RecordManager.OnRecordManagerListener,
         MediaFileCalendarManager.OnMediaFileCalendarListener, DownloadManager.OnDownloadListener, BaseImageManager.OnImageManagerListener {
     public static final int MN_COUNT = 8;
     public static final int TIME_UNIT = 60;
-    public static final int RECORD_TYPE_ALL = 0;//所有录像
-    public static final int RECORD_TYPE_ONLY_NORMAL = 1;//普通录像
-    public static final int RECORD_TYPE_ONLY_ALARM = 2;//报警录像
+    public static final int RECORD_TYPE_SEL_ALL = 0;//所有录像
+    public static final int RECORD_TYPE_SEL_ONLY_NORMAL = 1;//普通录像
+    public static final int RECORD_TYPE_SEL_ONLY_ALARM = 2;//报警录像
+    public static final int RECORD_TYPE_SEL_ONLY_EPITOME = 3;//缩影录像
     private DevRecordContract.IDevRecordView iDevRecordView;
     private RecordManager recordManager;
     private MediaFileCalendarManager mediaFileCalendarManager;
@@ -82,7 +87,6 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     private int recordPlayType;
     private int playSpeed;
     private int recordFileType;
-    private boolean isEpitomeRecordEnable;//缩影录像开关
     private H264_DVR_FILE_DATA curPlayFileInfo;//当前播放的录像文件信息
 
     public DevRecordPresenter(DevRecordContract.IDevRecordView iDevRecordView) {
@@ -119,11 +123,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
         } else {
             //SD卡回放
             recordManager = new DevRecordManager(playView, recordPlayerAttribute);
-            //设备录像文件类型
-            // subType对应的枚举参考:https://docs.jftech.com/docs?menusId=ab0ed73834f54368be3e375075e27fb2&siderid=9f6293ec863e46e6961cc85403b15ac4
-            int subTypeMask = 1 << SDKCONST.EMSSubType.ALL;//多个类型参考:(1 << EMSSubType.DYNAMIC) | (1 << EMSSubType.STRANDED)
-            int recordFileType = (SDKCONST.EMSType.h264 << 26) | (subTypeMask & 0x3FFFFFF);
-            ((DevRecordManager) recordManager).setRecordFileType(recordFileType);
+            ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_ALL);
         }
 
         recordManager.setChnId(getChnId());
@@ -136,31 +136,15 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     public void setSearchRecordFileType(int recordFileType) {
         this.recordFileType = recordFileType;
         if (recordManager instanceof DevRecordManager) {
-            //设备录像文件类型
-            // subType对应的枚举参考:https://docs.jftech.com/docs?menusId=ab0ed73834f54368be3e375075e27fb2&siderid=9f6293ec863e46e6961cc85403b15ac4
-            // 多个类型参考:(1 << EMSSubType.DYNAMIC) | (1 << EMSSubType.STRANDED)
-            int subTypeMask = 0;
-            if (recordFileType == RECORD_TYPE_ALL) {//所有录像
-                subTypeMask = 1 << SDKCONST.EMSSubType.ALL;
-            } else if (recordFileType == RECORD_TYPE_ONLY_ALARM) {//报警录像
-                subTypeMask = (1 << SDKCONST.EMSSubType.ALERT) | (1 << SDKCONST.EMSSubType.DYNAMIC) | (1 << SDKCONST.EMSSubType.INVASION) | (1 << SDKCONST.EMSSubType.STRANDED);
-            } else if (recordFileType == RECORD_TYPE_ONLY_NORMAL) {//普通录像
-                subTypeMask = (1 << SDKCONST.EMSSubType.ORIGINAL) | (1 << SDKCONST.EMSSubType.HAND);
+            if (recordFileType == RECORD_TYPE_SEL_ALL) {//所有录像
+                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_ALL);
+            } else if (recordFileType == RECORD_TYPE_SEL_ONLY_ALARM) {//报警录像
+                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_A, DevRecordManager.RECORD_TYPE_M);
+            } else if (recordFileType == RECORD_TYPE_SEL_ONLY_NORMAL) {//普通录像
+                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_R, DevRecordManager.RECORD_TYPE_H);
+            } else if (recordFileType == RECORD_TYPE_SEL_ONLY_EPITOME) {//缩影录像
+                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_E);
             }
-            ((DevRecordManager) recordManager).setRecordFileType((SDKCONST.EMSType.h264 << 26) | (subTypeMask & 0x3FFFFFF));
-        }
-    }
-
-    /**
-     * 设置是否开启缩影录像
-     *
-     * @param isEnable
-     */
-    @Override
-    public void setEpitomeRecordEnable(boolean isEnable) {
-        this.isEpitomeRecordEnable = isEnable;
-        if (recordManager instanceof DevRecordManager) {
-//            ((DevRecordManager) recordManager).setRecordStreamType(isEnable ? SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_EPITOME_RECORD : SDKCONST.ESDCardPlayBackStreamType.E_SDCARD_PLAYBACK_STREAMTYPE_ALL_RECORD);
         }
     }
 
@@ -284,6 +268,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     @Override
     public void destroyPlay() {
         recordManager.destroyPlay();
+        downloadManager.stopDownload();
     }
 
     @Override
@@ -320,7 +305,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
      * @param times 当前要播放的时间点（24小时内换算的时间，单位秒，比如：0点10分就是换成600秒）
      */
     @Override
-    public void seekToTime(Calendar calendar,int times) {
+    public void seekToTime(Calendar calendar, int times) {
         //获取当前播放的日期
         int[] dateTime = {calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
                 calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0};
@@ -371,6 +356,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
             downloadInfo.setEndTime(TimeUtils.getNormalFormatCalender(data.getEndTimeOfYear()));
             downloadInfo.setDevId(getDevId());
             downloadInfo.setObj(data);
+            downloadInfo.setFileType(RECORD_TYPE_E);
             //下载类型：0->卡存按文件下载 1->云存储下载 2->卡存按时间下载
             //Download type: 0->Download by file from SD card 1->Download from cloud storage 2->Download by time from SD card
             downloadInfo.setDownloadType(recordPlayType == PLAY_CLOUD_PLAYBACK
@@ -522,7 +508,15 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
                 iDevRecordView.onSearchRecordByTimeResult(true);
             }
         } else {
-            iDevRecordView.onSearchRecordByFileResult(false);
+            //按文件查询失败回调
+            if (attribute.getPlayState() == EE_STATE_SD_SEARCH_RECORD_BY_FILE) {
+                recordList.clear();
+                iDevRecordView.onSearchRecordByFileResult(false);
+            } else if (attribute.getPlayState() == EE_STATE_SD_SEARCH_RECORD_BY_TIME) {
+                //按时间查询失败回调
+                dealWithRecordTimeList(new char[144][]);
+                iDevRecordView.onSearchRecordByTimeResult(false);
+            }
         }
     }
 
@@ -629,7 +623,11 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     public void downloadVideoThumb(int position) {
         H264_DVR_FILE_DATA h264DvrFileData = recordList.get(position);
         if (recordManager instanceof DevRecordManager) {
-            ((DevRecordManager) recordManager).downloadVideoThumb(h264DvrFileData, position);
+            if (recordFileType == RECORD_TYPE_SEL_ONLY_EPITOME) {//缩影录像
+                ((DevRecordManager) recordManager).downloadVideoThumb(h264DvrFileData, position, RECORD_TYPE_E);
+            } else {
+                ((DevRecordManager) recordManager).downloadVideoThumb(h264DvrFileData,position,RECORD_TYPE_ALL);
+            }
         } else if (recordManager instanceof CloudRecordManager) {
             CloudMediaFileInfoBean cloudMediaFileInfoBean = JSON.parseObject(h264DvrFileData.getAlarmExFileInfo(), CloudMediaFileInfoBean.class);
             ((CloudRecordManager) recordManager).downloadVideoThumb(cloudMediaFileInfoBean, position);

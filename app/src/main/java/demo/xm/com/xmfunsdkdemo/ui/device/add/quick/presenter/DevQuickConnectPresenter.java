@@ -308,7 +308,7 @@ public class DevQuickConnectPresenter extends XMBasePresenter<DeviceManager> imp
         iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.start_add_dev_to_account));
         if (DevDataCenter.getInstance().getLoginType() == LOGIN_NONE) {
             DevDataCenter.getInstance().addDev(xmDevInfo);
-            DeviceManager.getInstance().setLocalDevLoginInfo(xmDevInfo.getDevId(),xmDevInfo.getDevUserName(),xmDevInfo.getDevPassword(),xmDevInfo.getDevToken());
+            FunSDK.AddDevInfoToDataCenter(G.ObjToBytes(xmDevInfo.getSdbDevInfo()), 0, 0, "");
             iDevQuickConnectView.onPrintConfigDev(iDevQuickConnectView.getContext().getString(R.string.add_dev_to_account_s));
             setDevId(xmDevInfo.getDevId());
             Toast.makeText(iDevQuickConnectView.getContext(), R.string.add_s, Toast.LENGTH_LONG).show();

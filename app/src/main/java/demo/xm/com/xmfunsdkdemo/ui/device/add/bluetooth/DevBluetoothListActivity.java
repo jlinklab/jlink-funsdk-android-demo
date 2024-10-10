@@ -35,6 +35,7 @@ import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.utils.LogUtils;
 import com.xm.activity.base.XMBaseActivity;
+import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.XTitleBar;
 
 import java.util.HashMap;
@@ -88,6 +89,10 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
      * 是否要停止蓝牙配对
      */
     private boolean isStopBlePairing;
+    /**
+     * 是否批量操作
+     */
+    private boolean isMassCtrl;
 
     @Override
     public DevBluetoothConnectPresenter getPresenter() {
@@ -121,6 +126,8 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
                     Intent intent = new Intent(DevBluetoothListActivity.this, InputWiFiInfoActivity.class);
                     startActivityForResult(intent, REQUEST_INPUT_WIFI_INFO_CODE);
                 }
+
+                isMassCtrl = true;
             }
         });
 
@@ -269,13 +276,23 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
         hideWaitDialog();
         if (resultCode == REQUEST_SUCCESS) {
             ToastUtils.showLong(R.string.connect_ble_success);
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            XMPromptDlg.onShow(this, "请选择是否进行WiFi配网，还是直接蓝牙交互？", "蓝牙交互", "WiFi配网", new View.OnClickListener() {
                 @Override
-                public void run() {
-                    devBluetoothListAdapter.setProgress(mac, 50);
-                    presenter.connectWiFi(mac, ssid, password);
+                public void onClick(View v) {
+                    turnToActivity(DevBluetoothCtrlActivity.class, new String[][]{{"bleMac", mac}});
                 }
-            }, 100);
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            devBluetoothListAdapter.setProgress(mac, 50);
+                            presenter.connectWiFi(mac, ssid, password);
+                        }
+                    }, 100);
+                }
+            });
         } else {
             ToastUtils.showLong(getString(R.string.connect_ble_failed) + ":" + resultCode);
             startNextBelNetwork();
@@ -360,7 +377,6 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
             return;
         }
 
-        XMBleInfo xmBleInfo = devBluetoothListAdapter.getData(isBleNetworkSuccess.size());
         if (!StringUtils.isStringNULL(mac)) {
             presenter.connectBle(mac);
         } else {
@@ -371,9 +387,11 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
     }
 
     private void startNextBelNetwork() {
-        XMBleInfo xmBleInfo = devBluetoothListAdapter.getData(isBleNetworkSuccess.size());
-        if (xmBleInfo != null) {
-            startNextBelNetwork(xmBleInfo.getMac());
+        if (isMassCtrl) {
+            XMBleInfo xmBleInfo = devBluetoothListAdapter.getData(isBleNetworkSuccess.size());
+            if (xmBleInfo != null) {
+                startNextBelNetwork(xmBleInfo.getMac());
+            }
         }
     }
 
@@ -421,6 +439,7 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
 
                         //如果设备支持Token的话，需要获取设备特征码
                         if (!StringUtils.isStringNULL(xmDevInfo.getDevToken())) {
+                            showWaitDialog();
                             presenter.getCloudCryNum(xmDevInfo);
                         }
 

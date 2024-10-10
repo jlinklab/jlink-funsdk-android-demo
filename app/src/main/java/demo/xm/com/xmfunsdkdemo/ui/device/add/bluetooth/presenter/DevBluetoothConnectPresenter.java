@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.ConvertUtils;
 import com.google.gson.JsonObject;
 import com.lib.EFUN_ERROR;
 import com.lib.EUIMSG;
+import com.lib.FunSDK;
 import com.lib.MsgContent;
 import com.lib.sdk.bean.HandleConfigData;
 import com.lib.sdk.bean.bluetooth.XMBleData;
@@ -116,7 +117,7 @@ public class DevBluetoothConnectPresenter extends XMBasePresenter<AccountManager
         //未使用AccountManager(包括XMAccountManager或LocalAccountManager)登录（包括账号登录和本地临时登录），只能将设备信息临时缓存，重启应用后无法查到设备信息。
         if (DevDataCenter.getInstance().getLoginType() == LOGIN_NONE) {
             DevDataCenter.getInstance().addDev(xmDevInfo);
-            DeviceManager.getInstance().setLocalDevLoginInfo(xmDevInfo.getDevId(),xmDevInfo.getDevUserName(),xmDevInfo.getDevPassword(),xmDevInfo.getDevToken());
+            FunSDK.AddDevInfoToDataCenter(G.ObjToBytes(xmDevInfo.getSdbDevInfo()), 0, 0, "");
             if (iDevBlueToothView != null) {
                 iDevBlueToothView.onAddDevResult(xmDevInfo, true, 0);
             }

@@ -193,7 +193,7 @@ public class SetDevToRouterByQrCodePresenter extends XMBasePresenter<DeviceManag
         //未使用AccountManager(包括XMAccountManager或LocalAccountManager)登录（包括账号登录和本地临时登录），只能将设备信息临时缓存，重启应用后无法查到设备信息。
         if (DevDataCenter.getInstance().getLoginType() == LOGIN_NONE) {
             DevDataCenter.getInstance().addDev(xmDevInfo);
-            DeviceManager.getInstance().setLocalDevLoginInfo(xmDevInfo.getDevId(), xmDevInfo.getDevUserName(), xmDevInfo.getDevPassword(), xmDevInfo.getDevToken());
+            FunSDK.AddDevInfoToDataCenter(G.ObjToBytes(xmDevInfo.getSdbDevInfo()), 0, 0, "");
             iSetDevToRouterByQrCodeView.onPrintConfigDev(iSetDevToRouterByQrCodeView.getContext().getString(R.string.add_dev_to_account_s));
             setDevId(xmDevInfo.getDevId());
             iSetDevToRouterByQrCodeView.onAddDevToAccountResult(true, 0);
@@ -364,7 +364,7 @@ public class SetDevToRouterByQrCodePresenter extends XMBasePresenter<DeviceManag
                 //未使用AccountManager(包括XMAccountManager或LocalAccountManager)登录（包括账号登录和本地临时登录），只能将设备信息临时缓存，重启应用后无法查到设备信息。
                 if (DevDataCenter.getInstance().getLoginType() == LOGIN_NONE) {
                     DevDataCenter.getInstance().addDev(xmDevInfo);
-                    DeviceManager.getInstance().setLocalDevLoginInfo(xmDevInfo.getDevId(), xmDevInfo.getDevUserName(), xmDevInfo.getDevPassword(), xmDevInfo.getDevToken());
+                    FunSDK.AddDevInfoToDataCenter(G.ObjToBytes(xmDevInfo.getSdbDevInfo()), 0, 0, "");
                     setDevId(xmDevInfo.getDevId());
                     iSetDevToRouterByQrCodeView.onAddDevToAccountResult(true, 0);
                 } else {
