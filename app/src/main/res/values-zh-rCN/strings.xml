@@ -938,4 +938,9 @@
     <string name="alarm_ringtone">报警铃声设置</string>
     <string name="intelligent_warning_switch">智能警戒开关</string>
     <string name="intelligent_dual_light">智能双光</string>
+    <string name="show_app_zooming">显示APP变倍功能</string>
+    <string name="app_obj_effect">APP软件实现多目效果</string>
+    <string name="is_open_point_ptz_not_support_this_function">该功能和指哪看哪功能冲突了，请先关闭指哪看哪功能</string>
+    <string name="is_app_more_screen_not_support_this_function">该功能和假多目功能冲突了，请先关闭假多目功能</string>
+    <string name="this_function_only_glsurfaceview">当前播放器不支持APP软变倍</string>
 </resources>

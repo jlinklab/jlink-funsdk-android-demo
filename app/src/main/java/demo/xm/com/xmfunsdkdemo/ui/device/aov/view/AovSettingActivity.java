@@ -18,7 +18,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.config.BaseConfigActivity;
  * AOV设备相关配置，包括电池管理/工作模式/灯光设置
  */
 public class AovSettingActivity extends BaseConfigActivity<AovSettingPresenter> implements
-        AovSettingContract.IAovSettingView{
+        AovSettingContract.IAovSettingView {
 
     private ListSelectItem lsiBatteryManagerSettings;
     private ListSelectItem lsiWorkModeSettings;
@@ -58,7 +58,7 @@ public class AovSettingActivity extends BaseConfigActivity<AovSettingPresenter> 
             public void onClick(View view) {
                 // AOV电池管理
                 Intent intent = new Intent(AovSettingActivity.this, AovBatteryManagerActivity.class);
-                intent.putExtra("devId",devId);
+                intent.putExtra("devId", devId);
                 startActivity(intent);
             }
         });
@@ -69,8 +69,8 @@ public class AovSettingActivity extends BaseConfigActivity<AovSettingPresenter> 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AovSettingActivity.this, AOVWorkingModeActivity.class);
-                intent.putExtra("devId",devId);
-                startActivityForResult(intent,0x01);
+                intent.putExtra("devId", devId);
+                startActivityForResult(intent, 0x01);
             }
         });
 
@@ -89,7 +89,7 @@ public class AovSettingActivity extends BaseConfigActivity<AovSettingPresenter> 
     public void onSupportBlackLightResult() {
         //黑光
         Intent intent = new Intent(AovSettingActivity.this, AOVBlackLightSettingActivity.class);
-        intent.putExtra("devId",devId);
+        intent.putExtra("devId", devId);
         startActivity(intent);
     }
 
@@ -97,7 +97,7 @@ public class AovSettingActivity extends BaseConfigActivity<AovSettingPresenter> 
     public void onSupportDoubleLightResult() {
         //双光
         Intent intent = new Intent(AovSettingActivity.this, AOVDoubleLightSettingActivity.class);
-        intent.putExtra("devId",devId);
+        intent.putExtra("devId", devId);
         startActivity(intent);
     }
 
@@ -105,17 +105,18 @@ public class AovSettingActivity extends BaseConfigActivity<AovSettingPresenter> 
      * 显示AOV功能的支持状态
      * 包括对灯光的支持、工作模式的支持以及电池管理的支持
      *
-     * @param isSupportLight           表示是否支持灯光功能
-     * @param isSupportWorkMode        表示是否支持工作模式的切换
-     * @param isSupportBatteryManager  表示是否支持电池管理功能
+     * @param isSupportLight          表示是否支持灯光功能
+     * @param isSupportWorkMode       表示是否支持工作模式的切换
+     * @param isSupportBatteryManager 表示是否支持电池管理功能
      */
-    public void showSupportAovAbility(boolean isSupportLight,boolean isSupportWorkMode,
-                                      boolean isSupportBatteryManager){
-        lsLightSettings.setVisibility(isSupportLight?View.VISIBLE:View.GONE);
-        lsiBatteryManagerSettings.setVisibility(isSupportWorkMode?View.VISIBLE:View.GONE);
-        lsiWorkModeSettings.setVisibility(isSupportBatteryManager?View.VISIBLE:View.GONE);
-        if(!isSupportLight && !isSupportWorkMode && !isSupportBatteryManager){
+    public void showSupportAovAbility(boolean isSupportLight, boolean isSupportWorkMode,
+                                      boolean isSupportBatteryManager) {
+        lsLightSettings.setVisibility(isSupportLight ? View.VISIBLE : View.GONE);
+        lsiBatteryManagerSettings.setVisibility(isSupportWorkMode ? View.VISIBLE : View.GONE);
+        lsiWorkModeSettings.setVisibility(isSupportBatteryManager ? View.VISIBLE : View.GONE);
+        if (!isSupportLight && !isSupportWorkMode && !isSupportBatteryManager) {
             Toast.makeText(AovSettingActivity.this, FunSDK.TS("not_support_aov_ability"), Toast.LENGTH_LONG).show();
+            finish();
         }
 
     }

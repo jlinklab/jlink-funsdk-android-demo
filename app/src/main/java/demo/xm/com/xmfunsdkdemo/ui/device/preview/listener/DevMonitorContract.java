@@ -1,6 +1,7 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.preview.listener;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.lib.sdk.bean.ElectCapacityBean;
@@ -8,7 +9,11 @@ import com.lib.sdk.bean.SystemFunctionBean;
 import com.lib.sdk.bean.WifiRouteInfo;
 import com.lib.sdk.bean.tour.TourBean;
 import com.manager.device.DeviceManager;
+import com.manager.device.media.MediaManager;
+import com.manager.device.media.monitor.MonitorManager;
 import com.xm.linke.face.FaceFeature;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -20,7 +25,7 @@ import java.util.List;
  * Created by jiangping on 2018-10-23.
  */
 public class DevMonitorContract {
-    public interface IDevMonitorView {
+    public interface IDevMonitorView extends MediaManager.OnFrameInfoListener {
         void onLoginResult(boolean isSuccess, int errorId);
 
         /**
@@ -73,6 +78,13 @@ public class DevMonitorContract {
 
         void changeChannel(int chnId);
 
+        /**
+         * 视频缩放结果回调
+         *
+         * @param imgScale
+         */
+        void onVideoScaleResult(float imgScale);
+
         boolean isSingleWnd();
 
         Context getContext();
@@ -97,7 +109,7 @@ public class DevMonitorContract {
 
         void onShowTour(List<TourBean> tourBeans, int errorId);
 
-        void onTourCtrlResult(boolean isSuccess,int tourCmd, int errorId);
+        void onTourCtrlResult(boolean isSuccess, int tourCmd, int errorId);
 
         /**
          * 巡航结束回调
@@ -119,6 +131,15 @@ public class DevMonitorContract {
          * @param viewGroup
          */
         void initMonitor(int chnId, ViewGroup viewGroup);
+
+        /**
+         * 初始化实时预览
+         * Initialize a live preview
+         *
+         * @param viewGroup
+         * @param isNeedCorrectFishEye 视频信息帧中携带了需要矫正的逻辑，是否需要进行矫正处理
+         */
+        void initMonitor(int chnId, ViewGroup viewGroup, boolean isNeedCorrectFishEye);
 
         /**
          * 开启实时预览
@@ -146,6 +167,11 @@ public class DevMonitorContract {
          * Destruction Live preview
          */
         void destroyMonitor(int chnId);
+
+        /**
+         * 销毁所有实时预览
+         */
+        void destroyAllMonitor();
 
         /**
          * 获取播放状态
@@ -439,6 +465,26 @@ public class DevMonitorContract {
          * 云台校正
          */
         void ptzCalibration();
+
+        /**
+         * 获取当前选中的播放器
+         *
+         * @param chnId
+         * @return
+         */
+        MonitorManager getCurSelMonitorManager(int chnId);
+
+        /**
+         * 分割画面
+         *
+         * @param playView 播放布局
+         */
+        void splitScreen(ViewGroup playView);
+
+        /**
+         * 合并画面
+         */
+        void mergeScreen();
     }
 }
 

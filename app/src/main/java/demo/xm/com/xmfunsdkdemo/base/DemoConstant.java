@@ -21,4 +21,10 @@ public class DemoConstant {
     public static final String APP_KEY = "0621ef206a1d4cafbe0c5545c3882ea8";
     public static final String APP_SECRET = "90f8bc17be2a425db6068c749dee4f5d";
     public static final int APP_MOVEDCARD = 2;
+    public static final String MULTI_LENS_TWO_SENSOR = "MultiLensTwoSensor";//双目设备 APP放大
+    public static final String MULTI_LENS_THREE_SENSOR = "MultiLensThreeSensor";//三目设备 APP放大
+    public static final String SUPPORT_SCALE_TWO_LENS = "SupportScaleTwoLens";//双目设备 设备端放大
+    public static final String SUPPORT_SCALE_THREE_LENS = "SupportScaleThreeLens";//三目设备 设备端放大
+    public static final String LAST_CHANGE_SCALE_TIMES = "last_change_scale_times";//记录设备最近一次的倍数
+    public static final String SENSOR_MAX_TIMES = "sensor_max_time";//最大倍数
 }

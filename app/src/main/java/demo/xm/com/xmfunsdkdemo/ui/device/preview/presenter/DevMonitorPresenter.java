@@ -1,6 +1,7 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.preview.presenter;
 
 import android.graphics.Point;
+import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -31,8 +32,10 @@ import com.lib.sdk.bean.WifiRouteInfo;
 import com.lib.sdk.bean.preset.ConfigGetPreset;
 import com.lib.sdk.bean.tour.PTZTourBean;
 import com.lib.sdk.bean.tour.TourBean;
+import com.lib.sdk.struct.MultiLensParam;
 import com.lib.sdk.struct.SDK_FishEyeFrame;
 import com.manager.account.code.AccountCode;
+import com.manager.db.Define;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
@@ -60,6 +63,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication;
@@ -78,6 +82,8 @@ import static com.manager.db.Define.MEDIA_DATA_TYPE_YUV_NOT_DISPLAY;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_BROADCAST;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_CHN;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_DEV;
+
+import androidx.annotation.NonNull;
 
 /**
  * 设备预览界面,可以控制播放,停止,码流切换,截图,录制,全屏,信息.
@@ -139,6 +145,10 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
     private List<PTZTourBean> ptzTourBeans;
     private PresetListPresenter presetListPresenter;
     private List<ConfigGetPreset> configGetPresets;
+    private boolean isFirstGetVideoStream = true;//打开视频后首次获取到码流数据
+    private SensorChangePresenter sensorChangePresenter;
+    private boolean isDelayChangeStream = false;//针对多目设备获取到镜头信息后再进行码流切换
+    private MonitorManager splitMonitorManager;//被分割后的播放器
 
     public DevMonitorPresenter(DevMonitorContract.IDevMonitorView iDevMonitorView) {
         this.iDevMonitorView = iDevMonitorView;
@@ -219,11 +229,11 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
             public void onFunSDKResult(Message msg, MsgContent ex) {
                 if (msg.what == DEV_CMD_EN) {
                     if (msg.arg1 < 0) {
-                        iDevMonitorView.onTourCtrlResult(false,ex.seq, msg.arg1);
-                    }else {
-                        iDevMonitorView.onTourCtrlResult(true,ex.seq,0);
+                        iDevMonitorView.onTourCtrlResult(false, ex.seq, msg.arg1);
+                    } else {
+                        iDevMonitorView.onTourCtrlResult(true, ex.seq, 0);
                     }
-                }else if (msg.what == DEV_PTZ_CONTROL){
+                } else if (msg.what == DEV_PTZ_CONTROL) {
                     if (msg.arg1 == OPPTZControlBean.PTZ_TOUR_END_RSP_ID) {
                         iDevMonitorView.onTourEndResult();
                     }
@@ -407,6 +417,11 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
      */
     @Override
     public void initMonitor(int chnId, ViewGroup viewGroup) {
+        initMonitor(chnId, viewGroup, true);
+    }
+
+    @Override
+    public void initMonitor(int chnId, ViewGroup viewGroup, boolean isNeedCorrectFishEye) {
         MonitorManager mediaManager;
         if (!monitorManagers.containsKey(chnId)) {
             //创建播放器 Create a player
@@ -417,6 +432,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
             mediaManager.setChnId(chnId);
             //设置是否满屏显示 Set whether to display in full screen
             mediaManager.setVideoFullScreen(true);
+            mediaManager.setNeedCorrectFishEye(isNeedCorrectFishEye);
             monitorManagers.put(chnId, mediaManager);
 
             // 是否要保存原始媒体数据
@@ -438,18 +454,15 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
 //        mediaManager.setSaveThumbnailPath(SDKDemoApplication.PATH_PHOTO_TEMP);
         //设置媒体播放监听（包括播放状态回调、实时码流、时间戳回调等）
         mediaManager.setOnMediaManagerListener(this);
-        mediaManager.setOnFrameInfoListener(new MediaManager.OnFrameInfoListener() {
-            @Override
-            public void onFrameInfo(PlayerAttribute playerAttribute, SDK_FishEyeFrame sdk_fishEyeFrame) {
-                if (!monitorManagers.containsKey(playerAttribute.getChnnel())) {
-                    return;
-                }
-            }
-        });
+        mediaManager.setOnFrameInfoListener(iDevMonitorView);
 
         mediaManager.setOnPlayViewTouchListener(new OnPlayViewTouchListener() {
             @Override
-            public void onScale(float v, float v1, View view, MotionEvent motionEvent) {
+            public void onScale(float fingerScale, float imgScale, View view, MotionEvent motionEvent) {
+                if (iDevMonitorView != null) {
+                    iDevMonitorView.onVideoScaleResult(imgScale);
+                }
+
                 // 处理多通道设备，窗口切换功能
                 // Handle multi-channel devices and window switching functionality
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -619,7 +632,23 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         MonitorManager mediaManager = monitorManagers.get(chnId);
         if (mediaManager != null) {
             mediaManager.destroyPlay();
+            mediaManager = null;
         }
+
+        monitorManagers.remove(chnId);
+    }
+
+    @Override
+    public void destroyAllMonitor() {
+        for (Map.Entry map : monitorManagers.entrySet()) {
+            MonitorManager mediaManager = (MonitorManager) map.getValue();
+            if (mediaManager != null) {
+                mediaManager.destroyPlay();
+                mediaManager = null;
+            }
+        }
+
+        monitorManagers.clear();
     }
 
     /**
@@ -1479,10 +1508,15 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         }
     }
 
+    /**
+     * 视频码流数据缓冲结束，开始显示画面
+     *
+     * @param attribute
+     * @param ex
+     */
     @Override
     public void onVideoBufferEnd(PlayerAttribute attribute, MsgContent ex) {
         videoScale = attribute.getVideoScale();
-
     }
 
     @Override
@@ -1632,6 +1666,81 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         devConfigInfo.setCmdId(1450);
         devConfigInfo.setTimeOut(60000);//超时1分钟
         devConfigManager.setDevCmd(devConfigInfo);
+    }
+
+    @Override
+    public MonitorManager getCurSelMonitorManager(int chnId) {
+        if (!monitorManagers.containsKey(chnId)) {
+            return null;
+        }
+
+        return monitorManagers.get(chnId);
+    }
+
+    /**
+     * 分割画面，将当前画面分割成上下两部分
+     *
+     * @param playView 播放布局
+     */
+    @Override
+    public void splitScreen(ViewGroup playView) {
+        //创建新的播放器来显示分割出来的画面
+        initMonitor(1, playView);
+        splitMonitorManager = monitorManagers.get(1);
+
+        //分割画面并将主画面的播放句柄传给新画面的播放器
+        MonitorManager monitorManager = monitorManagers.get(0);
+        //将画面的下半部分分割给新的播放器
+        splitMonitorManager.splitScreen(monitorManager.getPlayHandle(), createSplitJson(0.0f, 1.0f, 1.0f, 0.5f));
+        //将画面的上半部分留给老的播放器
+        monitorManager.splitScreen(monitorManager.getPlayHandle(), createSplitJson(0.0f, 1.0f, 0.5f, 0.0f));
+    }
+
+    /**
+     * 合并画面，将分割后的画面合并成一个画面
+     */
+    @Override
+    public void mergeScreen() {
+        MonitorManager monitorManager = monitorManagers.get(0);
+        //将新播放器的画面合并到老的播放器，并将新播发器释放
+        splitMonitorManager.mergeScreen(null);
+        splitMonitorManager = null;
+        monitorManagers.remove(1);
+        //将新播放器的画面合并到老的播放器，需要将完整的画面数据传给老播放器
+        monitorManager.mergeScreen(createSplitJson(0.0f, 1.0f, 1.0f, 0.0f));
+    }
+
+    /**
+     * 创建包含play_view的JSON字符串
+     *
+     * @param left   左边界
+     * @param right  右边界
+     * @param top    上边界
+     * @param bottom 下边界
+     * @return 生成的JSON字符串
+     */
+    public static String createSplitJson(float left, float right, float top, float bottom) {
+        // 创建Gson实例
+        Gson gson = new Gson();
+
+        // 创建coord_vertices的Map
+        Map<String, Float> coordVerticesMap = new HashMap<>();
+        coordVerticesMap.put("left", left);
+        coordVerticesMap.put("right", right);
+        coordVerticesMap.put("top", top);
+        coordVerticesMap.put("bottom", bottom);
+
+        // 创建play_view的Map
+        Map<String, Object> playViewContentMap = new HashMap<>();
+        playViewContentMap.put("render_enable", true);
+        playViewContentMap.put("coord_vertices", coordVerticesMap);
+
+        // 创建外部Map
+        Map<String, Object> playViewMap = new HashMap<>();
+        playViewMap.put("play_view", playViewContentMap);
+
+        // 返回JSON字符串
+        return gson.toJson(playViewMap);
     }
 }
 
