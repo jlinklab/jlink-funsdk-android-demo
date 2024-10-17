@@ -6,7 +6,8 @@ buildscript {
         google()
         mavenLocal()
         mavenCentral()
-        jcenter()
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' } // jcenter镜像仓库
         maven {
             url 'https://jitpack.io'
         }
@@ -27,7 +28,11 @@ allprojects {
         google()
         mavenLocal()
         mavenCentral()
-        jcenter()
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' } // jcenter镜像仓库
+        maven {
+            url 'https://jitpack.io'
+        }
         flatDir {
             dirs 'libs'
         }
