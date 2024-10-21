@@ -83,6 +83,9 @@ dependencies {
     implementation 'com.github.smarteist:autoimageslider:1.4.0'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.google.code.gson:gson:2.10.1'
+    //基础RecyclerView
+    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     //-------------------------------以下是集成到项目中需要的依赖库--------------------------
     //-----------The following are the required libraries for integration into the project-----------------------
     implementation 'io.github.xmcamera:uilibrary:2.1'
@@ -91,7 +94,5 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
-    //基础RecyclerView
-    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+//    implementation 'io.github.xmcamera:libxmfunsdk:4.7.4.7'
 }

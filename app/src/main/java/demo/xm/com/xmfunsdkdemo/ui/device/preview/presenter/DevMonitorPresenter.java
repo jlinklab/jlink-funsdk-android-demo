@@ -1,7 +1,5 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.preview.presenter;
 
-import android.graphics.Point;
-import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -12,11 +10,9 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.basic.G;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.google.gson.Gson;
-import com.lib.FunSDK;
 import com.lib.MsgContent;
 import com.lib.SDKCONST;
 import com.lib.sdk.bean.CameraParamBean;
@@ -32,10 +28,7 @@ import com.lib.sdk.bean.WifiRouteInfo;
 import com.lib.sdk.bean.preset.ConfigGetPreset;
 import com.lib.sdk.bean.tour.PTZTourBean;
 import com.lib.sdk.bean.tour.TourBean;
-import com.lib.sdk.struct.MultiLensParam;
-import com.lib.sdk.struct.SDK_FishEyeFrame;
 import com.manager.account.code.AccountCode;
-import com.manager.db.Define;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
@@ -48,7 +41,6 @@ import com.manager.device.media.MediaManager;
 import com.manager.device.media.TalkManager;
 import com.manager.device.media.attribute.PlayerAttribute;
 import com.manager.device.media.monitor.MonitorManager;
-import com.utils.BitmapUtils;
 import com.utils.BleDistributionUtil;
 import com.utils.FileUtils;
 import com.video.opengl.GLSurfaceView20;
@@ -57,10 +49,8 @@ import com.xm.activity.base.XMBasePresenter;
 import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xmgl.vrsoft.VRSoftDefine;
-import com.xmgl.vrsoft.VRSoftGLView;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,20 +60,15 @@ import demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.DevMonitorContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.PresetListContract;
 import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
-import demo.xm.com.xmfunsdkdemo.utils.TypeConversion;
 
 import static com.lib.EFUN_ATTR.EDA_DEV_TANSPORT_COM_WRITE;
 import static com.lib.EUIMSG.DEV_CMD_EN;
-import static com.lib.EUIMSG.DEV_ON_TRANSPORT_COM_DATA;
 import static com.lib.EUIMSG.DEV_PTZ_CONTROL;
 import static com.lib.sdk.bean.JsonConfig.CAMERA_PARAM;
 import static com.lib.sdk.bean.JsonConfig.WHITE_LIGHT;
-import static com.manager.db.Define.MEDIA_DATA_TYPE_YUV_NOT_DISPLAY;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_BROADCAST;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_CHN;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_DEV;
-
-import androidx.annotation.NonNull;
 
 /**
  * 设备预览界面,可以控制播放,停止,码流切换,截图,录制,全屏,信息.
@@ -135,7 +120,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
      * 播放比例
      * ratio
      */
-    public float videoScale = 0;
+    public float videoRatio = 0;
     private MotionEvent downEvent;
     /**
      * 手动警戒是否打开
@@ -1438,7 +1423,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
             ptzCtrlInfoBean.setStop(bStop);
             //通道号
             //Channel ID
-            ptzCtrlInfoBean.setChnId(chnId);
+            ptzCtrlInfoBean.setChnId(mediaManager.getChnId());
             //云台操作速度（步长）
             //Panning/tilting speed (step size)
             ptzCtrlInfoBean.setSpeed(speed);
@@ -1516,7 +1501,8 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
      */
     @Override
     public void onVideoBufferEnd(PlayerAttribute attribute, MsgContent ex) {
-        videoScale = attribute.getVideoScale();
+        videoRatio = attribute.getVideoScale();
+        iDevMonitorView.onVideoBufferEnd(attribute, ex);
     }
 
     @Override
@@ -1677,6 +1663,18 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         return monitorManagers.get(chnId);
     }
 
+    @Override
+    public MonitorManager getMonitorManager(String devId) {
+        for (Map.Entry map : monitorManagers.entrySet()) {
+            MonitorManager monitorManager = (MonitorManager) map.getValue();
+            if (StringUtils.contrast(monitorManager.getDevId(), devId)) {
+                return monitorManager;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * 分割画面，将当前画面分割成上下两部分
      *
@@ -1687,13 +1685,22 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         //创建新的播放器来显示分割出来的画面
         initMonitor(1, playView);
         splitMonitorManager = monitorManagers.get(1);
+        splitMonitorManager.setDevId(getDevId());
 
         //分割画面并将主画面的播放句柄传给新画面的播放器
         MonitorManager monitorManager = monitorManagers.get(0);
-        //将画面的下半部分分割给新的播放器
-        splitMonitorManager.splitScreen(monitorManager.getPlayHandle(), createSplitJson(0.0f, 1.0f, 1.0f, 0.5f));
-        //将画面的上半部分留给老的播放器
-        monitorManager.splitScreen(monitorManager.getPlayHandle(), createSplitJson(0.0f, 1.0f, 0.5f, 0.0f));
+
+
+        //将画面的下半部分分割给新的播放器,splitType 画面分割类型 0--》不分割 1--》上下分割 2--》左右分割
+        splitMonitorManager.splitScreen(monitorManager.getPlayHandle(), createSplitJson(0.0f, 1.0f, 1.0f, 0.5f), 1);
+        PlayerAttribute playerAttribute = splitMonitorManager.getPlayerAttribute();
+        playerAttribute.setVideoWidth(monitorManager.getPlayerAttribute().getVideoWidth());
+        playerAttribute.setVideoHeight(monitorManager.getPlayerAttribute().getVideoHeight());
+        playerAttribute.setVideoScale(monitorManager.getVideoScale());
+        splitMonitorManager.setVideoFullScreen(false);
+        //将画面的上半部分留给老的播放器,splitType 画面分割类型 0--》不分割 1--》上下分割 2--》左右分割
+        monitorManager.splitScreen(monitorManager.getPlayHandle(), createSplitJson(0.0f, 1.0f, 0.5f, 0.0f), 1);
+        monitorManager.setVideoFullScreen(false);
     }
 
     /**
@@ -1708,6 +1715,18 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         monitorManagers.remove(1);
         //将新播放器的画面合并到老的播放器，需要将完整的画面数据传给老播放器
         monitorManager.mergeScreen(createSplitJson(0.0f, 1.0f, 1.0f, 0.0f));
+    }
+
+    @Override
+    public void changePlayView(ViewGroup[] playViews) {
+        MonitorManager monitorManager = getCurSelMonitorManager(0);
+        if (monitorManager != null) {
+            monitorManager.changePlayView(playViews[0],createSplitJson(0.0f, 1.0f, 0.5f, 0.0f));
+        }
+
+        if (splitMonitorManager != null) {
+            splitMonitorManager.changePlayView(playViews[1],createSplitJson(0.0f, 1.0f, 1.0f, 0.5f));
+        }
     }
 
     /**

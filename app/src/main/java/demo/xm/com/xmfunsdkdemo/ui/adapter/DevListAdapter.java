@@ -67,6 +67,10 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         DevShadowManager.getInstance().addDevShadowListener(onDevShadowManagerListener);
     }
 
+
+    /**
+     * 影子服务配置
+     */
     private OnDevShadowManagerListener onDevShadowManagerListener = new OnDevShadowManagerListener() {
         @Override
         public void onDevShadowConfigResult(String devId, String configData, int errorId) {
@@ -82,16 +86,21 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
                     boolean isBind = false;
                     if (jsonObject != null) {
                         if (jsonObject.containsKey("BindAttr")) {
+                            //自身绑定属性
+                            //0：无  1：主设备（摇头机）2：从设备（门锁）
                             otherDevBindAttr = jsonObject.getInteger("BindAttr");
                         }
 
                         if (jsonObject.containsKey("BindList")) {
+                            //绑定设备列表
                             JSONArray jsonArray = jsonObject.getJSONArray("BindList");
                             if (jsonArray != null && jsonArray.size() > 0) {
                                 jsonObject = jsonArray.getJSONObject(0);
                                 if (jsonObject != null && jsonObject.containsKey("SN")) {
-                                    linkSn = jsonObject.getString("SN");
-                                    linkPin = jsonObject.getString("PIN");
+                                    linkSn = jsonObject.getString("SN");//发给摇头机时：门锁序列号前十二位 发给门锁时：摇头机序列号前十二位
+                                    linkPin = jsonObject.getString("PIN");//六位PIN码
+
+                                    //如果linkSn不是NoBound就表示已经被关联了
                                     if (!StringUtils.isStringNULL(linkSn) && !StringUtils.contrast(linkSn, "NoBound")) {
                                         isBind = true;
                                     }

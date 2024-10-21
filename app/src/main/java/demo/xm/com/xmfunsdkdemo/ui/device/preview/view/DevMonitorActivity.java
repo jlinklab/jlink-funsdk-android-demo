@@ -60,14 +60,12 @@ import com.lib.sdk.struct.SDK_FishEyeFrame;
 import com.manager.ScreenOrientationManager;
 import com.manager.account.AccountManager;
 import com.manager.account.BaseAccountManager;
-import com.manager.db.Define;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
 import com.manager.device.config.PwdErrorManager;
 import com.manager.device.config.preset.PresetManager;
 import com.manager.device.idr.IDRManager;
-import com.manager.device.media.MediaManager;
 import com.manager.device.media.attribute.PlayerAttribute;
 import com.manager.device.media.monitor.MonitorManager;
 import com.utils.XUtils;
@@ -120,8 +118,6 @@ import static demo.xm.com.xmfunsdkdemo.base.FunError.EE_DVR_ACCOUNT_PWD_NOT_VALI
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 
 /**
@@ -321,21 +317,15 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
      * "Initialize the layout of playback windows."
      */
     private void initPlayWnd() {
-        //窗口个数按照1、4、9、16...整数的平方规则来设置
+        //窗口个数按照1、4、9、16...整数的平方规则来设置，如果不是可开平方的数，例如： 5，那么要传两个参数，第一个参数是5，第二个是每行显示的窗口数，（5,2）就表示 每行是2个，总共3行
         //"The number of windows is set according to the rule of integer squares, such as 1, 4, 9, 16..."
-//        int wndCount = (int) Math.sqrt(chnCount);
-//        if (wndCount < Math.sqrt(chnCount)) {
-//            wndCount = (int) (Math.pow(wndCount + 1, 2));
-//        } else {
-//            wndCount = (int) Math.pow(wndCount, 2);
-//        }
-
         int wndCount = chnCount;
         playViews = playWndLayout.setViewCount(wndCount);
         playWndLayout.setOnMultiWndListener(new MultiWinLayout.OnMultiWndListener() {
             @Override
             public boolean isDisableToChangeWndSize(int i) {
-                return isShowAppMoreScreen;//如果是APP的假多目效果，则禁止多窗口双击切换
+                int orientation = getResources().getConfiguration().orientation;
+                return isShowAppMoreScreen && orientation == Configuration.ORIENTATION_PORTRAIT;//如果是APP的假多目效果，则禁止多窗口双击切换
             }
 
             @Override
@@ -345,7 +335,12 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
             @Override
             public boolean onSingleWnd(int i, MotionEvent motionEvent, boolean b) {
-                presenter.setChnId(i);
+                //如果当前是假多目模式，默认是通道0
+                if (isShowAppMoreScreen) {
+                    presenter.setChnId(0);
+                } else {
+                    presenter.setChnId(i);
+                }
                 return false;
             }
 
@@ -454,7 +449,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 //                        }
 //
 //                        //是否为多窗口设备，并且当前是单窗口没有缩放显示，才支持切换窗口
-//                        if (chnCount > 1 && playWndLayout.getSelectedId() != chnId && playWndLayout.isSingleWnd() && !presenter.isVideoScale()) {
+//                        if (chnCount > 1 && presenter.getChnId() != chnId && playWndLayout.isSingleWnd() && !presenter.isVideoScale()) {
 //                            playWndLayout.changeChannel(chnId);
 //                        }
 //                    }
@@ -497,12 +492,11 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             @Override
             public void onItemSelected(int progress, boolean isTouchUp) {
                 if (isTouchUp) {
-                    SPUtil.getInstance(DevMonitorActivity.this).setSettingParam(LAST_CHANGE_SCALE_TIMES
-                            + presenter.getDevId(), (float) (progress * ((float) 1 / sbVideoScale.getSmallSubCount())));
-                    sensorChangePresenter.ctrlVideoScaleWhenUp(presenter.getCurSelMonitorManager(playWndLayout.getSelectedId()),
-                            progress, -1, 1);
-
-
+                    MonitorManager monitorManager = presenter.getCurSelMonitorManager(playWndLayout.getSelectedId());
+                    if (monitorManager != null) {
+                        SPUtil.getInstance(DevMonitorActivity.this).setSettingParam(LAST_CHANGE_SCALE_TIMES + presenter.getDevId(), (float) (progress * ((float) 1 / sbVideoScale.getSmallSubCount())));
+                        sensorChangePresenter.ctrlVideoScaleWhenUp(monitorManager, progress, -1, 1);
+                    }
                 }
             }
         });
@@ -519,7 +513,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         }
 
         chnCount = intent.getIntExtra("chnCount", 1);
-        titleBar.setTitleText(getString(R.string.channel) + ":" + playWndLayout.getSelectedId());
+        titleBar.setTitleText(getString(R.string.channel) + ":" + presenter.getChnId());
         presenter.setChnId(0);
 
         initPlayWnd();
@@ -810,16 +804,12 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             monitorFunList.add(hashMap);
 
             //将设备是否支持双目或者三目设备端变倍能力保存到本地
-            SPUtil.getInstance(DevMonitorActivity.this)
-                    .setSettingParam(SUPPORT_SCALE_TWO_LENS + presenter.getDevId(), systemFunctionBean.OtherFunction.SupportScaleTwoLens);
-            SPUtil.getInstance(DevMonitorActivity.this)
-                    .setSettingParam(SUPPORT_SCALE_THREE_LENS + presenter.getDevId(), systemFunctionBean.OtherFunction.SupportScaleThreeLens);
+            SPUtil.getInstance(DevMonitorActivity.this).setSettingParam(SUPPORT_SCALE_TWO_LENS + presenter.getDevId(), systemFunctionBean.OtherFunction.SupportScaleTwoLens);
+            SPUtil.getInstance(DevMonitorActivity.this).setSettingParam(SUPPORT_SCALE_THREE_LENS + presenter.getDevId(), systemFunctionBean.OtherFunction.SupportScaleThreeLens);
 
             //将双目或者三目设备 是否需要APP支持变倍的能力保存到本地
-            SPUtil.getInstance(DevMonitorActivity.this)
-                    .setSettingParam(MULTI_LENS_TWO_SENSOR + presenter.getDevId(), systemFunctionBean.OtherFunction.MultiLensTwoSensor);
-            SPUtil.getInstance(DevMonitorActivity.this)
-                    .setSettingParam(MULTI_LENS_THREE_SENSOR + presenter.getDevId(), systemFunctionBean.OtherFunction.MultiLensThreeSensor);
+            SPUtil.getInstance(DevMonitorActivity.this).setSettingParam(MULTI_LENS_TWO_SENSOR + presenter.getDevId(), systemFunctionBean.OtherFunction.MultiLensTwoSensor);
+            SPUtil.getInstance(DevMonitorActivity.this).setSettingParam(MULTI_LENS_THREE_SENSOR + presenter.getDevId(), systemFunctionBean.OtherFunction.MultiLensThreeSensor);
             //如果设备支持多目变倍功能 需要显示变倍控件
             if (systemFunctionBean.OtherFunction.SupportScaleThreeLens || systemFunctionBean.OtherFunction.SupportScaleTwoLens) {
                 sbVideoScale.setVisibility(VISIBLE);
@@ -883,9 +873,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 Log.d(TAG, "支持白光灯     " + presenter.getDevId());
                 return WHITE_LIGHT_CAMERA;
             }
-        } else if (systemFunctionBean.OtherFunction.LP4GSupportDoubleLightSwitch
-                || systemFunctionBean.AlarmFunction.IntellAlertAlarm
-                || systemFunctionBean.OtherFunction.SupportLowPowerDoubleLightToLightingSwitch) {
+        } else if (systemFunctionBean.OtherFunction.LP4GSupportDoubleLightSwitch || systemFunctionBean.AlarmFunction.IntellAlertAlarm || systemFunctionBean.OtherFunction.SupportLowPowerDoubleLightToLightingSwitch) {
             //支持低功耗设备灯光能力 / 支持单品智能警戒
             Log.d(TAG, "支持低功耗设备灯光能力 / 支持单品智能警戒 / 庭院灯照明开关   " + presenter.getDevId());
             return LOW_POWER_WHITE_LIGHT_CAMERA;
@@ -916,23 +904,15 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 });
             } else if (errorId == EFUN_ERROR.EE_DVR_LOGIN_USER_NOEXIST) {
                 XMDevInfo devInfo = DevDataCenter.getInstance().getDevInfo(presenter.getDevId());
-                XMPromptDlg.onShowPasswordErrorDialog(this, devInfo.getSdbDevInfo(),
-                        0, getString(R.string.input_username_password), INPUT_TYPE_DEV_USER_PWD, true, new PwdErrorManager.OnRepeatSendMsgListener() {
-                            @Override
-                            public void onSendMsg(int msgId) {
-                                showWaitDialog();
-                                presenter.startMonitor(chnId);
-                            }
-                        }, false);
+                XMPromptDlg.onShowPasswordErrorDialog(this, devInfo.getSdbDevInfo(), 0, getString(R.string.input_username_password), INPUT_TYPE_DEV_USER_PWD, true, new PwdErrorManager.OnRepeatSendMsgListener() {
+                    @Override
+                    public void onSendMsg(int msgId) {
+                        showWaitDialog();
+                        presenter.startMonitor(chnId);
+                    }
+                }, false);
             } else if (errorId < 0) {
                 showToast(getString(R.string.open_video_f) + errorId, Toast.LENGTH_LONG);
-            } else {
-                if (isShowAppMoreScreen) {
-                    playWndLayout.showSingleWnd(playWndLayout.getSelectedId(), false);
-                    presenter.splitScreen(playViews[1]);
-                }
-
-                monitorFunAdapter.changeBtnState(FUN_CHANGE_STREAM, presenter.getStreamType(chnId) == SDKCONST.StreamType.Main);
             }
         }
 
@@ -943,6 +923,17 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         } else if (state == E_STATE_MEDIA_DISCONNECT) {
             showToast(getString(R.string.media_disconnect), Toast.LENGTH_LONG);
         }
+    }
+
+    @Override
+    public void onVideoBufferEnd(PlayerAttribute attribute, MsgContent ex) {
+        //如果是假多目的话，在码流上来后 需要进行画面分割处理
+        if (isShowAppMoreScreen) {
+            playWndLayout.showSingleWnd(presenter.getChnId(), false);
+            presenter.splitScreen(playViews[1]);
+        }
+
+        monitorFunAdapter.changeBtnState(FUN_CHANGE_STREAM, presenter.getStreamType(attribute.getChnnel()) == SDKCONST.StreamType.Main);
     }
 
     @Override
@@ -1037,6 +1028,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             int maxTimesShow = 6;
             float scale = (imgScale - 1) * maxTimesShow / maxTimes;
             sbVideoScale.setProgress((int) (scale * sbVideoScale.getSmallSubCount()));
+            sensorChangePresenter.setCurScale(scale);
         }
     }
 
@@ -1089,13 +1081,11 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         }
 
         SPUtil.getInstance(this).setSettingParam(SENSOR_MAX_TIMES + devId, sbVideoScale.getSubCount() + 1);
-        boolean scaleTwo = SPUtil.getInstance(this).getSettingParam(
-                SUPPORT_SCALE_TWO_LENS + devId, false);
-        boolean scaleThree = SPUtil.getInstance(this).getSettingParam(
-                SUPPORT_SCALE_THREE_LENS + devId, false);
+        boolean scaleTwo = SPUtil.getInstance(this).getSettingParam(SUPPORT_SCALE_TWO_LENS + devId, false);
+        boolean scaleThree = SPUtil.getInstance(this).getSettingParam(SUPPORT_SCALE_THREE_LENS + devId, false);
         if (scaleTwo || scaleThree) {
             int curSensorId = 0;
-            int streamType = presenter.getCurSelMonitorManager(playWndLayout.getSelectedId()).getStreamType();
+            int streamType = presenter.getCurSelMonitorManager(presenter.getChnId()).getStreamType();
             if (streamType == SDKCONST.StreamType.Main) {
                 curSensorId = sensorInfoBean.getSensorMain();
             } else if (streamType == SDKCONST.StreamType.Extra) {
@@ -1103,8 +1093,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             }
             sensorChangePresenter.setCurSensorId(curSensorId);
             if (isFirstGetVideoStream && streamType != sensorInfoBean.getScaleStream()) {
-                sensorChangePresenter.ctrlVideoScale(devId,
-                        streamType, sensorChangePresenter.getProgress(), -1, 2);
+                sensorChangePresenter.ctrlVideoScale(devId, streamType, sensorChangePresenter.getProgress(), -1, 2);
                 isFirstGetVideoStream = false;
             }
         }
@@ -1115,7 +1104,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     public void onSetSensorResult(String devId, boolean isSuccess) {
         if (isSuccess) {
             if (isDelayChangeStream) {
-                presenter.changeStream(playWndLayout.getSelectedId());
+                presenter.changeStream(presenter.getChnId());
                 isDelayChangeStream = false;
             }
         }
@@ -1129,7 +1118,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     @Override
     public void onSetScaleResult(String devId, float scale, boolean isSuccess) {
         if (isDelayChangeStream) {
-            presenter.changeStream(playWndLayout.getSelectedId());
+            presenter.changeStream(presenter.getChnId());
             isDelayChangeStream = false;
         }
     }
@@ -1141,12 +1130,10 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
      */
     private void updateSensorUIByScale(String devId) {
         sbVideoScale.setProgress(sensorChangePresenter.getProgress());
-        boolean scaleTwo = SPUtil.getInstance(this).getSettingParam(
-                SUPPORT_SCALE_TWO_LENS + devId, false);
-        boolean scaleThree = SPUtil.getInstance(this).getSettingParam(
-                SUPPORT_SCALE_THREE_LENS + devId, false);
+        boolean scaleTwo = SPUtil.getInstance(this).getSettingParam(SUPPORT_SCALE_TWO_LENS + devId, false);
+        boolean scaleThree = SPUtil.getInstance(this).getSettingParam(SUPPORT_SCALE_THREE_LENS + devId, false);
         if (!scaleTwo && !scaleThree) {
-            MonitorManager monitorManager = presenter.getCurSelMonitorManager(playWndLayout.getSelectedId());
+            MonitorManager monitorManager = presenter.getCurSelMonitorManager(presenter.getChnId());
             if (sensorChangePresenter.getScaleList() != null) {
                 int curSensorId = sensorChangePresenter.getCurSensorId();
                 if (curSensorId > 0) {
@@ -1173,7 +1160,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             float curScale = multiLensParam.st_4_times;//当前码流信息帧返回的倍数
             sensorChangePresenter.setCurSensorId(curSensorId);
             //monitor里的maxScale需要上层设置，除以curSensorId是为了兼容GLSurfaceView20里计算放大倍数的方法，后面可以再改
-            MonitorManager monitorManager = presenter.getCurSelMonitorManager(playWndLayout.getSelectedId());
+            MonitorManager monitorManager = presenter.getMonitorManager(playerAttribute.getDevId());
             if (sensorChangePresenter.getScaleList() != null) {
                 if (curSensorId > 0) {
                     monitorManager.setMaxScale((sensorChangePresenter.getMinScale(curSensorId) + 1) / curSensorId);
@@ -1182,17 +1169,14 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 }
             }
             //双目设备变倍
-            boolean scaleTwo = SPUtil.getInstance(this).getSettingParam(
-                    SUPPORT_SCALE_TWO_LENS + playerAttribute.getDevId(), false);
+            boolean scaleTwo = SPUtil.getInstance(this).getSettingParam(SUPPORT_SCALE_TWO_LENS + playerAttribute.getDevId(), false);
             //三目设备变倍
-            boolean scaleThree = SPUtil.getInstance(this).getSettingParam(
-                    SUPPORT_SCALE_THREE_LENS + playerAttribute.getDevId(), false);
-            int streamType = presenter.getCurSelMonitorManager(playWndLayout.getSelectedId()).getStreamType();
+            boolean scaleThree = SPUtil.getInstance(this).getSettingParam(SUPPORT_SCALE_THREE_LENS + playerAttribute.getDevId(), false);
+            int streamType = monitorManager.getStreamType();
 
             //如果当前的码流类型匹配的话，将当前码流信息帧获取到的倍数保存到本地
             if (multiLensParam.st_3_scaleStream == streamType) {
-                SPUtil.getInstance(this).setSettingParam(LAST_CHANGE_SCALE_TIMES + playerAttribute.getDevId(),
-                        multiLensParam.st_4_times);
+                SPUtil.getInstance(this).setSettingParam(LAST_CHANGE_SCALE_TIMES + playerAttribute.getDevId(), multiLensParam.st_4_times);
             }
 
             if (scaleTwo || scaleThree) {
@@ -1204,8 +1188,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                         sbVideoScale.setProgress((int) (curScale * sbVideoScale.getSmallSubCount()));
                     }
                     //双目设备，根据画面倍数，改变云台转动速率, 记录当前画面倍数
-                    SPUtil.getInstance(this)
-                            .setSettingParam("IS_TURN_AROUND_SPEED_MULTI" + playerAttribute.getDevId(), curScale);
+                    SPUtil.getInstance(this).setSettingParam("IS_TURN_AROUND_SPEED_MULTI" + playerAttribute.getDevId(), curScale);
                 }
 
                 //如果是首次获取到码流数据并且当前的码流类型不一致的情况下要进行变倍处理
@@ -1213,8 +1196,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                            sensorChangePresenter.ctrlVideoScale(playerAttribute.getDevId(),
-                                    playerAttribute.getStreamType(), sbVideoScale.getProgress(), -1, 1);
+                            sensorChangePresenter.ctrlVideoScale(playerAttribute.getDevId(), playerAttribute.getStreamType(), sbVideoScale.getProgress(), -1, 1);
                         }
                     });
                 }
@@ -1241,7 +1223,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 holder.btnMonitorFun.setText(itemName);
                 holder.btnMonitorFun.setTag(itemId);
                 if (FUN_FULL_STREAM == itemId) {
-                    holder.btnMonitorFun.setSelected(!presenter.isVideoFullScreen(playWndLayout.getSelectedId()));
+                    holder.btnMonitorFun.setSelected(!presenter.isVideoFullScreen(presenter.getChnId()));
                 } else {
                     Object result = hashMap.get("itemSel");
                     if (result instanceof Boolean) {
@@ -1309,19 +1291,19 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         switch (itemId) {
             case FUN_VOICE://开启和关闭音频
                 if (isSelected) {
-                    presenter.closeVoice(playWndLayout.getSelectedId());
+                    presenter.closeVoice(presenter.getChnId());
                 } else {
-                    presenter.openVoice(playWndLayout.getSelectedId());
+                    presenter.openVoice(presenter.getChnId());
                 }
                 return true;
             case FUN_CAPTURE://视频抓图
-                presenter.capture(playWndLayout.getSelectedId());
+                presenter.capture(presenter.getChnId());
                 break;
             case FUN_RECORD://视频剪切
                 if (isSelected) {
-                    presenter.stopRecord(playWndLayout.getSelectedId());
+                    presenter.stopRecord(presenter.getChnId());
                 } else {
-                    presenter.startRecord(playWndLayout.getSelectedId());
+                    presenter.startRecord(presenter.getChnId());
                 }
                 return true;
             case FUN_PTZ://云台控制
@@ -1342,7 +1324,12 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 contentLayout.setOnPtzViewListener(new PtzView.OnPtzViewListener() {
                     @Override
                     public void onPtzDirection(int direction, boolean stop) {
-                        presenter.devicePTZControl(playWndLayout.getSelectedId(), direction, 4, stop);
+                        //如果是假多目的情况下，通道号默认传0
+                        if (isShowAppMoreScreen) {
+                            presenter.devicePTZControl(0, direction, 4, stop);
+                        } else {
+                            presenter.devicePTZControl(presenter.getChnId(), direction, 4, stop);
+                        }
                     }
                 });
                 XMPromptDlg.onShow(this, contentLayout);
@@ -1374,14 +1361,14 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                                 //判断双向对讲配置是否开启
                                 if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Open) {
                                     //双向对讲
-                                    if (presenter.isTalking(playWndLayout.getSelectedId())) {
+                                    if (presenter.isTalking(presenter.getChnId())) {
                                         //当前对讲开启中，则需要关闭对讲
-                                        presenter.stopIntercom(playWndLayout.getSelectedId());// Pause the intercom in the middle of a conversation
+                                        presenter.stopIntercom(presenter.getChnId());// Pause the intercom in the middle of a conversation
                                         rippleButton.clearState();
                                     } else {
                                         //当前对讲未开启，则需要开启对讲 (如果设备的通道数(chnCount)大于1，比如NVR设备的话，那么要使用通道对讲)
                                         boolean isTalkBroadcast = lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Open;
-                                        presenter.startDoubleIntercom(playWndLayout.getSelectedId(), isTalkBroadcast); //Turn on the two-way intercom
+                                        presenter.startDoubleIntercom(presenter.getChnId(), isTalkBroadcast); //Turn on the two-way intercom
                                         rippleButton.setUpGestureEnable(false);
                                         //对讲开启的时候，视频伴音会随之关闭
                                         monitorFunAdapter.changeBtnState(FUN_VOICE, false);
@@ -1390,7 +1377,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                                 } else {
                                     //(如果设备的通道数(chnCount)大于1，比如NVR设备的话，那么要使用通道对讲)
                                     boolean isTalkBroadcast = lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Open;
-                                    presenter.startSingleIntercomAndSpeak(playWndLayout.getSelectedId(), isTalkBroadcast);//Enable a one-way intercom
+                                    presenter.startSingleIntercomAndSpeak(presenter.getChnId(), isTalkBroadcast);//Enable a one-way intercom
                                     rippleButton.setUpGestureEnable(true);
                                     //对讲开启的时候，视频伴音会随之关闭
                                     monitorFunAdapter.changeBtnState(FUN_VOICE, false);
@@ -1399,7 +1386,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                             case MotionEvent.ACTION_UP:
                             case MotionEvent.ACTION_CANCEL:
                                 if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Close) {
-                                    presenter.stopSingleIntercomAndHear(playWndLayout.getSelectedId());
+                                    presenter.stopSingleIntercomAndHear(presenter.getChnId());
                                 }
                                 break;
                             default:
@@ -1419,7 +1406,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                             rippleButton.setTabText(getString(R.string.long_press_open_one_way_talk));
                         }
 
-                        presenter.stopIntercom(playWndLayout.getSelectedId());
+                        presenter.stopIntercom(presenter.getChnId());
                     }
                 });
 
@@ -1436,43 +1423,39 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                     public void onItemClick(int position, String key, Integer value) {
                         lsiChooseVoice.toggleExtraView(true);
                         lsiChooseVoice.setRightText(key);
-                        presenter.setSpeakerType(playWndLayout.getSelectedId(), value);
+                        presenter.setSpeakerType(presenter.getChnId(), value);
                     }
                 });
 
                 XMPromptDlg.onShow(this, layout, true, new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        presenter.stopIntercom(playWndLayout.getSelectedId());
+                        presenter.stopIntercom(presenter.getChnId());
                     }
                 });
             }
             break;
             case FUN_PLAYBACK://录像回放
-                turnToActivity(DevRecordActivity.class, new Object[][]{{"devId", presenter.getDevId()}, {"chnId", playWndLayout.getSelectedId()}});
+                turnToActivity(DevRecordActivity.class, new Object[][]{{"devId", presenter.getDevId()}, {"chnId", presenter.getChnId()}});
                 break;
             case FUN_CHANGE_STREAM://主副码流切换      The primary stream is clearer and the secondary stream is blurry
                 //如果支持多目镜头变倍切换的，等镜头切换或者变倍后再切换码流
                 if (sensorChangePresenter.getSensorCount() > 0 && sbVideoScale.getVisibility() == VISIBLE) {
-                    MonitorManager monitorManager = presenter.getCurSelMonitorManager(playWndLayout.getSelectedId());
-                    boolean scaleTwo = SPUtil.getInstance(this).getSettingParam(
-                            SUPPORT_SCALE_TWO_LENS + presenter.getDevId(), false);
-                    boolean scaleThree = SPUtil.getInstance(this).getSettingParam(
-                            SUPPORT_SCALE_THREE_LENS + presenter.getDevId(), false);
+                    MonitorManager monitorManager = presenter.getCurSelMonitorManager(presenter.getChnId());
+                    boolean scaleTwo = SPUtil.getInstance(this).getSettingParam(SUPPORT_SCALE_TWO_LENS + presenter.getDevId(), false);
+                    boolean scaleThree = SPUtil.getInstance(this).getSettingParam(SUPPORT_SCALE_THREE_LENS + presenter.getDevId(), false);
 
                     int afterChangeStreamType = monitorManager.getStreamType() == SDKCONST.StreamType.Main ? SDKCONST.StreamType.Extra : SDKCONST.StreamType.Main;
                     //是否支持设备端变倍
                     if (scaleTwo || scaleThree) {
-                        sensorChangePresenter.ctrlVideoScale(presenter.getDevId(), afterChangeStreamType,
-                                sbVideoScale.getProgress(), -1, 1);
+                        sensorChangePresenter.ctrlVideoScale(presenter.getDevId(), afterChangeStreamType, sbVideoScale.getProgress(), -1, 1);
                     } else {
-                        sensorChangePresenter.switchSensor(presenter.getDevId(),
-                                -1, afterChangeStreamType, -1);
+                        sensorChangePresenter.switchSensor(presenter.getDevId(), -1, afterChangeStreamType, -1);
                     }
 
                     isDelayChangeStream = true;
                 } else {
-                    presenter.changeStream(playWndLayout.getSelectedId());
+                    presenter.changeStream(presenter.getChnId());
                 }
                 break;
             case FUN_PRESET://预置点
@@ -1481,7 +1464,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             case FUN_CRUISE://巡航
             {
                 showWaitDialog();
-                presenter.getTour(playWndLayout.getSelectedId());
+                presenter.getTour(presenter.getChnId());
                 break;
             }
             case FUN_LANDSCAPE://全屏
@@ -1489,9 +1472,9 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 break;
             case FUN_FULL_STREAM://满屏显示 视频画面按比例显示
                 if (isSelected) {
-                    presenter.setVideoFullScreen(playWndLayout.getSelectedId(), true);
+                    presenter.setVideoFullScreen(presenter.getChnId(), true);
                 } else {
-                    presenter.setVideoFullScreen(playWndLayout.getSelectedId(), false);
+                    presenter.setVideoFullScreen(presenter.getChnId(), false);
                 }
                 return true;
             case FUN_LAN_ALARM: //局域网报警
@@ -1504,12 +1487,12 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 XMPromptDlg.onShow(this, getString(R.string.not_all_dev_support), new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        presenter.capturePicFromDevAndSave(playWndLayout.getSelectedId());
+                        presenter.capturePicFromDevAndSave(presenter.getChnId());
                     }
                 });
                 break;
             case FUN_DEV_CAPTURE_TO_APP://设备端抓图并回传给APP，但是不会将图片保存到设备本地
-                presenter.capturePicFromDevAndToApp(playWndLayout.getSelectedId());
+                presenter.capturePicFromDevAndToApp(presenter.getChnId());
                 break;
             case FUN_REAL_PLAY://实时预览实时性（局域网IP访问才生效）
                 showWaitDialog();
@@ -1534,7 +1517,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 turnToActivity(DevSimpleConfigActivity.class);
                 break;
             case FUN_VIDEO_ROTATE://视频画面旋转
-                presenter.setVideoFlip(playWndLayout.getSelectedId());
+                presenter.setVideoFlip(presenter.getChnId());
                 break;
             case FUN_FEET://喂食
                 XMPromptDlg.onShowEditDialog(this, getString(R.string.food_portions), "1", new EditDialog.OnEditContentListener() {
@@ -1722,7 +1705,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 turnToActivity(VideoIntercomActivity.class);
                 break;
             case FUN_SHOW_APP_ZOOMING://APP软变倍
-                if (!(presenter.getCurSelMonitorManager(playWndLayout.getSelectedId()).getSurfaceView() instanceof GLSurfaceView20)) {
+                if (!(presenter.getCurSelMonitorManager(presenter.getChnId()).getSurfaceView() instanceof GLSurfaceView20)) {
                     XMPromptDlg.onShow(this, getString(R.string.this_function_only_glsurfaceview), null);
                     break;
                 }
@@ -1733,8 +1716,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                     //推荐真实倍数3倍，显示放大倍数6倍，最好可以整除，显示倍数大于真实倍数
                     int maxTimes = 3;
                     int maxTimesShow = 6;
-                    float scale = SPUtil.getInstance(DevMonitorActivity.this).getSettingParam(LAST_CHANGE_SCALE_TIMES
-                            + presenter.getDevId(), 0f);
+                    float scale = SPUtil.getInstance(DevMonitorActivity.this).getSettingParam(LAST_CHANGE_SCALE_TIMES + presenter.getDevId(), 0f);
                     sbVideoScale.setProgress((int) (scale * sbVideoScale.getSmallSubCount()));
                     sbVideoScale.setSubCount(maxTimesShow - 1);
 
@@ -1751,8 +1733,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                         sensorChangePresenter.setSmallSubCount(5);
                     }
 
-                    new Handler(Looper.getMainLooper()).postDelayed(()
-                            -> presenter.getCurSelMonitorManager(playWndLayout.getSelectedId()).setScale(scale * maxTimes / maxTimesShow + 1f), 500);
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> presenter.getCurSelMonitorManager(playWndLayout.getSelectedId()).setScale(scale * maxTimes / maxTimesShow + 1f), 500);
                 } else {
                     sbVideoScale.setVisibility(View.GONE);
                 }
@@ -1764,6 +1745,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                     presenter.destroyAllMonitor();
 
                     if (isShowAppMoreScreen) {
+                        //2 表示 总共窗口数，1 表示 每行1个窗口，比如（6,2）的话，就是总共6个窗口，每行2个窗口
                         playViews = playWndLayout.setViewCount(2, 1);
                         presenter.initMonitor(0, playViews[0], false);
                         playWndLayout.changeChannel(0);
@@ -1810,7 +1792,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {//横屏
             titleBar.setVisibility(View.GONE);
             rvMonitorFun.setVisibility(View.GONE);
             portraitWidth = wndLayout.getWidth();
@@ -1820,7 +1802,13 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
             wndLayout.requestLayout();
             presenter.setPlayViewTouchable(0, true);
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+            //如果是假多目，横屏的时候需要更改画布
+            if (isShowAppMoreScreen) {
+                playViews = playWndLayout.setViewCount(2, 2);
+                presenter.changePlayView(playViews);
+            }
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {//竖屏
             titleBar.setVisibility(VISIBLE);
             rvMonitorFun.setVisibility(VISIBLE);
             ViewGroup.LayoutParams layoutParams = wndLayout.getLayoutParams();
@@ -1841,6 +1829,12 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
                 }
             }, "OtherFunction", "SupportGunBallTwoSensorPtzLocate");
+
+            //如果是假多目，横屏的时候需要更改画布
+            if (isShowAppMoreScreen) {
+                playViews = playWndLayout.setViewCount(2, 1);
+                presenter.changePlayView(playViews);
+            }
         }
         super.onConfigurationChanged(newConfig);
     }
@@ -2127,7 +2121,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             ptzView.setOnPtzViewListener(new PtzView.OnPtzViewListener() {
                 @Override
                 public void onPtzDirection(int direction, boolean stop) {
-                    presenter.devicePTZControl(playWndLayout.getSelectedId(), direction, 4, stop);
+                    presenter.devicePTZControl(presenter.getChnId(), direction, 4, stop);
                 }
             });
 
@@ -2236,8 +2230,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     };
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    @androidx.annotation.Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             showWaitDialog();

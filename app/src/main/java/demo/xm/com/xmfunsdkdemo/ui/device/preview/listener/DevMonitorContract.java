@@ -4,12 +4,14 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.lib.MsgContent;
 import com.lib.sdk.bean.ElectCapacityBean;
 import com.lib.sdk.bean.SystemFunctionBean;
 import com.lib.sdk.bean.WifiRouteInfo;
 import com.lib.sdk.bean.tour.TourBean;
 import com.manager.device.DeviceManager;
 import com.manager.device.media.MediaManager;
+import com.manager.device.media.attribute.PlayerAttribute;
 import com.manager.device.media.monitor.MonitorManager;
 import com.xm.linke.face.FaceFeature;
 
@@ -37,6 +39,8 @@ public class DevMonitorContract {
         void onGetDevAbilityResult(SystemFunctionBean systemFunctionBean, int errorId);
 
         void onPlayState(int chnId, int state, int errorId);
+
+        void onVideoBufferEnd(PlayerAttribute attribute, MsgContent ex);
 
         void onUpdateFaceFrameView(FaceFeature[] faceFeatures, int width, int height);
 
@@ -474,6 +478,8 @@ public class DevMonitorContract {
          */
         MonitorManager getCurSelMonitorManager(int chnId);
 
+        MonitorManager getMonitorManager(String devId);
+
         /**
          * 分割画面
          *
@@ -485,6 +491,13 @@ public class DevMonitorContract {
          * 合并画面
          */
         void mergeScreen();
+
+        /**
+         * 更改播放布局
+         *
+         * @param playViews 播放布局
+         */
+        void changePlayView(ViewGroup[] playViews);
     }
 }
 

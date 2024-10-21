@@ -26,6 +26,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import demo.xm.com.xmfunsdkdemo.ui.device.config.interdevlinkage.listener.InterDevLinkageContract;
 
+/**
+ * 设备之间联动操作（比如带屏摇头机和门锁之间的联动）
+ */
 public class InterDevLinkagePresenter extends XMBasePresenter implements InterDevLinkageContract.IInterDevLinkagePresenter {
     private DevShadowManager devShadowManager;
     private List<String> needLinkDevList = new ArrayList<>();//需要绑定的设备列表

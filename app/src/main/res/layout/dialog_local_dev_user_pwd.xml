@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:uilib="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:padding="16dp"
+    android:background="@drawable/login_bg">
 
     <TextView
         android:id="@+id/tv_title"
@@ -12,41 +12,58 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/normal_text_size"
         android:text="@string/edit_local_user_password"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:paddingBottom="16dp"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/tv_devid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:paddingBottom="16dp"
+        android:textColor="@color/black"/>
 
     <EditText
         android:id="@+id/et_local_dev_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/normal_padding"/>
+        android:layout_marginTop="@dimen/normal_padding"
+        android:background="@drawable/edit_text_bg"/>
 
     <EditText
         android:id="@+id/et_local_dev_pwd"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:background="@drawable/edit_text_bg"
+        android:layout_marginTop="8dp"/>
 
     <LinearLayout
         android:id="@+id/ll_operation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="24dp">
 
         <Button
             android:id="@+id/btn_ok"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/ok" />
+            android:layout_weight="1"
+            android:text="@string/ok"
+            android:textColor="@color/white"
+            android:background="@drawable/button_selector"
+            android:layout_marginEnd="8dp"/>
 
         <Button
             android:id="@+id/btn_cancel"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/cancel" />
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:textColor="@color/white"
+            android:background="@drawable/button_selector"/>
     </LinearLayout>
 </LinearLayout>
