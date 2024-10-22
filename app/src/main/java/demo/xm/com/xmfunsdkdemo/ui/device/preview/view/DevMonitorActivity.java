@@ -400,7 +400,10 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 }
 
 
-                dealWithVideoScale(presenter.getCurSelMonitorManager(playWndLayout.getSelectedId()).getScale());
+                MonitorManager monitorManager = presenter.getCurSelMonitorManager(playWndLayout.getSelectedId());
+                if (monitorManager != null) {
+                    dealWithVideoScale(monitorManager.getScale());
+                }
                 return false;
             }
 
@@ -1661,6 +1664,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                     case DOUBLE_LIGHT_BOX_CAMERA:
                         turnToActivity(DoubleLightBoxActivity.class);
                         break;
+                    //支持低功耗设备灯光能力 / 支持单品智能警戒
                     case LOW_POWER_WHITE_LIGHT_CAMERA:
                         Intent intent = new Intent(DevMonitorActivity.this, WhiteLightActivity.class);
                         intent.putExtra("devId", presenter.getDevId());
@@ -1668,24 +1672,28 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                         startActivity(intent);
                         break;
 
+                    //支持白光灯
                     case WHITE_LIGHT_CAMERA:
                         Intent whiteLightIntent = new Intent(DevMonitorActivity.this, WhiteLightActivity.class);
                         whiteLightIntent.putExtra("devId", presenter.getDevId());
                         whiteLightIntent.putExtra("supportLightSwitch", true);
                         startActivity(whiteLightIntent);
                         break;
+                    //支持双光
                     case DOUBLE_LIGHT_CAMERA:
                         Intent doubleLightIntent = new Intent(DevMonitorActivity.this, DoubleLightActivity.class);
                         doubleLightIntent.putExtra("devId", presenter.getDevId());
                         doubleLightIntent.putExtra("supportLightSwitch", true);
                         startActivity(doubleLightIntent);
                         break;
+                    //支持音乐灯
                     case MUSIC_LIGHT_CAMERA:
                         Intent musicLightIntent = new Intent(DevMonitorActivity.this, MusicLightActivity.class);
                         musicLightIntent.putExtra("devId", presenter.getDevId());
                         musicLightIntent.putExtra("supportLightSwitch", true);
                         startActivity(musicLightIntent);
                         break;
+                    //支持庭院双光灯
                     case GARDEN_DOUBLE_LIGHT_CAMERA:
                         Intent GardenDoubleLightIntent = new Intent(DevMonitorActivity.this, GardenDoubleLightActivity.class);
                         GardenDoubleLightIntent.putExtra("devId", presenter.getDevId());

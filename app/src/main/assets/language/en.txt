@@ -1623,6 +1623,7 @@ EE_NOT_FOUND=Can't find
 EE_NOT_FOUND_ALARM_INFO=No Alarm Message
 EE_NOT_FOUND_CD=No Cloud Videos
 EE_OBJ_NOT_EXIST=Object does not exist
+EE_OBJ_EXIST=The device already exists
 EE_OBJECT_BUSY=Object busy
 EE_OPEN_FILE=fail to open file
 EE_PARAM_ERROR=Parameter error

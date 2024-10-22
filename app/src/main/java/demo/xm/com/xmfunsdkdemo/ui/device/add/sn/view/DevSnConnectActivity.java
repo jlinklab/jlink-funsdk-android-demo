@@ -27,6 +27,7 @@ import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.utils.XUtils;
 import com.xm.activity.base.XMBaseActivity;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.XTitleBar;
 import com.xm.ui.widget.listselectitem.extra.adapter.ExtraSpinnerAdapter;
@@ -297,7 +298,7 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
 
     @Override
     public void onAddDevResult(boolean isSuccess, int errorId) {
-        String errorMsg = isSuccess ? getString(R.string.add_s) : (getString(R.string.add_f) + "" + errorId);
+        String errorMsg = isSuccess ? getString(R.string.add_s) : ErrorCodeManager.getSDKStrErrorByNO(errorId);
         Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
         if (isSuccess) {
             presenter.setDevId(devSNEdit.getText().toString());
