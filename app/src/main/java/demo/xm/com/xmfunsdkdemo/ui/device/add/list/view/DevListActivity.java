@@ -18,6 +18,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.lib.EFUN_ERROR;
 import com.lib.FunSDK;
 import com.lib.sdk.bean.share.OtherShareDevUserBean;
+import com.manager.account.AccountManager;
+import com.manager.account.BaseAccountManager;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.device.config.PwdErrorManager;
@@ -254,6 +256,7 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
 
     @Override
     public void onItemClick(int position, XMDevInfo xmDevInfo) {
+        //判断是否为分享设备
         if (xmDevInfo.isShareDev()) {
             OtherShareDevUserBean otherShareDevUserBean = xmDevInfo.getOtherShareDevUserBean();
             if (otherShareDevUserBean != null) {
@@ -275,6 +278,7 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
             }
         }
 
+        //判断设备是否在线
         if (xmDevInfo.getDevState() != XMDevInfo.OFF_LINE) {
             if (xmDevInfo.getDevState() == XMDevInfo.SLEEP_UNWAKE) {
                 showToast(getString(R.string.dev_unwake), Toast.LENGTH_LONG);
@@ -299,8 +303,6 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
             presenter.setDevId(xmDevInfo.getDevId());
             turnToActivity(DevShadowConfigActivity.class);
         }
-
-
     }
 
     @Override
@@ -473,6 +475,17 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
     public void onTurnToDevAbility(int position, XMDevInfo xmDevInfo) {
         presenter.setDevId(xmDevInfo.getDevId());
         turnToActivity(XMDevAbilityActivity.class);
+    }
+
+    /**
+     * 从服务器获取设备Token
+     *
+     * @param position
+     * @param xmDevInfo
+     */
+    @Override
+    public void onToGetDevTokenFromServer(int position, XMDevInfo xmDevInfo) {
+        presenter.getDevTokenFromServer(xmDevInfo.getDevId());
     }
 
     @Override

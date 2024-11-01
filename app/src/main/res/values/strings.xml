@@ -941,7 +941,8 @@
     <string name="intelligent_dual_light">Intelligent dual light</string>
     <string name="show_app_zooming">App Zoom</string>
     <string name="app_obj_effect">Multi-Objective Effect in an App</string>
-    <string name="is_open_point_ptz_not_support_this_function">该功能和指哪看哪功能冲突了，请先关闭指哪看哪功能</string>
-    <string name="is_app_more_screen_not_support_this_function">该功能和假多目功能冲突了，请先关闭假多目功能</string>
-    <string name="this_function_only_glsurfaceview">当前播放器不支持APP软变倍</string>
+    <string name="is_open_point_ptz_not_support_this_function">This feature conflicts with the \'Point to See\' function. Please turn off the \'Point to See\' function first.</string>
+    <string name="is_app_more_screen_not_support_this_function">This feature conflicts with the \'Fake Multi-View\' function. Please turn off the \'Fake Multi-View\' function first.</string>
+    <string name="this_function_only_glsurfaceview">The current player does not support APP soft scaling</string>
+    <string name="get_dev_token_from_server">Obtain the latest device token from the server.</string>
 </resources>

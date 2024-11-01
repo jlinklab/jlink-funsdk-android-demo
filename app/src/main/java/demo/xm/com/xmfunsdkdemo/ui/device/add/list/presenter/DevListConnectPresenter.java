@@ -2,8 +2,12 @@ package demo.xm.com.xmfunsdkdemo.ui.device.add.list.presenter;
 
 import android.content.Intent;
 import android.os.Message;
+import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.basic.G;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
@@ -24,6 +28,7 @@ import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
 import com.utils.LogUtils;
 import com.xm.activity.base.XMBasePresenter;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.dialog.XMPromptDlg;
 
 import java.util.ArrayList;
@@ -43,8 +48,6 @@ import static com.manager.account.share.ShareManager.OPERATING.GET_OTHER_SHARE_D
 import static com.manager.account.share.ShareManager.OPERATING.REJECT_SHARE;
 import static com.manager.db.Define.LOGIN_NONE;
 import static com.manager.db.XMDevInfo.OFF_LINE;
-
-import org.json.JSONObject;
 
 /**
  *
@@ -256,15 +259,65 @@ public class DevListConnectPresenter extends XMBasePresenter<AccountManager> imp
         });
     }
 
+    /**
+     * 从服务器获取设备Token
+     *
+     * @param devId
+     */
+    @Override
+    public void getDevTokenFromServer(String devId) {
+        //支持批量获取设备的Token信息
+        AccountManager.getInstance().getDeviceLoginTokenFromServer(new BaseAccountManager.OnDevTokenListener() {
+            @Override
+            public void onUpdateDevToken(boolean isSuccess, int errorId, String resultJson) {
+                if (isSuccess) {
+                    JSONObject jsonObject = JSON.parseObject(resultJson);
+                    if (jsonObject != null && jsonObject.containsKey("data")) {
+                        JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        if (jsonArray != null) {
+                            for (int i = 0; i < jsonArray.size(); ++i) {
+                                JSONObject devInfoObj = (JSONObject) jsonArray.get(i);
+                                if (devInfoObj != null) {
+                                    //设备序列号
+                                    if (devInfoObj.containsKey("uuid")) {
+                                        System.out.println("devId:" + devInfoObj.getString("uuid"));
+                                    }
+
+                                    if (devInfoObj.containsKey("deviceToken")) {
+                                        JSONObject devTokenInfoObj = devInfoObj.getJSONObject("deviceToken");
+                                        if (devTokenInfoObj != null) {
+                                            //获取设备登录Token
+                                            if (devTokenInfoObj.containsKey("AdminToken")) {
+                                                XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo(devId);
+                                                String devLoginToken = devTokenInfoObj.getString("AdminToken");
+                                                //如果设备Token不为空，需要将设备同步给SDK（同步Token的时候 要注意原来的设备登录名和密码保持不变）
+                                                if (!TextUtils.isEmpty(devLoginToken)) {
+                                                    DeviceManager.getInstance().setLocalDevLoginInfo(devId, xmDevInfo.getDevUserName(), xmDevInfo.getDevPassword(), devLoginToken);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    ToastUtils.showLong(iDevListConnectView.getContext().getString(R.string.libfunsdk_operation_success));
+                } else {
+                    ToastUtils.showLong(iDevListConnectView.getContext().getString(R.string.libfunsdk_operation_failed) + ErrorCodeManager.getSDKStrErrorByNO(errorId));
+                }
+            }
+        }, devId);
+    }
+
     @Override
     public void onSuccess(int msgId) {
         if (msgId == EUIMSG.SYS_CHANGEDEVINFO) {
             XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo(getDevId());
             String devName = xmDevInfo.getDevName();
             Intent intent = new Intent(iDevListConnectView.getContext(), DevPushService.class);
-            intent.putExtra("devId",getDevId());
-            intent.putExtra("isUpdateDevName",true);
-            intent.putExtra("devName",devName);
+            intent.putExtra("devId", getDevId());
+            intent.putExtra("isUpdateDevName", true);
+            intent.putExtra("devName", devName);
             iDevListConnectView.getContext().startService(intent);
 
             if (iDevListConnectView != null) {
@@ -304,12 +357,13 @@ public class DevListConnectPresenter extends XMBasePresenter<AccountManager> imp
     /**
      * 单个设备状态获取回调
      * Callback for retrieving the status of a single device
+     *
      * @param devId
      */
     @Override
     public void onUpdateDevState(String devId) {//UpdateAllDevStateFromServer callback
 
-        System.out.println("onUpdateDevState:" + devId +"[" + AccountManager.getInstance().getDevState(devId) + "]");
+        System.out.println("onUpdateDevState:" + devId + "[" + AccountManager.getInstance().getDevState(devId) + "]");
     }
 
     /**
@@ -318,7 +372,7 @@ public class DevListConnectPresenter extends XMBasePresenter<AccountManager> imp
      */
     @Override
     public void onUpdateCompleted() {      //UpdateAllDevStateFromServer callback
-        LogUtils.debugInfo("onUpdateCompleted","onUpdateCompleted");
+        LogUtils.debugInfo("onUpdateCompleted", "onUpdateCompleted");
         if (iDevListConnectView != null) {
             iDevListConnectView.onUpdateDevStateResult(true);
         }

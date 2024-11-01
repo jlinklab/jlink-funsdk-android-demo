@@ -943,4 +943,5 @@
     <string name="is_open_point_ptz_not_support_this_function">该功能和指哪看哪功能冲突了，请先关闭指哪看哪功能</string>
     <string name="is_app_more_screen_not_support_this_function">该功能和假多目功能冲突了，请先关闭假多目功能</string>
     <string name="this_function_only_glsurfaceview">当前播放器不支持APP软变倍</string>
+    <string name="get_dev_token_from_server">从服务器获取设备最新Token</string>
 </resources>

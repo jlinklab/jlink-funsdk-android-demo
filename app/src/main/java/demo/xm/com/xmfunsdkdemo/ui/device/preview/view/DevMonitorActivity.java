@@ -248,7 +248,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     //巡航
     private static final int FUN_CRUISE = 26;
 
-    //联系家人
+    //联系家人(视频通话)
     //Contact family
     private static final int FUN_CONTACT_FAMILY = 27;
 
@@ -803,7 +803,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
             hashMap = new HashMap<>();
             hashMap.put("itemId", 27);
-            hashMap.put("itemName", "联系家人");
+            hashMap.put("itemName", "联系家人(视频通话)");
             monitorFunList.add(hashMap);
 
             //将设备是否支持双目或者三目设备端变倍能力保存到本地
@@ -1522,8 +1522,8 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             case FUN_VIDEO_ROTATE://视频画面旋转
                 presenter.setVideoFlip(presenter.getChnId());
                 break;
-            case FUN_FEET://喂食
-                XMPromptDlg.onShowEditDialog(this, getString(R.string.food_portions), "1", new EditDialog.OnEditContentListener() {
+            case FUN_FEET://喂食，默认喂食3份
+                XMPromptDlg.onShowEditDialog(this, getString(R.string.food_portions), "3", new EditDialog.OnEditContentListener() {
                     @Override
                     public void onResult(String content) {
                         if (StringUtils.isStringNULL(content)) {
@@ -1709,7 +1709,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             case FUN_DETECT_TRACK://移动追踪
                 turnToActivity(DetectTrackActivity.class);
                 break;
-            case FUN_CONTACT_FAMILY://联系家人
+            case FUN_CONTACT_FAMILY://联系家人(视频通话)
                 turnToActivity(VideoIntercomActivity.class);
                 break;
             case FUN_SHOW_APP_ZOOMING://APP软变倍

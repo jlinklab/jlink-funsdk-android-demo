@@ -127,16 +127,16 @@
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
                 android:text="@string/wake_up_master"
+                android:visibility="gone"
                 app:no_press_solid="@color/white"
-                app:pressed_solid="#FCF0E5"
-                android:visibility="gone"/>
+                app:pressed_solid="#FCF0E5" />
 
             <!--Ping-->
             <com.xm.ui.widget.BtnColorBK
-                android:layout_marginRight="3dp"
                 android:id="@+id/btn_ping"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
                 android:layout_weight="1"
                 android:text="Ping"
                 app:no_press_solid="@color/white"
@@ -162,6 +162,18 @@
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
                 android:text="@string/dev_ability"
+                android:visibility="visible"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
+
+            <!--从服务器获取设备Token-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_update_dev_token"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/get_dev_token_from_server"
                 android:visibility="visible"
                 app:no_press_solid="@color/white"
                 app:pressed_solid="#FCF0E5" />

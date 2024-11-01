@@ -45,11 +45,13 @@ import java.util.Calendar;
 import java.util.List;
 
 import demo.xm.com.xmfunsdkdemo.R;
+import demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
 import demo.xm.com.xmfunsdkdemo.ui.adapter.SliderAdapter;
 import demo.xm.com.xmfunsdkdemo.ui.device.alarm.listener.DevAlarmContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.alarm.presenter.DevAlarmPresenter;
 import demo.xm.com.xmfunsdkdemo.ui.device.record.view.DevRecordActivity;
+import demo.xm.com.xmfunsdkdemo.ui.entity.AlarmTranslationIconBean;
 import io.reactivex.annotations.Nullable;
 
 /**
@@ -72,7 +74,7 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
     private void initView() {
         titleBar = findViewById(R.id.layoutTop);
         titleBar.setTitleText(getString(R.string.guide_module_title_device_alarm));
-        titleBar.setRightBtnResource(R.mipmap.ic_more,R.mipmap.ic_more);
+        titleBar.setRightBtnResource(R.mipmap.ic_more, R.mipmap.ic_more);
         titleBar.setLeftClick(this);
         recyclerView = findViewById(R.id.rv_alarm_info);
         titleBar.setBottomTip(getClass().getName());
@@ -94,6 +96,7 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
     }
 
     Dialog calendarDlg;
+
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
         MenuInflater inflater = popupMenu.getMenuInflater();
@@ -112,9 +115,9 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
                             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                                 showWaitDialog();
                                 Calendar calendar = Calendar.getInstance();
-                                calendar.set(Calendar.YEAR,year);
-                                calendar.set(Calendar.MONTH,month);
-                                calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                                calendar.set(Calendar.YEAR, year);
+                                calendar.set(Calendar.MONTH, month);
+                                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                                 presenter.setSearchTime(calendar);
                                 presenter.searchAlarmMsg();
                                 if (calendarDlg != null) {
@@ -122,7 +125,7 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
                                 }
                             }
                         });
-                        calendarDlg = XMPromptDlg.onShow(DevAlarmMsgActivity.this,calendarView);
+                        calendarDlg = XMPromptDlg.onShow(DevAlarmMsgActivity.this, calendarView);
                         return true;
                     case R.id.menu_item2:
                         //删除所有消息
@@ -171,9 +174,9 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
     @Override
     public void onTurnToVideo(Calendar searchTime) {
         Intent intent = new Intent(this, DevRecordActivity.class);
-        intent.putExtra("devId",presenter.getDevId());
-        intent.putExtra("searchTime",searchTime.getTime().getTime());
-        intent.putExtra("recordType",PLAY_CLOUD_PLAYBACK);
+        intent.putExtra("devId", presenter.getDevId());
+        intent.putExtra("searchTime", searchTime.getTime().getTime());
+        intent.putExtra("recordType", PLAY_CLOUD_PLAYBACK);
         startActivity(intent);
     }
 
@@ -219,7 +222,14 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
                  *     public final static String TYPE_NET_IP_CONFLICT ="NetIPConflict";//IP冲突
                  *     public final static String TYPE_SPEED_ALARM = "SpeedAlarm";//速度报警
                  */
-                holder.lisAlarmMsg.setTitle(alarmInfo.getEvent());
+
+                //该翻译仅供参考，可以根据自己的需求来随意改动
+                Object afterTranslation = ((SDKDemoApplication) getApplication()).getAlarmTranslationIconBean().getLanguageInfo().get("ZH").get(alarmInfo.getEvent());
+                if (afterTranslation instanceof AlarmTranslationIconBean.AlarmLanIconInfo) {
+                    holder.lisAlarmMsg.setTitle(((AlarmTranslationIconBean.AlarmLanIconInfo) afterTranslation).getTl());
+                } else {
+                    holder.lisAlarmMsg.setTitle(alarmInfo.getEvent());
+                }
                 holder.lisAlarmMsg.setTip(alarmInfo.getStartTime());
                 holder.lisAlarmMsg.setTag(position);
                 holder.lisAlarmMsg.getImageLeft().setImageBitmap(null);
@@ -229,7 +239,7 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
                     //加载并显示缩略图
                     if (!StringUtils.isStringNULL(alarmInfo.getPic())) {
                         Glide.with(holder.lisAlarmMsg).load(alarmInfo.getPic()).into(holder.lisAlarmMsg.getImageLeft());
-                    }else {
+                    } else {
                         presenter.loadThumb(position, new BaseImageManager.OnImageManagerListener() {
                             @Override
                             public void onDownloadResult(boolean isSuccess, String imagePath, Bitmap bitmap, int mediaType, int seq) {
@@ -248,7 +258,7 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
                         });
                     }
 
-                    holder.btnPicture.setVisibility (View.VISIBLE);
+                    holder.btnPicture.setVisibility(View.VISIBLE);
                 } else {
                     holder.btnPicture.setVisibility(View.GONE);
                 }
@@ -277,8 +287,6 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
                 btnPicture.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showWaitDialog();
-//                        presenter.showPicture(getAdapterPosition());
                         SliderView sliderView = new SliderView(DevAlarmMsgActivity.this);
                         sliderView.setInfiniteAdapterEnabled(false);
                         AlarmInfo alarmInfo = presenter.getAlarmInfo(getAdapterPosition());
@@ -293,9 +301,7 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
                         sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
                         sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
                         sliderView.setAutoCycle(false);
-                        XMPromptDlg.onShow(DevAlarmMsgActivity.this, sliderView,
-                                (int) (DevAlarmMsgActivity.this.screenWidth * 0.6),
-                                (int)  (DevAlarmMsgActivity.this.screenHeight * 0.6),true,null);
+                        XMPromptDlg.onShow(DevAlarmMsgActivity.this, sliderView, (int) (DevAlarmMsgActivity.this.screenWidth * 0.6), (int) (DevAlarmMsgActivity.this.screenHeight * 0.6), true, null);
                     }
                 });
 
