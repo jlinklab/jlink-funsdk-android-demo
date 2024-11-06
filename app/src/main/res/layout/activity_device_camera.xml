@@ -21,8 +21,9 @@
             android:id="@+id/layoutPlayWnd"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            uilib:NormalFrameBg="@drawable/wnd_margin_normal"
+            uilib:SelectedFrameBg="@drawable/wnd_margin_normal"
             android:background="@color/wnd_cover_gray" />
-
         <LinearLayout
             android:id="@+id/ll_dev_state"
             android:layout_width="match_parent"
@@ -50,6 +51,22 @@
                 android:textColor="@color/white"
                 android:visibility="gone"/>
         </LinearLayout>
+
+        <!--多目Sensor切换-->
+        <com.xm.ui.widget.XMScaleSeekBar
+            android:id="@+id/sb_video_scale"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:itemBackground="@color/default_normal_text_color"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:progress="0"
+            android:visibility="gone"
+            uilib:subCount="7"
+            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
 

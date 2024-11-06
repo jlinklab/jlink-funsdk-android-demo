@@ -20,7 +20,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.config.interdevlinkage.listener.InterD
 import demo.xm.com.xmfunsdkdemo.ui.device.config.interdevlinkage.presenter.InterDevLinkagePresenter;
 
 /**
- * 设备之间联动操作
+ * 设备之间联动操作（比如带屏摇头机和门锁之间的联动）
  */
 public class InterDevLinkageActivity extends DemoBaseActivity<InterDevLinkagePresenter>
         implements ItemSetAdapter.OnItemSetClickListener, InterDevLinkageContract.IInterDevLinkageView {

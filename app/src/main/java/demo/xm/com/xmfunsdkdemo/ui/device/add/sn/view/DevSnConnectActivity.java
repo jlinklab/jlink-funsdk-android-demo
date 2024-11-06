@@ -27,6 +27,7 @@ import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.utils.XUtils;
 import com.xm.activity.base.XMBaseActivity;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.XTitleBar;
 import com.xm.ui.widget.listselectitem.extra.adapter.ExtraSpinnerAdapter;
@@ -72,6 +73,7 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
     private EditText devPidEdit;
     private final FunDevType[] devTypesSupport = {FunDevType.EE_DEV_NORMAL_MONITOR, FunDevType.EE_DEV_INTELLIGENTSOCKET, FunDevType.EE_DEV_SMALLEYE};
     private int devType;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,7 +183,7 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
                         devLoginNameEdit.getText().toString().trim(),
                         devLoginPasswdEdit.getText().toString().trim(),
                         devLoginTokenEdit.getText().toString().trim(),
-                        (Integer) spDevType.getSelectedValue(),devPidEdit.getText().toString());
+                        (Integer) spDevType.getSelectedValue(), devPidEdit.getText().toString());
             }
             break;
             case R.id.devLoginBtnIP: {
@@ -204,16 +206,19 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
             if (null != data) {
                 String result = data.getStringExtra("result");
                 if (XUtils.isSn(result)) {
+                    //设备序列号
                     if (null != devSNEdit) {
                         devSNEdit.setText(result);
                     }
                 } else if (result.startsWith("sn:")) {
                     String[] devInfos = result.split(";");
 
+                    //设备序列号
                     if (null != devSNEdit) {
                         devSNEdit.setText(devInfos[0].split(":")[1]);
                     }
 
+                    //设备登录Token
                     if (null != devLoginTokenEdit) {
                         devLoginTokenEdit.setText(devInfos[1].split(":")[1]);
                     }
@@ -265,7 +270,7 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
                                     }
                                 });
                             }
-                        }else {
+                        } else {
                             String[] splitResults = result.split(",");
                             if (splitResults != null && splitResults.length >= 4) {
                                 if (null != devSNEdit) {
@@ -273,9 +278,10 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
                                 }
 
                                 if (XUtils.isInteger(splitResults[3])) {
+                                    //解析二维码中的设备类型
                                     int devType = Integer.parseInt(splitResults[3]);
                                     if (DevDataCenter.getInstance().isLowPowerDev(devType)) {
-                                        spDevType.setValue(21);
+                                        spDevType.setValue(21);//低功耗设备
                                         lsiDevType.setRightText(spDevType.getSelectedName());
                                     }
                                 }
@@ -292,7 +298,7 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
 
     @Override
     public void onAddDevResult(boolean isSuccess, int errorId) {
-        String errorMsg = isSuccess ? getString(R.string.add_s) : (getString(R.string.add_f) + "" + errorId);
+        String errorMsg = isSuccess ? getString(R.string.add_s) : ErrorCodeManager.getSDKStrErrorByNO(errorId);
         Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
         if (isSuccess) {
             presenter.setDevId(devSNEdit.getText().toString());

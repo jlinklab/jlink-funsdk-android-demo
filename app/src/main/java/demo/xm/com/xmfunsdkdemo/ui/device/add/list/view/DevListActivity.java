@@ -18,6 +18,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.lib.EFUN_ERROR;
 import com.lib.FunSDK;
 import com.lib.sdk.bean.share.OtherShareDevUserBean;
+import com.manager.account.AccountManager;
+import com.manager.account.BaseAccountManager;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.device.config.PwdErrorManager;
@@ -230,10 +232,10 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
                                 presenter.getChannelList();
                             }
                         }, false);
-            }  else if (resultId == EFUN_ERROR.EE_DVR_LOGIN_USER_NOEXIST) {
+            } else if (resultId == EFUN_ERROR.EE_DVR_LOGIN_USER_NOEXIST) {
                 XMDevInfo devInfo = DevDataCenter.getInstance().getDevInfo(presenter.getDevId());
                 XMPromptDlg.onShowPasswordErrorDialog(this, devInfo.getSdbDevInfo(),
-                        0,getString(R.string.input_username_password),INPUT_TYPE_DEV_USER_PWD, true,new PwdErrorManager.OnRepeatSendMsgListener() {
+                        0, getString(R.string.input_username_password), INPUT_TYPE_DEV_USER_PWD, true, new PwdErrorManager.OnRepeatSendMsgListener() {
                             @Override
                             public void onSendMsg(int msgId) {
                                 showWaitDialog();
@@ -254,6 +256,7 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
 
     @Override
     public void onItemClick(int position, XMDevInfo xmDevInfo) {
+        //判断是否为分享设备
         if (xmDevInfo.isShareDev()) {
             OtherShareDevUserBean otherShareDevUserBean = xmDevInfo.getOtherShareDevUserBean();
             if (otherShareDevUserBean != null) {
@@ -275,6 +278,7 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
             }
         }
 
+        //判断设备是否在线
         if (xmDevInfo.getDevState() != XMDevInfo.OFF_LINE) {
             if (xmDevInfo.getDevState() == XMDevInfo.SLEEP_UNWAKE) {
                 showToast(getString(R.string.dev_unwake), Toast.LENGTH_LONG);
@@ -299,8 +303,6 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
             presenter.setDevId(xmDevInfo.getDevId());
             turnToActivity(DevShadowConfigActivity.class);
         }
-
-
     }
 
     @Override
@@ -354,6 +356,12 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
         turnToActivity(DevPushActivity.class);
     }
 
+    /**
+     * 修改设备名
+     *
+     * @param position
+     * @param xmDevInfo
+     */
     @Override
     public void onModifyDevName(int position, XMDevInfo xmDevInfo) {
         XMPromptDlg.onShowEditDialog(this, getString(R.string.modify_dev_name), xmDevInfo.getDevName(), new EditDialog.OnEditContentListener() {
@@ -364,6 +372,12 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
         });
     }
 
+    /**
+     * 分享管理
+     *
+     * @param position
+     * @param xmDevInfo
+     */
     @Override
     public void onShareDevManage(int position, XMDevInfo xmDevInfo) {
         presenter.setDevId(xmDevInfo.getDevId());
@@ -387,7 +401,7 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
         etDevPwd.setText(xmDevInfo.getDevPassword());
 
         Dialog dialog = XMPromptDlg.onShow(this, layout,
-                (int) (XUtils.getScreenWidth(this) * 0.8), (int) (XUtils.getScreenHeight(this) * 0.6), false, null);
+                (int) (XUtils.getScreenWidth(this) * 0.8), 0, false, null);
 
         dialog.show();
 
@@ -453,6 +467,7 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
 
     /**
      * 跳转到设备能力集页面
+     *
      * @param position
      * @param xmDevInfo
      */
@@ -462,9 +477,20 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
         turnToActivity(XMDevAbilityActivity.class);
     }
 
+    /**
+     * 从服务器获取设备Token
+     *
+     * @param position
+     * @param xmDevInfo
+     */
+    @Override
+    public void onToGetDevTokenFromServer(int position, XMDevInfo xmDevInfo) {
+        presenter.getDevTokenFromServer(xmDevInfo.getDevId());
+    }
+
     @Override
     public void onPingTest(int position, XMDevInfo xmDevInfo) {
-        turnToActivity(DevSimpleConfigActivity.class, new Object[][]{{"devId", xmDevInfo.getDevId()},{"jsonName", "Ping"}, {"configName", "Ping"}, {"cmdId", 1052},{"jsonData","{\n" +
+        turnToActivity(DevSimpleConfigActivity.class, new Object[][]{{"devId", xmDevInfo.getDevId()}, {"jsonName", "Ping"}, {"configName", "Ping"}, {"cmdId", 1052}, {"jsonData", "{\n" +
                 "    \"Ping\": {\n" +
                 "        \"URL\": \"\",\n" +
                 "        \"Num\": 10,\n" +

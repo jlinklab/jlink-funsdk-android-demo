@@ -97,5 +97,12 @@ public class DevListConnectContract {
          * 唤醒设备（包括主控）
          */
         void wakeUpDev(int position, String devId);
+
+        /**
+         * 从服务器获取设备Token
+         *
+         * @param devId
+         */
+        void getDevTokenFromServer(String devId);
     }
 }

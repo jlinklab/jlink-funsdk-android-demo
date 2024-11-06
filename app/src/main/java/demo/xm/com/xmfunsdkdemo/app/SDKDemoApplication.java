@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import demo.xm.com.xmfunsdkdemo.base.DemoConstant;
+import demo.xm.com.xmfunsdkdemo.ui.entity.AlarmTranslationIconBean;
 
 /**
  * created by hws 2018-10-27 14:36
@@ -46,7 +47,7 @@ public class SDKDemoApplication extends Application {
     public static String PATH_ORIGINAL_TALK_DATA;
     private LinkedHashMap<String, Activity> actMap;
     private XMFunSDKManager xmFunSDKManager;
-
+    private AlarmTranslationIconBean alarmTranslationIconBean;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -336,5 +337,13 @@ public class SDKDemoApplication extends Application {
                 act.finish();
             }
         }
+    }
+
+    public AlarmTranslationIconBean getAlarmTranslationIconBean() {
+        return alarmTranslationIconBean;
+    }
+
+    public void setAlarmTranslationIconBean(AlarmTranslationIconBean alarmTranslationIconBean) {
+        this.alarmTranslationIconBean = alarmTranslationIconBean;
     }
 }

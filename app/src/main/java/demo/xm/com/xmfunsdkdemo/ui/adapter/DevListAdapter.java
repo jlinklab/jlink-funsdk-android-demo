@@ -48,13 +48,13 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
     private HashMap<String, Bundle> isSupportInterDevLink = new HashMap<>();//缓存是否支持设备之间联动
     private DevStateNotifyMqttManager devStateNotifyManager;
     public static final String[] DEV_STATE = new String[]{
-            FunSDK.TS("Offline"),
-            FunSDK.TS("Online"),
-            FunSDK.TS("Sleep"),
-            FunSDK.TS("WakeUp"),
-            FunSDK.TS("Wake"),
-            FunSDK.TS("Not awakened"),
-            FunSDK.TS("Ready to sleep")
+            FunSDK.TS("Offline"),//离线
+            FunSDK.TS("Online"),//在线
+            FunSDK.TS("Sleep"),//休眠
+            FunSDK.TS("WakeUp"),//唤醒中
+            FunSDK.TS("Wake"),//已唤醒
+            FunSDK.TS("Not awakened"),//不可唤醒
+            FunSDK.TS("Ready to sleep")//准备休眠中
     };
 
     public DevListAdapter(Application application, RecyclerView recyclerView, ArrayList<HashMap<String, Object>> data, OnItemDevClickListener ls) {
@@ -67,6 +67,10 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         DevShadowManager.getInstance().addDevShadowListener(onDevShadowManagerListener);
     }
 
+
+    /**
+     * 影子服务配置
+     */
     private OnDevShadowManagerListener onDevShadowManagerListener = new OnDevShadowManagerListener() {
         @Override
         public void onDevShadowConfigResult(String devId, String configData, int errorId) {
@@ -82,16 +86,21 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
                     boolean isBind = false;
                     if (jsonObject != null) {
                         if (jsonObject.containsKey("BindAttr")) {
+                            //自身绑定属性
+                            //0：无  1：主设备（摇头机）2：从设备（门锁）
                             otherDevBindAttr = jsonObject.getInteger("BindAttr");
                         }
 
                         if (jsonObject.containsKey("BindList")) {
+                            //绑定设备列表
                             JSONArray jsonArray = jsonObject.getJSONArray("BindList");
                             if (jsonArray != null && jsonArray.size() > 0) {
                                 jsonObject = jsonArray.getJSONObject(0);
                                 if (jsonObject != null && jsonObject.containsKey("SN")) {
-                                    linkSn = jsonObject.getString("SN");
-                                    linkPin = jsonObject.getString("PIN");
+                                    linkSn = jsonObject.getString("SN");//发给摇头机时：门锁序列号前十二位 发给门锁时：摇头机序列号前十二位
+                                    linkPin = jsonObject.getString("PIN");//六位PIN码
+
+                                    //如果linkSn不是NoBound就表示已经被关联了
                                     if (!StringUtils.isStringNULL(linkSn) && !StringUtils.contrast(linkSn, "NoBound")) {
                                         isBind = true;
                                     }
@@ -229,6 +238,7 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         Button btnSdPlayback;//SD卡录像回放 SD Playback
         Button btnInterDevLinkage;//门锁和其他摇头机之间的联动，该功能通过影子服务来判断是否支持 "The linkage between the door lock and other pan-tilt cameras is determined by the shadow service to ascertain its support."
         Button btnDevAbility;//设备能力集
+        Button btnUpdateDevToken;//更新设备Token
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -266,6 +276,7 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
                 }
             });
 
+            //该功能只有JF账号登录后才会显示
             btnTurnToAlarmMsg.setVisibility(DevDataCenter.getInstance().isLoginByAccount() ? View.VISIBLE : View.GONE);
 
             btnTurnToPushSet = itemView.findViewById(R.id.btn_turn_to_push_set);
@@ -388,6 +399,22 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
                     }
                 }
             });
+
+            //从服务器端获取设备最新Token
+            //Obtain the latest device token from the server
+            btnUpdateDevToken = itemView.findViewById(R.id.btn_update_dev_token);
+            btnUpdateDevToken.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo((String) data.get(getAdapterPosition()).get("devId"));
+                    if (onItemDevClickListener != null) {
+                        onItemDevClickListener.onToGetDevTokenFromServer(getAdapterPosition(), xmDevInfo);
+                    }
+                }
+            });
+
+            //该功能只有JF账号登录后才会显示
+            btnUpdateDevToken.setVisibility(DevDataCenter.getInstance().isLoginByAccount() ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -536,5 +563,13 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
          * @param xmDevInfo
          */
         void onTurnToDevAbility(int position, XMDevInfo xmDevInfo);
+
+        /**
+         * 从服务器获取设备Token
+         *
+         * @param position
+         * @param xmDevInfo
+         */
+        void onToGetDevTokenFromServer(int position, XMDevInfo xmDevInfo);
     }
 }

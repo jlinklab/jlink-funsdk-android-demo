@@ -12,14 +12,21 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.basic.G;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.lib.Mps.SMCInitInfo;
 import com.lib.MsgContent;
 import com.lib.SDKCONST;
 import com.lib.sdk.bean.StringUtils;
+import com.lib.sdk.bean.alarm.AlarmGroup;
 import com.lib.sdk.bean.alarm.AlarmInfo;
 import com.manager.account.XMAccountManager;
 import com.manager.db.DevDataCenter;
+import com.manager.device.alarm.DevAlarmInfoManager;
 import com.manager.image.BaseImageManager;
 import com.manager.image.CloudImageManager;
 import com.manager.push.XMPushManager;
@@ -37,15 +44,23 @@ import static com.manager.push.XMPushManager.TYPE_REMOTE_CALL_ALARM;
 import static demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication.PATH_PHOTO;
 import static demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication.PATH_PHOTO_TEMP;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import demo.xm.com.xmfunsdkdemo.R;
+import demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication;
+import demo.xm.com.xmfunsdkdemo.ui.entity.AlarmTranslationIconBean;
 
 /**
  * @author hws
  * @class
  * @time 2020/8/13 18:53
  */
-public class DevPushService extends Service {
+public class DevPushService extends Service implements DevAlarmInfoManager.OnAlarmInfoListener {
     private XMPushManager xmPushManager;
+    private DevAlarmInfoManager devAlarmInfoManager;
 
     @Nullable
     @Override
@@ -58,6 +73,7 @@ public class DevPushService extends Service {
         super.onCreate();
         if (DevDataCenter.getInstance().isLoginByAccount()) {
             initPush();
+            initAlarmInfo();
             Toast.makeText(getApplicationContext(), R.string.start_push_service, Toast.LENGTH_LONG).show();
         } else {
             stopSelf();
@@ -65,6 +81,9 @@ public class DevPushService extends Service {
         }
     }
 
+    /**
+     * 初始化推送
+     */
     private void initPush() {
         xmPushManager = new XMPushManager(xmPushLinkResult);
         String pushToken = XUtils.getPushToken(this);
@@ -75,6 +94,28 @@ public class DevPushService extends Service {
             G.SetValue(info.st_2_token, pushToken);
             xmPushManager.initFunSDKPush(this, info, PUSH_TYPE_XM);
         }
+    }
+
+    /**
+     * 获取报警消息翻译内容和图标
+     */
+    private void initAlarmInfo() {
+        // 使用Map直接传参
+        Map<String, Object> dataMap = new HashMap<>();
+
+        // 添加参数到Map
+        dataMap.put("msg", "get_translate_icon");
+        dataMap.put("timeout", 8000);
+
+
+        ArrayList ltList = new ArrayList();
+        ltList.add("ZH");
+        dataMap.put("app", XUtils.getPackageName(this));
+        dataMap.put("st", "AND");
+        dataMap.put("appvs", XUtils.getVersion(this));
+        dataMap.put("lt", ltList);
+        devAlarmInfoManager = new DevAlarmInfoManager(this);
+        devAlarmInfoManager.getAlarmMsgTranslationAndIcon(new Gson().toJson(dataMap), 0);
     }
 
     /**
@@ -180,7 +221,7 @@ public class DevPushService extends Service {
             Intent intent = new Intent(DevPushService.this, DevIncomingCallActivity.class);
             intent.putExtra("devId", devId);
             intent.putExtra("alarmTime", alarmInfo.getStartTime());
-            intent.putExtra("alarm_msg_type",alarmInfo.getMsgType());
+            intent.putExtra("alarm_msg_type", alarmInfo.getMsgType());
             intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
@@ -211,6 +252,46 @@ public class DevPushService extends Service {
                 }
             default:
                 return false;
+        }
+    }
+
+    @Override
+    public void onSearchResult(List<AlarmGroup> list) {
+
+    }
+
+    @Override
+    public void onDeleteResult(boolean isSuccess, Message msg, MsgContent ex, List<AlarmInfo> deleteAlarmInfos) {
+
+    }
+
+    @Override
+    public void onAlarmMsgTranslationAndIconResult(boolean isSuccess, Message msg, MsgContent ex, String resultJson) {
+        System.out.println("resultJson:" + resultJson);
+        AlarmTranslationIconBean alarmTranslationIconBean = new AlarmTranslationIconBean();
+        ((SDKDemoApplication) getApplication()).setAlarmTranslationIconBean(alarmTranslationIconBean);
+        JSONObject jsonObject = JSON.parseObject(resultJson);
+        if (jsonObject != null && jsonObject.containsKey("ifs")) {
+            JSONObject ifsObj = jsonObject.getJSONObject("ifs");
+            if (ifsObj != null) {
+                for (Map.Entry entry : ifsObj.entrySet()) {
+                    HashMap<String, AlarmTranslationIconBean.AlarmLanIconInfo> alarmLanIconInfoHashMap = new HashMap<>();
+                    JSONArray list = (JSONArray) entry.getValue();
+                    String lanKey = (String) entry.getKey();
+                    for (int i = 0; i < list.size(); ++i) {
+
+                        AlarmTranslationIconBean.AlarmLanIconInfo alarmLanIconInfo = new AlarmTranslationIconBean.AlarmLanIconInfo();
+                        JSONObject obj = (JSONObject) list.get(i);
+                        String eventKey = obj.getString("et");
+                        alarmLanIconInfo.setEt(obj.getString("et"));
+                        alarmLanIconInfo.setTl(obj.getString("tl"));
+                        alarmLanIconInfo.setUrl(obj.getString("url"));
+                        alarmLanIconInfoHashMap.put(eventKey, alarmLanIconInfo);
+                    }
+
+                    alarmTranslationIconBean.getLanguageInfo().put(lanKey, alarmLanIconInfoHashMap);
+                }
+            }
         }
     }
 }
