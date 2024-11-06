@@ -319,7 +319,12 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     private void initPlayWnd() {
         //窗口个数按照1、4、9、16...整数的平方规则来设置，如果不是可开平方的数，例如： 5，那么要传两个参数，第一个参数是5，第二个是每行显示的窗口数，（5,2）就表示 每行是2个，总共3行
         //"The number of windows is set according to the rule of integer squares, such as 1, 4, 9, 16..."
-        int wndCount = chnCount;
+        int wndCount = (int) Math.sqrt(chnCount);
+        if (wndCount < Math.sqrt(chnCount)) {
+            wndCount = (int) (Math.pow(wndCount + 1, 2));
+        } else {
+            wndCount = (int) Math.pow(wndCount, 2);
+        }
         playViews = playWndLayout.setViewCount(wndCount);
         playWndLayout.setOnMultiWndListener(new MultiWinLayout.OnMultiWndListener() {
             @Override
@@ -345,7 +350,15 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             }
 
             @Override
-            public boolean onSelectedWnd(int i, MotionEvent motionEvent, boolean b) {
+            public boolean onSelectedWnd(int i, MotionEvent motionEvent, boolean isSelected) {
+                //如果当前是假多目模式，默认是通道0
+                if (isShowAppMoreScreen) {
+                    presenter.setChnId(0);
+                } else {
+                    if (isSelected) {
+                        presenter.setChnId(i);
+                    }
+                }
                 return false;
             }
 
@@ -1443,7 +1456,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 break;
             case FUN_CHANGE_STREAM://主副码流切换      The primary stream is clearer and the secondary stream is blurry
                 //如果支持多目镜头变倍切换的，等镜头切换或者变倍后再切换码流
-                if (sensorChangePresenter.getSensorCount() > 0 && sbVideoScale.getVisibility() == VISIBLE) {
+                if (sensorChangePresenter.getSensorCount() > 1 && sbVideoScale.getVisibility() == VISIBLE) {
                     MonitorManager monitorManager = presenter.getCurSelMonitorManager(presenter.getChnId());
                     boolean scaleTwo = SPUtil.getInstance(this).getSettingParam(SUPPORT_SCALE_TWO_LENS + presenter.getDevId(), false);
                     boolean scaleThree = SPUtil.getInstance(this).getSettingParam(SUPPORT_SCALE_THREE_LENS + presenter.getDevId(), false);

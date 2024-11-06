@@ -21,6 +21,8 @@
             android:id="@+id/layoutPlayWnd"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            uilib:NormalFrameBg="@drawable/wnd_margin_normal"
+            uilib:SelectedFrameBg="@drawable/wnd_margin_normal"
             android:background="@color/wnd_cover_gray" />
         <LinearLayout
             android:id="@+id/ll_dev_state"

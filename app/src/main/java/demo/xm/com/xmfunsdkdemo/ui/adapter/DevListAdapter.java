@@ -276,6 +276,7 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
                 }
             });
 
+            //该功能只有JF账号登录后才会显示
             btnTurnToAlarmMsg.setVisibility(DevDataCenter.getInstance().isLoginByAccount() ? View.VISIBLE : View.GONE);
 
             btnTurnToPushSet = itemView.findViewById(R.id.btn_turn_to_push_set);
@@ -411,6 +412,9 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
                     }
                 }
             });
+
+            //该功能只有JF账号登录后才会显示
+            btnUpdateDevToken.setVisibility(DevDataCenter.getInstance().isLoginByAccount() ? View.VISIBLE : View.GONE);
         }
     }
 
