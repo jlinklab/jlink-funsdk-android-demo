@@ -12,6 +12,7 @@ import android.net.wifi.ScanResult;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -38,6 +39,7 @@ import com.xm.ui.widget.XTitleBar;
 
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
+import demo.xm.com.xmfunsdkdemo.base.DemoConstant;
 import demo.xm.com.xmfunsdkdemo.ui.activity.MainActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.list.view.ChannelListActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.list.view.DevListActivity;
@@ -164,7 +166,16 @@ public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> impl
         DevDataCenter.getInstance().clear();
         users = pref.getString("Users", "");
         pwds = pref.getString("Pwds", "");
-
+        //前往（应用开放平台：https://aops.jftech.com），注册申请成为开放平台开发者，然后到【控制台】-【创应用列表】中创建Android应用，等应用审核通过后就可以获取到AppKey、movedCard和AppSecret等信息
+        if (TextUtils.isEmpty(DemoConstant.APP_UUID) || TextUtils.isEmpty(DemoConstant.APP_KEY) || TextUtils.isEmpty(DemoConstant.APP_SECRET) || DemoConstant.APP_MOVEDCARD <= 0) {
+            XMPromptDlg.onShow(this, getString(R.string.funsdk_integration_tips), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            return;
+        }
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
