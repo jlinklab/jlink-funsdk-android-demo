@@ -17,10 +17,10 @@ public class DemoConstant {
      * Then go to [Console] - [Create Application Page] to create an Android application,
      * AppKey, movedCard, AppSecret and other information can be obtained after the application is approved
      */
-    public static final String APP_UUID = "e0534f3240274897821a126be19b6d46";
-    public static final String APP_KEY = "0621ef206a1d4cafbe0c5545c3882ea8";
-    public static final String APP_SECRET = "90f8bc17be2a425db6068c749dee4f5d";
-    public static final int APP_MOVEDCARD = 2;
+    public static final String APP_UUID = "";
+    public static final String APP_KEY = "";
+    public static final String APP_SECRET = "";
+    public static final int APP_MOVEDCARD = 0;
     public static final String MULTI_LENS_TWO_SENSOR = "MultiLensTwoSensor";//双目设备 APP放大
     public static final String MULTI_LENS_THREE_SENSOR = "MultiLensThreeSensor";//三目设备 APP放大
     public static final String SUPPORT_SCALE_TWO_LENS = "SupportScaleTwoLens";//双目设备 设备端放大

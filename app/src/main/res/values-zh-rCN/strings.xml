@@ -693,7 +693,7 @@
     <string name="see_error_code">查看错误码</string>
     <string name="enter_error_code">请输入错误码</string>
     <string name="other_config">其他功能请跳转到【设备配置Json数据交互】页面，通过配置关键字搜索找到您想要的功能</string>
-    <string name="funsdk_integration_tips">请及时更换开放平台上注册的AppKey等信息，测试Key会定期更新，未替换后果自负!!!</string>
+    <string name="funsdk_integration_tips">请到开放平台上注册应用并获取AppKey等信息，否者无法正常使用SDK！</string>
     <string name="wifi_ssid_not_empty">热点名称不能为空</string>
     <string name="is_need_delete_dev_from_other_account">开始添加设备，是否要将该设备从其他账号下移除?</string>
     <string name="input_correct_sn">请输入正确的序列号，长度为16或者20</string>

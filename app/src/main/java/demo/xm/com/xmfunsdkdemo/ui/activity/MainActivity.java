@@ -83,9 +83,9 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         initView();
-        if (StringUtils.contrast(MacroUtils.getValue(this, "APP_KEY"), APP_KEY)
-                || DemoConstant.APP_KEY.equals(APP_KEY)) {
+        if (TextUtils.isEmpty(DemoConstant.APP_UUID) || TextUtils.isEmpty(DemoConstant.APP_KEY) || TextUtils.isEmpty(DemoConstant.APP_SECRET) || DemoConstant.APP_MOVEDCARD <= 0) {
             XMPromptDlg.onShow(this, getString(R.string.funsdk_integration_tips), null);
+            return;
         }
         MainActivityPermissionsDispatcher.initDataWithPermissionCheck(this);
     }
