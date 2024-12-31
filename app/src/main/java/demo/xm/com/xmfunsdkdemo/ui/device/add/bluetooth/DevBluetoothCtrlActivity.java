@@ -10,7 +10,7 @@ import static com.utils.BleDistributionUtil.combineFlameHeader;
 import static com.utils.BleDistributionUtil.createCheckCode;
 import static com.utils.BleUtils.CmdId.APP_RESPONSE;
 import static com.utils.BleUtils.CmdId.SEND;
-import static com.utils.BleUtils.DataType.NO_ENCRY_BINARY;
+import static com.utils.BleUtils.DataType.NO_ENCRYPT_BINARY;
 import static com.utils.BleUtils.FunId.DMS_BY_BLE;
 
 import android.content.DialogInterface;
@@ -217,7 +217,7 @@ public class DevBluetoothCtrlActivity extends DemoBaseActivity {
             StringBuilder flameContent = new StringBuilder();
             flameContent.append(data);
             StringBuilder sendData = new StringBuilder();
-            String flameHeaderStr = combineFlameHeader("01", SEND, "0030", NO_ENCRY_BINARY);//帧头
+            String flameHeaderStr = combineFlameHeader("01", SEND, "0030", NO_ENCRYPT_BINARY);//帧头
             sendData.append(flameHeaderStr);
             sendData.append(String.format("%04x", flameContent.length() / 2));/**帧内容长度**/
             sendData.append(flameContent);

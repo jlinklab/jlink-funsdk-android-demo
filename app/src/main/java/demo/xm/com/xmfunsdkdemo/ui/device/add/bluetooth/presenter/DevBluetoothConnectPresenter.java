@@ -47,7 +47,7 @@ import static com.manager.db.Define.LOGIN_NONE;
 import static com.utils.BleDistributionUtil.combineFlameHeader;
 import static com.utils.BleDistributionUtil.createCheckCode;
 import static com.utils.BleUtils.CmdId.APP_RESPONSE;
-import static com.utils.BleUtils.DataType.NO_ENCRY_BINARY;
+import static com.utils.BleUtils.DataType.NO_ENCRYPT_BINARY;
 import static com.utils.BleUtils.FunId.DMS_BY_BLE;
 
 import org.json.JSONException;
@@ -94,7 +94,7 @@ public class DevBluetoothConnectPresenter extends XMBasePresenter<AccountManager
         StringBuilder flameContent = new StringBuilder();
         flameContent.append(isSuccess ? "01" : "00");//1表示成功 0表示失败
         StringBuilder sendData = new StringBuilder();
-        String flameHeaderStr = combineFlameHeader("02", APP_RESPONSE, DMS_BY_BLE, NO_ENCRY_BINARY);//帧头
+        String flameHeaderStr = combineFlameHeader("02", APP_RESPONSE, DMS_BY_BLE, NO_ENCRYPT_BINARY);//帧头
         sendData.append(flameHeaderStr);
         sendData.append(String.format("%04x", flameContent.length() / 2));/**帧内容长度**/
         sendData.append(flameContent);

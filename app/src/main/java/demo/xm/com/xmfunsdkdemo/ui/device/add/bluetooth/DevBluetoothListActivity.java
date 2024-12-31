@@ -57,7 +57,7 @@ import static com.lib.sdk.bean.bluetooth.XMBleData.CMD_RECEIVE;
 import static com.utils.BleDistributionUtil.combineFlameHeader;
 import static com.utils.BleDistributionUtil.createCheckCode;
 import static com.utils.BleUtils.CmdId.APP_RESPONSE;
-import static com.utils.BleUtils.DataType.NO_ENCRY_BINARY;
+import static com.utils.BleUtils.DataType.NO_ENCRYPT_BINARY;
 import static com.utils.BleUtils.FunId.DMS_BY_BLE;
 
 /**
