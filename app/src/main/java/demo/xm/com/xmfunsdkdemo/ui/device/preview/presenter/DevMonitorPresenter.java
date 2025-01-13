@@ -1,5 +1,7 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.preview.presenter;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -13,6 +15,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.google.gson.Gson;
+import com.lib.FunSDK;
 import com.lib.MsgContent;
 import com.lib.SDKCONST;
 import com.lib.sdk.bean.CameraParamBean;
@@ -64,6 +67,7 @@ import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 import static com.lib.EFUN_ATTR.EDA_DEV_TANSPORT_COM_WRITE;
 import static com.lib.EUIMSG.DEV_CMD_EN;
 import static com.lib.EUIMSG.DEV_PTZ_CONTROL;
+import static com.lib.SDKCONST.EDECODE_TYPE.EDECODE_REAL_TIME_STREAM_MOST_REAL;
 import static com.lib.sdk.bean.JsonConfig.CAMERA_PARAM;
 import static com.lib.sdk.bean.JsonConfig.WHITE_LIGHT;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_BROADCAST;
@@ -516,7 +520,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         if (mediaManager != null) {
             //设置码流类型（主码流、副码流）
             // Set stream type (main stream, sub stream)
-            mediaManager.setStreamType(SDKCONST.StreamType.Main);
+            mediaManager.setStreamType(SDKCONST.StreamType.Extra);
             //是否要开启实时预览实时性，只有局域网模式下才支持，开启后为了确保实时性可能会出现丢帧情况
             // Whether to enable real-time preview timeliness, only supported in LAN mode, enabling may cause frame loss to ensure real-time performance
             mediaManager.setRealTimeEnable(isRealTimeEnable);
@@ -1503,6 +1507,9 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
     public void onVideoBufferEnd(PlayerAttribute attribute, MsgContent ex) {
         videoRatio = attribute.getVideoScale();
         iDevMonitorView.onVideoBufferEnd(attribute, ex);
+
+        //设置成实时性优先
+        FunSDK.MediaSetFluency(attribute.getPlayHandle(), EDECODE_REAL_TIME_STREAM_MOST_REAL, 0);
     }
 
     @Override
@@ -1718,14 +1725,45 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
     }
 
     @Override
-    public void changePlayView(ViewGroup[] playViews) {
+    public void changePlayView(ViewGroup playViewOne, ViewGroup playViewTwo) {
         MonitorManager monitorManager = getCurSelMonitorManager(0);
         if (monitorManager != null) {
-            monitorManager.changePlayView(playViews[0],createSplitJson(0.0f, 1.0f, 0.5f, 0.0f));
+            monitorManager.changePlayView(playViewOne, createSplitJson(0.0f, 1.0f, 0.5f, 0.0f));
         }
 
         if (splitMonitorManager != null) {
-            splitMonitorManager.changePlayView(playViews[1],createSplitJson(0.0f, 1.0f, 1.0f, 0.5f));
+            splitMonitorManager.changePlayView(playViewTwo, createSplitJson(0.0f, 1.0f, 1.0f, 0.5f));
+        }
+    }
+
+    private boolean isChange = false;
+
+    @Override
+    public void swapPlayHandle() {
+        if (splitMonitorManager == null) {
+            return;
+        }
+
+        MonitorManager monitorManager = getCurSelMonitorManager(0);
+        if (monitorManager == null) {
+            return;
+        }
+
+        try {
+            int playHandleOne = splitMonitorManager.getPlayHandle();
+            int playHandleTwo = monitorManager.getPlayHandle();
+
+            if (!isChange) {
+                isChange = true;
+                FunSDK.MediaAddPlayView(playHandleOne, splitMonitorManager.getSurfaceView(), createSplitJson(0.0f, 1.0f, 0.5f, 0.0f));
+                FunSDK.MediaAddPlayView(playHandleTwo, monitorManager.getSurfaceView(), createSplitJson(0.0f, 1.0f, 1.0f, 0.5f));
+            } else {
+                isChange = false;
+                FunSDK.MediaAddPlayView(playHandleOne, splitMonitorManager.getSurfaceView(), createSplitJson(0.0f, 1.0f, 1.0f, 0.5f));
+                FunSDK.MediaAddPlayView(playHandleTwo, monitorManager.getSurfaceView(), createSplitJson(0.0f, 1.0f, 0.5f, 0.0f));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

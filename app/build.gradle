@@ -6,8 +6,8 @@ android {
         applicationId "demo.xm.com.xmfunsdkdemo"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 35
-        versionName "3.0.5"
+        versionCode 36
+        versionName "3.0.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -94,5 +94,4 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
-    implementation 'io.github.xmcamera:libxmfunsdk:4.7.5.1'
 }

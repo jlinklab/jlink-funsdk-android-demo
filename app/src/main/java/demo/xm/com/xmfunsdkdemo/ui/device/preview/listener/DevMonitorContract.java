@@ -495,9 +495,15 @@ public class DevMonitorContract {
         /**
          * 更改播放布局
          *
-         * @param playViews 播放布局
+         * @param playViewOne 第一个播放布局
+         * @param playViewTwo 第二个播放布局
          */
-        void changePlayView(ViewGroup[] playViews);
+        void changePlayView(ViewGroup playViewOne, ViewGroup playViewTwo);
+
+        /**
+         * 画中画切换
+         */
+        void swapPlayHandle();
     }
 }
 
