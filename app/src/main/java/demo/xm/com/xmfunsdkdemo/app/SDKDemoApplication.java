@@ -10,6 +10,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.lib.EFUN_ATTR;
 import com.lib.FunSDK;
@@ -19,12 +20,14 @@ import com.manager.XMFunSDKManager;
 import com.manager.path.PathManager;
 import com.utils.FileUtils;
 import com.utils.PathUtils;
+import com.xm.ui.dialog.XMPromptDlg;
 
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoConstant;
 import demo.xm.com.xmfunsdkdemo.ui.entity.AlarmTranslationIconBean;
 
@@ -48,6 +51,7 @@ public class SDKDemoApplication extends Application {
     private LinkedHashMap<String, Activity> actMap;
     private XMFunSDKManager xmFunSDKManager;
     private AlarmTranslationIconBean alarmTranslationIconBean;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -121,7 +125,7 @@ public class SDKDemoApplication extends Application {
              * otherwise you may not be able to log in to the device, and other devices do not need to call
              */
             FunSDK.SetFunIntAttr(EFUN_ATTR.SUP_RPS_VIDEO_DEFAULT, SDKCONST.Switch.Open);
-        }else {
+        } else {
             throw new RuntimeException("Failed to load dynamic library");
         }
     }
