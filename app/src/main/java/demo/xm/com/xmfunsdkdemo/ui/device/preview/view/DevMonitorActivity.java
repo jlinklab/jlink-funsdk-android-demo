@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -32,9 +33,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -130,6 +135,7 @@ import java.util.List;
 public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> implements DevMonitorContract.IDevMonitorView, OnClickListener, SensorChangeContract.ISensorChangeView {
     private static final String TAG = "DevMonitorActivity";
     private MultiWinLayout playWndLayout;
+    private MultiWinLayout pipPlayViewLayout;//画中画小窗口
     private RecyclerView rvMonitorFun;
     private ViewGroup wndLayout;
     private MonitorFunAdapter monitorFunAdapter;
@@ -270,6 +276,8 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     private boolean isDelayChangeStream = false;//针对多目设备获取到镜头信息后再进行码流切换
     private boolean isShowAPPZooming = false;//是否显示APP软变倍功能
     private boolean isShowAppMoreScreen = false;//是否显示APP端多目效果
+    private TextView tvMoreScreenModeSwitch;//APP多目模式切换
+    private int moreScreenModeType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -296,6 +304,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         });
         titleBar.setBottomTip(DevMonitorActivity.class.getName());
         playWndLayout = findViewById(R.id.layoutPlayWnd);
+        pipPlayViewLayout = findViewById(R.id.fl_pip_play_wnd);
         rvMonitorFun = findViewById(R.id.rv_monitor_fun);
         wndLayout = findViewById(R.id.wnd_layout);
 
@@ -309,7 +318,47 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         autoHideManager.addView(findViewById(R.id.ll_dev_state));
         autoHideManager.show();
 
+        tvMoreScreenModeSwitch = findViewById(R.id.iv_more_screen_mode_switch);
+        tvMoreScreenModeSwitch.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initMoreScreenMode();
+            }
+        });
         initSensorView();
+    }
+
+    private void initMoreScreenMode() {
+        TextView textView = new TextView(this);
+        textView.setText("模式切换:");
+        Spinner spinner = new Spinner(this);
+        spinner.setBackgroundColor(Color.WHITE);
+        String[] data = {"上下屏", "左右屏", "画中画"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(moreScreenModeType);
+
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setBackgroundColor(Color.WHITE);
+        layout.addView(textView);
+        layout.addView(spinner);
+        Dialog dialog = XMPromptDlg.onShow(this, layout);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != moreScreenModeType) {
+                    showAppMoreScreen(position);
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     /**
@@ -1771,6 +1820,8 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                         presenter.initMonitor(0, playViews[0], false);
                         playWndLayout.changeChannel(0);
                         presenter.startMonitor(0);
+
+                        tvMoreScreenModeSwitch.setVisibility(VISIBLE);
                     } else {
                         playViews = playWndLayout.setViewCount(1);
                         for (int i = 0; i < chnCount && i < playViews.length; ++i) {
@@ -1781,6 +1832,8 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                         monitorFunAdapter.changeBtnState(FUN_SHOW_APP_ZOOMING, false);
                         sbVideoScale.setVisibility(View.GONE);
                         isShowAPPZooming = false;
+
+                        tvMoreScreenModeSwitch.setVisibility(View.GONE);
                     }
 
                     changePlayViewSize();
@@ -1811,6 +1864,79 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         presenter.setPlayViewTouchable(0, false);
     }
 
+    /**
+     * 显示APP软多目效果
+     */
+    private void showAppMoreScreen(int moreScreenModeType) {
+        this.moreScreenModeType = moreScreenModeType;
+        if (moreScreenModeType == 0) {
+            //竖屏 上下显示
+            pipPlayViewLayout.setVisibility(View.GONE);
+            playViews = playWndLayout.setViewCount(2, 1);
+            presenter.changePlayView(playViews[0], playViews[1]);
+        } else if (moreScreenModeType == 1) {
+            //横屏 左右显示
+            pipPlayViewLayout.setVisibility(View.GONE);
+            playViews = playWndLayout.setViewCount(2, 2);
+            presenter.changePlayView(playViews[0], playViews[1]);
+        } else if (moreScreenModeType == 2) {
+            //横屏 画中画
+            pipPlayViewLayout.setVisibility(VISIBLE);
+            playViews = new ViewGroup[2];
+            playViews[0] = playWndLayout.setViewCount(1)[0];
+            playViews[1] = pipPlayViewLayout.setViewCount(1)[0];
+            presenter.changePlayView(playViews[0], playViews[1]);
+        }
+
+        pipPlayViewLayout.setOnMultiWndListener(new MultiWinLayout.OnMultiWndListener() {
+            @Override
+            public boolean isDisableToChangeWndSize(int i) {
+                return false;
+            }
+
+            @Override
+            public boolean onTouchEvent(int i, MotionEvent motionEvent) {
+                return false;
+            }
+
+            @Override
+            public boolean onSingleWnd(int i, MotionEvent motionEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean onSelectedWnd(int i, MotionEvent motionEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean onSingleTapUp(int i, MotionEvent motionEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(int i, MotionEvent motionEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTap(View view, MotionEvent motionEvent) {
+                presenter.swapPlayHandle();
+                return false;
+            }
+
+            @Override
+            public void onLongPress(View view, MotionEvent motionEvent) {
+
+            }
+
+            @Override
+            public void onFling(View view, MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+
+            }
+        });
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {//横屏
@@ -1823,12 +1949,6 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
             wndLayout.requestLayout();
             presenter.setPlayViewTouchable(0, true);
-
-            //如果是假多目，横屏的时候需要更改画布
-            if (isShowAppMoreScreen) {
-                playViews = playWndLayout.setViewCount(2, 2);
-                presenter.changePlayView(playViews);
-            }
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {//竖屏
             titleBar.setVisibility(VISIBLE);
             rvMonitorFun.setVisibility(VISIBLE);
@@ -1850,12 +1970,6 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
                 }
             }, "OtherFunction", "SupportGunBallTwoSensorPtzLocate");
-
-            //如果是假多目，横屏的时候需要更改画布
-            if (isShowAppMoreScreen) {
-                playViews = playWndLayout.setViewCount(2, 1);
-                presenter.changePlayView(playViews);
-            }
         }
         super.onConfigurationChanged(newConfig);
     }
