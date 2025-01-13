@@ -1,5 +1,6 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.config.door.presenter;
 
+import com.constant.DeviceConstant;
 import com.lib.sdk.bean.HandleConfigData;
 import com.lib.sdk.bean.doorlock.DoorLockAuthManageBean;
 import com.lib.sdk.bean.doorlock.OPDoorLockProCmd;
