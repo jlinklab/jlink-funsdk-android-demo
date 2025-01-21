@@ -88,7 +88,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     //-------------------------------以下是集成到项目中需要的依赖库--------------------------
     //-----------The following are the required libraries for integration into the project-----------------------
-    implementation 'io.github.xmcamera:uilibrary:2.1'
+    implementation 'io.github.xmcamera:uilibrary:2.2'
     implementation 'com.alibaba:fastjson:1.1.72.android'
     implementation 'org.greenrobot:eventbus:3.2.0' //低功耗唤醒及来电通知需要继承Eventbus
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.2"

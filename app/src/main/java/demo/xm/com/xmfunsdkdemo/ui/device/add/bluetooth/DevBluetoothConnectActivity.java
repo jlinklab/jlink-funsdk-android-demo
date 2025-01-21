@@ -1,6 +1,7 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.add.bluetooth;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import com.manager.db.XMDevInfo;
 import com.utils.LogUtils;
 import com.utils.XMWifiManager;
 import com.xm.activity.base.XMBaseActivity;
+import com.xm.ui.dialog.XMPromptDlg;
+import com.xm.ui.widget.dialog.EditDialog;
 
 import java.util.HashMap;
 
@@ -100,7 +103,7 @@ public class DevBluetoothConnectActivity extends DemoBaseActivity<DevBluetoothCo
             /*If the command ID is the response ID of the device and the current state is the distribution network status,
              it is considered as a callback result of the device distribution network or the command ID is the callback ID of the device*/
             if ((data.getCmdId() == CMD_RECEIVE) || data.getCmdId() == CMD_CALLBACK) {
-                HashMap hashMap = XMBleManager.parseBleWiFiConfigResult(pid,data.getContentDataHexString());
+                HashMap hashMap = XMBleManager.parseBleWiFiConfigResult(pid, data.getContentDataHexString());
                 if (hashMap != null) {
                     showWaitDialog();
                     boolean isSuccess = (boolean) hashMap.get("isSuccess");
@@ -119,7 +122,43 @@ public class DevBluetoothConnectActivity extends DemoBaseActivity<DevBluetoothCo
                         ToastUtils.showLong("配网成功：" + xmDevInfo.getDevId());
                     } else {
                         if (hashMap.containsKey("errorId")) {
-                            ToastUtils.showLong(getString(R.string.distribution_network_failure) + ":" + hashMap.get("errorId"));
+                            int errorId = (int) hashMap.get("errorId");
+                            ToastUtils.showLong(getString(R.string.distribution_network_failure) + ":" + errorId);
+                            if (errorId == 0x53) {//路由器的密码错误
+                                if (hashMap.containsKey("resetDevFlg")) {
+                                    int resetDevFlg = (int) hashMap.get("resetDevFlg");
+                                    if (resetDevFlg == 0) {
+                                        XMPromptDlg.onShow(this, getString(R.string.router_pwd_error_need_reset_dev_tips), null);
+                                    } else if (resetDevFlg == 1) {
+                                        EditDialog dialog = XMPromptDlg.onShowEditDialog(this, getString(R.string.router_pwd_error_tips), "", new EditDialog.OnEditContentListener() {
+                                            @Override
+                                            public void onResult(String content) {
+                                                String ssid = etWiFiSSID.getText().toString().trim();
+                                                presenter.connectWiFi(mac, ssid, content);
+                                            }
+                                        });
+
+                                        dialog.getContentEdit().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                                    }
+                                }
+                            } else {
+//                                0x50 配网失败-未知错误（设备会一直重试，错误会一直回调，不需要APP端回响应包）
+//                                0x51 未找到热点
+//                                0x52 握手失败
+//                                0x53 路由器密码错误
+//                                0x54 客户端发送的数据解析异常
+//                                0x55 配网失败-未知错误（需要APP端回响应包）
+//                                0x57 配网包CRC校验错误
+//                                0x58 不支持的命令类型
+//                                0x59 不识别的wifi加密类型
+//                                0x5A ap列表未扫描到(5G频段或者隐藏SSID)
+//                                0x5B wifi无信号
+//                                0x5C wifi信号非常差
+//                                0x5D wifi信号差
+//                                0x5E IP未配置
+//                                0x5F 切换到AP模式
+                            }
+
                         }
                     }
                 }
