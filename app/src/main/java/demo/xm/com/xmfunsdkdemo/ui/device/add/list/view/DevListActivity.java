@@ -44,6 +44,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.cloud.view.CloudStateActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.interdevlinkage.view.InterDevLinkageActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.shadow.view.DevShadowConfigActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.simpleconfig.view.DevSimpleConfigActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.nfc.NFCTestActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.view.DevMonitorActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.push.view.DevPushActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.record.view.DevRecordActivity;
@@ -486,6 +487,18 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
     @Override
     public void onToGetDevTokenFromServer(int position, XMDevInfo xmDevInfo) {
         presenter.getDevTokenFromServer(xmDevInfo.getDevId());
+    }
+
+    /**
+     * NFC功能
+     *
+     * @param position
+     * @param xmDevInfo
+     */
+    @Override
+    public void onTurnToNFC(int position, XMDevInfo xmDevInfo) {
+        presenter.setDevId(xmDevInfo.getDevId());
+        turnToActivity(NFCTestActivity.class);
     }
 
     @Override

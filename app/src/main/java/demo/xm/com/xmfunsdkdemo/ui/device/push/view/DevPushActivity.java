@@ -55,7 +55,7 @@ public class DevPushActivity extends DemoBaseActivity<DevPushPresenter> implemen
     }
 
     private void initData() {
-        lsiPushSwitch.setRightImage(presenter.isPushOpen() ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
+        presenter.checkPushLinkState();
     }
 
     @Override

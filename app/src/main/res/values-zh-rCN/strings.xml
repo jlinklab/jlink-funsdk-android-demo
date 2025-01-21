@@ -944,4 +944,6 @@
     <string name="is_app_more_screen_not_support_this_function">该功能和假多目功能冲突了，请先关闭假多目功能</string>
     <string name="this_function_only_glsurfaceview">当前播放器不支持APP软变倍</string>
     <string name="get_dev_token_from_server">从服务器获取设备最新Token</string>
+    <string name="router_pwd_error_need_reset_dev_tips">路由器密码错误，请重置设备后再进行配网</string>
+    <string name="router_pwd_error_tips">路由器密码错误，请输入正确的路由器密码</string>
 </resources>

@@ -130,6 +130,8 @@ public class SDKDemoApplication extends Application {
 
             //SDK内部媒体播放会根据解码速度来动态调整解码器：是否启用帧并行多线程解码、启用帧并行多线程解码的线程数4-->8→16递增。默认是开启的
             FunSDK.SetFunIntAttr(EFUN_ATTR.ENABLE_DYNAMIC_THREAD_DECODE_ADJUSTER, SDKCONST.Switch.Close);
+
+
         } else {
             throw new RuntimeException("Failed to load dynamic library");
         }

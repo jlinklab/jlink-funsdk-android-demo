@@ -28,72 +28,32 @@ public class DevPushPresenter extends XMBasePresenter<XMPushManager> implements
     }
 
     @Override
-    public boolean isPushOpen() {//The server gets whether to open
+    public void checkPushLinkState() {//The server gets whether to open
         manager.isAlarmLinked(getDevId());
-        return false;
     }
 
     @Override
-    public boolean openPush() {//Local open
+    public void openPush() {//Local open
         manager.linkAlarm(getDevId(), 0);
-        return true;
     }
 
     @Override
-    public boolean closePush() {//Local close
+    public void closePush() {//Local close
         manager.unLinkAlarm(getDevId(), 0);
-        return true;
     }
 
+    /**
+     * 从服务端获取订阅状态
+     * Get the subscription status from the server
+     *
+     * @param pushType 推送类型 Push type
+     * @param devId    设备序列号 Device serial number
+     * @param isLinked 是否订阅 Whether subscribed
+     */
     @Override
-    public void onPushInit(int i, int i1) {
-
-    }
-
-    @Override
-    public void onPushLink(int i, String s, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onPushUnLink(int i, String s, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onIsPushLinkedFromServer(int i, String s, boolean isLinked) {//The callback to isPushOpen()
+    public void onIsPushLinkedFromServer(int pushType, String devId, boolean isLinked) {//The callback to isPushOpen()
         if (iDevPushView != null) {
             iDevPushView.onPushStateResult(isLinked);
         }
-    }
-
-    @Override
-    public void onAlarmInfo(int i, String s, Message message, MsgContent msgContent) {
-
-    }
-
-    @Override
-    public void onLinkDisconnect(int i, String s) {
-
-    }
-
-    @Override
-    public void onWeChatState(String s, int i, int i1) {
-
-    }
-
-    @Override
-    public void onThirdPushState(String s, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onAllUnLinkResult(boolean isSuccess) {
-
-    }
-
-    @Override
-    public void onFunSDKResult(Message message, MsgContent msgContent) {
-
     }
 }

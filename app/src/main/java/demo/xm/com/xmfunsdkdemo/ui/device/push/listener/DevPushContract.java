@@ -11,8 +11,8 @@ public interface DevPushContract {
     }
 
     interface IDevPushPresenter {
-        boolean isPushOpen();
-        boolean openPush();
-        boolean closePush();
+        void checkPushLinkState();
+        void openPush();
+        void closePush();
     }
 }
