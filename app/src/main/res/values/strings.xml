@@ -947,4 +947,6 @@
     <string name="get_dev_token_from_server">Obtain the latest device token from the server.</string>
     <string name="router_pwd_error_need_reset_dev_tips">The router password is incorrect. Please reset the device and then proceed with the network configuration.</string>
     <string name="router_pwd_error_tips">The router password is incorrect. Please enter the correct router password.</string>
+    <string name="service_name">service_name</string>
+    <string name="aids_description"></string>
 </resources>

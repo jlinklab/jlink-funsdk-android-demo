@@ -1,7 +1,10 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.preview.presenter;
 
-import android.os.Handler;
-import android.os.Looper;
+import static android.media.AudioFormat.CHANNEL_CONFIGURATION_MONO;
+import static android.media.AudioFormat.ENCODING_PCM_16BIT;
+import static android.media.AudioFormat.ENCODING_PCM_8BIT;
+
+import android.content.Context;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -28,6 +31,7 @@ import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.SystemFunctionBean;
 import com.lib.sdk.bean.WhiteLightBean;
 import com.lib.sdk.bean.WifiRouteInfo;
+import com.lib.sdk.bean.decode.DecoderPramBean;
 import com.lib.sdk.bean.preset.ConfigGetPreset;
 import com.lib.sdk.bean.tour.PTZTourBean;
 import com.lib.sdk.bean.tour.TourBean;
@@ -46,6 +50,7 @@ import com.manager.device.media.attribute.PlayerAttribute;
 import com.manager.device.media.monitor.MonitorManager;
 import com.utils.BleDistributionUtil;
 import com.utils.FileUtils;
+import com.utils.LogUtils;
 import com.video.opengl.GLSurfaceView20;
 import com.video.opengl.OnPlayViewTouchListener;
 import com.xm.activity.base.XMBasePresenter;
@@ -64,6 +69,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.DevMonitorContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.PresetListContract;
 import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 
+import static com.constant.SDKLogConstant.APP_VIDEO_ENCODE;
 import static com.lib.EFUN_ATTR.EDA_DEV_TANSPORT_COM_WRITE;
 import static com.lib.EUIMSG.DEV_CMD_EN;
 import static com.lib.EUIMSG.DEV_PTZ_CONTROL;
@@ -138,6 +144,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
     private SensorChangePresenter sensorChangePresenter;
     private boolean isDelayChangeStream = false;//针对多目设备获取到镜头信息后再进行码流切换
     private MonitorManager splitMonitorManager;//被分割后的播放器
+    private DecoderPramBean decoderPramBean; //编码信息，包括音视频
 
     public DevMonitorPresenter(DevMonitorContract.IDevMonitorView iDevMonitorView) {
         this.iDevMonitorView = iDevMonitorView;
@@ -781,6 +788,69 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
                 mediaManager.getTalkManager().doubleDirectionSound(SDKCONST.Switch.Close);
             } else {
                 mediaManager.closeVoiceBySound();
+            }
+        }
+    }
+
+    @Override
+    public void initTalk(Context context, int chnId) {
+        if (decoderPramBean == null) {
+            //获取对讲音频编码信息
+            DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener<String>() {
+                @Override
+                public void onSuccess(String devId, int msgId, String jsonData) {
+                    HandleConfigData handleConfigData = new HandleConfigData();
+                    if (handleConfigData.getDataObj(jsonData, DecoderPramBean.class)) {
+                        decoderPramBean = (DecoderPramBean) handleConfigData.getObj();
+                    }
+
+                    MonitorManager mediaManager = monitorManagers.get(chnId);
+                    if (mediaManager != null) {
+                        mediaManager.initTalk(context);
+                        TalkManager talkManager = mediaManager.getTalkManager();
+                        int sampleRate = decoderPramBean.Audio.get(0).SR.get(0);//音频采样率
+                        int audioFormat = decoderPramBean.Audio.get(0).SB.get(0) == 8 ? ENCODING_PCM_8BIT : ENCODING_PCM_16BIT;//音频格式
+                        int channelConfig = CHANNEL_CONFIGURATION_MONO;//声道配置
+                        talkManager.initAudio(sampleRate, audioFormat, channelConfig);
+                    }
+
+                    if (iDevMonitorView != null) {
+                        iDevMonitorView.onInitTalkResult();
+                    }
+                }
+
+                @Override
+                public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+                    LogUtils.debugInfo(APP_VIDEO_ENCODE, "获取DecoderPram失败,使用默认音频信息对讲");
+                    MonitorManager mediaManager = monitorManagers.get(chnId);
+                    if (mediaManager != null) {
+                        mediaManager.initTalk(context);
+                    }
+
+                    if (iDevMonitorView != null) {
+                        iDevMonitorView.onInitTalkResult();
+                    }
+                }
+            });
+
+            devConfigInfo.setCmdId(1360);
+            devConfigInfo.setJsonName("DecoderPram");
+            if (devConfigManager != null) {
+                devConfigManager.setDevCmd(devConfigInfo);
+            }
+        } else {
+            MonitorManager mediaManager = monitorManagers.get(chnId);
+            if (mediaManager != null) {
+                mediaManager.initTalk(context);
+                TalkManager talkManager = mediaManager.getTalkManager();
+                int sampleRate = decoderPramBean.Audio.get(0).SR.get(0);//音频采样率
+                int audioFormat = decoderPramBean.Audio.get(0).SB.get(0) == 8 ? ENCODING_PCM_8BIT : ENCODING_PCM_16BIT;//音频格式
+                int channelConfig = CHANNEL_CONFIGURATION_MONO;//声道配置
+                talkManager.initAudio(sampleRate, audioFormat, channelConfig);
+            }
+
+            if (iDevMonitorView != null) {
+                iDevMonitorView.onInitTalkResult();
             }
         }
     }
@@ -1693,6 +1763,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         initMonitor(1, playView);
         splitMonitorManager = monitorManagers.get(1);
         splitMonitorManager.setDevId(getDevId());
+
 
         //分割画面并将主画面的播放句柄传给新画面的播放器
         MonitorManager monitorManager = monitorManagers.get(0);
