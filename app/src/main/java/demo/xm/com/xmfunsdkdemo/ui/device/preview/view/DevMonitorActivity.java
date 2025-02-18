@@ -1406,98 +1406,8 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 break;
             case FUN_INTERCOM: //单向对讲，按下去说话，放开后听到设备端的声音，对话框消失后 对讲结束
             {
-                View layout = LayoutInflater.from(this).inflate(R.layout.view_intercom, null);
-                RippleButton rippleButton = layout.findViewById(R.id.btn_talk);
-
-                ListSelectItem lsiDoubleTalkSwitch = layout.findViewById(R.id.lsi_double_talk_switch);
-                ListSelectItem lsiTalkBroadcast = layout.findViewById(R.id.lsi_double_talk_broadcast);
-                lsiTalkBroadcast.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        lsiTalkBroadcast.setRightImage(lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Close ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
-                    }
-                });
-                lsiTalkBroadcast.setVisibility(chnCount > 1 ? VISIBLE : View.GONE);//如果是多通道设备，那么支持广播对讲功能
-                rippleButton.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                //判断双向对讲配置是否开启
-                                if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Open) {
-                                    //双向对讲
-                                    if (presenter.isTalking(presenter.getChnId())) {
-                                        //当前对讲开启中，则需要关闭对讲
-                                        presenter.stopIntercom(presenter.getChnId());// Pause the intercom in the middle of a conversation
-                                        rippleButton.clearState();
-                                    } else {
-                                        //当前对讲未开启，则需要开启对讲 (如果设备的通道数(chnCount)大于1，比如NVR设备的话，那么要使用通道对讲)
-                                        boolean isTalkBroadcast = lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Open;
-                                        presenter.startDoubleIntercom(presenter.getChnId(), isTalkBroadcast); //Turn on the two-way intercom
-                                        rippleButton.setUpGestureEnable(false);
-                                        //对讲开启的时候，视频伴音会随之关闭
-                                        monitorFunAdapter.changeBtnState(FUN_VOICE, false);
-                                    }
-
-                                } else {
-                                    //(如果设备的通道数(chnCount)大于1，比如NVR设备的话，那么要使用通道对讲)
-                                    boolean isTalkBroadcast = lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Open;
-                                    presenter.startSingleIntercomAndSpeak(presenter.getChnId(), isTalkBroadcast);//Enable a one-way intercom
-                                    rippleButton.setUpGestureEnable(true);
-                                    //对讲开启的时候，视频伴音会随之关闭
-                                    monitorFunAdapter.changeBtnState(FUN_VOICE, false);
-                                }
-                                break;
-                            case MotionEvent.ACTION_UP:
-                            case MotionEvent.ACTION_CANCEL:
-                                if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Close) {
-                                    presenter.stopSingleIntercomAndHear(presenter.getChnId());
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        return true;
-                    }
-                });
-
-                lsiDoubleTalkSwitch.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        lsiDoubleTalkSwitch.setRightImage(lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Close ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
-                        if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Open) {
-                            rippleButton.setTabText(getString(R.string.click_to_open_two_way_talk));
-                        } else {
-                            rippleButton.setTabText(getString(R.string.long_press_open_one_way_talk));
-                        }
-
-                        presenter.stopIntercom(presenter.getChnId());
-                    }
-                });
-
-                ListSelectItem lsiChooseVoice = layout.findViewById(R.id.lsi_choose_voice);
-                lsiChooseVoice.getExtraSpinner().initData(new String[]{getString(R.string.speaker_type_normal), getString(R.string.speaker_type_man), getString(R.string.speaker_type_woman)}, new Integer[]{SPEAKER_TYPE_NORMAL, SPEAKER_TYPE_MAN, SPEAKER_TYPE_WOMAN});
-                lsiChooseVoice.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        lsiChooseVoice.toggleExtraView();
-                    }
-                });
-                lsiChooseVoice.setOnExtraSpinnerItemListener(new ExtraSpinnerAdapter.OnExtraSpinnerItemListener<Integer>() {
-                    @Override
-                    public void onItemClick(int position, String key, Integer value) {
-                        lsiChooseVoice.toggleExtraView(true);
-                        lsiChooseVoice.setRightText(key);
-                        presenter.setSpeakerType(presenter.getChnId(), value);
-                    }
-                });
-
-                XMPromptDlg.onShow(this, layout, true, new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        presenter.stopIntercom(presenter.getChnId());
-                    }
-                });
+                showWaitDialog();
+                presenter.initTalk(DevMonitorActivity.this, presenter.getChnId());
             }
             break;
             case FUN_PLAYBACK://录像回放
@@ -2281,6 +2191,103 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     @Override
     public void onTourEndResult() {
         Toast.makeText(this, R.string.tour_end, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onInitTalkResult() {
+        hideWaitDialog();
+        View layout = LayoutInflater.from(this).inflate(R.layout.view_intercom, null);
+        RippleButton rippleButton = layout.findViewById(R.id.btn_talk);
+
+        ListSelectItem lsiDoubleTalkSwitch = layout.findViewById(R.id.lsi_double_talk_switch);
+        ListSelectItem lsiTalkBroadcast = layout.findViewById(R.id.lsi_double_talk_broadcast);
+        lsiTalkBroadcast.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lsiTalkBroadcast.setRightImage(lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Close ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
+            }
+        });
+        lsiTalkBroadcast.setVisibility(chnCount > 1 ? VISIBLE : View.GONE);//如果是多通道设备，那么支持广播对讲功能
+        rippleButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        //判断双向对讲配置是否开启
+                        if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Open) {
+                            //双向对讲
+                            if (presenter.isTalking(presenter.getChnId())) {
+                                //当前对讲开启中，则需要关闭对讲
+                                presenter.stopIntercom(presenter.getChnId());// Pause the intercom in the middle of a conversation
+                                rippleButton.clearState();
+                            } else {
+                                //当前对讲未开启，则需要开启对讲 (如果设备的通道数(chnCount)大于1，比如NVR设备的话，那么要使用通道对讲)
+                                boolean isTalkBroadcast = lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Open;
+                                presenter.startDoubleIntercom(presenter.getChnId(), isTalkBroadcast); //Turn on the two-way intercom
+                                rippleButton.setUpGestureEnable(false);
+                                //对讲开启的时候，视频伴音会随之关闭
+                                monitorFunAdapter.changeBtnState(FUN_VOICE, false);
+                            }
+
+                        } else {
+                            //(如果设备的通道数(chnCount)大于1，比如NVR设备的话，那么要使用通道对讲)
+                            boolean isTalkBroadcast = lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Open;
+                            presenter.startSingleIntercomAndSpeak(presenter.getChnId(), isTalkBroadcast);//Enable a one-way intercom
+                            rippleButton.setUpGestureEnable(true);
+                            //对讲开启的时候，视频伴音会随之关闭
+                            monitorFunAdapter.changeBtnState(FUN_VOICE, false);
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Close) {
+                            presenter.stopSingleIntercomAndHear(presenter.getChnId());
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+
+        lsiDoubleTalkSwitch.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lsiDoubleTalkSwitch.setRightImage(lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Close ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
+                if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Open) {
+                    rippleButton.setTabText(getString(R.string.click_to_open_two_way_talk));
+                } else {
+                    rippleButton.setTabText(getString(R.string.long_press_open_one_way_talk));
+                }
+
+                presenter.stopIntercom(presenter.getChnId());
+            }
+        });
+
+        ListSelectItem lsiChooseVoice = layout.findViewById(R.id.lsi_choose_voice);
+        lsiChooseVoice.getExtraSpinner().initData(new String[]{getString(R.string.speaker_type_normal), getString(R.string.speaker_type_man), getString(R.string.speaker_type_woman)}, new Integer[]{SPEAKER_TYPE_NORMAL, SPEAKER_TYPE_MAN, SPEAKER_TYPE_WOMAN});
+        lsiChooseVoice.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lsiChooseVoice.toggleExtraView();
+            }
+        });
+        lsiChooseVoice.setOnExtraSpinnerItemListener(new ExtraSpinnerAdapter.OnExtraSpinnerItemListener<Integer>() {
+            @Override
+            public void onItemClick(int position, String key, Integer value) {
+                lsiChooseVoice.toggleExtraView(true);
+                lsiChooseVoice.setRightText(key);
+                presenter.setSpeakerType(presenter.getChnId(), value);
+            }
+        });
+
+        XMPromptDlg.onShow(this, layout, true, new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                presenter.stopIntercom(presenter.getChnId());
+            }
+        });
     }
 
     /**

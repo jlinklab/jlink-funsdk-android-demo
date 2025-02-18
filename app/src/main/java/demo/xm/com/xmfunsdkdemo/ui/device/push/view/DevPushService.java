@@ -126,7 +126,7 @@ public class DevPushService extends Service implements DevAlarmInfoManager.OnAla
      * Initialize alarm message subscription with URL
      * 使用Url初始化报警推送,主要修改: appType设置”Third:url”
      * Initialize alarm push using URL, main modification: set appType to "Third:url"
-     *
+     * <p>
      * 该功能只针对有私有的推送服务才需要参考
      * This feature is only applicable to those with a private push service.
      */
@@ -227,6 +227,7 @@ public class DevPushService extends Service implements DevAlarmInfoManager.OnAla
         AlarmInfo alarmInfo = new AlarmInfo();
         alarmInfo.onParse(pushMsg);
         Toast.makeText(getApplicationContext(), getString(R.string.received_alarm_message) +
+                alarmInfo.getDevName() + ":" +
                 XMPushManager.getAlarmName(getApplicationContext(), alarmInfo.getEvent()) + ":" +
                 alarmInfo.getStartTime(), Toast.LENGTH_LONG).show();
         //如果是来电消息才需要弹出来电页面

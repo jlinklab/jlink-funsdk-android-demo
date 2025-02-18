@@ -504,6 +504,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
                     recordList.addAll(((CloudRecordManager) recordManager).getCloudMediaFiles().cloudMediaInfoToH264FileData());
                 }
 
+                //data是二维数组，总共是720个字节，其中1个字节代表2分钟，右4位和左4位分别表示一分钟的录像类型，所以总共是1440分钟（24小时）
                 dealWithRecordTimeList((char[][]) data);
                 iDevRecordView.onSearchRecordByTimeResult(true);
             }

@@ -1,7 +1,6 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.preview.listener;
 
 import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.lib.MsgContent;
@@ -14,8 +13,6 @@ import com.manager.device.media.MediaManager;
 import com.manager.device.media.attribute.PlayerAttribute;
 import com.manager.device.media.monitor.MonitorManager;
 import com.xm.linke.face.FaceFeature;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -119,6 +116,8 @@ public class DevMonitorContract {
          * 巡航结束回调
          */
         void onTourEndResult();
+
+        void onInitTalkResult();
     }
 
     public interface IDevMonitorPresenter {
@@ -223,6 +222,12 @@ public class DevMonitorContract {
          */
         void closeVoice(int chnId);
 
+        /**
+         * 初始化对讲
+         * @param context
+         * @param chnId
+         */
+        void initTalk(Context context,int chnId);
         /**
          * 开始单向对讲
          * Start the one-way intercom

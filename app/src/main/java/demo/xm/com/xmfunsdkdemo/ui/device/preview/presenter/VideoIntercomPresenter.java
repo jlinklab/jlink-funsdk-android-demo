@@ -155,12 +155,16 @@ public class VideoIntercomPresenter extends XMBasePresenter implements VideoInte
                 }
             }
             if (decoderPramBean.Audio != null) {
+                //音频编码类型
                 if (decoderPramBean.Audio.get(0).Enc != null) {
                     encodeAudioBean.setEncodetype(decoderPramBean.Audio.get(0).Enc);
                 }
+
+                //音频格式
                 if (decoderPramBean.Audio.get(0).SB != null && !decoderPramBean.Audio.get(0).SB.isEmpty()) {
                     encodeAudioBean.setBit(decoderPramBean.Audio.get(0).SB.get(0));
                 }
+                //音频采样率
                 if (decoderPramBean.Audio.get(0).SR != null && !decoderPramBean.Audio.get(0).SR.isEmpty()) {
                     encodeAudioBean.setSampleRate(decoderPramBean.Audio.get(0).SR.get(0));
                 }
