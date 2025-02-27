@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -32,9 +33,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -130,6 +135,7 @@ import java.util.List;
 public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> implements DevMonitorContract.IDevMonitorView, OnClickListener, SensorChangeContract.ISensorChangeView {
     private static final String TAG = "DevMonitorActivity";
     private MultiWinLayout playWndLayout;
+    private MultiWinLayout pipPlayViewLayout;//画中画小窗口
     private RecyclerView rvMonitorFun;
     private ViewGroup wndLayout;
     private MonitorFunAdapter monitorFunAdapter;
@@ -270,6 +276,8 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     private boolean isDelayChangeStream = false;//针对多目设备获取到镜头信息后再进行码流切换
     private boolean isShowAPPZooming = false;//是否显示APP软变倍功能
     private boolean isShowAppMoreScreen = false;//是否显示APP端多目效果
+    private TextView tvMoreScreenModeSwitch;//APP多目模式切换
+    private int moreScreenModeType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -296,6 +304,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         });
         titleBar.setBottomTip(DevMonitorActivity.class.getName());
         playWndLayout = findViewById(R.id.layoutPlayWnd);
+        pipPlayViewLayout = findViewById(R.id.fl_pip_play_wnd);
         rvMonitorFun = findViewById(R.id.rv_monitor_fun);
         wndLayout = findViewById(R.id.wnd_layout);
 
@@ -309,7 +318,47 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         autoHideManager.addView(findViewById(R.id.ll_dev_state));
         autoHideManager.show();
 
+        tvMoreScreenModeSwitch = findViewById(R.id.iv_more_screen_mode_switch);
+        tvMoreScreenModeSwitch.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initMoreScreenMode();
+            }
+        });
         initSensorView();
+    }
+
+    private void initMoreScreenMode() {
+        TextView textView = new TextView(this);
+        textView.setText("模式切换:");
+        Spinner spinner = new Spinner(this);
+        spinner.setBackgroundColor(Color.WHITE);
+        String[] data = {"上下屏", "左右屏", "画中画"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(moreScreenModeType);
+
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setBackgroundColor(Color.WHITE);
+        layout.addView(textView);
+        layout.addView(spinner);
+        Dialog dialog = XMPromptDlg.onShow(this, layout);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != moreScreenModeType) {
+                    showAppMoreScreen(position);
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     /**
@@ -1357,98 +1406,8 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 break;
             case FUN_INTERCOM: //单向对讲，按下去说话，放开后听到设备端的声音，对话框消失后 对讲结束
             {
-                View layout = LayoutInflater.from(this).inflate(R.layout.view_intercom, null);
-                RippleButton rippleButton = layout.findViewById(R.id.btn_talk);
-
-                ListSelectItem lsiDoubleTalkSwitch = layout.findViewById(R.id.lsi_double_talk_switch);
-                ListSelectItem lsiTalkBroadcast = layout.findViewById(R.id.lsi_double_talk_broadcast);
-                lsiTalkBroadcast.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        lsiTalkBroadcast.setRightImage(lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Close ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
-                    }
-                });
-                lsiTalkBroadcast.setVisibility(chnCount > 1 ? VISIBLE : View.GONE);//如果是多通道设备，那么支持广播对讲功能
-                rippleButton.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                //判断双向对讲配置是否开启
-                                if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Open) {
-                                    //双向对讲
-                                    if (presenter.isTalking(presenter.getChnId())) {
-                                        //当前对讲开启中，则需要关闭对讲
-                                        presenter.stopIntercom(presenter.getChnId());// Pause the intercom in the middle of a conversation
-                                        rippleButton.clearState();
-                                    } else {
-                                        //当前对讲未开启，则需要开启对讲 (如果设备的通道数(chnCount)大于1，比如NVR设备的话，那么要使用通道对讲)
-                                        boolean isTalkBroadcast = lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Open;
-                                        presenter.startDoubleIntercom(presenter.getChnId(), isTalkBroadcast); //Turn on the two-way intercom
-                                        rippleButton.setUpGestureEnable(false);
-                                        //对讲开启的时候，视频伴音会随之关闭
-                                        monitorFunAdapter.changeBtnState(FUN_VOICE, false);
-                                    }
-
-                                } else {
-                                    //(如果设备的通道数(chnCount)大于1，比如NVR设备的话，那么要使用通道对讲)
-                                    boolean isTalkBroadcast = lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Open;
-                                    presenter.startSingleIntercomAndSpeak(presenter.getChnId(), isTalkBroadcast);//Enable a one-way intercom
-                                    rippleButton.setUpGestureEnable(true);
-                                    //对讲开启的时候，视频伴音会随之关闭
-                                    monitorFunAdapter.changeBtnState(FUN_VOICE, false);
-                                }
-                                break;
-                            case MotionEvent.ACTION_UP:
-                            case MotionEvent.ACTION_CANCEL:
-                                if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Close) {
-                                    presenter.stopSingleIntercomAndHear(presenter.getChnId());
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        return true;
-                    }
-                });
-
-                lsiDoubleTalkSwitch.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        lsiDoubleTalkSwitch.setRightImage(lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Close ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
-                        if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Open) {
-                            rippleButton.setTabText(getString(R.string.click_to_open_two_way_talk));
-                        } else {
-                            rippleButton.setTabText(getString(R.string.long_press_open_one_way_talk));
-                        }
-
-                        presenter.stopIntercom(presenter.getChnId());
-                    }
-                });
-
-                ListSelectItem lsiChooseVoice = layout.findViewById(R.id.lsi_choose_voice);
-                lsiChooseVoice.getExtraSpinner().initData(new String[]{getString(R.string.speaker_type_normal), getString(R.string.speaker_type_man), getString(R.string.speaker_type_woman)}, new Integer[]{SPEAKER_TYPE_NORMAL, SPEAKER_TYPE_MAN, SPEAKER_TYPE_WOMAN});
-                lsiChooseVoice.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        lsiChooseVoice.toggleExtraView();
-                    }
-                });
-                lsiChooseVoice.setOnExtraSpinnerItemListener(new ExtraSpinnerAdapter.OnExtraSpinnerItemListener<Integer>() {
-                    @Override
-                    public void onItemClick(int position, String key, Integer value) {
-                        lsiChooseVoice.toggleExtraView(true);
-                        lsiChooseVoice.setRightText(key);
-                        presenter.setSpeakerType(presenter.getChnId(), value);
-                    }
-                });
-
-                XMPromptDlg.onShow(this, layout, true, new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        presenter.stopIntercom(presenter.getChnId());
-                    }
-                });
+                showWaitDialog();
+                presenter.initTalk(DevMonitorActivity.this, presenter.getChnId());
             }
             break;
             case FUN_PLAYBACK://录像回放
@@ -1771,6 +1730,8 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                         presenter.initMonitor(0, playViews[0], false);
                         playWndLayout.changeChannel(0);
                         presenter.startMonitor(0);
+
+                        tvMoreScreenModeSwitch.setVisibility(VISIBLE);
                     } else {
                         playViews = playWndLayout.setViewCount(1);
                         for (int i = 0; i < chnCount && i < playViews.length; ++i) {
@@ -1781,6 +1742,8 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                         monitorFunAdapter.changeBtnState(FUN_SHOW_APP_ZOOMING, false);
                         sbVideoScale.setVisibility(View.GONE);
                         isShowAPPZooming = false;
+
+                        tvMoreScreenModeSwitch.setVisibility(View.GONE);
                     }
 
                     changePlayViewSize();
@@ -1811,6 +1774,79 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         presenter.setPlayViewTouchable(0, false);
     }
 
+    /**
+     * 显示APP软多目效果
+     */
+    private void showAppMoreScreen(int moreScreenModeType) {
+        this.moreScreenModeType = moreScreenModeType;
+        if (moreScreenModeType == 0) {
+            //竖屏 上下显示
+            pipPlayViewLayout.setVisibility(View.GONE);
+            playViews = playWndLayout.setViewCount(2, 1);
+            presenter.changePlayView(playViews[0], playViews[1]);
+        } else if (moreScreenModeType == 1) {
+            //横屏 左右显示
+            pipPlayViewLayout.setVisibility(View.GONE);
+            playViews = playWndLayout.setViewCount(2, 2);
+            presenter.changePlayView(playViews[0], playViews[1]);
+        } else if (moreScreenModeType == 2) {
+            //横屏 画中画
+            pipPlayViewLayout.setVisibility(VISIBLE);
+            playViews = new ViewGroup[2];
+            playViews[0] = playWndLayout.setViewCount(1)[0];
+            playViews[1] = pipPlayViewLayout.setViewCount(1)[0];
+            presenter.changePlayView(playViews[0], playViews[1]);
+        }
+
+        pipPlayViewLayout.setOnMultiWndListener(new MultiWinLayout.OnMultiWndListener() {
+            @Override
+            public boolean isDisableToChangeWndSize(int i) {
+                return false;
+            }
+
+            @Override
+            public boolean onTouchEvent(int i, MotionEvent motionEvent) {
+                return false;
+            }
+
+            @Override
+            public boolean onSingleWnd(int i, MotionEvent motionEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean onSelectedWnd(int i, MotionEvent motionEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean onSingleTapUp(int i, MotionEvent motionEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(int i, MotionEvent motionEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTap(View view, MotionEvent motionEvent) {
+                presenter.swapPlayHandle();
+                return false;
+            }
+
+            @Override
+            public void onLongPress(View view, MotionEvent motionEvent) {
+
+            }
+
+            @Override
+            public void onFling(View view, MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+
+            }
+        });
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {//横屏
@@ -1823,12 +1859,6 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
             layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
             wndLayout.requestLayout();
             presenter.setPlayViewTouchable(0, true);
-
-            //如果是假多目，横屏的时候需要更改画布
-            if (isShowAppMoreScreen) {
-                playViews = playWndLayout.setViewCount(2, 2);
-                presenter.changePlayView(playViews);
-            }
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {//竖屏
             titleBar.setVisibility(VISIBLE);
             rvMonitorFun.setVisibility(VISIBLE);
@@ -1850,12 +1880,6 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
                 }
             }, "OtherFunction", "SupportGunBallTwoSensorPtzLocate");
-
-            //如果是假多目，横屏的时候需要更改画布
-            if (isShowAppMoreScreen) {
-                playViews = playWndLayout.setViewCount(2, 1);
-                presenter.changePlayView(playViews);
-            }
         }
         super.onConfigurationChanged(newConfig);
     }
@@ -2167,6 +2191,103 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     @Override
     public void onTourEndResult() {
         Toast.makeText(this, R.string.tour_end, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onInitTalkResult() {
+        hideWaitDialog();
+        View layout = LayoutInflater.from(this).inflate(R.layout.view_intercom, null);
+        RippleButton rippleButton = layout.findViewById(R.id.btn_talk);
+
+        ListSelectItem lsiDoubleTalkSwitch = layout.findViewById(R.id.lsi_double_talk_switch);
+        ListSelectItem lsiTalkBroadcast = layout.findViewById(R.id.lsi_double_talk_broadcast);
+        lsiTalkBroadcast.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lsiTalkBroadcast.setRightImage(lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Close ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
+            }
+        });
+        lsiTalkBroadcast.setVisibility(chnCount > 1 ? VISIBLE : View.GONE);//如果是多通道设备，那么支持广播对讲功能
+        rippleButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        //判断双向对讲配置是否开启
+                        if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Open) {
+                            //双向对讲
+                            if (presenter.isTalking(presenter.getChnId())) {
+                                //当前对讲开启中，则需要关闭对讲
+                                presenter.stopIntercom(presenter.getChnId());// Pause the intercom in the middle of a conversation
+                                rippleButton.clearState();
+                            } else {
+                                //当前对讲未开启，则需要开启对讲 (如果设备的通道数(chnCount)大于1，比如NVR设备的话，那么要使用通道对讲)
+                                boolean isTalkBroadcast = lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Open;
+                                presenter.startDoubleIntercom(presenter.getChnId(), isTalkBroadcast); //Turn on the two-way intercom
+                                rippleButton.setUpGestureEnable(false);
+                                //对讲开启的时候，视频伴音会随之关闭
+                                monitorFunAdapter.changeBtnState(FUN_VOICE, false);
+                            }
+
+                        } else {
+                            //(如果设备的通道数(chnCount)大于1，比如NVR设备的话，那么要使用通道对讲)
+                            boolean isTalkBroadcast = lsiTalkBroadcast.getRightValue() == SDKCONST.Switch.Open;
+                            presenter.startSingleIntercomAndSpeak(presenter.getChnId(), isTalkBroadcast);//Enable a one-way intercom
+                            rippleButton.setUpGestureEnable(true);
+                            //对讲开启的时候，视频伴音会随之关闭
+                            monitorFunAdapter.changeBtnState(FUN_VOICE, false);
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Close) {
+                            presenter.stopSingleIntercomAndHear(presenter.getChnId());
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+
+        lsiDoubleTalkSwitch.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lsiDoubleTalkSwitch.setRightImage(lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Close ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
+                if (lsiDoubleTalkSwitch.getRightValue() == SDKCONST.Switch.Open) {
+                    rippleButton.setTabText(getString(R.string.click_to_open_two_way_talk));
+                } else {
+                    rippleButton.setTabText(getString(R.string.long_press_open_one_way_talk));
+                }
+
+                presenter.stopIntercom(presenter.getChnId());
+            }
+        });
+
+        ListSelectItem lsiChooseVoice = layout.findViewById(R.id.lsi_choose_voice);
+        lsiChooseVoice.getExtraSpinner().initData(new String[]{getString(R.string.speaker_type_normal), getString(R.string.speaker_type_man), getString(R.string.speaker_type_woman)}, new Integer[]{SPEAKER_TYPE_NORMAL, SPEAKER_TYPE_MAN, SPEAKER_TYPE_WOMAN});
+        lsiChooseVoice.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lsiChooseVoice.toggleExtraView();
+            }
+        });
+        lsiChooseVoice.setOnExtraSpinnerItemListener(new ExtraSpinnerAdapter.OnExtraSpinnerItemListener<Integer>() {
+            @Override
+            public void onItemClick(int position, String key, Integer value) {
+                lsiChooseVoice.toggleExtraView(true);
+                lsiChooseVoice.setRightText(key);
+                presenter.setSpeakerType(presenter.getChnId(), value);
+            }
+        });
+
+        XMPromptDlg.onShow(this, layout, true, new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                presenter.stopIntercom(presenter.getChnId());
+            }
+        });
     }
 
     /**

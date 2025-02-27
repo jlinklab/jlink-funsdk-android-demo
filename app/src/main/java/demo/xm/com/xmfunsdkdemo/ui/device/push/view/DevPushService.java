@@ -98,6 +98,9 @@ public class DevPushService extends Service implements DevAlarmInfoManager.OnAla
 
     /**
      * 获取报警消息翻译内容和图标
+     * Get alarm message translation and icon
+     * 该功能暂时不对外，只是报警翻译内容，不影响整体功能
+     * This feature is temporarily unavailable to the public. It only handles alarm message translations and does not affect the overall functionality.
      */
     private void initAlarmInfo() {
         // 使用Map直接传参
@@ -120,7 +123,12 @@ public class DevPushService extends Service implements DevAlarmInfoManager.OnAla
 
     /**
      * 用URL初始化报警消息订阅
+     * Initialize alarm message subscription with URL
      * 使用Url初始化报警推送,主要修改: appType设置”Third:url”
+     * Initialize alarm push using URL, main modification: set appType to "Third:url"
+     * <p>
+     * 该功能只针对有私有的推送服务才需要参考
+     * This feature is only applicable to those with a private push service.
      */
     private void initPushByUrl() {
         xmPushManager = new XMPushManager(xmPushLinkResult);
@@ -137,68 +145,74 @@ public class DevPushService extends Service implements DevAlarmInfoManager.OnAla
     }
 
     private XMPushManager.OnXMPushLinkListener xmPushLinkResult = new XMPushManager.OnXMPushLinkListener() {
+        /**
+         * 订阅初始化回调
+         * Subscription initialization callback
+         * @param pushType 推送类型
+         * @param errorId 错误码
+         */
         @Override
         public void onPushInit(int pushType, int errorId) {
             if (errorId >= 0) {
+                //Push initialization successful
                 System.out.println("推送初始化成功:" + pushType);
             } else {
+                // Push initialization failed
                 System.out.println("推送初始化失败:" + errorId);
             }
         }
 
+        /**
+         * 订阅结果回调
+         * Subscription result callback
+         * @param pushType 推送类型
+         * @param devId 设备序列号 Device serial number
+         * @param seq
+         * @param errorId 错误码
+         */
         @Override
         public void onPushLink(int pushType, String devId, int seq, int errorId) {
             if (errorId >= 0) {
+                //"Push subscription successful"
                 System.out.println("推送订阅成功:" + devId);
             } else {
+                //"Push subscription failed"
                 System.out.println("推送订阅失败:" + devId + ":" + errorId);
             }
         }
 
+        /**
+         * 取消订阅结果回调
+         * "Unsubscription result callback"
+         * @param pushType 推送类型
+         * @param devId 设备序列号 Device serial number
+         * @param seq
+         * @param errorId 错误码
+         */
         @Override
         public void onPushUnLink(int pushType, String devId, int seq, int errorId) {
             if (errorId >= 0) {
+                //"Unsubscription successful"
                 System.out.println("取消订阅成功:" + devId);
             } else {
+                //"Unsubscription failed"
                 System.out.println("取消订阅失败:" + devId + ":" + errorId);
             }
         }
 
-        @Override
-        public void onIsPushLinkedFromServer(int pushType, String devId, boolean isLinked) {
-
-        }
-
+        /**
+         * 报警推送回调
+         * Alarm push callback
+         * @param pushType 推送类型 Push type
+         * @param devId 设备序列号 Device serial number
+         * @param message
+         * @param msgContent
+         */
         @Override
         public void onAlarmInfo(int pushType, String devId, Message message, MsgContent msgContent) {
             String pushMsg = G.ToString(msgContent.pData);
             System.out.println("接收到报警消息:" + pushMsg);
             parseAlarmInfo(devId, pushMsg);
-        }
-
-        @Override
-        public void onLinkDisconnect(int pushType, String devId) {
-
-        }
-
-        @Override
-        public void onWeChatState(String devId, int state, int errorId) {
-
-        }
-
-        @Override
-        public void onThirdPushState(String info, int pushType, int state, int errorId) {
-
-        }
-
-        @Override
-        public void onAllUnLinkResult(boolean isSuccess) {
-
-        }
-
-        @Override
-        public void onFunSDKResult(Message message, MsgContent msgContent) {
-
         }
     };
 
@@ -213,6 +227,7 @@ public class DevPushService extends Service implements DevAlarmInfoManager.OnAla
         AlarmInfo alarmInfo = new AlarmInfo();
         alarmInfo.onParse(pushMsg);
         Toast.makeText(getApplicationContext(), getString(R.string.received_alarm_message) +
+                alarmInfo.getDevName() + ":" +
                 XMPushManager.getAlarmName(getApplicationContext(), alarmInfo.getEvent()) + ":" +
                 alarmInfo.getStartTime(), Toast.LENGTH_LONG).show();
         //如果是来电消息才需要弹出来电页面

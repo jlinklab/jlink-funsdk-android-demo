@@ -1,5 +1,10 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.preview.presenter;
 
+import static android.media.AudioFormat.CHANNEL_CONFIGURATION_MONO;
+import static android.media.AudioFormat.ENCODING_PCM_16BIT;
+import static android.media.AudioFormat.ENCODING_PCM_8BIT;
+
+import android.content.Context;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -13,6 +18,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.google.gson.Gson;
+import com.lib.FunSDK;
 import com.lib.MsgContent;
 import com.lib.SDKCONST;
 import com.lib.sdk.bean.CameraParamBean;
@@ -25,6 +31,7 @@ import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.SystemFunctionBean;
 import com.lib.sdk.bean.WhiteLightBean;
 import com.lib.sdk.bean.WifiRouteInfo;
+import com.lib.sdk.bean.decode.DecoderPramBean;
 import com.lib.sdk.bean.preset.ConfigGetPreset;
 import com.lib.sdk.bean.tour.PTZTourBean;
 import com.lib.sdk.bean.tour.TourBean;
@@ -43,6 +50,7 @@ import com.manager.device.media.attribute.PlayerAttribute;
 import com.manager.device.media.monitor.MonitorManager;
 import com.utils.BleDistributionUtil;
 import com.utils.FileUtils;
+import com.utils.LogUtils;
 import com.video.opengl.GLSurfaceView20;
 import com.video.opengl.OnPlayViewTouchListener;
 import com.xm.activity.base.XMBasePresenter;
@@ -61,9 +69,11 @@ import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.DevMonitorContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.PresetListContract;
 import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 
+import static com.constant.SDKLogConstant.APP_VIDEO_ENCODE;
 import static com.lib.EFUN_ATTR.EDA_DEV_TANSPORT_COM_WRITE;
 import static com.lib.EUIMSG.DEV_CMD_EN;
 import static com.lib.EUIMSG.DEV_PTZ_CONTROL;
+import static com.lib.SDKCONST.EDECODE_TYPE.EDECODE_REAL_TIME_STREAM_MOST_REAL;
 import static com.lib.sdk.bean.JsonConfig.CAMERA_PARAM;
 import static com.lib.sdk.bean.JsonConfig.WHITE_LIGHT;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_BROADCAST;
@@ -134,6 +144,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
     private SensorChangePresenter sensorChangePresenter;
     private boolean isDelayChangeStream = false;//针对多目设备获取到镜头信息后再进行码流切换
     private MonitorManager splitMonitorManager;//被分割后的播放器
+    private DecoderPramBean decoderPramBean; //编码信息，包括音视频
 
     public DevMonitorPresenter(DevMonitorContract.IDevMonitorView iDevMonitorView) {
         this.iDevMonitorView = iDevMonitorView;
@@ -516,7 +527,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         if (mediaManager != null) {
             //设置码流类型（主码流、副码流）
             // Set stream type (main stream, sub stream)
-            mediaManager.setStreamType(SDKCONST.StreamType.Main);
+            mediaManager.setStreamType(SDKCONST.StreamType.Extra);
             //是否要开启实时预览实时性，只有局域网模式下才支持，开启后为了确保实时性可能会出现丢帧情况
             // Whether to enable real-time preview timeliness, only supported in LAN mode, enabling may cause frame loss to ensure real-time performance
             mediaManager.setRealTimeEnable(isRealTimeEnable);
@@ -777,6 +788,69 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
                 mediaManager.getTalkManager().doubleDirectionSound(SDKCONST.Switch.Close);
             } else {
                 mediaManager.closeVoiceBySound();
+            }
+        }
+    }
+
+    @Override
+    public void initTalk(Context context, int chnId) {
+        if (decoderPramBean == null) {
+            //获取对讲音频编码信息
+            DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener<String>() {
+                @Override
+                public void onSuccess(String devId, int msgId, String jsonData) {
+                    HandleConfigData handleConfigData = new HandleConfigData();
+                    if (handleConfigData.getDataObj(jsonData, DecoderPramBean.class)) {
+                        decoderPramBean = (DecoderPramBean) handleConfigData.getObj();
+                    }
+
+                    MonitorManager mediaManager = monitorManagers.get(chnId);
+                    if (mediaManager != null) {
+                        mediaManager.initTalk(context);
+                        TalkManager talkManager = mediaManager.getTalkManager();
+                        int sampleRate = decoderPramBean.Audio.get(0).SR.get(0);//音频采样率
+                        int audioFormat = decoderPramBean.Audio.get(0).SB.get(0) == 8 ? ENCODING_PCM_8BIT : ENCODING_PCM_16BIT;//音频格式
+                        int channelConfig = CHANNEL_CONFIGURATION_MONO;//声道配置
+                        talkManager.initAudio(sampleRate, audioFormat, channelConfig);
+                    }
+
+                    if (iDevMonitorView != null) {
+                        iDevMonitorView.onInitTalkResult();
+                    }
+                }
+
+                @Override
+                public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+                    LogUtils.debugInfo(APP_VIDEO_ENCODE, "获取DecoderPram失败,使用默认音频信息对讲");
+                    MonitorManager mediaManager = monitorManagers.get(chnId);
+                    if (mediaManager != null) {
+                        mediaManager.initTalk(context);
+                    }
+
+                    if (iDevMonitorView != null) {
+                        iDevMonitorView.onInitTalkResult();
+                    }
+                }
+            });
+
+            devConfigInfo.setCmdId(1360);
+            devConfigInfo.setJsonName("DecoderPram");
+            if (devConfigManager != null) {
+                devConfigManager.setDevCmd(devConfigInfo);
+            }
+        } else {
+            MonitorManager mediaManager = monitorManagers.get(chnId);
+            if (mediaManager != null) {
+                mediaManager.initTalk(context);
+                TalkManager talkManager = mediaManager.getTalkManager();
+                int sampleRate = decoderPramBean.Audio.get(0).SR.get(0);//音频采样率
+                int audioFormat = decoderPramBean.Audio.get(0).SB.get(0) == 8 ? ENCODING_PCM_8BIT : ENCODING_PCM_16BIT;//音频格式
+                int channelConfig = CHANNEL_CONFIGURATION_MONO;//声道配置
+                talkManager.initAudio(sampleRate, audioFormat, channelConfig);
+            }
+
+            if (iDevMonitorView != null) {
+                iDevMonitorView.onInitTalkResult();
             }
         }
     }
@@ -1503,6 +1577,9 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
     public void onVideoBufferEnd(PlayerAttribute attribute, MsgContent ex) {
         videoRatio = attribute.getVideoScale();
         iDevMonitorView.onVideoBufferEnd(attribute, ex);
+
+        //设置成实时性优先
+        FunSDK.MediaSetFluency(attribute.getPlayHandle(), EDECODE_REAL_TIME_STREAM_MOST_REAL, 0);
     }
 
     @Override
@@ -1687,6 +1764,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
         splitMonitorManager = monitorManagers.get(1);
         splitMonitorManager.setDevId(getDevId());
 
+
         //分割画面并将主画面的播放句柄传给新画面的播放器
         MonitorManager monitorManager = monitorManagers.get(0);
 
@@ -1718,14 +1796,45 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
     }
 
     @Override
-    public void changePlayView(ViewGroup[] playViews) {
+    public void changePlayView(ViewGroup playViewOne, ViewGroup playViewTwo) {
         MonitorManager monitorManager = getCurSelMonitorManager(0);
         if (monitorManager != null) {
-            monitorManager.changePlayView(playViews[0],createSplitJson(0.0f, 1.0f, 0.5f, 0.0f));
+            monitorManager.changePlayView(playViewOne, createSplitJson(0.0f, 1.0f, 0.5f, 0.0f));
         }
 
         if (splitMonitorManager != null) {
-            splitMonitorManager.changePlayView(playViews[1],createSplitJson(0.0f, 1.0f, 1.0f, 0.5f));
+            splitMonitorManager.changePlayView(playViewTwo, createSplitJson(0.0f, 1.0f, 1.0f, 0.5f));
+        }
+    }
+
+    private boolean isChange = false;
+
+    @Override
+    public void swapPlayHandle() {
+        if (splitMonitorManager == null) {
+            return;
+        }
+
+        MonitorManager monitorManager = getCurSelMonitorManager(0);
+        if (monitorManager == null) {
+            return;
+        }
+
+        try {
+            int playHandleOne = splitMonitorManager.getPlayHandle();
+            int playHandleTwo = monitorManager.getPlayHandle();
+
+            if (!isChange) {
+                isChange = true;
+                FunSDK.MediaAddPlayView(playHandleOne, splitMonitorManager.getSurfaceView(), createSplitJson(0.0f, 1.0f, 0.5f, 0.0f));
+                FunSDK.MediaAddPlayView(playHandleTwo, monitorManager.getSurfaceView(), createSplitJson(0.0f, 1.0f, 1.0f, 0.5f));
+            } else {
+                isChange = false;
+                FunSDK.MediaAddPlayView(playHandleOne, splitMonitorManager.getSurfaceView(), createSplitJson(0.0f, 1.0f, 1.0f, 0.5f));
+                FunSDK.MediaAddPlayView(playHandleTwo, monitorManager.getSurfaceView(), createSplitJson(0.0f, 1.0f, 0.5f, 0.0f));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

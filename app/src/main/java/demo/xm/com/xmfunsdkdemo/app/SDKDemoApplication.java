@@ -125,6 +125,13 @@ public class SDKDemoApplication extends Application {
              * otherwise you may not be able to log in to the device, and other devices do not need to call
              */
             FunSDK.SetFunIntAttr(EFUN_ATTR.SUP_RPS_VIDEO_DEFAULT, SDKCONST.Switch.Open);
+            //仅对实时预览生效，通过一定时间内帧的接收平均间隔，动态调整实施预览的缓存策略，用于不同网络环境下确保播放流畅度（牺牲实时性，保证流畅度）
+            FunSDK.SetFunIntAttr(EFUN_ATTR.ENABLE_REAL_TIME_BUFFER_ADJUSTMENT, SDKCONST.Switch.Close);
+
+            //SDK内部媒体播放会根据解码速度来动态调整解码器：是否启用帧并行多线程解码、启用帧并行多线程解码的线程数4-->8→16递增。默认是开启的
+            FunSDK.SetFunIntAttr(EFUN_ATTR.ENABLE_DYNAMIC_THREAD_DECODE_ADJUSTER, SDKCONST.Switch.Close);
+
+
         } else {
             throw new RuntimeException("Failed to load dynamic library");
         }
