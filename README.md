@@ -16,12 +16,24 @@ defaultConfig {
  }
 dependencies {
     // The latest stable version of FunSDK:
-    implementation 'io.github.xmcamera:libxmfunsdk:4.4' //Or directly obtain the AAR file from the demo for loading
+    implementation 'com.jftechsoft.funsdk:funsdk:5.0.0a' //Or directly obtain the AAR file from the demo for loading
     implementation 'io.github.xmcamera:uilibrary:2.1' //Or directly obtain the AAR file from the demo for loading
     implementation 'com.alibaba:fastjson:1.1.72.android'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+}
+```
+
+```
+repositories {
+    maven { url 'https://repo.jftechsoft.com/repository/maven-releases/' }
+    maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
+    maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' } // jcenter mirror repository
+    maven { url 'https://jitpack.io' }
+    google()
+    mavenLocal()
+    mavenCentral()
 }
 ```
 
