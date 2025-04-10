@@ -1,5 +1,7 @@
 package demo.xm.com.xmfunsdkdemo.ui.user.info.listener;
 
+import android.content.Context;
+
 import com.manager.account.BaseAccountManager;
 
 /**
@@ -10,13 +12,25 @@ import com.manager.account.BaseAccountManager;
 public class UserInfoContract {
     public interface IUserInfoView {
         void onUpdateView();
+        void onDeleteAccountResult(boolean isSuccess,int errorId);
+        Context getContext();
+
     }
 
     public interface IUserInfoPresenter extends BaseAccountManager.OnAccountManagerListener {
         String getUserId();
+
         String getUserName();
+
         String getEmail();
+
         String getPhoneNo();
+
         int getErrorId();
+
+        /**
+         * 删除账号
+         */
+        void deleteAccount();
     }
 }

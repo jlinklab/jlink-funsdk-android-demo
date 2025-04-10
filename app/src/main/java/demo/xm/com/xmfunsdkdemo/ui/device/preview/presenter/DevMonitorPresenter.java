@@ -76,6 +76,7 @@ import static com.lib.EUIMSG.DEV_PTZ_CONTROL;
 import static com.lib.SDKCONST.EDECODE_TYPE.EDECODE_REAL_TIME_STREAM_MOST_REAL;
 import static com.lib.sdk.bean.JsonConfig.CAMERA_PARAM;
 import static com.lib.sdk.bean.JsonConfig.WHITE_LIGHT;
+import static com.manager.db.Define.MEDIA_DATA_TYPE_YUV_NOT_DISPLAY;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_BROADCAST;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_CHN;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_DEV;
@@ -1518,6 +1519,7 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
     public void onResultYUVData(PlayerAttribute attribute, final int width, final int height, final byte[] data) {
         // 该回调的前置条件：mediaManager.setPlayMode(MEDIA_DATA_TYPE_YUV_NOT_DISPLAY);
         // The preconditions of this callback:mediaManager.setPlayMode(MEDIA_DATA_TYPE_YUV_NOT_DISPLAY);
+        System.out.println("dataLen:" + data.length);
     }
 
     /**

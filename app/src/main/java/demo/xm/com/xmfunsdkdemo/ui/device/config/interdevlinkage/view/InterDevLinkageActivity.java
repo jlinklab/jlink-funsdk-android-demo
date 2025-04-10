@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.dialog.XMPromptDlg;
 
 import java.util.List;
@@ -100,7 +101,7 @@ public class InterDevLinkageActivity extends DemoBaseActivity<InterDevLinkagePre
         if (isSuccess) {
             showToast(getString(R.string.inter_dev_linked_s), Toast.LENGTH_LONG);
         } else {
-            showToast(getString(R.string.inter_dev_linked_f) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.inter_dev_linked_f) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
     }
 
@@ -110,7 +111,7 @@ public class InterDevLinkageActivity extends DemoBaseActivity<InterDevLinkagePre
         if (isSuccess) {
             showToast(getString(R.string.inter_dev_unlinked_s), Toast.LENGTH_LONG);
         } else {
-            showToast(getString(R.string.inter_dev_unlinked_f) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.inter_dev_unlinked_f) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
     }
 

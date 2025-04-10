@@ -7,6 +7,10 @@ import com.lib.MsgContent;
 import com.manager.account.XMAccountManager;
 
 import com.xm.activity.base.XMBasePresenter;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import demo.xm.com.xmfunsdkdemo.ui.user.forget.listener.UserForgetPwdContract;
 
 /**
@@ -52,7 +56,7 @@ public class UserForgetPwdPresenter extends XMBasePresenter<XMAccountManager> im
     }
 
     public boolean requestSendPhoneMsgForResetPW(String phone) {
-        return manager == null ? false : manager.sendPhoneCodeForResetPwd(phone, this);
+        return manager == null ? false : manager.sendPhoneCodeForResetPwd("+86:" + phone, this);
     }
 
     public boolean requestVerifyEmailCode(String email, String verifyCode) {
@@ -60,7 +64,7 @@ public class UserForgetPwdPresenter extends XMBasePresenter<XMAccountManager> im
     }
 
     public boolean requestVerifyPhoneCode(String phone, String verifyCode) {
-        return manager == null ? false : manager.verifyPhoneCode(phone, verifyCode, this);
+        return manager == null ? false : manager.verifyPhoneCode("+86:" + phone, verifyCode, this);
     }
 
     public boolean requestResetPasswByEmail(String email, String newPwd) {
@@ -68,7 +72,7 @@ public class UserForgetPwdPresenter extends XMBasePresenter<XMAccountManager> im
     }
 
     public boolean requestResetPasswByPhone(String phone, String newPwd) {
-        return manager == null ? false : manager.resetPwdByPhone(phone, newPwd, this);
+        return manager == null ? false : manager.resetPwdByPhone("+86:" + phone, newPwd, this);
     }
 
     @Override

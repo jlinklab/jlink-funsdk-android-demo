@@ -25,6 +25,7 @@ import com.manager.db.XMDevInfo;
 import com.manager.sysability.SysAbilityManager;
 import com.utils.FileUtils;
 import com.utils.XUtils;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.ItemSetLayout;
 import com.xm.ui.widget.ListSelectItem;
@@ -236,13 +237,13 @@ public class DevAboutActivity extends BaseConfigActivity<DevAboutPresenter> impl
     @Override
     public void syncDevTimeZoneResult(boolean isSuccess, int errorId) {
         hideWaitDialog();
-        showToast(isSuccess ? getString(R.string.set_dev_config_success) : getString(R.string.set_dev_config_failed) + ":" + errorId, Toast.LENGTH_LONG);
+        showToast(isSuccess ? getString(R.string.set_dev_config_success) : getString(R.string.set_dev_config_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
     }
 
     @Override
     public void syncDevTimeResult(boolean isSuccess, int errorId) {
         hideWaitDialog();
-        showToast(isSuccess ? getString(R.string.set_dev_config_success) : getString(R.string.set_dev_config_failed) + ":" + errorId, Toast.LENGTH_LONG);
+        showToast(isSuccess ? getString(R.string.set_dev_config_success) : getString(R.string.set_dev_config_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
     }
 
     @Override

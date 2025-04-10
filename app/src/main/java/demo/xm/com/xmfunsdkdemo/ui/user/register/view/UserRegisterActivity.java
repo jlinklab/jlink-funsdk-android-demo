@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.lib.EUIMSG;
 import com.xm.activity.base.XMBaseActivity;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.widget.XTitleBar;
 
 import demo.xm.com.xmfunsdkdemo.R;
@@ -265,7 +266,7 @@ public class UserRegisterActivity extends DemoBaseActivity<UserRegisterPresenter
             return;
         }
 
-        presenter.registerByNotBind(userName,passWord);
+        presenter.registerByNotBind(userName, passWord);
     }
 
     private void trytoPhoneInCountry() {
@@ -295,7 +296,7 @@ public class UserRegisterActivity extends DemoBaseActivity<UserRegisterPresenter
                     finish();
             }
         } else {
-            showToast("" + presenter.getErrorId(), Toast.LENGTH_LONG);
+            showToast("" + ErrorCodeManager.getSDKStrErrorByNO(presenter.getErrorId()), Toast.LENGTH_LONG);
         }
     }
 
@@ -327,7 +328,7 @@ public class UserRegisterActivity extends DemoBaseActivity<UserRegisterPresenter
             case R.id.btn_phone_in_country: {
                 trytoPhoneInCountry();
             }
-                break;
+            break;
             default:
                 break;
         }

@@ -20,6 +20,7 @@ import com.lib.MsgContent;
 import com.lib.sdk.bean.VoiceReplyBean;
 import com.manager.tts.TTSManager;
 import com.xm.activity.base.XMBaseActivity;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.XTitleBar;
@@ -202,7 +203,7 @@ public class FileTransferActivity extends BaseConfigActivity<FileTransferPresent
      */
     public void onInitResult(boolean isSuccess, int errorId) {
         if (!isSuccess) {
-            showToast(getString(R.string.upload_f) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.upload_f) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
     }
 
@@ -214,7 +215,7 @@ public class FileTransferActivity extends BaseConfigActivity<FileTransferPresent
      */
     public void onUploadStartResult(boolean isSuccess, int errorId) {
         if (!isSuccess) {
-            showToast(getString(R.string.upload_f) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.upload_f) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
     }
 
@@ -227,7 +228,7 @@ public class FileTransferActivity extends BaseConfigActivity<FileTransferPresent
      */
     public void onUploadDataProgressResult(boolean isSuccess, int progress, int errorId) {
         if (!isSuccess) {
-            showToast(getString(R.string.upload_f) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.upload_f) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         } else {
             showToast(progress + "", Toast.LENGTH_LONG);
         }
@@ -252,7 +253,7 @@ public class FileTransferActivity extends BaseConfigActivity<FileTransferPresent
      */
     public void onPlayDevVoiceResult(boolean isSuccess, int errorId) {
         hideWaitDialog();
-        showToast(isSuccess ? getString(R.string.play_success) : getString(R.string.play_failed) + ":" + errorId, Toast.LENGTH_LONG);
+        showToast(isSuccess ? getString(R.string.play_success) : getString(R.string.play_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
     }
 
     /**
@@ -272,7 +273,7 @@ public class FileTransferActivity extends BaseConfigActivity<FileTransferPresent
                 audioListAdapter.setData(list);
             }
         } else {
-            showToast(getString(R.string.get_voice_list_failed) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.get_voice_list_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
     }
 

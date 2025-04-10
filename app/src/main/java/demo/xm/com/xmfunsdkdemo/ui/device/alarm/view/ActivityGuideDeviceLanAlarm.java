@@ -19,6 +19,7 @@ import com.lib.sdk.bean.alarm.AlarmInfo;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.widget.XTitleBar;
 
 import demo.xm.com.xmfunsdkdemo.R;
@@ -202,7 +203,7 @@ public class ActivityGuideDeviceLanAlarm extends ActivityDemo implements OnClick
 					hideWaitDialog();
 				} else {
 					// 设备登录失败
-					showToast(FunError.getErrorStr(msg.arg1));
+					showToast(ErrorCodeManager.getSDKStrErrorByNO(msg.arg1));
 				}
 			}
 			break;
@@ -211,7 +212,7 @@ public class ActivityGuideDeviceLanAlarm extends ActivityDemo implements OnClick
 				if ( msg.arg1 == FunError.EE_OK ) {
 					
 				} else {
-					showToast(FunError.getErrorStr(msg.arg1));
+					showToast(ErrorCodeManager.getSDKStrErrorByNO(msg.arg1));
 				}
 			}
 			break;

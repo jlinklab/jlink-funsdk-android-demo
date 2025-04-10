@@ -140,4 +140,19 @@
         android:textColor="@color/white"
         android:textSize="18sp" />
 
+    <!--删除账号-->
+    <Button
+        android:id="@+id/btn_delete_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/button_selector"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/delete_account"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
 </LinearLayout>

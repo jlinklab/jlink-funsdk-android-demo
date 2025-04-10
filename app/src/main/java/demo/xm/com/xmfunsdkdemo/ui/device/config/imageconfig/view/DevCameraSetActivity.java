@@ -17,6 +17,7 @@ import com.lib.sdk.bean.JsonConfig;
 import com.lib.sdk.bean.StringUtils;
 import com.manager.device.DeviceManager;
 import com.manager.device.media.monitor.MonitorManager;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.XTitleBar;
 
@@ -202,7 +203,7 @@ public class DevCameraSetActivity extends BaseConfigActivity<DevCameraSetPresent
         if (isSuccess) {
             showToast(getString(R.string.set_dev_config_success), Toast.LENGTH_SHORT);
         } else {
-            showToast(getString(R.string.set_dev_config_failed) + ":" + errorId, Toast.LENGTH_SHORT);
+            showToast(getString(R.string.set_dev_config_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_SHORT);
         }
     }
 

@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.xm.activity.base.XMBasePresenter;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.XTitleBar;
 import com.xm.ui.widget.listselectitem.extra.adapter.ExtraSpinnerAdapter;
@@ -150,7 +151,7 @@ public class PowerSavingModeActivity extends DemoBaseActivity<PowerSavingModePre
                 lsiDelayTime.setVisibility(View.GONE);
             }
         } else {
-            showToast(getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.libfunsdk_operation_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
     }
 }

@@ -490,6 +490,7 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
 //                                0x5D wifi信号差
 //                                0x5E IP未配置
 //                                0x5F 切换到AP模式
+                                XMPromptDlg.onShow(this,"配网失败:0x" + Integer.toHexString(errorId),null);
                             }
 
                         }

@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.lib.SDKCONST;
 import com.lib.sdk.bean.HumanDetectionBean;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.XTitleBar;
 
@@ -171,7 +172,7 @@ public class IntelligentVigilanceActivity extends BaseConfigActivity<Intelligent
         if (isSuccess) {
             lsiSwitch.setRightImage(presenter.isHumanDetectEnable() ? SDKCONST.Switch.Open : SDKCONST.Switch.Close);
         }else {
-            showToast(getString(R.string.dev_get_human_dissupport) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.dev_get_human_dissupport) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
             finish();
         }
     }
@@ -182,7 +183,7 @@ public class IntelligentVigilanceActivity extends BaseConfigActivity<Intelligent
         if (isSuccess) {
             showToast(getString(R.string.set_dev_config_success), Toast.LENGTH_LONG);
         }else {
-            showToast(getString(R.string.set_dev_config_failed) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.set_dev_config_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
     }
 
