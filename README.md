@@ -28,12 +28,6 @@ dependencies {
 ```
 repositories {
     maven { url 'https://repo.jftechsoft.com/repository/maven-releases/' }
-    maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
-    maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' } // jcenter mirror repository
-    maven { url 'https://jitpack.io' }
-    google()
-    mavenLocal()
-    mavenCentral()
 }
 ```
 
