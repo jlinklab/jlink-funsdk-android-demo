@@ -46,13 +46,22 @@ public class UserRegisterPresenter extends XMBasePresenter<XMAccountManager> imp
     /* Send the CAPTCHA to the user's phone */
     @Override
     public boolean phoneMsg(String userName, String phoneNo) {//Send code by phone
-        return manager.sendPhoneCodeForRegister(userName, phoneNo, this);
+        return manager.sendPhoneCodeForRegister(userName, "+86:" + phoneNo, this);
     }
 
-    /*通过电话号码进行注册*/
-    /* Register by phone number */
+
+
+    /***
+     *  通过电话号码进行注册
+     *  Register by phone number
+     * @param userName 账号用户名
+     * @param passWord 账号密码
+     * @param verifyCode 手机验证码
+     * @param phoneNo 手机号（+86:186XXXXXXX）
+     * @return
+     */
     public boolean registerPhone(String userName, String passWord, String verifyCode, String phoneNo) {//Mobile phone number registered
-        return manager.registerByPhoneNo(userName, passWord, verifyCode, phoneNo, this);
+        return manager.registerByPhoneNo(userName, passWord, verifyCode, "+86:" + phoneNo, this);
     }
 
     /*通过邮箱进行注册*/

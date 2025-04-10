@@ -16,6 +16,7 @@ import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
 import com.utils.PathUtils;
 import com.xm.activity.base.XMBasePresenter;
+import com.xm.base.code.ErrorCodeManager;
 
 import java.io.File;
 

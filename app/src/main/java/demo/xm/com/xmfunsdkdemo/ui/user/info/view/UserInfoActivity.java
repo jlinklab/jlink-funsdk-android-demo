@@ -1,6 +1,7 @@
 package demo.xm.com.xmfunsdkdemo.ui.user.info.view;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 
 import com.manager.db.DevDataCenter;
 import com.xm.activity.base.XMBaseActivity;
+import com.xm.base.code.ErrorCodeManager;
+import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.XTitleBar;
 
 import demo.xm.com.xmfunsdkdemo.R;
@@ -36,6 +39,7 @@ public class UserInfoActivity extends DemoBaseActivity<UserInfoPresenter> implem
 
     private TextView tvUserPhone;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +60,8 @@ public class UserInfoActivity extends DemoBaseActivity<UserInfoPresenter> implem
         tvUserEmail = findViewById(R.id.tv_user_email);
         tvUserPhone = findViewById(R.id.tv_user_phone);
 
-        Button btnLogout = (Button) findViewById(R.id.btn_user_logout);
-        btnLogout.setOnClickListener(this);
+        findViewById(R.id.btn_user_logout).setOnClickListener(this);
+        findViewById(R.id.btn_delete_account).setOnClickListener(this);
     }
 
     private void initData() {
@@ -113,15 +117,47 @@ public class UserInfoActivity extends DemoBaseActivity<UserInfoPresenter> implem
     }
 
     @Override
+    public void onDeleteAccountResult(boolean isSuccess, int errorId) {
+        hideWaitDialog();
+        if (isSuccess) {
+            showToast(getString(R.string.delete_account_s), Toast.LENGTH_LONG);
+            tryToLogout();
+        } else {
+            showToast(getString(R.string.delete_account_f) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
+        }
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
     public UserInfoPresenter getPresenter() {
         return new UserInfoPresenter(this);
     }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_user_logout) {
             showWaitDialog();
             tryToLogout();
+        } else if (view.getId() == R.id.btn_delete_account) {
+            //Delete Account
+            XMPromptDlg.onShow(this, getString(R.string.is_sure_delete_account), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showWaitDialog();
+                    presenter.deleteAccount();
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
         }
     }
 }

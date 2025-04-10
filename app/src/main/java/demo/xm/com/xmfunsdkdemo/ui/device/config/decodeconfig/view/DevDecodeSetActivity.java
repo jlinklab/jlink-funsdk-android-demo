@@ -21,6 +21,7 @@ import com.lib.FunSDK;
 import com.lib.SDKCONST;
 import com.lib.sdk.bean.EncodeCapabilityBean;
 import com.lib.sdk.bean.SimplifyEncodeBean;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.widget.XTitleBar;
 
 import demo.xm.com.xmfunsdkdemo.R;
@@ -176,7 +177,7 @@ public class DevDecodeSetActivity extends BaseConfigActivity<DevDecodeSetPresent
     public void onGetEncodeConfigResult(boolean isSuccess, int errorId) {
         hideWaitDialog();
         if (!isSuccess) {
-            showToast(getString(R.string.get_dev_config_failed) + ":" + errorId, Toast.LENGTH_SHORT);
+            showToast(getString(R.string.get_dev_config_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_SHORT);
             finish();
         }
     }
@@ -209,7 +210,7 @@ public class DevDecodeSetActivity extends BaseConfigActivity<DevDecodeSetPresent
                 spSubVoice.setSelected(simplifyEncodeBean.ExtraFormat.AudioEnable);
             }
         } else {
-            showToast(getString(R.string.get_dev_config_failed) + ":" + errorId, Toast.LENGTH_SHORT);
+            showToast(getString(R.string.get_dev_config_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_SHORT);
         }
     }
 
