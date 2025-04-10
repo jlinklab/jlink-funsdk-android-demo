@@ -13,6 +13,7 @@ import com.lib.FunSDK;
 import com.lib.sdk.struct.SDBDeviceInfo;
 import com.manager.db.XMDevInfo;
 import com.xm.activity.base.XMBaseActivity;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.widget.XTitleBar;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class DevLanConnectActivity extends DemoBaseActivity<DevLanConnectPresent
         if (isSuccess) {
             turnToActivity(DevListActivity.class);
         }else {
-            showToast(getString(R.string.Add_Dev_Failed) + ":" + errorId,Toast.LENGTH_LONG);
+            showToast(getString(R.string.Add_Dev_Failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId),Toast.LENGTH_LONG);
         }
     }
 

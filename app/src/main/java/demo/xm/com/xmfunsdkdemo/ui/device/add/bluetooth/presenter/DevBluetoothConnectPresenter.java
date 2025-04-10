@@ -92,7 +92,7 @@ public class DevBluetoothConnectPresenter extends XMBasePresenter<AccountManager
      */
     public void responseReceiveConnectWiFiResult(String mac, boolean isSuccess) {
         StringBuilder flameContent = new StringBuilder();
-        flameContent.append(isSuccess ? "01" : "00");//1表示成功 0表示失败
+        flameContent.append("01");//1表示数据成功 0表示数据接收失败
         StringBuilder sendData = new StringBuilder();
         String flameHeaderStr = combineFlameHeader("02", APP_RESPONSE, DMS_BY_BLE, NO_ENCRYPT_BINARY);//帧头
         sendData.append(flameHeaderStr);

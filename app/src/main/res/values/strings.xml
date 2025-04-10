@@ -949,4 +949,9 @@
     <string name="router_pwd_error_tips">The router password is incorrect. Please enter the correct router password.</string>
     <string name="service_name">service_name</string>
     <string name="aids_description"></string>
+    <string name="delete_account">Delete Account</string>
+    <string name="please_input_code">Please Input Code</string>
+    <string name="delete_account_s">Delete Account Success</string>
+    <string name="delete_account_f">Delete Account Failed</string>
+    <string name="is_sure_delete_account">Is sure delete account？</string>
 </resources>

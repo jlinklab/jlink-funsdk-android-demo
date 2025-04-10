@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.lib.EUIMSG;
 import com.lib.sdk.bean.StringUtils;
 import com.xm.activity.base.XMBaseActivity;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.widget.XTitleBar;
 
 import org.json.JSONObject;
@@ -221,7 +222,7 @@ public class UserForgetPwdActivity extends DemoBaseActivity<UserForgetPwdPresent
             }
         } else {
             isVerifyCodeConfirmed = false;
-            showToast("" + presenter.getErrorId(), Toast.LENGTH_LONG);
+            showToast("" + ErrorCodeManager.getSDKStrErrorByNO(presenter.getErrorId()), Toast.LENGTH_LONG);
         }
     }
 
@@ -280,7 +281,7 @@ public class UserForgetPwdActivity extends DemoBaseActivity<UserForgetPwdPresent
             if (!presenter.requestResetPasswByEmail(email, newPwd)) {
                 showToast(getString(R.string.guide_message_error_call), Toast.LENGTH_LONG);
             }
-        //通过手机修改密码
+            //通过手机修改密码
         } else {
             String phone = phoneEdit.getText().toString().trim();
             if (!presenter.requestResetPasswByPhone(phone, newPwd)) {

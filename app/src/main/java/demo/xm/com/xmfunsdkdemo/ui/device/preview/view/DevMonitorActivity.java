@@ -75,6 +75,7 @@ import com.manager.device.media.attribute.PlayerAttribute;
 import com.manager.device.media.monitor.MonitorManager;
 import com.utils.XUtils;
 import com.video.opengl.GLSurfaceView20;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.linke.face.FaceFeature;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.manager.AutoHideManager;
@@ -688,7 +689,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                     }
                 });
             } else if (errorId < 0) {
-                showToast(getString(R.string.open_video_f) + errorId, Toast.LENGTH_LONG);
+                showToast(getString(R.string.open_video_f) + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
             }
         }
     }
@@ -880,7 +881,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                 sbVideoScale.setVisibility(VISIBLE);
             }
         } else {
-            showToast(getString(R.string.get_dev_ability_failed) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.get_dev_ability_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
 
         //APP软件变倍功能
@@ -977,7 +978,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                     }
                 }, false);
             } else if (errorId < 0) {
-                showToast(getString(R.string.open_video_f) + errorId, Toast.LENGTH_LONG);
+                showToast(getString(R.string.open_video_f) + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
             }
         }
 
@@ -1569,7 +1570,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
                             @Override
                             public void onFailed(String devId, int msgId, String jsonName, int errorId) {
-                                showToast(getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG);
+                                showToast(getString(R.string.libfunsdk_operation_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
                             }
                         });
                     }
@@ -1595,7 +1596,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
                                         @Override
                                         public void onFailed(int msgId, int errorId) {
-                                            showToast(getString(R.string.delete_f) + ":" + errorId, Toast.LENGTH_LONG);
+                                            showToast(getString(R.string.delete_f) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
                                         }
 
                                         @Override
@@ -1608,7 +1609,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
                             @Override
                             public void onFailed(String devId, int msgId, String jsonName, int errorId) {
-                                showToast(getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG);
+                                showToast(getString(R.string.libfunsdk_operation_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
                             }
                         });
                     }
@@ -2057,7 +2058,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         if (isSuccess) {
             showToast(getString(R.string.libfunsdk_operation_success), Toast.LENGTH_LONG);
         } else {
-            showToast(getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.libfunsdk_operation_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
     }
 
@@ -2066,7 +2067,7 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         if (isSuccess) {
             showToast(getString(R.string.libfunsdk_operation_success), Toast.LENGTH_LONG);
         } else {
-            showToast(getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.libfunsdk_operation_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
 
         hideWaitDialog();

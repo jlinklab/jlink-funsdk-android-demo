@@ -34,6 +34,7 @@ import com.manager.device.DeviceManager;
 import com.manager.device.config.PwdErrorManager;
 import com.utils.XMWifiManager;
 import com.xm.activity.base.XMBaseActivity;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.XTitleBar;
 
@@ -215,7 +216,7 @@ public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> impl
             finish();
         } else {
             hideWaitDialog();
-            showToast(getString(R.string.user_register_login_fail) + ":" + presenter.getErrorId(), Toast.LENGTH_LONG);
+            showToast(getString(R.string.user_register_login_fail) + ":" + ErrorCodeManager.getSDKStrErrorByNO(presenter.getErrorId()), Toast.LENGTH_LONG);
 
         }
     }

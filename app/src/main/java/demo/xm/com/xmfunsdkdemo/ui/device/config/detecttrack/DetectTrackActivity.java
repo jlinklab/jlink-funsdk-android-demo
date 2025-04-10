@@ -12,6 +12,7 @@ import com.lib.SDKCONST;
 import com.lib.sdk.bean.PtzCtrlInfoBean;
 import com.manager.device.DeviceManager;
 import com.manager.device.media.monitor.MonitorManager;
+import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.XTitleBar;
 import com.xm.ui.widget.listselectitem.extra.adapter.ExtraSpinnerAdapter;
@@ -165,7 +166,7 @@ public class DetectTrackActivity extends BaseConfigActivity<DetectTrackPresenter
                 lsiSensitivity.setRightText(spSensitivity.getSelectedName());
             }
         } else {
-            showToast(getString(R.string.get_dev_config_failed) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.get_dev_config_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
             finish();
         }
     }
@@ -176,7 +177,7 @@ public class DetectTrackActivity extends BaseConfigActivity<DetectTrackPresenter
         if (isSuccess) {
             showToast(getString(R.string.set_dev_config_success), Toast.LENGTH_LONG);
         } else {
-            showToast(getString(R.string.set_dev_config_failed) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.set_dev_config_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
     }
 
@@ -186,7 +187,7 @@ public class DetectTrackActivity extends BaseConfigActivity<DetectTrackPresenter
         if (isSuccess) {
             showToast(getString(R.string.libfunsdk_operation_success), Toast.LENGTH_LONG);
         } else {
-            showToast(getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG);
+            showToast(getString(R.string.libfunsdk_operation_failed) + ":" + ErrorCodeManager.getSDKStrErrorByNO(errorId), Toast.LENGTH_LONG);
         }
     }
 
