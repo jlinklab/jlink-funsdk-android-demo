@@ -19,7 +19,7 @@ defaultConfig {
 
 dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation 'io.github.xmcamera:libxmfunsdk:4.7' //或者直接从Demo中获取aar文件加载
+    implementation 'com.jftechsoft.funsdk:funsdk:5.0.0a' //或者直接从Demo中获取aar文件加载
     implementation 'io.github.xmcamera:uilibrary:2.1' //或者直接从Demo中获取aar文件加载
     implementation 'com.alibaba:fastjson:1.1.72.android'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
@@ -27,7 +27,12 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
 }
 ```
-![](https://obs-xm-pub.obs.cn-south-1.myhuaweicloud.com/docs/20231216/1702713893223.png)
+
+```
+repositories {
+    maven { url 'https://repo.jftechsoft.com/repository/maven-releases/'}
+}
+```
 
 
 ## 2. 初始化
