@@ -2,6 +2,7 @@ package demo.xm.com.xmfunsdkdemo.ui.device.add.list.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.xm.ui.widget.XTitleBar;
 import com.xm.ui.widget.dialog.EditDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import demo.xm.com.xmfunsdkdemo.R;
@@ -52,6 +54,7 @@ import io.reactivex.annotations.Nullable;
 
 import static com.manager.account.share.ShareInfo.SHARE_NOT_YET_ACCEPT;
 import static com.manager.db.Define.LOGIN_BY_LOCAL;
+import static com.manager.device.media.MediaManager.PLAY_CLOUD_PLAYBACK;
 import static com.xm.ui.dialog.PasswordErrorDlg.INPUT_TYPE_DEV_USER_PWD;
 
 
@@ -341,6 +344,21 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
         String devId = presenter.getDevId(position);
         presenter.setDevId(devId);
         turnToActivity(CloudStateActivity.class);
+    }
+
+    /**
+     * 跳转到云存储回放
+     * @param position
+     */
+    @Override
+    public void onTurnToCloudPlayBack(int position) {
+        String devId = presenter.getDevId(position);
+        presenter.setDevId(devId);
+        Intent intent = new Intent(this, DevRecordActivity.class);
+        intent.putExtra("devId", presenter.getDevId());
+        intent.putExtra("searchTime", Calendar.getInstance().getTimeInMillis());
+        intent.putExtra("recordType", PLAY_CLOUD_PLAYBACK);
+        startActivity(intent);
     }
 
     /**

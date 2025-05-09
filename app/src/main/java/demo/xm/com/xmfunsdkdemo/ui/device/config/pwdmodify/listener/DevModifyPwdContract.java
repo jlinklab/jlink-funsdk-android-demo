@@ -6,10 +6,13 @@ package demo.xm.com.xmfunsdkdemo.ui.device.config.pwdmodify.listener;
  */
 public class DevModifyPwdContract {
     public interface IDevModifyPwdView {
-        void onUpdateView(String result);
+        void onChangePwdResult(int errorId);
+        void onChangeUserNameResult(int errorId);
+        void onGetDevUserNameResult(String oldUserName);
     }
 
     public interface IDevModifyPwdPresenter {
         void modifyDevPwd(String oldPwd,String newPwd);
+
     }
 }
