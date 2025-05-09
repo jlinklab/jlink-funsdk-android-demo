@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/xm_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -22,4 +25,115 @@
         uilib:ImageRight1="@mipmap/icon_next"
         uilib:ImageRight2="@mipmap/icon_next"
         uilib:RightClickable="false"/>
+
+    <View
+        android:background="@color/bg_gray"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+
+
+
+    <!--PIR移动侦测-->
+    <LinearLayout
+        android:id="@+id/ll_pir_function"
+        style="@style/ThemeLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <!--PIR移动侦测开关-->
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/detection_alarm"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:RightClickable="false"
+            app:ShowSwitch="true"
+            app:ShowTopLine="false"
+            app:Title="TR_PIR_Detection" />
+
+        <LinearLayout
+            android:id="@+id/detection_alarm_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--PIR灵敏度-->
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/detection_sensitive"
+                style="@style/baseListSelectItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:Cap=""
+                app:ExtraMode="Spinner"
+                app:ImageRight2="@drawable/icon_show"
+                app:Title="TR_Pir_Sensitivity" />
+
+
+            <!--人形检测开关-->
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/lsi_detect_switch"
+                style="@style/baseListSelectItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:RightClickable="false"
+                app:ShowSwitch="true"
+                app:Title="TR_Human_Detection_Security"
+                tools:visibility="visible" />
+
+            <!-- 侦测时间段 -->
+            <com.xm.ui.widget.ListSelectItem
+                android:id="@+id/detection_schedule"
+                style="@style/baseListSelectItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:Cap=""
+                app:RightClickable="false"
+                app:ShowTopLine="true"
+                app:Title="TR_Detection_Schedule" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <View
+        android:background="@color/bg_gray"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+
+    <LinearLayout
+        style="@style/ThemeLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--录像开关-->
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/lsi_record_enable"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:RightClickable="false"
+            app:ShowSwitch="true"
+            app:ShowTopLine="false"
+            app:Title="ad_record_mode" />
+
+        <!--录像时间-->
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/lsi_record_duration"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:Cap=""
+            app:ExtraMode="Spinner"
+            app:ItemTitleColor="@color/default_normal_text_color"
+            app:ShowTopLine="true"
+            app:Title="TR_Recording_Duration"
+            tools:visibility="visible" />
+    </LinearLayout>
 </LinearLayout>
