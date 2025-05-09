@@ -60,7 +60,7 @@
     <string name="password_checker_short">短</string>
     <string name="password_checker_long">长</string>
 
-    <string name="user_change_password">确认更改</string>
+    <string name="user_change_password">确认更改设备密码</string>
     <string name="user_change_password_hint_username">帐号 6位以上字母/数字/符号</string>
     <string name="user_change_password_hint_old_password">旧密码</string>
     <string name="user_change_password_hint_new_password">新密码 6-16位数字/字母/符号</string>
@@ -125,7 +125,7 @@
     <string name="device_setup_expert">高级配置</string>
     <string name="device_setup_storage">设备存储管理</string>
     <string name="device_setup_camerafisheye">鱼眼灯泡控制</string>
-    <string name="device_setup_change_password">密码修改</string>
+    <string name="device_setup_change_password">设备用户名和密码修改</string>
     <string name="device_setup_hint_encode_config_alarm">在这里，你可以配置分辨率，帧数，音频，视频</string>
     <string name="device_setup_hint_alarm_config_alarm">设备支持各种报警触发和联动，您可以在这里进行配置</string>
     <string name="device_setup_hint_record_config_alarm">该设置允许您改变录像方式，关掉音频，改变文件长度</string>
@@ -951,4 +951,7 @@
     <string name="delete_account_s">删除账号成功</string>
     <string name="delete_account_f">删除账号失败</string>
     <string name="is_sure_delete_account">确定要删除账号？</string>
+    <string name="user_change_username">确认更改设备用户名</string>
+    <string name="input_old_device_user_name">请输入老的设备用户名</string>
+    <string name="input_new_device_username">请输入新的设备用户名</string>
 </resources>
