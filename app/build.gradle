@@ -94,5 +94,5 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
-    implementation 'com.jftechsoft.funsdk:funsdk:5.0.0d'
+    implementation 'com.jftechsoft.funsdk:funsdk:5.0.0c'
 }

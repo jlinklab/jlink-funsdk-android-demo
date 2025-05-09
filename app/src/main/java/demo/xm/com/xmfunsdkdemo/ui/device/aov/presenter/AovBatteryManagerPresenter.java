@@ -289,6 +289,9 @@ public class AovBatteryManagerPresenter extends XMBasePresenter<DeviceManager> i
         mDevConfigManager.getDevConfig(mainConfigInfo);
     }
 
+    /**
+     * 显示云事件消息条数
+     */
     public void getStorageInfoCountString() {
         startCalendar = Calendar.getInstance();
         startCalendar.set(Calendar.HOUR_OF_DAY, 0);

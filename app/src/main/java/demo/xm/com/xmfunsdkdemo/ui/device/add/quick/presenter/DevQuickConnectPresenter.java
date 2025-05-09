@@ -146,9 +146,9 @@ public class DevQuickConnectPresenter extends XMBasePresenter<DeviceManager> imp
                 } else {
                     if ((((ScanResult) result).frequency > 4900 && ((ScanResult) result).frequency < 5900)) {
                         Toast.makeText(iDevQuickConnectView.getContext(), FunSDK.TS("Frequency_support"), Toast.LENGTH_LONG).show();
-                    } else {
-                        iDevQuickConnectView.onUpdateView();
                     }
+
+                    iDevQuickConnectView.onUpdateView();
                 }
             }
         });

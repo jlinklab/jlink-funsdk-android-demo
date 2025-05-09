@@ -230,6 +230,8 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         Button btnTurnToAlarmMsg;//跳转到报警消息  jump to alarm message
         Button btnTurnToPushSet;//跳转到推送设置   jump to push Settings
         Button btnTurnToCloudService;//跳转到云服务 jump to the cloud service
+
+        Button btnTurnToCloudPlayBack;//跳转到云回放 jump to the cloud playback
         Button btnModifyDevName;//修改设备名称  change the device name
         Button btnTurnToShareManage;//跳转到分享管理  go to Share Management
         Button btnLocalDevUserPwd;//本地设备登录名和密码 local device login name and password
@@ -302,6 +304,19 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
             });
 
             btnTurnToCloudService.setVisibility(DevDataCenter.getInstance().isLoginByAccount() ? View.VISIBLE : View.GONE);
+
+            btnTurnToCloudPlayBack = itemView.findViewById(R.id.btn_turn_to_cloud_playback);
+            btnTurnToCloudPlayBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemDevClickListener != null) {
+                        onItemDevClickListener.onTurnToCloudPlayBack(getAdapterPosition());
+                    }
+                }
+            });
+
+            btnTurnToCloudPlayBack.setVisibility(DevDataCenter.getInstance().isLoginByAccount() ? View.VISIBLE : View.GONE);
+
             btnModifyDevName = itemView.findViewById(R.id.btn_modify_dev_name);
             btnModifyDevName.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -507,6 +522,12 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         void onTurnToAlarmMsg(int position);
 
         void onTurnToCloudService(int position);
+
+        /**
+         * 跳转到云存储回放
+         * @param position
+         */
+        void onTurnToCloudPlayBack(int position);
 
         void onTurnToPushSet(int position);
 

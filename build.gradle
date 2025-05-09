@@ -37,8 +37,6 @@ allprojects {
         flatDir {
             dirs 'libs'
         }
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' } // jcenter镜像仓库
     }
 }
 

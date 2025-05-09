@@ -7,6 +7,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.manager.db.DevDataCenter;
+import com.manager.db.XMDevInfo;
+import com.xm.ui.widget.XMEditText;
+
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.BaseConfigActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.pwdmodify.listener.DevModifyPwdContract;
@@ -19,8 +23,13 @@ import io.reactivex.annotations.Nullable;
  */
 public class DevModifyPwdActivity extends BaseConfigActivity<DevModifyPwdPresenter> implements DevModifyPwdContract.IDevModifyPwdView {
     private Button btnOk;
-    private EditText etOldPwd;
-    private EditText etNewPwd;
+    private Button btnChangeUserNameOk;
+    private XMEditText etOldPwd;
+    private XMEditText etNewPwd;
+
+    private XMEditText etOldUserName;
+    private XMEditText etNewUserName;
+
     @Override
     public DevModifyPwdPresenter getPresenter() {
         return new DevModifyPwdPresenter(this);
@@ -44,22 +53,49 @@ public class DevModifyPwdActivity extends BaseConfigActivity<DevModifyPwdPresent
         etOldPwd = findViewById(R.id.et_modify_pwd_old_psw);
         etNewPwd = findViewById(R.id.et_modify_pwd_new_psw);
 
+
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showWaitDialog();
-                presenter.modifyDevPwd(etOldPwd.getText().toString().trim(),etNewPwd.getText().toString().trim());
+                presenter.modifyDevPwd(etOldPwd.getEditText(), etNewPwd.getEditText());
+            }
+        });
+
+        btnChangeUserNameOk = findViewById(R.id.btn_modify_username_submit);
+        etOldUserName = findViewById(R.id.et_modify_username_old_psw);
+        etNewUserName = findViewById(R.id.et_modify_username_new_psw);
+        btnChangeUserNameOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showWaitDialog();
+                presenter.modifyDevUserName(etOldUserName.getEditText(), etNewUserName.getEditText());
             }
         });
     }
 
     private void initData() {
-
+        XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo(presenter.getDevId());
+        etOldPwd.setEditText(xmDevInfo.getDevPassword());
     }
 
     @Override
-    public void onUpdateView(String result) {
+    public void onChangePwdResult(int errorId) {
         hideWaitDialog();
-        Toast.makeText(this,result,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, errorId == 0 ? getString(R.string.libfunsdk_operation_success) : getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG).show();
+        etOldPwd.setEditText(etNewPwd.getEditText());
+    }
+
+    @Override
+    public void onChangeUserNameResult(int errorId) {
+        hideWaitDialog();
+        Toast.makeText(this, errorId == 0 ? getString(R.string.libfunsdk_operation_success) : getString(R.string.libfunsdk_operation_failed) + ":" + errorId, Toast.LENGTH_LONG).show();
+        etOldUserName.setEditText(etNewUserName.getEditText());
+    }
+
+
+    @Override
+    public void onGetDevUserNameResult(String oldUserName) {
+        etOldUserName.setEditText(oldUserName);
     }
 }
