@@ -1881,6 +1881,19 @@ confirm=确定
 not_support_aov_ability=不支持aov能力
 
 
+TR_Pir_Sensitivity=PIR灵敏度
+TR_Human_Detection_Security=人形侦测
+TR_Detection_Schedule=侦测时间段设置
+ad_record_mode=录像开关
+TR_Recording_Duration=录像时间
+PIR_Detect_Time_Period=徘徊检测报警时间设置
+Start_End_Time=起止时间
+Repeat=重复
+every_day=每天
+set_finish=结束时间
+set_start=起始时间
+Time_Slot=时间段
+
 
 
 

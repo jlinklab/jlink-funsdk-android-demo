@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/taskdate_rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rl_week"
+        android:layout_width="match_parent"
+        android:layout_height="420dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white" >
+
+        <ListView
+            android:id="@+id/lv_week"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/rl_control"
+            android:divider="#efeff5"
+            android:dividerHeight="1px"
+            android:footerDividersEnabled="true"
+            android:scrollbars="none" />
+
+        <RelativeLayout
+            android:id="@+id/rl_control"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_height"
+            android:layout_alignParentBottom="true" >
+
+            <TextView
+                android:id="@+id/split"
+                android:layout_width="0.5dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:background="#efeff5"/>
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/split"
+                android:layout_toStartOf="@+id/split"
+                android:gravity="center"
+                android:text="@string/common_cancel"
+                android:textColor="@color/login_page_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_sure"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/split"
+                android:layout_toEndOf="@+id/split"
+                android:gravity="center"
+                android:text="@string/common_confirm"
+                android:textColor="@color/theme_color"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

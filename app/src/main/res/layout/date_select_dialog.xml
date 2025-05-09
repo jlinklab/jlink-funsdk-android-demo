@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--这是年-月-日-时-分选择器
+参考自light_time_selct.xml时-分选择器-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#20000000"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="245dp"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="5dp"
+        app:cardPreventCornerOverlap="false">
+
+        <RelativeLayout
+            android:id="@+id/timepicker_rl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/numpicker_rl"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_above="@+id/split"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignTop="@+id/numerPicker_ll"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20dp"
+                    android:paddingRight="1dp"
+                    android:paddingEnd="1dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="end|top"
+                        android:text="sYear"
+                        android:textColor="@color/theme_color"
+                        android:textSize="@dimen/too_small_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="end|top"
+                        android:text="sMonth"
+                        android:textColor="@color/theme_color"
+                        android:textSize="@dimen/too_small_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="end|top"
+                        android:text="sDay"
+                        android:textColor="@color/theme_color"
+                        android:textSize="@dimen/too_small_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="end|top"
+                        android:text="sHour"
+                        android:textColor="@color/theme_color"
+                        android:textSize="@dimen/too_small_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="end|top"
+                        android:text="sMin"
+                        android:textColor="@color/theme_color"
+                        android:textSize="@dimen/too_small_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/numerPicker_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="10dp"
+                    android:weightSum="5">
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/theme_color" />
+
+
+                    <demo.xm.com.xmfunsdkdemo.ui.widget.NumberPicker
+                        android:id="@+id/numpicker_y"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/NPWidget.Holo.NumberPicker"/>
+
+                    <TextView
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="#efeff5" />
+
+                    <demo.xm.com.xmfunsdkdemo.ui.widget.NumberPicker
+                        android:id="@+id/numpicker_Mo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/NPWidget.Holo.NumberPicker"/>
+
+                    <TextView
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="#efeff5" />
+
+                    <demo.xm.com.xmfunsdkdemo.ui.widget.NumberPicker
+                        android:id="@+id/numpicker_d"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/NPWidget.Holo.NumberPicker"/>
+
+                    <TextView
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="#efeff5" />
+
+                    <demo.xm.com.xmfunsdkdemo.ui.widget.NumberPicker
+                        android:id="@+id/numpicker_h"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/NPWidget.Holo.NumberPicker"/>
+
+                    <TextView
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="#efeff5" />
+
+                    <demo.xm.com.xmfunsdkdemo.ui.widget.NumberPicker
+                        android:id="@+id/numpicker_m"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/NPWidget.Holo.NumberPicker"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/split"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_above="@+id/control_ll"
+                android:background="#efeff5" />
+
+            <LinearLayout
+                android:id="@+id/control_ll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_height"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/tv_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.99"
+                    android:gravity="center"
+                    android:text="@string/common_cancel"
+                    android:textColor="@color/hint_color"
+                    android:textSize="16sp"
+                    android:background="@drawable/fill_gray_selector"/>
+
+                <TextView
+                    android:id="@+id/tv_sure"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.99"
+                    android:gravity="center"
+                    android:text="@string/common_confirm"
+                    android:textColor="@color/theme_color"
+                    android:textSize="16sp"
+                    android:background="@drawable/fill_gray_selector"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

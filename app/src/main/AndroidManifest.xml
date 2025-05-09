@@ -284,6 +284,17 @@
             android:name=".ui.device.config.idr.view.IDRSettingActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.device.config.idr.view.DetectionDurationSetActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.device.config.idr.view.StartEndTimeSetActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.device.config.idr.view.WeekSelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.device.add.bluetooth.DevBluetoothConnectActivity"
             android:screenOrientation="portrait" />
         <activity

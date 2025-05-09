@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="15dp"
+    android:paddingLeft="30dp"
+    android:paddingStart="30dp"
+    android:paddingRight="30dp"
+    android:paddingEnd="30dp"
+    android:paddingTop="15dp">
+
+    <ImageView
+        android:id="@+id/iv_switch"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:scaleType="center"
+        android:src="@drawable/correct_nor" />
+
+    <!--
+    <com.ui.controls.ButtonCheck
+        android:id="@+id/select_date"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        uilib:NormalBkg="@drawable/correct_nor"
+        uilib:SelectedBkg="@drawable/correct_sel"
+        uilib:TextNormalColor="@color/hint_color"
+        uilib:TextSelectedColor="@color/hint_color" >
+      </com.ui.controls.ButtonCheck> -->
+
+
+
+    <TextView
+        android:id="@+id/tv_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:text="周三"
+        android:textColor="@color/gray"
+        android:textSize="16sp" />
+
+</RelativeLayout>
