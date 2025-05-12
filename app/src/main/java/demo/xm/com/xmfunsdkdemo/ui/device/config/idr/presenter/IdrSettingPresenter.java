@@ -86,8 +86,55 @@ public class IdrSettingPresenter extends XMBasePresenter<DeviceManager> implemen
         //PIR报警
         checkSupportPirAlarmDevAbility();
 
+
+        //检查是否支持低功耗长时间报警录像
+        checkSupportLowPowerLongAlarmRecord();
+
         iIdrSettingView.onShowWaitDialog();
     }
+
+
+
+
+
+    /**
+     * 检查是否支持低功耗长时间报警录像
+     */
+    public void checkSupportLowPowerLongAlarmRecord(){
+        DeviceManager.getInstance().getDevAllAbility(getDevId(), new DeviceManager.OnDevManagerListener<SystemFunctionBean>() {
+            /**
+             * 成功回调
+             * @param devId         设备类型
+             * @param operationType 操作类型
+             */
+            @Override
+            public void onSuccess(String devId, int operationType, SystemFunctionBean result) {
+                if (result != null && result.OtherFunction!=null) {
+                    if(result.OtherFunction.SupportLowPowerLongAlarmRecord){
+                        iIdrSettingView.initPirRecordDuration(true);
+                        return;
+                    }
+                }
+                iIdrSettingView.initPirRecordDuration(false);
+            }
+
+            /**
+             * 失败回调
+             *
+             * @param devId    设备序列号
+             * @param msgId    消息ID
+             * @param jsonName
+             * @param errorId  错误码
+             */
+            @Override
+            public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+                //获取失败，通过errorId分析具体原因
+                iIdrSettingView.initPirRecordDuration(false);
+            }
+        });
+
+    }
+
 
 
 
