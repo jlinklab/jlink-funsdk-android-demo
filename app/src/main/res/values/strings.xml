@@ -62,7 +62,7 @@
     <string name="password_checker_short"> short</string>
     <string name="password_checker_long"> long</string>
 
-    <string name="user_change_password"> confirm the change</string>
+    <string name="user_change_password"> confirm the change device password</string>
     <string name="user_change_password_hint_username"> account number more than 6 letters/numbers/symbols</string>
     <string name="user_change_password_hint_old_password"> old password</string>
     <string name="user_change_password_hint_new_password"> new password 6–16 digits/letters/symbols</string>
@@ -127,7 +127,7 @@
     <string name="device_setup_expert"> advanced configuration </string>
     <string name="device_setup_storage"> device storage management </string>
     <string name="device_setup_camerafisheye"> fisheye bulb control </string>
-    <string name="device_setup_change_password"> password modification </string>
+    <string name="device_setup_change_password">Change Device UserName And Password</string>
     <string name="device_setup_hint_encode_config_alarm"> here, you can configure the resolution, number of frames, audio, video</string>
     <string name="device_setup_hint_alarm_config_alarm"> The device supports various alarm triggering and linkage, you can configure it here</string>
     <string name="device_setup_hint_record_config_alarm"> This setting allows you to change the recording mode, turn off the audio, and change the file length</string>
@@ -954,4 +954,7 @@
     <string name="delete_account_s">Delete Account Success</string>
     <string name="delete_account_f">Delete Account Failed</string>
     <string name="is_sure_delete_account">Is sure delete account？</string>
+    <string name="user_change_username">Confirm Change Device Username</string>
+    <string name="input_old_device_user_name">input  old device username</string>
+    <string name="input_new_device_username">input new device  username</string>
 </resources>

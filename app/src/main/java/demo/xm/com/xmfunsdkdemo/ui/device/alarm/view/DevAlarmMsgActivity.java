@@ -27,9 +27,19 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.lib.FunSDK;
+import com.lib.MsgContent;
 import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.alarm.AlarmInfo;
+import com.lib.sdk.bean.cloudmedia.CloudMediaFileInfoBean;
+import com.lib.sdk.struct.H264_DVR_FILE_DATA;
+import com.manager.device.DeviceManager;
+import com.manager.device.media.MediaManager;
+import com.manager.device.media.attribute.PlayerAttribute;
+import com.manager.device.media.playback.CloudRecordManager;
+import com.manager.device.media.playback.DevRecordManager;
 import com.manager.image.BaseImageManager;
+import com.manager.image.CloudImageManager;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 import com.smarteist.autoimageslider.SliderViewAdapter;
@@ -61,6 +71,7 @@ import io.reactivex.annotations.Nullable;
 public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> implements DevAlarmContract.IDevAlarmView {
     private RecyclerView recyclerView;
     private AlarmMsgAdapter alarmMsgAdapter;
+    private CloudRecordManager cloudRecordManager;//云存储回放播放器
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -173,11 +184,73 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
 
     @Override
     public void onTurnToVideo(Calendar searchTime) {
-        Intent intent = new Intent(this, DevRecordActivity.class);
-        intent.putExtra("devId", presenter.getDevId());
-        intent.putExtra("searchTime", searchTime.getTime().getTime());
-        intent.putExtra("recordType", PLAY_CLOUD_PLAYBACK);
-        startActivity(intent);
+        initPlayer();
+        cloudRecordManager.stopPlay();
+
+        //按照报警消息时间点查对应的云视频的话，传入的开始时间要基于报警消息时间-5秒 结束时间要基于报警消息时间+10秒
+        Calendar startCalendar = (Calendar) searchTime.clone();
+        startCalendar.add(Calendar.SECOND, -5);
+
+        Calendar endCalendar = (Calendar) searchTime.clone();
+        endCalendar.add(Calendar.SECOND, +10);
+
+        cloudRecordManager.searchFileByTime(startCalendar, endCalendar);
+    }
+
+    /**
+     * 初始化播放器
+     */
+    private void initPlayer() {
+        if (cloudRecordManager == null) {
+            ViewGroup playView = findViewById(R.id.fl_play_wnd);
+            playView.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams layoutParams = playView.getLayoutParams();
+            layoutParams.width = screenWidth;
+            layoutParams.height = screenWidth * 9 / 16;
+            cloudRecordManager = (CloudRecordManager) DeviceManager.getInstance().createRecordPlayer(playView, presenter.getDevId(), PLAY_CLOUD_PLAYBACK);
+            cloudRecordManager.setOnMediaManagerListener(new MediaManager.OnRecordManagerListener() {
+                @Override
+                public void searchResult(PlayerAttribute playerAttribute, Object data) {
+                    CloudMediaFileInfoBean cloudMediaFileInfoBean = cloudRecordManager.getCloudMediaFiles().fileList.get(0);
+                    Calendar startCalendar = Calendar.getInstance();
+                    startCalendar.setTime(cloudMediaFileInfoBean.getStartTimeByYear());
+
+                    Calendar endCalendar = Calendar.getInstance();
+                    endCalendar.setTime(cloudMediaFileInfoBean.getEndTimeByYear());
+                    cloudRecordManager.startPlay(startCalendar, endCalendar);
+                }
+
+                @Override
+                public void deleteVideoResult(String s, boolean b, int i) {
+
+                }
+
+                @Override
+                public void onMediaPlayState(PlayerAttribute playerAttribute, int i) {
+
+                }
+
+                @Override
+                public void onFailed(PlayerAttribute playerAttribute, int i, int i1) {
+
+                }
+
+                @Override
+                public void onShowRateAndTime(PlayerAttribute playerAttribute, boolean b, String s, long l) {
+
+                }
+
+                @Override
+                public void onVideoBufferEnd(PlayerAttribute playerAttribute, MsgContent msgContent) {
+
+                }
+
+                @Override
+                public void onPlayStateClick(View view) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -324,6 +397,14 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
                     }
                 });
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (cloudRecordManager != null) {
+            cloudRecordManager.release();
         }
     }
 }
