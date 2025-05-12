@@ -45,6 +45,11 @@ public class IdrSettingContract {
          * 隐藏pir报警配置
          */
         void hidePirView();
+
+        /**
+         * 报警录像时长配置
+         */
+        void initPirRecordDuration(boolean isSupportLowPowerLongAlarmRecord);
     }
 
     public interface IIdrSettingPresenter {

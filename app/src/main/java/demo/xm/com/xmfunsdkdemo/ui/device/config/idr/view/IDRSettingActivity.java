@@ -238,7 +238,6 @@ public class IDRSettingActivity extends BaseConfigActivity<IdrSettingPresenter> 
         initPirSensitive();
         mLsiPirDetectionSchedule.setOnClickListener(this);
 
-        initPirRecordDuration();
         mLsiRecordDuration.setOnClickListener(this);
         mLsiRecordEnable.setOnClickListener(this);
     }
@@ -246,12 +245,15 @@ public class IDRSettingActivity extends BaseConfigActivity<IdrSettingPresenter> 
 
 
 
-
-    private void initPirRecordDuration() {
+    /**
+     * 报警录像时长配置
+     */
+    @Override
+    public void initPirRecordDuration(boolean isSupportLowPowerLongAlarmRecord) {
         String[] duration = new String[]{"5" + FunSDK.TS("s"), "10" + FunSDK.TS("s"), "15" + FunSDK.TS("s")};
         String[] duration1 = new String[]{"10" + FunSDK.TS("s"), "20" + FunSDK.TS("s"), "30" + FunSDK.TS("s")};
         mSpPirRecordDuration = mLsiRecordDuration.getExtraSpinner();
-        if (FunSDK.GetDevAbility(presenter.getDevId(), "OtherFunction/SupportLowPowerLongAlarmRecord") > 0) {  // 支持这种能力集的报警录像时间改成 10 20 30
+        if (isSupportLowPowerLongAlarmRecord) {  // 支持这种能力集的报警录像时间改成 10 20 30
             mSpPirRecordDuration.initData(duration1, new Integer[]{10, 20, 30});
         } else {
             mSpPirRecordDuration.initData(duration, new Integer[]{5, 10, 15});
