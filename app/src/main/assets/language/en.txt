@@ -1770,6 +1770,19 @@ confirm=OK
 not_support_aov_ability=Not support aov ability
 
 
+TR_Pir_Sensitivity=PIR Sensitivity
+TR_Human_Detection_Security=Human Detection
+TR_Detection_Schedule=Detection Time Settings
+ad_record_mode=REC Button
+TR_Recording_Duration=Record Time
+PIR_Detect_Time_Period=Loitering Detection Alarm Time Setting
+Start_End_Time=Start/End Time
+Repeat=Repeat
+every_day=Every day
+set_finish=End Time
+set_start=Start Time
+Time_Slot=Period
+
 
 
 

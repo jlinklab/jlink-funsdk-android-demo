@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/xm_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/xb_duration_set"
+        layout="@layout/include_title_layout"/>
+
+    <LinearLayout
+        style="@style/ThemeLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/pir_time_section_one"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            uilib:ImageRight1="@drawable/icon_off"
+            uilib:ImageRight2="@drawable/icon_open"
+            uilib:ShowTopLine="false"
+            uilib:Title="PIR_Detect_Time_Period" />
+
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/pir_start_end_time_one"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            uilib:Cap="00:00-23:59"
+            uilib:Title="Start_End_Time" />
+
+        <com.xm.ui.widget.ListSelectItem
+            android:id="@+id/pir_week_one"
+            style="@style/baseListSelectItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            uilib:Cap="every_day"
+            uilib:Title="Repeat" />
+    </LinearLayout>
+</LinearLayout>

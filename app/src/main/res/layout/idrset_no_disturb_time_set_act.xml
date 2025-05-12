@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/xm_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/dev_set_title"
+        layout="@layout/include_title_layout"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_transparent"
+        android:gravity="center_vertical"
+        android:minHeight="45dp"
+        android:paddingLeft="18dp"
+        android:paddingStart="18dp">
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="18dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/theme_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time_Slot" />
+    </LinearLayout>
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/start_time"
+        style="@style/baseListSelectItemStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        uilib:Cap=""
+        uilib:Title="set_start" />
+
+    <com.xm.ui.widget.ListSelectItem
+        android:id="@+id/end_time"
+        style="@style/baseListSelectItemStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        uilib:Cap=""
+        uilib:Title="set_finish" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_color" />
+
+</LinearLayout>
