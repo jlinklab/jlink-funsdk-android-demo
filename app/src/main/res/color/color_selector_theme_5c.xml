@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--选中：主题色，正常：灰色-->
+    <item android:color="@color/theme_color" android:state_selected="true" />
+    <item android:color="@color/color_5C5C5C" />
+</selector>

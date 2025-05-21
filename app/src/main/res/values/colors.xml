@@ -201,7 +201,11 @@
     <color name="color_f05656">#F05656</color>
     <color name="color_444444">#444444</color>
     <color name="color_F0DFC2">#F0DFC2</color>
-    
+    <color name="color_f9f9fa">#F9F9FA</color>
+    <color name="color_5C5C5C">#5C5C5C</color>
+    <color name="color_F27900">#F27900</color>
+    <color name="color_FEEDE8">#FEEDE8</color>
+    <color name="color_7ECCCCCC">#7ECCCCCC</color>
     
    
 </resources>

@@ -6,6 +6,7 @@ import static android.media.AudioFormat.ENCODING_PCM_8BIT;
 
 import android.content.Context;
 import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -65,6 +66,8 @@ import java.util.Map;
 
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication;
+import demo.xm.com.xmfunsdkdemo.bean.music.MusicCtrlBean;
+import demo.xm.com.xmfunsdkdemo.bean.music.MusicCtrlContent;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.DevMonitorContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.PresetListContract;
 import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
@@ -76,10 +79,11 @@ import static com.lib.EUIMSG.DEV_PTZ_CONTROL;
 import static com.lib.SDKCONST.EDECODE_TYPE.EDECODE_REAL_TIME_STREAM_MOST_REAL;
 import static com.lib.sdk.bean.JsonConfig.CAMERA_PARAM;
 import static com.lib.sdk.bean.JsonConfig.WHITE_LIGHT;
-import static com.manager.db.Define.MEDIA_DATA_TYPE_YUV_NOT_DISPLAY;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_BROADCAST;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_CHN;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_DEV;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 设备预览界面,可以控制播放,停止,码流切换,截图,录制,全屏,信息.
@@ -1871,6 +1875,112 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
 
         // 返回JSON字符串
         return gson.toJson(playViewMap);
+    }
+
+
+
+    //音乐播放器配置
+    public static final String MUSIC_CTRL = "MusicCtrl";
+
+    //保存音乐播放器配置
+
+    public static final String MUSIC_CTRL_SET = "PlayMusicCtrl";
+
+    /**
+     * 请求播放器当前配置
+     */
+    public void requestBabyPlayerConfig() {
+        iDevMonitorView.onShowWaitDialog();
+
+
+        DevConfigInfo mainConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener<String>() {
+            @Override
+            public void onSuccess(String devId, int msgId, String result) {
+
+                iDevMonitorView.onHideWaitDialog();
+                MusicCtrlBean musicCtrlBean = new Gson().fromJson(result, MusicCtrlBean.class);
+                if (musicCtrlBean != null && iDevMonitorView != null){
+                    iDevMonitorView.showMusicPop(musicCtrlBean);
+                }
+
+            }
+
+            @Override
+            public void onFailed(String devId, int msgId, String s1, int errorId) {
+                iDevMonitorView.onHideWaitDialog();
+            }
+        });
+        mainConfigInfo.setJsonName(MUSIC_CTRL);
+        mainConfigInfo.setChnId(-1);
+        devConfigManager.getDevConfig(mainConfigInfo);
+    }
+
+    /**
+     * 更新播放器配置
+     */
+    public void updateMusicConfig(@NotNull MusicCtrlContent musicCtrlBean) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("Name",MUSIC_CTRL_SET);
+        map.put("PlayMusicCtrl",musicCtrlBean);
+        map.put("Ret",100);
+        String result = new Gson().toJson(map);
+        Log.e("tag1","播放器 "+result);
+        DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
+            @Override
+            public void onSuccess(String devId, int msgId, Object result) {
+                Log.e("tag1","修改配置" + result);
+            }
+
+            @Override
+            public void onFailed(String devId, int msgId, String s1, int errorId) {
+                Log.e("tag1","失败" + errorId);
+            }
+        });
+        devConfigInfo.setJsonName(MUSIC_CTRL_SET);
+        devConfigInfo.setChnId(getChnId());
+        devConfigInfo.setJsonData(result);
+        devConfigManager.setDevConfig(devConfigInfo);
+    }
+
+
+    /**
+     * 检查是否支持音乐播放器
+     */
+    public void checkSupportMusicPlay(){
+        DeviceManager.getInstance().getDevAllAbility(getDevId(), new DeviceManager.OnDevManagerListener<SystemFunctionBean>() {
+            /**
+             * 成功回调
+             * @param devId         设备类型
+             * @param operationType 操作类型
+             */
+            @Override
+            public void onSuccess(String devId, int operationType, SystemFunctionBean result) {
+                if (result != null && result.OtherFunction!=null) {
+                    if(result.OtherFunction.MusicPlay){
+                        requestBabyPlayerConfig();
+                    } else {
+                        Toast.makeText(iDevMonitorView.getContext(),
+                                iDevMonitorView.getContext().getString(R.string.device_alarm_func_alarmout_tip), Toast.LENGTH_LONG).show();
+                    }
+                }
+
+            }
+
+            /**
+             * 失败回调
+             *
+             * @param devId    设备序列号
+             * @param msgId    消息ID
+             * @param jsonName
+             * @param errorId  错误码
+             */
+            @Override
+            public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+                //获取失败，通过errorId分析具体原因
+
+            }
+        });
+
     }
 }
 

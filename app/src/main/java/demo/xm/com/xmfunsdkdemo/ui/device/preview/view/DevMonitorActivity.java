@@ -36,7 +36,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -91,6 +90,8 @@ import com.xm.ui.widget.ptzview.PtzView;
 
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
+import demo.xm.com.xmfunsdkdemo.bean.music.MusicCtrlBean;
+import demo.xm.com.xmfunsdkdemo.bean.music.MusicCtrlContent;
 import demo.xm.com.xmfunsdkdemo.ui.activity.DeviceConfigActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.ActivityGuideDeviceLanAlarm;
 import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.DoubleLightActivity;
@@ -107,6 +108,8 @@ import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.SensorChangeContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.presenter.DevMonitorPresenter;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.presenter.SensorChangePresenter;
 import demo.xm.com.xmfunsdkdemo.ui.device.record.view.DevRecordActivity;
+import demo.xm.com.xmfunsdkdemo.ui.dialog.BabyMusicPlayerDialog;
+import demo.xm.com.xmfunsdkdemo.ui.dialog.OnUpdateMusicConfigListener;
 import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 import io.reactivex.annotations.Nullable;
 
@@ -267,6 +270,8 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
     //APP 软件实现多目效果
     //Multi-Objective Effect in an App
     private static final int FUN_APP_OBJ_EFFECT = 29;
+    //音乐播放器
+    private static final int FUN_MUSIC_PLAYER = 30;
     private List<HashMap<String, Object>> monitorFunList = new ArrayList<>();//预览页面的功能列表
     private AutoHideManager autoHideManager;//自动隐藏控件
     private Dialog tourDlg;
@@ -894,6 +899,13 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         hashMap = new HashMap<>();
         hashMap.put("itemId", FUN_APP_OBJ_EFFECT);
         hashMap.put("itemName", getString(R.string.app_obj_effect));
+        monitorFunList.add(hashMap);
+
+
+        //音乐播放器
+        hashMap = new HashMap<>();
+        hashMap.put("itemId", FUN_MUSIC_PLAYER);
+        hashMap.put("itemName", getString(R.string.music_player));
         monitorFunList.add(hashMap);
     }
 
@@ -1752,6 +1764,11 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
                     XMPromptDlg.onShow(this, getString(R.string.is_open_point_ptz_not_support_this_function), null);
                 }
                 return true;
+
+            case FUN_MUSIC_PLAYER://音乐播放器
+                // 检查是否支持音乐播放器
+                presenter.checkSupportMusicPlay();
+                break;
             default:
                 Toast.makeText(DevMonitorActivity.this, getString(R.string.not_support_tip), Toast.LENGTH_LONG).show();
                 break;
@@ -2381,6 +2398,46 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
         } else {
             finish();
         }
+    }
+
+
+
+
+    private BabyMusicPlayerDialog babyMusicPlayerDialog;
+
+
+
+    /**
+     * 显示音乐播放器弹窗
+     * Show music player popup
+     *
+     * @param musicCtrlBean
+     */
+    @Override
+    public void showMusicPop(MusicCtrlBean musicCtrlBean) {
+        if (musicCtrlBean.getMusicCtrl() != null){
+            if (babyMusicPlayerDialog != null) {
+                babyMusicPlayerDialog.dismiss();
+            }
+            babyMusicPlayerDialog = new BabyMusicPlayerDialog(this, presenter.getDevId(), musicCtrlBean.getMusicCtrl(), new OnUpdateMusicConfigListener() {
+                @Override
+                public void updateMusicConfig(@NonNull MusicCtrlContent musicCtrlContent) {
+                    presenter.updateMusicConfig(musicCtrlContent);
+                }
+            }, XUtils.dp2px(this, 450));
+            babyMusicPlayerDialog.show(getSupportFragmentManager(),"BabyMusicPlayerDialog");
+        }
+    }
+
+
+    @Override
+    public void onShowWaitDialog() {
+        showWaitDialog();
+    }
+
+    @Override
+    public void onHideWaitDialog() {
+        hideWaitDialog();
     }
 }
 
