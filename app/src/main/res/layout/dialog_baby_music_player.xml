@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clDialogRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_white_top_15">
+
+    <View
+        android:id="@+id/aiViewTop"
+        android:layout_width="45dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/shape_dedede_2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <demo.xm.com.xmfunsdkdemo.ui.widget.BottomSheetDragView
+        android:id="@+id/bottomSheetDragView"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@+id/clControl"
+        app:layout_constraintTop_toBottomOf="@+id/aiViewTop"
+        tools:listitem="@layout/item_music_player" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clControl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FCFCFB"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/ivPlaySortType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:src="@drawable/player_icon_loop"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPlayer"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivPlayer" />
+
+        <ImageView
+            android:id="@+id/ivPlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/player_icon_suspend"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/ivPlayer" />
+
+        <ImageView
+            android:id="@+id/ivPlayerPrevious"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:src="@drawable/player_icon_previous"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPlayer"
+            app:layout_constraintRight_toLeftOf="@+id/ivPlayer"
+            app:layout_constraintTop_toTopOf="@+id/ivPlayer" />
+
+        <ImageView
+            android:id="@+id/ivPlayerNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:src="@drawable/player_icon_next"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPlayer"
+            app:layout_constraintLeft_toRightOf="@+id/ivPlayer"
+            app:layout_constraintTop_toTopOf="@+id/ivPlayer" />
+
+        <ImageView
+            android:id="@+id/ivPlayVoice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/player_icon_voice"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPlayer"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivPlayer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/line_shadow"
+        app:layout_constraintTop_toTopOf="@+id/clControl" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 31
@@ -52,6 +54,11 @@ android {
         jumboMode true
         javaMaxHeapSize "4g"
     }
+
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -71,9 +78,9 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.0.0'
 
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+    kapt 'com.jakewharton:butterknife-compiler:10.0.0'
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
-    annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
+    kapt "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
     implementation 'com.blankj:utilcodex:1.31.0'
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
@@ -94,5 +101,5 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
-    implementation 'com.jftechsoft.funsdk:funsdk:5.0.0c'
+    implementation 'com.jftechsoft.funsdk:funsdk:5.0.0f'
 }
