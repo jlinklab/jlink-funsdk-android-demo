@@ -1,6 +1,7 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.alarm.view;
 
 import static com.manager.device.media.MediaManager.PLAY_CLOUD_PLAYBACK;
+import static com.manager.device.media.attribute.RecordPlayerAttribute.RECORD_LEN_TYPE.RECORD_LEN_SHORT;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -208,6 +209,8 @@ public class DevAlarmMsgActivity extends DemoBaseActivity<DevAlarmPresenter> imp
             layoutParams.width = screenWidth;
             layoutParams.height = screenWidth * 9 / 16;
             cloudRecordManager = (CloudRecordManager) DeviceManager.getInstance().createRecordPlayer(playView, presenter.getDevId(), PLAY_CLOUD_PLAYBACK);
+            cloudRecordManager.setRecordLenType(RECORD_LEN_SHORT);//短视频
+
             cloudRecordManager.setOnMediaManagerListener(new MediaManager.OnRecordManagerListener() {
                 @Override
                 public void searchResult(PlayerAttribute playerAttribute, Object data) {
