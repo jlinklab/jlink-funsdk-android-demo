@@ -16,7 +16,7 @@ public class DevRecordContract {
 
         void onSearchRecordByTimeResult(boolean isSuccess);
 
-        void onPlayStateResult(int playState, int playSpeed);
+        void onPlayStateResult(int chnId,int playState, int playSpeed);
 
         void onPlayInfoResult(String time, String rate);
 
@@ -37,6 +37,8 @@ public class DevRecordContract {
 
         void onDeleteVideoResult(boolean isSuccess,int errorId);
 
+        void onSupportMultiChnSplitWindowsResult(boolean isSupport);
+
         Context getContext();
     }
 
@@ -53,17 +55,17 @@ public class DevRecordContract {
          *
          * @param recordFileType 是否查询报警录像
          */
-        void setSearchRecordFileType(int recordFileType);
+        void setSearchRecordFileType(int chnId,int recordFileType);
 
         /**
          * 按文件方式查询录像，以文件列表方式显示
          */
-        void searchRecordByFile(Calendar searchTime);
+        void searchRecordByFile(int chnId,Calendar searchTime);
 
         /**
          * 按时间方式查询录像，以时间轴方式显示
          */
-        void searchRecordByTime(Calendar searchTime);
+        void searchRecordByTime(int chnId,Calendar searchTime);
 
         /**
          * 获取搜索到的录像文件数据
@@ -92,44 +94,46 @@ public class DevRecordContract {
         /**
          * 抓图
          */
-        void capture();
+        void capture(int chnId);
 
         /**
          * 开始视频剪切
          */
-        void startRecord();
+        void startRecord(int chnId);
 
         /**
          * 停止视频剪切
          */
-        void stopRecord();
+        void stopRecord(int chnId);
 
         /**
          * 当前是否处于视频剪切中
          *
          * @return
          */
-        boolean isRecording();
+        boolean isRecording(int chnId);
 
         /**
          * 打开音频
          */
-        void openVoice();
+        void openVoice(int chnId);
 
         /**
          * 关闭音频
          */
-        void closeVoice();
+        void closeVoice(int chnId);
 
-        void pausePlay();
+        boolean isVoiceOpen(int chnId);
 
-        void rePlay();
+        void pausePlay(int chnId);
 
-        void stopPlay();
+        void rePlay(int chnId);
+
+        void stopPlay(int chnId);
 
         void destroyPlay();
 
-        boolean isRecordPlay();
+        boolean isRecordPlay(int chnId);
 
         List<Map<String, Object>> getRecordTimeList();
 
@@ -166,16 +170,16 @@ public class DevRecordContract {
          *
          * @param times
          */
-        void seekToTime(Calendar calendar,int times);
+        void seekToTime(int chnId,Calendar calendar,int times);
 
         /**
          * 定位时间播放 24小时内换算的时间，单位秒
          *
          * @param times
          */
-        void seekToTime(int times);
+        void seekToTime(int chnId,int times);
 
-        void setPlayTimeByMinute(int minute);
+        void setPlayTimeByMinute(int chnId,int minute);
 
         int getPlayTimeByMinute();
 
@@ -196,7 +200,7 @@ public class DevRecordContract {
          *
          * @param position
          */
-        void downloadVideoByFile(int position);
+        void downloadVideoByFile(int chnId,int position);
 
         void downloadVideoByTime(Calendar startTime, Calendar endTime);
 
@@ -204,12 +208,12 @@ public class DevRecordContract {
          * 快速播放
          */
 
-        void playFast();
+        void playFast(int chnId);
 
         /**
          * 慢速播放
          */
-        void playSlow();
+        void playSlow(int chnId);
 
         /**
          * 更新视频播放布局

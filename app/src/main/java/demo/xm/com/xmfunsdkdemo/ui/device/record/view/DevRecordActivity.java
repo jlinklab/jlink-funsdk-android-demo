@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,6 +42,7 @@ import com.manager.ScreenOrientationManager;
 import com.manager.device.media.attribute.PlayerAttribute;
 import com.utils.TimeUtils;
 import com.xm.ui.dialog.XMPromptDlg;
+import com.xm.ui.media.MultiWinLayout;
 import com.xm.ui.widget.BtnColorBK;
 import com.xm.ui.widget.BubbleSeekBar;
 import com.xm.ui.widget.ListSelectItem;
@@ -99,6 +101,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     private ScreenOrientationManager screenOrientationManager;//Screen rotation manager
     //是否正在拖动播放进度条
     private boolean isSeekTouchPlayProgress = false;
+    private MultiWinLayout multiWinLayout;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -226,9 +229,67 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
 
                     long playTimes = _etime - _stime;
                     int times = (int) (playTimes * seekBar.getProgress() / 100 + data.getLongStartTime());
-                    presenter.seekToTime(startCalendar,times);
+                    presenter.seekToTime(multiWinLayout.getSelectedId(),startCalendar,times);
                     ((BubbleSeekBar) seekBar).hideIndicator();
                 }
+            }
+        });
+
+        multiWinLayout = findViewById(R.id.layoutPlayWnd);
+        multiWinLayout.setOnMultiWndListener(new MultiWinLayout.OnMultiWndKeyListener() {
+            @Override
+            public boolean onKey(int i, KeyEvent keyEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean isDisableToChangeWndSize(int i) {
+                return false;
+            }
+
+            @Override
+            public boolean onTouchEvent(int i, MotionEvent motionEvent) {
+                return false;
+            }
+
+            @Override
+            public boolean onSingleWnd(int i, MotionEvent motionEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean onSelectedWnd(int id, MotionEvent event, boolean isSelected) {
+                if (isSelected) {
+                    boolean isRecordPlay = presenter.isRecordPlay(id);
+                    recordFunAdapter.changeBtnState(0, isRecordPlay ? getString(R.string.playback_pause) : getString(R.string.playback_play), isRecordPlay);
+                    recordFunAdapter.changeBtnState(1, getString(R.string.device_setup_encode_audio), presenter.isVoiceOpen(id));
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onSingleTapUp(int i, MotionEvent motionEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(int i, MotionEvent motionEvent, boolean b) {
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTap(View view, MotionEvent motionEvent) {
+                return false;
+            }
+
+            @Override
+            public void onLongPress(View view, MotionEvent motionEvent) {
+
+            }
+
+            @Override
+            public void onFling(View view, MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+
             }
         });
     }
@@ -259,10 +320,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                 presenter.getTimeUnit());
         rvRecordTimeAxis.setAdapter(recordTimeAxisAdapter);
         showWaitDialog();
-        presenter.initRecordPlayer((ViewGroup) findViewById(R.id.layoutPlayWnd), recordType);
-        presenter.searchRecordByFile(calendarShow);
-        presenter.searchRecordByTime(calendarShow);
-
+        presenter.isSupportMultiChnSplitWindows();
         showTitleDate();
         screenOrientationManager = ScreenOrientationManager.getInstance();
     }
@@ -300,7 +358,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(searchTime);
                 int times = calendar.get(Calendar.HOUR_OF_DAY) * 3600 + calendar.get(Calendar.MINUTE) * 60 + calendar.get(Calendar.SECOND);
-                presenter.seekToTime(calendar,times);
+                presenter.seekToTime(multiWinLayout.getSelectedId(),calendar,times);
             }
         } else {
             showToast(getString(R.string.search_record_failed), Toast.LENGTH_LONG);
@@ -310,10 +368,11 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     /**
      * 播放状态回调
      *
+     * @param chnId
      * @param playState
      */
     @Override
-    public void onPlayStateResult(int playState, int playSpeed) {
+    public void onPlayStateResult(int chnId, int playState, int playSpeed) {
         if (playState == PlayerAttribute.E_STATE_PlAY) {
             hideWaitDialog();
             recordFunAdapter.changeBtnState(0, getString(R.string.playback_pause), true);
@@ -431,8 +490,8 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
                         calendarShow = Calendar.getInstance();
                         calendarShow.setTime(dateFormat.parse(date));
-                        presenter.searchRecordByTime(calendarShow);
-                        presenter.searchRecordByFile(calendarShow);
+                        presenter.searchRecordByTime(multiWinLayout.getSelectedId(),calendarShow);
+                        presenter.searchRecordByFile(multiWinLayout.getSelectedId(),calendarShow);
                         showTitleDate();
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -503,7 +562,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
             int firstPos = linearLayoutManager.findFirstVisibleItemPosition();
             int firstFset = rvRecordTimeAxis.getChildAt(0).getLeft() * (-1);
             int seconds = firstFset * presenter.getShowCount() * presenter.getTimeUnit() * 60 / screenWidth;
-            presenter.setPlayTimeByMinute(firstPos * presenter.getTimeUnit() + seconds / 60);
+            presenter.setPlayTimeByMinute(multiWinLayout.getSelectedId(),firstPos * presenter.getTimeUnit() + seconds / 60);
             presenter.setPlayTimeBySecond(seconds % 60);
         }
     }
@@ -523,7 +582,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                 linearLayoutManager.scrollToPositionWithOffset(position, offset * (-1));
 
                 setCanScroll(true);
-                presenter.seekToTime(times);
+                presenter.seekToTime(multiWinLayout.getSelectedId(),times);
             }
         });
     }
@@ -554,13 +613,29 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     @Override
     public void onDeleteVideoResult(boolean isSuccess, int errorId) {
         if (isSuccess) {
-            presenter.searchRecordByFile(calendarShow);
-            presenter.searchRecordByTime(calendarShow);
+            presenter.searchRecordByFile(multiWinLayout.getSelectedId(),calendarShow);
+            presenter.searchRecordByTime(multiWinLayout.getSelectedId(),calendarShow);
             ToastUtils.showLong(getString(R.string.delete_s));
         } else {
             hideWaitDialog();
             ToastUtils.showLong(getString(R.string.delete_f) + ":" + errorId);
         }
+    }
+
+    @Override
+    public void onSupportMultiChnSplitWindowsResult(boolean isSupport) {
+        //是否为真多目设备
+        if (isSupport && recordType == PLAY_CLOUD_PLAYBACK) {
+            //如果是真多目，创建多个播放窗口
+            multiWinLayout.setViewCount(4);
+            presenter.initMoreCloudRecordPlayers(multiWinLayout.getWnd(0),multiWinLayout.getWnd(1));
+        }else {
+            multiWinLayout.setViewCount(1);
+            presenter.initRecordPlayer(multiWinLayout.getWnd(0),recordType);
+        }
+
+        presenter.searchRecordByFile(multiWinLayout.getSelectedId(),calendarShow);
+        presenter.searchRecordByTime(multiWinLayout.getSelectedId(),calendarShow);
     }
 
     @Override
@@ -643,9 +718,9 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                 holder.lsiRecordInfo.setTitle(String.format("%s-%s", recordInfo.getStartTimeOfDay(), recordInfo.getEndTimeOfDay()));
                 holder.lsiRecordInfo.setTip(recordInfo.getFileName());
                 holder.lsiRecordInfo.setTag("lsiRecordInfo:" + position);
-                Bitmap bitmap = presenter.getLocalVideoThumb(position);
+                Bitmap bitmap = presenter.getLocalVideoThumb(multiWinLayout.getSelectedId(),position);
                 if (bitmap == null) {
-                    presenter.downloadVideoThumb(position);
+                    presenter.downloadVideoThumb(multiWinLayout.getSelectedId(),position);
                     holder.lsiRecordInfo.setLeftImageResource(R.mipmap.ic_thumb);
                 } else {
                     holder.lsiRecordInfo.getImageLeft().setImageBitmap(bitmap);
@@ -688,7 +763,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                     @Override
                     public void onClick(View v) {
                         showWaitDialog();
-                        presenter.stopPlay();
+                        presenter.stopPlay(multiWinLayout.getSelectedId());
                         presenter.startPlayRecord(getAdapterPosition());
                     }
                 });
@@ -700,8 +775,8 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                             @Override
                             public void onClick(View v) {
                                 showWaitDialog();
-                                presenter.stopPlay();
-                                presenter.deleteVideo(getAdapterPosition());
+                                presenter.stopPlay(multiWinLayout.getSelectedId());
+                                presenter.deleteVideo(multiWinLayout.getSelectedId(),getAdapterPosition());
                             }
                         },null);
                         return true;
@@ -712,7 +787,7 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                     @Override
                     public void onClick(View v) {
                         showWaitDialog();
-                        presenter.downloadVideoByFile(getAdapterPosition());
+                        presenter.downloadVideoByFile(multiWinLayout.getSelectedId(),getAdapterPosition());
                     }
                 });
             }
@@ -722,34 +797,34 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     private boolean dealWithRecordFunction(int position, boolean isSelected) {
         switch (position) {
             case 0://播放和暂停
-                if (presenter.isRecordPlay()) {
-                    presenter.pausePlay();
+                if (presenter.isRecordPlay(multiWinLayout.getSelectedId())) {
+                    presenter.pausePlay(multiWinLayout.getSelectedId());
                 } else {
-                    presenter.rePlay();
+                    presenter.rePlay(multiWinLayout.getSelectedId());
                 }
                 break;
             case 1://开启和关闭音频
                 if (isSelected) {
-                    presenter.closeVoice();
+                    presenter.closeVoice(multiWinLayout.getSelectedId());
                 } else {
-                    presenter.openVoice();
+                    presenter.openVoice(multiWinLayout.getSelectedId());
                 }
                 return true;
             case 2://视频抓图
-                presenter.capture();
+                presenter.capture(multiWinLayout.getSelectedId());
                 break;
             case 3://视频剪切
                 if (isSelected) {
-                    presenter.stopRecord();
+                    presenter.stopRecord(multiWinLayout.getSelectedId());
                 } else {
-                    presenter.startRecord();
+                    presenter.startRecord(multiWinLayout.getSelectedId());
                 }
                 return true;
             case 4://快速播放
-                presenter.playFast();
+                presenter.playFast(multiWinLayout.getSelectedId());
                 break;
             case 5://慢速播放
-                presenter.playSlow();
+                presenter.playSlow(multiWinLayout.getSelectedId());
                 break;
             case 6://全屏
                 screenOrientationManager.landscapeScreen(this, true);
@@ -776,9 +851,9 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (position != presenter.getRecordFileType()) {
                             showWaitDialog();
-                            presenter.setSearchRecordFileType(position);//position枚举对应的值 0：全部 1：普通 2：报警
-                            presenter.searchRecordByFile(calendarShow);
-                            presenter.searchRecordByTime(calendarShow);
+                            presenter.setSearchRecordFileType(multiWinLayout.getSelectedId(),position);//position枚举对应的值 0：全部 1：普通 2：报警
+                            presenter.searchRecordByFile(multiWinLayout.getSelectedId(),calendarShow);
+                            presenter.searchRecordByTime(multiWinLayout.getSelectedId(),calendarShow);
                             dialog.dismiss();
                         }
                     }
@@ -808,19 +883,19 @@ public class DevRecordActivity extends DemoBaseActivity<DevRecordPresenter> impl
     @Override
     protected void onPause() {
         super.onPause();
-        presenter.pausePlay();
+        presenter.pausePlay(multiWinLayout.getSelectedId());
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        presenter.rePlay();
+        presenter.rePlay(multiWinLayout.getSelectedId());
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        presenter.stopPlay();
+        presenter.stopPlay(multiWinLayout.getSelectedId());
     }
 
     @Override
