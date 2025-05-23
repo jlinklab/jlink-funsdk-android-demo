@@ -16,6 +16,8 @@ import com.xm.linke.face.FaceFeature;
 
 import java.util.List;
 
+import demo.xm.com.xmfunsdkdemo.bean.music.MusicCtrlBean;
+
 /**
  * 设备预览界面,可以控制播放,停止,码流切换,截图,录制,全屏,信息.
  * 保存图像视频,语音对话.设置预设点并控制方向
@@ -118,6 +120,19 @@ public class DevMonitorContract {
         void onTourEndResult();
 
         void onInitTalkResult();
+
+        void onShowWaitDialog();
+        void onHideWaitDialog();
+
+
+
+        /**
+         * 显示音乐播放器弹窗
+         * Show music player popup
+         *
+         * @param musicCtrlBean
+         */
+        void showMusicPop(MusicCtrlBean musicCtrlBean);
     }
 
     public interface IDevMonitorPresenter {
