@@ -200,7 +200,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     }
 
     /**
-     * 本地回放才支持
+     * 查询录像文件列表（本地回放才支持）
      */
     @Override
     public void searchRecordByFile(int chnId,Calendar searchTime) {
@@ -222,6 +222,11 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
         }
     }
 
+    /**
+     * 查询SD卡或者存储的录像（可以显示时间轴）
+     * @param chnId
+     * @param searchTime
+     */
     @Override
     public void searchRecordByTime(int chnId,Calendar searchTime) {
         if (!isPlayerInit || chnId >= recordManagers.length) {
@@ -630,15 +635,18 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     public void searchResult(PlayerAttribute attribute, Object data) {
         if (data != null) {
             if (data instanceof H264_DVR_FILE_DATA[]) {
+                //SD卡录像文件返回的结果
                 recordList.clear();
                 recordList.addAll(((DevRecordManager) recordManagers[attribute.getChnnel()]).getFileDataList());
                 iDevRecordView.onSearchRecordByFileResult(true);
             } else {
                 if (recordManagers[attribute.getChnnel()] instanceof CloudRecordManager) {
+                    //云存储录像返回的结果
                     recordList.clear();
                     recordList.addAll(((CloudRecordManager) recordManagers[attribute.getChnnel()]).getCloudMediaFiles().cloudMediaInfoToH264FileData());
                 }
 
+                //SD卡或云存储录像时间轴
                 //data是二维数组，总共是720个字节，其中1个字节代表2分钟，右4位和左4位分别表示一分钟的录像类型，所以总共是1440分钟（24小时）
                 dealWithRecordTimeList((char[][]) data);
                 iDevRecordView.onSearchRecordByTimeResult(true);
