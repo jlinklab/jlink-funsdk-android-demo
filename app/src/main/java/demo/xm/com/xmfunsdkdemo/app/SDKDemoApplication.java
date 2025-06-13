@@ -44,6 +44,7 @@ public class SDKDemoApplication extends Application {
      * 保存实时预览/录像回放的原始媒体数据
      */
     public static String PATH_ORIGINAL_MEDIA_DATA;
+    public static String PATH_LOG;
     /**
      * 保存对讲的原始数据
      */
@@ -251,6 +252,13 @@ public class SDKDemoApplication extends Application {
 
         PATH_ORIGINAL_TALK_DATA = PathManager.getInstance(this).getAppPath() + File.separator + "talk_data";
         pFile = new File(PATH_ORIGINAL_TALK_DATA);
+        if (!pFile.exists()) {
+            makeRootDirectory(pFile.getPath());
+        }
+
+
+        PATH_LOG = DEFAULT_PATH + "log" + File.separator;
+        pFile = new File(PATH_LOG);
         if (!pFile.exists()) {
             makeRootDirectory(pFile.getPath());
         }

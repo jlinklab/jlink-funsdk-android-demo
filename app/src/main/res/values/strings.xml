@@ -958,4 +958,5 @@
     <string name="input_old_device_user_name">input  old device username</string>
     <string name="input_new_device_username">input new device  username</string>
     <string name="music_player">Music Player</string>
+    <string name="online_service">Online Service</string>
 </resources>
