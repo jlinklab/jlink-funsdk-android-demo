@@ -379,6 +379,12 @@
 
         <activity android:name="demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AovSettingActivity"
             android:screenOrientation="portrait"/>
+
+
+        <activity
+            android:name="demo.xm.com.xmfunsdkdemo.ui.feedback.customservice.view.CustomServiceWebViewActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

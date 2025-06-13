@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:id="@+id/layoutRoot"
+    android:orientation="vertical">
+
+
+
+    <com.xm.ui.widget.XTitleBar
+        android:id="@+id/live_chat_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        uilib:TitleText="CZ_OnlineService"
+        android:background="@color/white" />
+
+    <!-- 改变WebView的父布局时需要注意, 代码中使用了getLayoutParams,
+    改变WebView的父布局时,代码中的LayoutParams也要修改,否则可能会崩溃 -->
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>
