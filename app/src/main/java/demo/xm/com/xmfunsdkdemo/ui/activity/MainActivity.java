@@ -51,6 +51,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.add.qrcode.view.SetDevToRouterByQrCode
 import demo.xm.com.xmfunsdkdemo.ui.device.add.quick.view.DevQuickConnectActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.sn.view.DevSnConnectActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.push.view.DevPushService;
+import demo.xm.com.xmfunsdkdemo.ui.feedback.customservice.view.CustomServiceWebViewActivity;
 import demo.xm.com.xmfunsdkdemo.ui.user.forget.view.UserForgetPwdActivity;
 import demo.xm.com.xmfunsdkdemo.ui.user.info.view.UserInfoActivity;
 import demo.xm.com.xmfunsdkdemo.ui.user.local.view.UserSaveLocalPwdActivity;
@@ -276,6 +277,18 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
             @Override
             public void onClick(View view) {
                 openBrowser(androidDoc);
+            }
+        });
+
+
+        ItemSetLayout customServiceLayout = findViewById(R.id.item_view_custom_service);
+        customServiceLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, CustomServiceWebViewActivity.class);
+                intent.putExtra("isHelpPage", true);
+                MainActivity.this.startActivity(intent);
             }
         });
 
