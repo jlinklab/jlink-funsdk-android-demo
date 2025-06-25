@@ -1,22 +1,18 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.record.presenter;
 
 import android.graphics.Bitmap;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.lib.FunSDK;
 import com.lib.MsgContent;
 import com.lib.SDKCONST;
+import com.lib.sdk.bean.SystemFunctionBean;
 import com.lib.sdk.bean.cloudmedia.CloudMediaFileInfoBean;
 import com.lib.sdk.struct.H264_DVR_FILE_DATA;
 import com.manager.db.Define;
-import com.manager.db.DevDataCenter;
 import com.manager.db.DownloadInfo;
-import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
 import com.manager.device.media.MediaManager;
 import com.manager.device.media.attribute.PlayerAttribute;
@@ -27,36 +23,35 @@ import com.manager.device.media.playback.CloudRecordManager;
 import com.manager.device.media.playback.DevRecordManager;
 import com.manager.device.media.playback.RecordManager;
 import com.manager.image.BaseImageManager;
-import com.manager.image.CloudImageManager;
 import com.manager.path.PathManager;
 import com.utils.FileUtils;
 import com.utils.LogUtils;
 import com.utils.TimeUtils;
 import com.xm.activity.base.XMBasePresenter;
-import com.xm.ui.dialog.XMPromptDlg;
 import com.xmgl.vrsoft.VRSoftDefine;
 
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.TreeMap;
 
 import demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication;
 import demo.xm.com.xmfunsdkdemo.ui.device.record.listener.DevRecordContract;
 
-import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_CLOUD;
 import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_FILE;
+import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_MORE_CLOUD;
+import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_SHORT_CLOUD;
 import static com.manager.db.Define.DOWNLOAD_VIDEO_BY_TIME;
 import static com.manager.device.media.MediaManager.PLAY_CLOUD_PLAYBACK;
 import static com.manager.device.media.attribute.PlayerAttribute.EE_STATE_SD_SEARCH_RECORD_BY_FILE;
 import static com.manager.device.media.attribute.PlayerAttribute.EE_STATE_SD_SEARCH_RECORD_BY_TIME;
-import static com.manager.device.media.attribute.PlayerAttribute.E_STATE_PLAY_COMPLETED;
 import static com.manager.device.media.attribute.RecordPlayerAttribute.PLAY_SPEED_FAST;
 import static com.manager.device.media.attribute.RecordPlayerAttribute.PLAY_SPEED_SLOW;
 import static com.manager.device.media.download.DownloadManager.DOWNLOAD_STATE_PROGRESS;
@@ -73,7 +68,7 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     public static final int RECORD_TYPE_SEL_ONLY_ALARM = 2;//报警录像
     public static final int RECORD_TYPE_SEL_ONLY_EPITOME = 3;//缩影录像
     private DevRecordContract.IDevRecordView iDevRecordView;
-    private RecordManager recordManager;
+    private HashMap<Integer,RecordManager> recordManagers = new HashMap<>();
     private MediaFileCalendarManager mediaFileCalendarManager;
     private DownloadManager downloadManager;
     private List<H264_DVR_FILE_DATA> recordList;
@@ -88,7 +83,10 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     private int playSpeed;
     private int recordFileType;
     private H264_DVR_FILE_DATA curPlayFileInfo;//当前播放的录像文件信息
-
+    private Calendar playStartCalendar;//录像播放开始时间
+    private Calendar playEndCalendar;//录像播放结束时间
+    private boolean isSupportMulti;//是否支持真多目
+    private boolean isPlayerInit;//播放器是否已经初始化
     public DevRecordPresenter(DevRecordContract.IDevRecordView iDevRecordView) {
         this.iDevRecordView = iDevRecordView;
         recordList = new ArrayList<>();
@@ -109,6 +107,24 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     }
 
 
+    /**
+     * 是否为真多目设备
+     */
+    public void isSupportMultiChnSplitWindows() {
+        DeviceManager.getInstance().getDevAllAbility(getDevId(), new DeviceManager.OnDevManagerListener<SystemFunctionBean>() {
+            @Override
+            public void onSuccess(String s, int i, SystemFunctionBean systemFunctionBean) {
+                isSupportMulti = systemFunctionBean.OtherFunction.MultiChnSplitWindows;
+                iDevRecordView.onSupportMultiChnSplitWindowsResult(isSupportMulti);
+            }
+
+            @Override
+            public void onFailed(String s, int i, String s1, int i1) {
+                isSupportMulti = false;
+                iDevRecordView.onSupportMultiChnSplitWindowsResult(isSupportMulti);
+            }
+        });
+    }
     @Override
     public void initRecordPlayer(ViewGroup playView, int recordType) {
         /**
@@ -118,32 +134,70 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
          */
 
         RecordPlayerAttribute recordPlayerAttribute = new RecordPlayerAttribute(getDevId());
+        recordPlayerAttribute.setChnnel(1);
         if (recordType == MediaManager.PLAY_CLOUD_PLAYBACK) {
-            recordManager = new CloudRecordManager(playView, recordPlayerAttribute);
+            recordManagers.put(getChnId(),new CloudRecordManager(playView, recordPlayerAttribute));
         } else {
             //SD卡回放
-            recordManager = new DevRecordManager(playView, recordPlayerAttribute);
-            ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_ALL);
+            recordManagers.put(getChnId(),new DevRecordManager(playView, recordPlayerAttribute));
+            ((DevRecordManager)recordManagers.get(getChnId())).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_ALL);
         }
 
-        recordManager.setChnId(getChnId());
-        recordManager.setVideoFullScreen(true);//默认按比例显示
-        recordManager.setOnMediaManagerListener(this);
-        recordManager.initVideoThumb(PathManager.getInstance(iDevRecordView.getContext()).getTempImages(), getDevId(), this);
+        recordManagers.get(getChnId()).setChnId(getChnId());
+        recordManagers.get(getChnId()).setVideoFullScreen(true);//默认按比例显示
+        recordManagers.get(getChnId()).setOnMediaManagerListener(this);
+        recordManagers.get(getChnId()).initVideoThumb(PathManager.getInstance(iDevRecordView.getContext()).getTempImages(), getDevId(), this);
+
+        isPlayerInit = true;
+    }
+
+    public void initMoreCloudRecordPlayers(ViewGroup... playViews) {
+        /**
+         * mediaType:
+         * MediaManager.PLAY_DEV_PLAYBACK:本地录像回放
+         * MediaManager.PLAY_CLOUD_PLAYBACK:云存储远程录像回放
+         */
+
+        RecordPlayerAttribute recordPlayerAttribute = new RecordPlayerAttribute(getDevId());
+        if (isSupportMulti) {
+            recordManagers.put(0, new CloudRecordManager(playViews[0], recordPlayerAttribute));
+            recordManagers.get(0).setChnId(0);
+            recordManagers.get(0).setVideoFullScreen(true);//默认按比例显示
+            recordManagers.get(0).setOnMediaManagerListener(this);
+            recordManagers.get(0).initVideoThumb(PathManager.getInstance(iDevRecordView.getContext()).getTempImages(), getDevId(), this);
+
+            recordPlayerAttribute = new RecordPlayerAttribute(getDevId());
+            recordManagers.put(1, new CloudRecordManager(playViews[1], recordPlayerAttribute));
+            recordManagers.get(1).setChnId(1);
+            recordManagers.get(1).setVideoFullScreen(true);//默认按比例显示
+            recordManagers.get(1).setOnMediaManagerListener(this);
+            recordManagers.get(1).initVideoThumb(PathManager.getInstance(iDevRecordView.getContext()).getTempImages(), getDevId(), this);
+        }else {
+            recordManagers.put(getChnId(), new CloudRecordManager(playViews[0], recordPlayerAttribute));
+            recordManagers.get(getChnId()).setChnId(getChnId());
+            recordManagers.get(getChnId()).setVideoFullScreen(true);//默认按比例显示
+            recordManagers.get(getChnId()).setOnMediaManagerListener(this);
+            recordManagers.get(getChnId()).initVideoThumb(PathManager.getInstance(iDevRecordView.getContext()).getTempImages(), getDevId(), this);
+        }
+
+        isPlayerInit = true;
     }
 
     @Override
-    public void setSearchRecordFileType(int recordFileType) {
+    public void setSearchRecordFileType(int chnId,int recordFileType) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
         this.recordFileType = recordFileType;
-        if (recordManager instanceof DevRecordManager) {
+        if (recordManagers.get(chnId) instanceof DevRecordManager) {
             if (recordFileType == RECORD_TYPE_SEL_ALL) {//所有录像
-                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_ALL);
+                ((DevRecordManager) recordManagers.get(chnId)).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_ALL);
             } else if (recordFileType == RECORD_TYPE_SEL_ONLY_ALARM) {//报警录像
-                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_A, DevRecordManager.RECORD_TYPE_M);
+                ((DevRecordManager) recordManagers.get(chnId)).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_A, DevRecordManager.RECORD_TYPE_M);
             } else if (recordFileType == RECORD_TYPE_SEL_ONLY_NORMAL) {//普通录像
-                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_R, DevRecordManager.RECORD_TYPE_H);
+                ((DevRecordManager) recordManagers.get(chnId)).setRecordFileType(SDKCONST.EMSType.h264, DevRecordManager.RECORD_TYPE_R, DevRecordManager.RECORD_TYPE_H);
             } else if (recordFileType == RECORD_TYPE_SEL_ONLY_EPITOME) {//缩影录像
-                ((DevRecordManager) recordManager).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_E);
+                ((DevRecordManager) recordManagers.get(chnId)).setRecordFileType(SDKCONST.EMSType.h264, RECORD_TYPE_E);
             }
         }
     }
@@ -153,12 +207,15 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     }
 
     /**
-     * 本地回放才支持
+     * 查询录像文件列表（本地回放才支持）
      */
     @Override
-    public void searchRecordByFile(Calendar searchTime) {
+    public void searchRecordByFile(int chnId,Calendar searchTime) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
         this.searchTime = searchTime;
-        if (recordManager instanceof DevRecordManager) {
+        if (recordManagers.get(chnId) instanceof DevRecordManager) {
             searchTime.set(Calendar.HOUR_OF_DAY, 0);
             searchTime.set(Calendar.MINUTE, 0);
             searchTime.set(Calendar.SECOND, 0);
@@ -168,14 +225,23 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
             endTime.set(Calendar.MINUTE, 59);
             endTime.set(Calendar.SECOND, 59);
 
-            ((DevRecordManager) recordManager).searchFileByTime(searchTime, endTime);
+            ((DevRecordManager) recordManagers.get(chnId)).searchFileByTime(searchTime, endTime);
         }
     }
 
+    /**
+     * 查询SD卡或者存储的录像（可以显示时间轴）
+     * @param chnId
+     * @param searchTime
+     */
     @Override
-    public void searchRecordByTime(Calendar searchTime) {
+    public void searchRecordByTime(int chnId,Calendar searchTime) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
+
         this.searchTime = searchTime;
-        recordManager.searchFileByTime(searchTime);
+        recordManagers.get(chnId).searchFileByTime(searchTime);
     }
 
     @Override
@@ -202,78 +268,138 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
      */
     @Override
     public void startPlayRecord(int position) {
+        if (!isPlayerInit) {
+            return;
+        }
+
         curPlayFileInfo = recordList.get(position);
-        Calendar playCalendar = TimeUtils.getNormalFormatCalender(curPlayFileInfo.getStartTimeOfYear());
-        Calendar endCalendar = TimeUtils.getNormalFormatCalender(curPlayFileInfo.getEndTimeOfYear());
+        playStartCalendar = TimeUtils.getNormalFormatCalender(curPlayFileInfo.getStartTimeOfYear());
+        playEndCalendar = TimeUtils.getNormalFormatCalender(curPlayFileInfo.getEndTimeOfYear());
 //        endCalendar = Calendar.getInstance();
 //        endCalendar.setTime(playCalendar.getTime());
 //        endCalendar.set(Calendar.HOUR_OF_DAY, 23);
 //        endCalendar.set(Calendar.MINUTE, 59);
 //        endCalendar.set(Calendar.SECOND, 59);
-        recordManager.startPlay(playCalendar, endCalendar);
-
-    }
-
-    @Override
-    public void capture() {
-        recordManager.capture(SDKDemoApplication.PATH_PHOTO);
-    }
-
-    @Override
-    public void startRecord() {
-        if (!recordManager.isRecord()) {
-            recordManager.startRecord(SDKDemoApplication.PATH_VIDEO);
+       
+        if (isSupportMulti && recordPlayType == PLAY_CLOUD_PLAYBACK) {
+            recordManagers.get(0).startPlay(playStartCalendar, playEndCalendar);
+            //如果是真多目设备，云存储支持多个通道同时播放
+            int playHandle = FunSDK.MultiMediaCloudStorageRecordPlay(getPlayMultiCloudRequestJson(playStartCalendar, playEndCalendar),
+                    new View[]{recordManagers.get(getChnId()).getSurfaceView(), recordManagers.get(1).getSurfaceView()});
+            int playHandleChn0 = FunSDK.GetMediaPlayerHandle(playHandle, 0);
+            int playHandleChn1 = FunSDK.GetMediaPlayerHandle(playHandle, 1);
+            recordManagers.get(getChnId()).getPlayerAttribute().setPlayHandle(playHandleChn0);
+            recordManagers.get(1).getPlayerAttribute().setPlayHandle(playHandleChn1);
+        }else {
+            recordManagers.get(getChnId()).startPlay(playStartCalendar, playEndCalendar);
         }
     }
 
     @Override
-    public void stopRecord() {
-        if (recordManager.isRecord()) {
-            recordManager.stopRecord();
+    public void capture(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
+        recordManagers.get(chnId).capture(SDKDemoApplication.PATH_PHOTO);
+    }
+
+    @Override
+    public void startRecord(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
+        if (!recordManagers.get(chnId).isRecord()) {
+            recordManagers.get(chnId).startRecord(SDKDemoApplication.PATH_VIDEO);
         }
     }
 
     @Override
-    public boolean isRecording() {
-        return recordManager.isRecord();
+    public void stopRecord(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
+
+        if (recordManagers.get(chnId).isRecord()) {
+            recordManagers.get(chnId).stopRecord();
+        }
     }
 
     @Override
-    public void openVoice() {
-        recordManager.openVoiceBySound();
+    public boolean isRecording(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return false;
+        }
+        return recordManagers.get(chnId).isRecord();
     }
 
     @Override
-    public void closeVoice() {
-        recordManager.closeVoiceBySound();
+    public boolean isVoiceOpen(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return false;
+        }
+        return recordManagers.get(chnId).getPlayerAttribute().isSound();
     }
 
     @Override
-    public void pausePlay() {
+    public void openVoice(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
+        recordManagers.get(chnId).openVoiceBySound();
+    }
+
+    @Override
+    public void closeVoice(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
+        recordManagers.get(chnId).closeVoiceBySound();
+    }
+
+    @Override
+    public void pausePlay(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
         //暂停之前把视频剪切动作结束
-        recordManager.stopRecord();
-        recordManager.pausePlay();
+        recordManagers.get(chnId).stopRecord();
+        recordManagers.get(chnId).pausePlay();
     }
 
     @Override
-    public void rePlay() {
-        recordManager.rePlay();
+    public void rePlay(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
+        recordManagers.get(chnId).rePlay();
     }
 
     @Override
-    public void stopPlay() {
-        recordManager.stopPlay();
+    public void stopPlay(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
+        recordManagers.get(chnId).stopPlay();
     }
 
     @Override
     public void destroyPlay() {
-        recordManager.destroyPlay();
+        if (!isPlayerInit) {
+            return;
+        }
+
+        for (Map.Entry<Integer,RecordManager> entry : recordManagers.entrySet()) {
+            entry.getValue().destroyPlay();
+        }
         downloadManager.stopDownload();
     }
 
     @Override
-    public boolean isRecordPlay() {
-        return recordManager.getPlayState() == PlayerAttribute.E_STATE_PlAY;
+    public boolean isRecordPlay(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return false;
+        }
+        return recordManagers.get(chnId).getPlayState() == PlayerAttribute.E_STATE_PlAY;
     }
 
     @Override
@@ -305,27 +431,36 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
      * @param times 当前要播放的时间点（24小时内换算的时间，单位秒，比如：0点10分就是换成600秒）
      */
     @Override
-    public void seekToTime(Calendar calendar, int times) {
+    public void seekToTime(int chnId,Calendar calendar, int times) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
         //获取当前播放的日期
         int[] dateTime = {calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
                 calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0};
         int absTime = FunSDK.ToTimeType(dateTime) + times;
-        recordManager.seekToTime(times, absTime);
+        recordManagers.get(chnId).seekToTime(times, absTime);
     }
 
     @Override
-    public void seekToTime(int times) {
+    public void seekToTime(int chnId,int times) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
         //获取当前播放的日期
         int[] dateTime = {searchTime.get(Calendar.YEAR), searchTime.get(Calendar.MONTH) + 1,
                 searchTime.get(Calendar.DAY_OF_MONTH), 0, 0, 0};
         int absTime = FunSDK.ToTimeType(dateTime) + times;
-        recordManager.seekToTime(times, absTime);
+        recordManagers.get(chnId).seekToTime(times, absTime);
     }
 
     @Override
-    public void setPlayTimeByMinute(int minute) {
+    public void setPlayTimeByMinute(int chnId,int minute) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
         //result >= 0 返回有效的时间,< 0 保持原来的时间
-        int result = recordManager.dealWithRecordEffectiveByMinute(minute);
+        int result = recordManagers.get(chnId).dealWithRecordEffectiveByMinute(minute);
         if (result >= 0) {
             playTimeByMinute = result;
             playTimeBySecond = 0;
@@ -343,24 +478,33 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     }
 
     @Override
-    public void downloadVideoByFile(int position) {
+    public void downloadVideoByFile(int chnId,int position) {
         if (position >= recordList.size()) {
             return;
         }
 
         H264_DVR_FILE_DATA data = recordList.get(position);
         if (data != null) {
-            String fileName = data.getLongStartTime() + "_" + data.getLongEndTime() + ".mp4";
+            String fileName = data.getLongStartTime() + "_" + data.getLongEndTime() + "_" + chnId + ".mp4";
             DownloadInfo downloadInfo = new DownloadInfo();
             downloadInfo.setStartTime(TimeUtils.getNormalFormatCalender(data.getStartTimeOfYear()));
             downloadInfo.setEndTime(TimeUtils.getNormalFormatCalender(data.getEndTimeOfYear()));
             downloadInfo.setDevId(getDevId());
+            downloadInfo.setChnId(chnId);
             downloadInfo.setObj(data);
             downloadInfo.setFileType(RECORD_TYPE_E);
             //下载类型：0->卡存按文件下载 1->云存储下载 2->卡存按时间下载
             //Download type: 0->Download by file from SD card 1->Download from cloud storage 2->Download by time from SD card
-            downloadInfo.setDownloadType(recordPlayType == PLAY_CLOUD_PLAYBACK
-                    ? DOWNLOAD_VIDEO_BY_CLOUD : DOWNLOAD_VIDEO_BY_FILE);
+            if (recordPlayType == PLAY_CLOUD_PLAYBACK) {
+                if (isSupportMulti) {
+                    downloadInfo.setDownloadType(DOWNLOAD_VIDEO_BY_MORE_CLOUD);
+                }else {
+                    downloadInfo.setDownloadType(DOWNLOAD_VIDEO_BY_SHORT_CLOUD);
+                }
+            }else {
+                downloadInfo.setDownloadType(DOWNLOAD_VIDEO_BY_FILE);
+            }
+
             downloadInfo.setSaveFileName(SDKDemoApplication.PATH_VIDEO + File.separator + fileName);
             downloadManager.addDownload(downloadInfo);
             downloadManager.startDownload();
@@ -390,15 +534,21 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     }
 
     @Override
-    public void playFast() {
+    public void playFast(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
         playSpeed = ++playSpeed % (PLAY_SPEED_FAST + 1);
-        recordManager.setPlaySpeed(playSpeed);
+        recordManagers.get(chnId).setPlaySpeed(playSpeed);
     }
 
     @Override
-    public void playSlow() {
+    public void playSlow(int chnId) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
         playSpeed = --playSpeed % (PLAY_SPEED_SLOW - 1);
-        recordManager.setPlaySpeed(playSpeed);
+        recordManagers.get(chnId).setPlaySpeed(playSpeed);
     }
 
     @Override
@@ -446,8 +596,8 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     @Override
     public void onMediaPlayState(PlayerAttribute attribute, int state) {
         playSpeed = ((RecordPlayerAttribute) attribute).getPlaySpeed();
-        iDevRecordView.onPlayStateResult(state, playSpeed);
-        recordManager.setTwoLensesScreen(VRSoftDefine.XMTwoLensesScreen.ScreenDouble);
+        iDevRecordView.onPlayStateResult(attribute.getChnnel(), state, playSpeed);
+        recordManagers.get(attribute.getChnnel()).setTwoLensesScreen(VRSoftDefine.XMTwoLensesScreen.ScreenDouble);
     }
 
     @Override
@@ -495,15 +645,18 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
     public void searchResult(PlayerAttribute attribute, Object data) {
         if (data != null) {
             if (data instanceof H264_DVR_FILE_DATA[]) {
+                //SD卡录像文件返回的结果
                 recordList.clear();
-                recordList.addAll(((DevRecordManager) recordManager).getFileDataList());
+                recordList.addAll(((DevRecordManager) recordManagers.get(attribute.getChnnel())).getFileDataList());
                 iDevRecordView.onSearchRecordByFileResult(true);
             } else {
-                if (recordManager instanceof CloudRecordManager) {
+                if ( recordManagers.get(attribute.getChnnel()) instanceof CloudRecordManager) {
+                    //云存储录像返回的结果
                     recordList.clear();
-                    recordList.addAll(((CloudRecordManager) recordManager).getCloudMediaFiles().cloudMediaInfoToH264FileData());
+                    recordList.addAll(((CloudRecordManager) recordManagers.get(attribute.getChnnel())).getCloudMediaFiles().cloudMediaInfoToH264FileData());
                 }
 
+                //SD卡或云存储录像时间轴
                 //data是二维数组，总共是720个字节，其中1个字节代表2分钟，右4位和左4位分别表示一分钟的录像类型，所以总共是1440分钟（24小时）
                 dealWithRecordTimeList((char[][]) data);
                 iDevRecordView.onSearchRecordByTimeResult(true);
@@ -604,13 +757,16 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
      * @param position
      * @return
      */
-    public Bitmap getLocalVideoThumb(int position) {
+    public Bitmap getLocalVideoThumb(int chnId,int position) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return null;
+        }
         H264_DVR_FILE_DATA h264DvrFileData = recordList.get(position);
-        if (recordManager instanceof DevRecordManager) {
-            return ((DevRecordManager) recordManager).getLocalVideoThumb(h264DvrFileData);
-        } else if (recordManager instanceof CloudRecordManager) {
+        if (recordManagers.get(chnId) instanceof DevRecordManager) {
+            return ((DevRecordManager) recordManagers.get(chnId)).getLocalVideoThumb(h264DvrFileData);
+        } else if (recordManagers.get(chnId) instanceof CloudRecordManager) {
             CloudMediaFileInfoBean cloudMediaFileInfoBean = JSON.parseObject(h264DvrFileData.getAlarmExFileInfo(), CloudMediaFileInfoBean.class);
-            return ((CloudRecordManager) recordManager).getLocalVideoThumb(cloudMediaFileInfoBean);
+            return ((CloudRecordManager) recordManagers.get(chnId)).getLocalVideoThumb(cloudMediaFileInfoBean);
         }
 
         return null;
@@ -621,17 +777,21 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
      *
      * @param position
      */
-    public void downloadVideoThumb(int position) {
+    public void downloadVideoThumb(int chnId,int position) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
+
         H264_DVR_FILE_DATA h264DvrFileData = recordList.get(position);
-        if (recordManager instanceof DevRecordManager) {
+        if (recordManagers.get(chnId) instanceof DevRecordManager) {
             if (recordFileType == RECORD_TYPE_SEL_ONLY_EPITOME) {//缩影录像
-                ((DevRecordManager) recordManager).downloadVideoThumb(h264DvrFileData, position, RECORD_TYPE_E);
+                ((DevRecordManager) recordManagers.get(chnId)).downloadVideoThumb(h264DvrFileData, position, RECORD_TYPE_E);
             } else {
-                ((DevRecordManager) recordManager).downloadVideoThumb(h264DvrFileData,position,RECORD_TYPE_ALL);
+                ((DevRecordManager) recordManagers.get(chnId)).downloadVideoThumb(h264DvrFileData,position,RECORD_TYPE_ALL);
             }
-        } else if (recordManager instanceof CloudRecordManager) {
+        } else if (recordManagers.get(chnId) instanceof CloudRecordManager) {
             CloudMediaFileInfoBean cloudMediaFileInfoBean = JSON.parseObject(h264DvrFileData.getAlarmExFileInfo(), CloudMediaFileInfoBean.class);
-            ((CloudRecordManager) recordManager).downloadVideoThumb(cloudMediaFileInfoBean, position);
+            ((CloudRecordManager) recordManagers.get(chnId)).downloadVideoThumb(cloudMediaFileInfoBean, position);
         }
     }
 
@@ -640,14 +800,52 @@ public class DevRecordPresenter extends XMBasePresenter<DeviceManager> implement
      *
      * @param position
      */
-    public void deleteVideo(int position) {
-        if (recordManager instanceof CloudRecordManager) {
+    public void deleteVideo(int chnId,int position) {
+        if (!isPlayerInit || !recordManagers.containsKey(chnId)) {
+            return;
+        }
+
+        if (recordManagers.get(chnId) instanceof CloudRecordManager) {
             H264_DVR_FILE_DATA h264DvrFileData = recordList.get(position);
-            ((CloudRecordManager) recordManager).deleteVideo(h264DvrFileData.fileName);
+            ((CloudRecordManager) recordManagers.get(chnId)).deleteVideo(h264DvrFileData.fileName);
         }
     }
 
     public H264_DVR_FILE_DATA getCurPlayFileInfo() {
         return curPlayFileInfo;
+    }
+
+    /**
+     * 真多目云回放请求json
+     * @param sCalendar
+     * @param eCalendar
+     * @return
+     */
+    private String getPlayMultiCloudRequestJson(Calendar sCalendar, Calendar eCalendar) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            jsonObject.put("msg", "short_video_play");
+            jsonObject.put("sn", recordManagers.get(getChnId()).getDevId());//设备序列号
+            jsonObject.put("st", format.format(sCalendar.getTime()));//开始时间
+            jsonObject.put("et", format.format(eCalendar.getTime()));//结束时间
+            JSONArray jsonArray = new JSONArray();
+            JSONObject object = new JSONObject();
+            object.put("channel", recordManagers.get(getChnId()).getChnId());//通道号
+            object.put("seq",recordManagers.get(getChnId()).getChnId());
+            object.put("user",recordManagers.get(getChnId()).getListenerId());//监听回调ID
+            jsonArray.put(object);
+            if (recordManagers.get(1) != null) {
+                object = new JSONObject();
+                object.put("channel", recordManagers.get(1).getChnId());
+                object.put("seq",recordManagers.get(1).getChnId());
+                object.put("user",recordManagers.get(1).getListenerId());
+                jsonArray.put(object);
+            }
+            jsonObject.put("channellist", jsonArray);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonObject.toString();
     }
 }
