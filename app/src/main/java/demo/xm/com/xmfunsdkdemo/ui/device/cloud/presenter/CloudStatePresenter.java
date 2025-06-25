@@ -1,19 +1,5 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.cloud.presenter;
 
-import android.content.Context;
-
-import com.lib.sdk.bean.SysDevAbilityInfoBean;
-import com.manager.base.BaseManager;
-import com.manager.db.DevDataCenter;
-import com.manager.db.XMDevInfo;
-import com.manager.sysability.OnSysAbilityResultListener;
-import com.manager.sysability.SysAbilityManager;
-import com.utils.TimeUtils;
-
-import com.xm.activity.base.XMBasePresenter;
-
-import demo.xm.com.xmfunsdkdemo.ui.device.cloud.listener.CloudStateContract;
-
 import static com.lib.sdk.bean.SysDevAbilityInfoBean.CLOUD_STATE_EXPIRE;
 import static com.lib.sdk.bean.SysDevAbilityInfoBean.CLOUD_STATE_NORMAL;
 import static com.lib.sdk.bean.SysDevAbilityInfoBean.CLOUD_STATE_NOT_OPENED;
@@ -23,7 +9,16 @@ import static com.lib.sdk.bean.SysDevAbilityInfoBean.XMC_CSS_VID_EXPIRATIONTIME;
 import static com.lib.sdk.bean.SysDevAbilityInfoBean.XMC_CSS_VID_NORMAL;
 import static com.lib.sdk.bean.SysDevAbilityInfoBean.XMC_CSS_VID_SUPPORT;
 
-import java.util.List;
+import android.content.Context;
+
+import com.lib.sdk.bean.SysDevAbilityInfoBean;
+import com.manager.base.BaseManager;
+import com.manager.sysability.OnSysAbilityResultListener;
+import com.manager.sysability.SysAbilityManager;
+import com.utils.TimeUtils;
+import com.xm.activity.base.XMBasePresenter;
+
+import demo.xm.com.xmfunsdkdemo.ui.device.cloud.listener.CloudStateContract;
 
 /**
  * @author cjm
