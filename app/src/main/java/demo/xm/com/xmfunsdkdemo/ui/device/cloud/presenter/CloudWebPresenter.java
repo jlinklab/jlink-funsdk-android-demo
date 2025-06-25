@@ -6,8 +6,8 @@ import com.lib.sdk.bean.SystemInfoBean;
 import com.manager.device.DeviceManager;
 import com.manager.device.config.DevConfigInfo;
 import com.manager.device.config.DevConfigManager;
-
 import com.xm.activity.base.XMBasePresenter;
+
 import demo.xm.com.xmfunsdkdemo.ui.device.cloud.listener.CloudWebContract;
 
 /**

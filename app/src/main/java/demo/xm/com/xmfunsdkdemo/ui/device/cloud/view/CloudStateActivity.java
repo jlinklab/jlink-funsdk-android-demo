@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.manager.device.media.MediaManager;
-import com.xm.activity.base.XMBaseActivity;
 import com.xm.ui.widget.ListSelectItem;
 import com.xm.ui.widget.XTitleBar;
 
