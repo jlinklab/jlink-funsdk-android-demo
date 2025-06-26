@@ -14,7 +14,7 @@
         android:layout_height="240dp"
         android:background="#ff000000">
 
-        <FrameLayout
+        <com.xm.ui.media.MultiWinLayout
             android:id="@+id/layoutPlayWnd"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:visibility="gone"/>
-        </FrameLayout>
+        </com.xm.ui.media.MultiWinLayout>
         <RelativeLayout
             android:id="@+id/videoProgressArea"
             android:layout_width="match_parent"
