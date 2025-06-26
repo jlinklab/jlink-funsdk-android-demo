@@ -56,6 +56,8 @@ import com.utils.XUtils;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.XTitleBar;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -112,6 +114,18 @@ public class CloudWebActivity extends DemoBaseActivity<CloudWebPresenter> implem
      * 阳光厨房
      */
     public static final String GOODS_TYPE_EXT_ALIELE = "ext.aliele";
+    /**
+     * 支付宝
+     */
+    private static final String URL_ALIPAYS = "alipays://platformapi";
+    /**
+     * 微信
+     */
+    private static final String URL_WECHAT_PAYS = "weixin://wap/pay";
+    /**
+     * PayPal
+     */
+    private static final String URL_PAYPAL = "https://www.paypal.com";
     @BindView(R.id.wv_cloud_web_view)
     WebView webView;
     @BindView(R.id.iv_more)
@@ -122,7 +136,7 @@ public class CloudWebActivity extends DemoBaseActivity<CloudWebPresenter> implem
     ImageView ivClose;
     @BindView(R.id.view_split_line)
     View splitLine;
-    String url;
+    String cloudUrl;
 
     H5TitleBean h5TitleBean;
 
@@ -186,6 +200,10 @@ public class CloudWebActivity extends DemoBaseActivity<CloudWebPresenter> implem
 
 
         String goodsType = intent.getStringExtra("goodsType");
+        if (TextUtils.isEmpty(goodsType)) {
+            goodsType = GOODS_TYPE_CLOUD_STORAGE;
+        }
+
         presenter.setGoodsType(goodsType);
 
         WebSettings webSetting = webView.getSettings();
@@ -209,23 +227,74 @@ public class CloudWebActivity extends DemoBaseActivity<CloudWebPresenter> implem
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.d("ccy", "shouldOverrideUrlLoading = " + url);
+                if (StringUtils.isStringNULL(url)) {
+                    System.out.println("shouldOverrideUrlLoading:" + url);
+                    return super.shouldOverrideUrlLoading(view, url);
+                }
 
-                if (url.contains("alipays://platformapi")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    if (intent.resolveActivity(getPackageManager()) != null) {  //检测是否安装了支付宝(未安装则网页支付）
-                        startActivity(intent);
-                        return true;
+                if (url.startsWith("https://payapp.weixin.qq.com/papay")) {
+                    try {
+                        String decoderUrl = URLDecoder.decode(url, "utf-8");
+                        if (decoderUrl.contains("return_url.do")) {
+                            String[] split = decoderUrl.split("return_url.do");
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String baseUrl = CLOUD_STORAGE_BASE_URL.replace("index", "wx");  // 这里需要吧index 该称微信 才能够正常跳转回来
+
+                                    String loadUrl = baseUrl + "/return_url.do" + split[1];
+                                    if (webView != null){
+                                        webView.loadUrl(loadUrl);
+                                    }
+                                }
+                            }, 6000);
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
                     }
                 }
-                if (url.contains("weixin://wap/pay")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    if (intent.resolveActivity(getPackageManager()) != null) { //检测是否安装了微信
+                //支付宝支付
+                if (url.contains(URL_ALIPAYS)) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         startActivity(intent);
-                        return true;
-                    } else {
-                        Toast.makeText(CloudWebActivity.this, FunSDK.TS("Install_WeChat_Application"), Toast.LENGTH_LONG).show();
-                        view.loadUrl(CloudWebActivity.this.url);  //回主页
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        //云服务弹窗提示
+                        XMPromptDlg.onShow(CloudWebActivity.this,
+                                getString(R.string.Install_Alipay_Application),
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (view!=null){
+                                            view.loadUrl(cloudUrl);  //回主页
+                                        }
+                                    }
+                                }, null);
                     }
+                    return true;
+                }
+
+                //微信支付
+                if (url.contains(URL_WECHAT_PAYS)) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        XMPromptDlg.onShow(CloudWebActivity.this,
+                                getString(R.string.Install_WeChat_Application),
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (view!=null) {
+                                            view.loadUrl(cloudUrl);  //回主页
+                                        }
+                                    }
+                                }, null);
+                    }
+
+                    return true;
                 }
                 return super.shouldOverrideUrlLoading(view, url);
             }
@@ -268,10 +337,10 @@ public class CloudWebActivity extends DemoBaseActivity<CloudWebPresenter> implem
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);//允许https/http混合加载
         }
 
-        url = createCloudUrl();
+        cloudUrl = createCloudUrl();
 
-        if (url != null) {
-            webView.loadUrl(url);
+        if (cloudUrl != null) {
+            webView.loadUrl(cloudUrl);
         }
     }
 
@@ -301,10 +370,10 @@ public class CloudWebActivity extends DemoBaseActivity<CloudWebPresenter> implem
         urlMap.put("lang", lan);//语言
         urlMap.put("appKey", DemoConstant.APP_KEY);
         urlMap.put("authorization", DevDataCenter.getInstance().getAccessToken());//账号登录Token
-        urlMap.put("goods", presenter.getGoodsType());// 根据需求传入对应的值，比如云存储->GOODS_TYPE_CLOUD_STORAGE，云电话->GOODS_TYPE_CALL，4G流量->GOODS_TYPE_FLOW, 如果不传的话默认云服务首页
+        urlMap.put("classifyId", presenter.getGoodsType());// 根据需求传入对应的值，比如云存储->GOODS_TYPE_CLOUD_STORAGE，云电话->GOODS_TYPE_CALL，4G流量->GOODS_TYPE_FLOW, 如果不传的话默认云服务首页
         urlMap.put("appVer",XUtils.getVersion(this));
-        urlMap.put("routing","index");
-        return getUrl(CLOUD_STORAGE_BASE_URL, urlMap);
+        urlMap.put("routing","buy");//首页传index 购买页面传buy
+        return getUrl(CLOUD_STORAGE_BASE_URL,urlMap);
     }
 
 

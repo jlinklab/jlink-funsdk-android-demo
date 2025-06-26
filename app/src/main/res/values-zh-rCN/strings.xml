@@ -956,4 +956,6 @@
     <string name="input_new_device_username">请输入新的设备用户名</string>
     <string name="music_player">音乐播放器</string>
     <string name="online_service">在线客服</string>
+    <string name="Install_Alipay_Application">请安装支付宝应用</string>
+    <string name="Install_WeChat_Application">请安装微信应用</string>
 </resources>
