@@ -959,4 +959,6 @@
     <string name="input_new_device_username">input new device  username</string>
     <string name="music_player">Music Player</string>
     <string name="online_service">Online Service</string>
+    <string name="Install_Alipay_Application">Please install alipay</string>
+    <string name="Install_WeChat_Application">Please install wechat</string>
 </resources>
