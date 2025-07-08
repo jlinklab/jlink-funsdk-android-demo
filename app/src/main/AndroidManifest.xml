@@ -227,7 +227,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.device.cloud.view.CloudWebActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"/>
         <activity
             android:name=".ui.device.add.qrcode.view.SetDevToRouterByQrCodeActivity"
             android:screenOrientation="portrait" />

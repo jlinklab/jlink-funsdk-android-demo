@@ -139,10 +139,12 @@ public class DevShadowConfigActivity extends BaseConfigActivity<DevShadowConfigP
         showToast(state, Toast.LENGTH_LONG);
 
         HashMap hashMap = JSON.parseObject(result,HashMap.class);
-        JSONObject jsonObject = (JSONObject) hashMap.get("data");
-        if (jsonObject != null) {
-            String dataJson = jsonObject.getString(fieldName);
-            etReceiveConfigContent.setText(dataJson);
+        if (hashMap != null) {
+            JSONObject jsonObject = (JSONObject) hashMap.get("data");
+            if (jsonObject != null) {
+                String dataJson = jsonObject.getString(fieldName);
+                etReceiveConfigContent.setText(dataJson);
+            }
         }
     }
 

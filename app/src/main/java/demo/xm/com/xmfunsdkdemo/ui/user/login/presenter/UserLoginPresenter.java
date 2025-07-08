@@ -1,15 +1,23 @@
 package demo.xm.com.xmfunsdkdemo.ui.user.login.presenter;
 
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.basic.G;
+import com.google.gson.Gson;
 import com.lib.FunSDK;
 import com.lib.MsgContent;
+import com.lib.sdk.bean.CountryFlagBean;
+import com.lib.sdk.bean.account.PhoneRuleAndRegionBean;
 import com.lib.sdk.struct.SDBDeviceInfo;
 import com.lib.sdk.struct.SDK_ChannelNameConfigAll;
 import com.manager.account.AccountManager;
 import com.manager.account.BaseAccountManager;
 import com.manager.account.LocalAccountManager;
+import com.manager.account.XMAccountManager;
+import com.manager.account.countrycode.CountryCodeListener;
+import com.manager.account.countrycode.CountryCodeManager;
+import com.manager.account.countrycode.ICountryCodeManager;
 import com.manager.account.share.ShareManager;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
@@ -19,6 +27,7 @@ import com.xm.activity.base.XMBasePresenter;
 import com.xm.base.code.ErrorCodeManager;
 
 import java.io.File;
+import java.util.List;
 
 import demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication;
 import demo.xm.com.xmfunsdkdemo.ui.user.login.listener.UserLoginContract;
@@ -113,6 +122,31 @@ public class UserLoginPresenter extends XMBasePresenter<AccountManager> implemen
     public String getPassword() {
         String userName = SPUtil.getInstance(iUserLoginView.getContext()).getSettingParam(ACCOUNT_PASSWORD, "");
         return userName;
+    }
+
+    @Override
+    public void updateAreaCode() {
+
+        CountryCodeManager.getInstance().getSupportAreaCodeList("",new CountryCodeListener() {
+            @Override
+            public void onSupportAreaCodeList(PhoneRuleAndRegionBean phoneRuleAndRegion, int errorId) {
+                if (errorId >= 0 && phoneRuleAndRegion != null) {
+                   //phoneRuleAndRegion.urlVersion 是当前数据的版本，该数据需要缓存到本地，
+                    // 下次启动APP的时候先从本地缓存读取，然后通过本地数据的版本从服务器更新数据，如果有新版本会返回数据，没有版本则返回空数据
+                   // phoneRuleAndRegion.getRegionUrl() 返回的是国家/地区列表，包括区号、各个服务的域名
+                    if (!TextUtils.isEmpty(phoneRuleAndRegion.getDefaultCountry().getAmsUrl())) {
+                        FunSDK.SysSetServerIPPort("MI_SERVER", phoneRuleAndRegion.getDefaultCountry().getAmsUrl(), 443);
+                    } else {
+                        FunSDK.SysSetServerIPPort("MI_SERVER", "https://rs.xmeye.net", 443);
+                    }
+                    if (!TextUtils.isEmpty(phoneRuleAndRegion.getDefaultCountry().getCapsUrl())) {
+                        FunSDK.SysSetServerIPPort("CAPS_SERVER",phoneRuleAndRegion.getDefaultCountry().getCapsUrl(), 443);
+                    } else {
+                        FunSDK.SysSetServerIPPort("CAPS_SERVER", "https://caps.jftechws.com", 443);
+                    }
+                }
+            }
+        });
     }
 
     @Override
