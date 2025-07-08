@@ -59,5 +59,7 @@ public class UserLoginContract {
         String getUserName();
 
         String getPassword();
+
+        void updateAreaCode();
     }
 }
