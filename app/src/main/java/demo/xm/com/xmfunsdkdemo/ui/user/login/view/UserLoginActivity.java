@@ -11,6 +11,8 @@ import android.location.LocationManager;
 import android.net.wifi.ScanResult;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
@@ -24,6 +26,7 @@ import androidx.annotation.NonNull;
 import com.basic.G;
 import com.lib.EFUN_ERROR;
 import com.lib.FunSDK;
+import com.lib.sdk.bean.CountryFlagBean;
 import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.struct.SDBDeviceInfo;
 import com.manager.account.AccountManager;
@@ -32,11 +35,14 @@ import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
 import com.manager.device.config.PwdErrorManager;
+import com.utils.LogUtils;
 import com.utils.XMWifiManager;
 import com.xm.activity.base.XMBaseActivity;
 import com.xm.base.code.ErrorCodeManager;
 import com.xm.ui.dialog.XMPromptDlg;
 import com.xm.ui.widget.XTitleBar;
+
+import java.util.List;
 
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
@@ -177,6 +183,8 @@ public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> impl
             });
             return;
         }
+
+        presenter.updateAreaCode();
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
