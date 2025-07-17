@@ -69,6 +69,7 @@ import demo.xm.com.xmfunsdkdemo.ui.entity.FeedBackDataBean;
 import demo.xm.com.xmfunsdkdemo.ui.entity.OpenWebViewBean;
 import demo.xm.com.xmfunsdkdemo.ui.feedback.customservice.manager.GlideEngine;
 import demo.xm.com.xmfunsdkdemo.ui.feedback.customservice.manager.LogManager;
+import demo.xm.com.xmfunsdkdemo.utils.Android5497BugActivity;
 import demo.xm.com.xmfunsdkdemo.utils.LanguageUtils;
 
 public class CustomServiceWebViewFragment extends Fragment {
@@ -163,6 +164,7 @@ public class CustomServiceWebViewFragment extends Fragment {
         }
 
         initWebView();
+        Android5497BugActivity.assistActivity(getActivity());
         return mLayout;
     }
 
