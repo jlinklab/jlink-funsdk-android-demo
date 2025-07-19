@@ -241,6 +241,7 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
         Button btnInterDevLinkage;//门锁和其他摇头机之间的联动，该功能通过影子服务来判断是否支持 "The linkage between the door lock and other pan-tilt cameras is determined by the shadow service to ascertain its support."
         Button btnDevAbility;//设备能力集
         Button btnUpdateDevToken;//更新设备Token
+        Button btnRetrieveDevPwd;//重置设备密码
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -430,6 +431,18 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
 
             //该功能只有JF账号登录后才会显示
             btnUpdateDevToken.setVisibility(DevDataCenter.getInstance().isLoginByAccount() ? View.VISIBLE : View.GONE);
+
+            //重置设备密码
+            btnRetrieveDevPwd = itemView.findViewById(R.id.btn_retrieve_pwd);
+            btnRetrieveDevPwd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    XMDevInfo xmDevInfo = DevDataCenter.getInstance().getDevInfo((String) data.get(getAdapterPosition()).get("devId"));
+                    if (onItemDevClickListener != null) {
+                        onItemDevClickListener.onTurnToRetrievePwdActivity(getAdapterPosition(), xmDevInfo);
+                    }
+                }
+            });
         }
     }
 
@@ -592,5 +605,12 @@ public class DevListAdapter extends RecyclerView.Adapter<DevListAdapter.ViewHold
          * @param xmDevInfo
          */
         void onToGetDevTokenFromServer(int position, XMDevInfo xmDevInfo);
+
+        /**
+         * 跳转到重置设备页面
+         * @param position
+         * @param xmDevInfo
+         */
+        void onTurnToRetrievePwdActivity(int position, XMDevInfo xmDevInfo);
     }
 }

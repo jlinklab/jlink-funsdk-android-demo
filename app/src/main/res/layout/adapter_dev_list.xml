@@ -189,6 +189,19 @@
                 android:visibility="visible"
                 app:no_press_solid="@color/white"
                 app:pressed_solid="#FCF0E5" />
+
+
+            <!--找回密码-->
+            <com.xm.ui.widget.BtnColorBK
+                android:id="@+id/btn_retrieve_pwd"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/retrieve_dev_pwd"
+                android:visibility="visible"
+                app:no_press_solid="@color/white"
+                app:pressed_solid="#FCF0E5" />
         </LinearLayout>
     </HorizontalScrollView>
 </LinearLayout>

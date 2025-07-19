@@ -27,4 +27,5 @@ public class DemoConstant {
     public static final String SUPPORT_SCALE_THREE_LENS = "SupportScaleThreeLens";//三目设备 设备端放大
     public static final String LAST_CHANGE_SCALE_TIMES = "last_change_scale_times";//记录设备最近一次的倍数
     public static final String SENSOR_MAX_TIMES = "sensor_max_time";//最大倍数
+    public static final String REQUEST_DEV_RETRIEVE_PWD_CODE_URL = "https://tools.xmeye.net/deviceSuperPassword?text=%s&uuid=%s&appkey=%s";
 }

@@ -67,7 +67,7 @@
     <string name="user_change_password_hint_new_password_confirm">请再次输入密码</string>
     <string name="user_change_password_sucess">修改密码成功,请使用新密码重新登录</string>
     <string name="user_change_password_error_emptyusername">用户名不能为空</string>
-    <string name="user_change_password_error_emptypassw">任何密码不能为空</string>
+    <string name="user_change_password_error_emptypassw">密码不能为空</string>
     <string name="user_change_password_error_passwtooshort">新密码不合规范</string>
     <string name="user_change_password_error_passwnotequal">请确认你两次密码输入一致</string>
 
@@ -958,4 +958,20 @@
     <string name="online_service">在线客服</string>
     <string name="Install_Alipay_Application">请安装支付宝应用</string>
     <string name="Install_WeChat_Application">请安装微信应用</string>
+    <string name="retrieve_dev_pwd">重置设备密码</string>
+    <string name="get_verification_retrieve_pwd">获取验证码找回密码</string>
+    <string name="sure_reset">确认重置</string>
+    <string name="verification_code_populated">验证码已经自动填充到输入框</string>
+    <string name="get_code_failed">获取验证码失败</string>
+    <string name="answer_security_question">回答安全问题</string>
+    <string name="get_verification_retrieve_password">获取验证码找回密码</string>
+    <string name="method">方法</string>
+    <string name="question">问题</string>
+    <string name="dev_pwd_input_tip">密码长度8-64位，由字母+数字组成</string>
+    <string name="reset_s">重置成功</string>
+    <string name="enter_answer">请输入问题答案</string>
+    <string name="pls_dev_restart">验证次数超过限制，需重启设备再尝试</string>
+    <string name="input_code">输入验证码</string>
+    <string name="data_exception">异常数据</string>
+    <string name="this_network_not_support">该网络环境下不支持该功能</string>
 </resources>

@@ -49,6 +49,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.config.simpleconfig.view.DevSimpleConf
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.view.DevMonitorActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.push.view.DevPushActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.record.view.DevRecordActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.retrievepassword.view.RetrievePasswordActivity;
 import demo.xm.com.xmfunsdkdemo.ui.widget.DividerItemDecoration;
 import io.reactivex.annotations.Nullable;
 
@@ -504,6 +505,17 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
     @Override
     public void onToGetDevTokenFromServer(int position, XMDevInfo xmDevInfo) {
         presenter.getDevTokenFromServer(xmDevInfo.getDevId());
+    }
+
+    /**
+     * 跳转到重置设备页面
+     * @param position
+     * @param xmDevInfo
+     */
+    @Override
+    public void onTurnToRetrievePwdActivity(int position, XMDevInfo xmDevInfo) {
+        presenter.setDevId(xmDevInfo.getDevId());
+        turnToActivity(RetrievePasswordActivity.class);
     }
 
     @Override
