@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xm.ui.widget.XTitleBar
+        android:id="@+id/layoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color1"
+        app:LeftBtn_Nor="@mipmap/icon_back_normal"
+        app:LeftBtn_Sel="@mipmap/icon_back_pressed"
+        app:TitleText="@string/retrieve_dev_pwd"
+        app:TitleTextColor="@color/white"/>
+
+    <EditText
+        android:id="@+id/et_verifyCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/button_margin"
+        android:layout_marginTop="@dimen/button_margin"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:background="@drawable/shape_rectangle_white_corner"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="@string/input_code"
+        android:inputType="text"
+        android:padding="14dip"
+        android:textColorHint="#dddddd"
+        android:textSize="@dimen/small_text_size" />
+
+    <TextView
+        android:id="@+id/tv_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/verification_code_populated"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <EditText
+        android:id="@+id/et_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/button_margin"
+        android:layout_marginTop="@dimen/button_margin"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:background="@drawable/shape_rectangle_white_corner"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="@string/user_forget_pwd_new_passw"
+        android:inputType="textPassword"
+        android:maxLength="@integer/dev_pwd_max_length"
+        android:padding="14dip"
+        android:textColorHint="#dddddd"
+        android:textSize="@dimen/small_text_size" />
+
+
+    <EditText
+        android:id="@+id/et_confirmPwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/button_margin"
+        android:layout_marginTop="@dimen/button_margin"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:background="@drawable/shape_rectangle_white_corner"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="@string/user_forget_pwd_new_passw_confirm"
+        android:inputType="textPassword"
+        android:maxLength="@integer/dev_pwd_max_length"
+        android:padding="14dip"
+        android:textColorHint="#dddddd"
+        android:textSize="@dimen/small_text_size" />
+
+    <TextView
+        android:id="@+id/tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="@dimen/button_margin"
+        android:textColor="@color/black" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="1dp">
+
+        <com.xm.ui.widget.BtnColorBK
+            android:id="@+id/btn_confirm_retrieve_pwd"
+            style="@style/defaultButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/button_margin_start"
+            android:layout_marginTop="@dimen/button_margin_top"
+            android:layout_marginEnd="@dimen/button_margin_end"
+            android:layout_marginBottom="@dimen/button_margin_bottom"
+            android:text="@string/retrieve_dev_pwd"/>
+    </RelativeLayout>
+</LinearLayout>
