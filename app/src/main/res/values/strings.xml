@@ -977,4 +977,5 @@
     <string name="input_code">Input Code</string>
     <string name="data_exception">Exception Data</string>
     <string name="this_network_not_support">The current network environment does not support this feature.</string>
+    <string name="received_customer_service_message">Received customer service message:</string>
 </resources>

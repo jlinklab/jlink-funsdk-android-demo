@@ -974,4 +974,5 @@
     <string name="input_code">输入验证码</string>
     <string name="data_exception">异常数据</string>
     <string name="this_network_not_support">该网络环境下不支持该功能</string>
+    <string name="received_customer_service_message">接收到客服消息:</string>
 </resources>
