@@ -1,13 +1,20 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.push.view;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.manager.push.XMPushManager.MSG_TYPE_FAMILY_CALL;
+import static com.manager.push.XMPushManager.MSG_TYPE_VIDEO_TALK;
+import static com.manager.push.XMPushManager.PUSH_TYPE_XM;
+import static com.manager.push.XMPushManager.TYPE_DOOR_BELL;
+import static com.manager.push.XMPushManager.TYPE_FORCE_DISMANTLE;
+import static com.manager.push.XMPushManager.TYPE_LOCAL_ALARM;
+import static com.manager.push.XMPushManager.TYPE_REMOTE_CALL_ALARM;
 
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.IBinder;
 import android.os.Message;
-import android.widget.ImageView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,32 +24,17 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.basic.G;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.lib.Mps.SMCInitInfo;
+import com.lib.Mps.SMCInitInfoV2;
 import com.lib.MsgContent;
-import com.lib.SDKCONST;
 import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.alarm.AlarmGroup;
 import com.lib.sdk.bean.alarm.AlarmInfo;
+import com.lib.sdk.bean.push.NotifyPushInfo;
 import com.manager.account.XMAccountManager;
 import com.manager.db.DevDataCenter;
 import com.manager.device.alarm.DevAlarmInfoManager;
-import com.manager.image.BaseImageManager;
-import com.manager.image.CloudImageManager;
 import com.manager.push.XMPushManager;
 import com.utils.XUtils;
-import com.xm.ui.dialog.XMPromptDlg;
-
-import static com.manager.push.XMPushManager.MSG_TYPE_FAMILY_CALL;
-import static com.manager.push.XMPushManager.MSG_TYPE_VIDEO_TALK;
-import static com.manager.push.XMPushManager.PUSH_TYPE_XM;
-import static com.manager.push.XMPushManager.TYPE_DOOR_BELL;
-import static com.manager.push.XMPushManager.TYPE_FORCE_DISMANTLE;
-import static com.manager.push.XMPushManager.TYPE_LOCAL_ALARM;
-import static com.manager.push.XMPushManager.TYPE_REMOTE_CALL_ALARM;
-
-import static demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication.PATH_PHOTO;
-import static demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication.PATH_PHOTO_TEMP;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +51,8 @@ import demo.xm.com.xmfunsdkdemo.ui.entity.AlarmTranslationIconBean;
  * @time 2020/8/13 18:53
  */
 public class DevPushService extends Service implements DevAlarmInfoManager.OnAlarmInfoListener {
+
+    public static final String TAG = "DevPushService";
     private XMPushManager xmPushManager;
     private DevAlarmInfoManager devAlarmInfoManager;
 
@@ -88,10 +82,10 @@ public class DevPushService extends Service implements DevAlarmInfoManager.OnAla
         xmPushManager = new XMPushManager(xmPushLinkResult);
         String pushToken = XUtils.getPushToken(this);
         if (!StringUtils.isStringNULL(pushToken)) {
-            SMCInitInfo info = new SMCInitInfo();
+            SMCInitInfoV2 info = new SMCInitInfoV2();
             G.SetValue(info.st_0_user, XMAccountManager.getInstance().getAccountName());
             G.SetValue(info.st_1_password, XMAccountManager.getInstance().getPassword());
-            G.SetValue(info.st_2_token, pushToken);
+            G.SetValue(info.st_3_token, pushToken);
             xmPushManager.initFunSDKPush(this, info, PUSH_TYPE_XM);
         }
     }
@@ -134,11 +128,11 @@ public class DevPushService extends Service implements DevAlarmInfoManager.OnAla
         xmPushManager = new XMPushManager(xmPushLinkResult);
         String pushToken = XUtils.getPushToken(this);
         if (!StringUtils.isStringNULL(pushToken)) {
-            SMCInitInfo info = new SMCInitInfo();
+            SMCInitInfoV2 info = new SMCInitInfoV2();
             G.SetValue(info.st_0_user, XMAccountManager.getInstance().getAccountName());
             G.SetValue(info.st_1_password, XMAccountManager.getInstance().getPassword());
-            G.SetValue(info.st_2_token, pushToken);
-            G.SetValue(info.st_5_appType, "Third:http://xxxxx xxxx");
+            G.SetValue(info.st_3_token, pushToken);
+            G.SetValue(info.st_6_szAppType, "Third:http://xxxxx xxxx");
             //(例：Third:http(s)://xmey.net:80/xxx/xxx 或 Third:ip:80 中间用“:”做分隔符)
             xmPushManager.initFunSDKPush(this, info, PUSH_TYPE_XM);
         }
@@ -156,6 +150,8 @@ public class DevPushService extends Service implements DevAlarmInfoManager.OnAla
             if (errorId >= 0) {
                 //Push initialization successful
                 System.out.println("推送初始化成功:" + pushType);
+                //订阅客服推送
+                xmPushManager.linkCustomerService();
             } else {
                 // Push initialization failed
                 System.out.println("推送初始化失败:" + errorId);
@@ -214,6 +210,35 @@ public class DevPushService extends Service implements DevAlarmInfoManager.OnAla
             System.out.println("接收到报警消息:" + pushMsg);
             parseAlarmInfo(devId, pushMsg);
         }
+
+
+        /**
+         * 客服推送订阅结果回调
+         *
+         * @param pushType 推送类型
+         * @param isSuccess 是否成功
+         * @param errorId 错误码
+         */
+        @Override
+        public void onLinkCustomerServiceResult(int pushType, boolean isSuccess, int errorId) {
+            Log.d(TAG, "onLinkCustomerServiceResult: " + pushType + " " + isSuccess + " " + errorId);
+        }
+
+
+
+
+        /**
+         * 客服推送订阅结果回调
+         *
+         * @param pushType 推送类型
+         * @param isSuccess 是否成功
+         * @param errorId 错误码
+         */
+
+        @Override
+        public void onUnLinkCustomerServiceResult(int pushType, boolean isSuccess, int errorId) {
+            Log.d(TAG, "onUnLinkCustomerServiceResult: " + pushType + " " + isSuccess + " " + errorId);
+        }
     };
 
     /**
@@ -224,22 +249,36 @@ public class DevPushService extends Service implements DevAlarmInfoManager.OnAla
      * @param pushMsg 推送消息 Push message
      */
     private void parseAlarmInfo(String devId, String pushMsg) {
-        AlarmInfo alarmInfo = new AlarmInfo();
-        alarmInfo.onParse(pushMsg);
-        Toast.makeText(getApplicationContext(), getString(R.string.received_alarm_message) +
-                alarmInfo.getDevName() + ":" +
-                XMPushManager.getAlarmName(getApplicationContext(), alarmInfo.getEvent()) + ":" +
-                alarmInfo.getStartTime(), Toast.LENGTH_LONG).show();
-        //如果是来电消息才需要弹出来电页面
-        // Show incoming call page only if it's a call message
-        if (isCallAlarm(alarmInfo.getEvent(), alarmInfo.getMsgType(), devId)) {
-            Intent intent = new Intent(DevPushService.this, DevIncomingCallActivity.class);
-            intent.putExtra("devId", devId);
-            intent.putExtra("alarmTime", alarmInfo.getStartTime());
-            intent.putExtra("alarm_msg_type", alarmInfo.getMsgType());
-            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+        if(XUtils.isSn(devId)){
+            AlarmInfo alarmInfo = new AlarmInfo();
+            alarmInfo.onParse(pushMsg);
+            Toast.makeText(getApplicationContext(), getString(R.string.received_alarm_message) +
+                    alarmInfo.getDevName() + ":" +
+                    XMPushManager.getAlarmName(getApplicationContext(), alarmInfo.getEvent()) + ":" +
+                    alarmInfo.getStartTime(), Toast.LENGTH_LONG).show();
+            //如果是来电消息才需要弹出来电页面
+            // Show incoming call page only if it's a call message
+            if (isCallAlarm(alarmInfo.getEvent(), alarmInfo.getMsgType(), devId)) {
+                Intent intent = new Intent(DevPushService.this, DevIncomingCallActivity.class);
+                intent.putExtra("devId", devId);
+                intent.putExtra("alarmTime", alarmInfo.getStartTime());
+                intent.putExtra("alarm_msg_type", alarmInfo.getMsgType());
+                intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        } else {
+            JSONObject jsonObject = JSON.parseObject(pushMsg);
+            if (jsonObject != null && jsonObject.containsKey("CustomInfo")) {
+                String customInfoJson = jsonObject.getString("CustomInfo");
+                NotifyPushInfo notifyPushInfo = JSON.parseObject(customInfoJson, NotifyPushInfo.class);
+                if (!TextUtils.isEmpty(notifyPushInfo.getTitle()) && notifyPushInfo.getTitle().contains("[KF]")) {
+                    //客服消息
+                    Toast.makeText(getApplicationContext(), getString(R.string.received_customer_service_message) +
+                            notifyPushInfo.getContent(), Toast.LENGTH_LONG).show();
+                }
+            }
         }
+
     }
 
     /**
