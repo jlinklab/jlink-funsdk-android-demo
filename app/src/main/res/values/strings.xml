@@ -69,7 +69,7 @@
     <string name="user_change_password_hint_new_password_confirm"> please enter the password again</string>
     <string name="user_change_password_sucess"> modify the password successfully, please use the new password to log in again</string>
     <string name="user_change_password_error_emptyusername"> user name cannot be empty</string>
-    <string name="user_change_password_error_emptypassw"> any password cannot be empty</string>
+    <string name="user_change_password_error_emptypassw">password cannot be empty</string>
     <string name="user_change_password_error_passwtooshort"> new password is not up to standard</string>
     <string name="user_change_password_error_passwnotequal"> Please make sure that you enter the same password twice</string>
 
@@ -961,4 +961,20 @@
     <string name="online_service">Online Service</string>
     <string name="Install_Alipay_Application">Please install alipay</string>
     <string name="Install_WeChat_Application">Please install wechat</string>
+    <string name="retrieve_dev_pwd">"Reset Device Password"</string>
+    <string name="get_verification_retrieve_pwd">Retrieve password via verification code</string>
+    <string name="sure_reset">Reset</string>
+    <string name="verification_code_populated">Verification code is automatically populated to the input box</string>
+    <string name="get_code_failed">Failed to get verification code</string>
+    <string name="answer_security_question">Answer security questions</string>
+    <string name="get_verification_retrieve_password">Get verification code to retrieve password</string>
+    <string name="method">Method</string>
+    <string name="question">Question</string>
+    <string name="dev_pwd_input_tip">A password must be 8-64 characters long and a combination of letters and numbers</string>
+    <string name="reset_s">Reset Successful</string>
+    <string name="enter_answer">Please enter the right answer</string>
+    <string name="pls_dev_restart">Verification attempts exceed the limit. Please restart the device and try again</string>
+    <string name="input_code">Input Code</string>
+    <string name="data_exception">Exception Data</string>
+    <string name="this_network_not_support">The current network environment does not support this feature.</string>
 </resources>
