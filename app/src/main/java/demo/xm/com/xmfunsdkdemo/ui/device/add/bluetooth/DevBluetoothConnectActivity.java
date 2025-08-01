@@ -15,6 +15,7 @@ import com.lib.sdk.struct.SDBDeviceInfo;
 import com.manager.bluetooth.XMBleManager;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
+import com.manager.device.DeviceManager;
 import com.utils.LogUtils;
 import com.utils.XMWifiManager;
 import com.xm.activity.base.XMBaseActivity;
@@ -108,16 +109,19 @@ public class DevBluetoothConnectActivity extends DemoBaseActivity<DevBluetoothCo
                     showWaitDialog();
                     boolean isSuccess = (boolean) hashMap.get("isSuccess");
                     if (isSuccess) {
-                        XMDevInfo xmDevInfo = (XMDevInfo) hashMap.get("devInfo");
-                        if (DevDataCenter.getInstance().isLowPowerDevByPid(pid)) {
-                            SDBDeviceInfo sdbDeviceInfo = xmDevInfo.getSdbDevInfo();
-                            sdbDeviceInfo.st_7_nType = SDKCONST.DEVICE_TYPE.IDR;
-                            xmDevInfo.setDevType(SDKCONST.DEVICE_TYPE.IDR);
-                        }
+                        final XMDevInfo xmDevInfo = (XMDevInfo) hashMap.get("devInfo");
                         presenter.setDevId(xmDevInfo.getDevId());
-                        //如果设备支持Token的话，需要获取设备特征码
-                        if (!StringUtils.isStringNULL(xmDevInfo.getDevToken())) {
-                            presenter.getCloudCryNum(xmDevInfo);
+                        //首先通过pid未判断为低功耗设备，若通过pid未判断为低功耗，进一步根据设备序列号检查设备是否低功耗类型
+                        if(DevDataCenter.getInstance().isLowPowerDevByPid(pid)){
+                            setDeviceTypeAndGetCloudCryNum(xmDevInfo,true);
+                        } else {
+                            //检查设备状态判断是否为低功耗设备
+                            DeviceManager.getInstance().checkIsIDRDevByCfg(xmDevInfo.getDevId(),new DeviceManager.OnCheckIsIDRDevListener() {
+                                @Override
+                                public void onCheckIsIDRDevResult(boolean isIDRDev){
+                                    setDeviceTypeAndGetCloudCryNum(xmDevInfo,isIDRDev);
+                                }
+                            });
                         }
                         ToastUtils.showLong("配网成功：" + xmDevInfo.getDevId());
                     } else {
@@ -189,4 +193,17 @@ public class DevBluetoothConnectActivity extends DemoBaseActivity<DevBluetoothCo
         }
     }
 
+
+    private void setDeviceTypeAndGetCloudCryNum(XMDevInfo xmDevInfo,boolean isIDRDev) {
+        if (isIDRDev) {
+            SDBDeviceInfo sdbDeviceInfo = xmDevInfo.getSdbDevInfo();
+            sdbDeviceInfo.st_7_nType = SDKCONST.DEVICE_TYPE.IDR;
+            xmDevInfo.setDevType(SDKCONST.DEVICE_TYPE.IDR);
+        }
+
+        //如果设备支持Token的话，需要获取设备特征码
+        if (!StringUtils.isStringNULL(xmDevInfo.getDevToken())) {
+            presenter.getCloudCryNum(xmDevInfo);
+        }
+    }
 }
