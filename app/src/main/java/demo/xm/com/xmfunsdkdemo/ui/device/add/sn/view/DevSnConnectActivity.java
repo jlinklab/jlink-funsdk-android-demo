@@ -25,6 +25,7 @@ import com.manager.account.share.ShareManager;
 import com.manager.db.Define;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
+import com.manager.device.DeviceManager;
 import com.utils.XUtils;
 import com.xm.activity.base.XMBaseActivity;
 import com.xm.base.code.ErrorCodeManager;
@@ -210,6 +211,7 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
                     if (null != devSNEdit) {
                         devSNEdit.setText(result);
                     }
+                    checkIsIDRDevByCfg(result);
                 } else if (result.startsWith("sn:")) {
                     String[] devInfos = result.split(";");
 
@@ -222,6 +224,8 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
                     if (null != devLoginTokenEdit) {
                         devLoginTokenEdit.setText(devInfos[1].split(":")[1]);
                     }
+
+                    checkIsIDRDevByCfg(devInfos[0].split(":")[1]);
                 } else {
                     try {
                         if (result.startsWith("{")) {
@@ -277,14 +281,21 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
                                     devSNEdit.setText(splitResults[0]);
                                 }
 
+                                int devType = -1;
                                 if (XUtils.isInteger(splitResults[3])) {
                                     //解析二维码中的设备类型
-                                    int devType = Integer.parseInt(splitResults[3]);
+                                    devType = Integer.parseInt(splitResults[3]);
                                     if (DevDataCenter.getInstance().isLowPowerDev(devType)) {
                                         spDevType.setValue(21);//低功耗设备
                                         lsiDevType.setRightText(spDevType.getSelectedName());
                                     }
                                 }
+
+                                //如果二维码中不带设备类型，则需要根据设备序列号检查设备是否低功耗类型
+                                if(devType<0){
+                                    checkIsIDRDevByCfg(splitResults[0]);
+                                }
+
                             }
                         }
                     } catch (Exception e) {
@@ -305,4 +316,29 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
             turnToActivity(DevMonitorActivity.class);
         }
     }
+
+
+    /**
+     * 检查设备状态判断是否为低功耗设备
+     * @param devId
+     */
+
+    private void checkIsIDRDevByCfg(String devId) {
+
+        if(!XUtils.isSn(devId)){
+            return;
+        }
+
+        DeviceManager.getInstance().checkIsIDRDevByCfg(devId,new DeviceManager.OnCheckIsIDRDevListener() {
+            @Override
+            public void onCheckIsIDRDevResult(boolean isIDRDev){
+                if (isIDRDev) {
+                    spDevType.setValue(21);//低功耗设备
+                    lsiDevType.setRightText(spDevType.getSelectedName());
+                }
+
+            }
+        });
+    }
+
 }
