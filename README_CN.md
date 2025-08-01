@@ -19,7 +19,7 @@ defaultConfig {
 
 dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation 'com.jftechsoft.funsdk:funsdk:5.0.3' //或者直接从Demo中获取aar文件加载
+    implementation 'com.jftechsoft.funsdk:funsdk:5.0.4' //或者直接从Demo中获取aar文件加载
     implementation 'io.github.xmcamera:uilibrary:2.1' //或者直接从Demo中获取aar文件加载
     implementation 'com.alibaba:fastjson:1.1.72.android'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
