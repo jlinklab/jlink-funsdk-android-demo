@@ -436,11 +436,10 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
                             setDeviceTypeAndGetCloudCryNum(xmDevInfo,true);
                         } else {
                             //检查设备状态判断是否为低功耗设备
-                            DeviceManager.getInstance().checkIsIDRDevByCfg(xmDevInfo.getDevId(),new DeviceManager.OnCheckIsIDRDevListener() {
+                            DeviceManager.getInstance().checkIsLowPowerDevFromServer(xmDevInfo.getDevId(),new DeviceManager.OnCheckIsLowPowerDevListener() {
                                 @Override
-                                public void onCheckIsIDRDevResult(boolean isIDRDev){
-                                    setDeviceTypeAndGetCloudCryNum(xmDevInfo,isIDRDev);
-
+                                public void onCheckIsLowPowerDevResult(boolean isLowPowerDev) {
+                                    setDeviceTypeAndGetCloudCryNum(xmDevInfo,isLowPowerDev);
                                 }
                             });
                         }

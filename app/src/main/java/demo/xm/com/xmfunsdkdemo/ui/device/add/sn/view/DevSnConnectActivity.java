@@ -329,14 +329,14 @@ public class DevSnConnectActivity extends DemoBaseActivity<DevSnConnectPresenter
             return;
         }
 
-        DeviceManager.getInstance().checkIsIDRDevByCfg(devId,new DeviceManager.OnCheckIsIDRDevListener() {
+
+        DeviceManager.getInstance().checkIsLowPowerDevFromServer(devId,new DeviceManager.OnCheckIsLowPowerDevListener() {
             @Override
-            public void onCheckIsIDRDevResult(boolean isIDRDev){
-                if (isIDRDev) {
+            public void onCheckIsLowPowerDevResult(boolean isLowPowerDev) {
+                if (isLowPowerDev) {
                     spDevType.setValue(21);//低功耗设备
                     lsiDevType.setRightText(spDevType.getSelectedName());
                 }
-
             }
         });
     }
