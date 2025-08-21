@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Process;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
@@ -48,6 +49,7 @@ import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
 import demo.xm.com.xmfunsdkdemo.base.DemoConstant;
 import demo.xm.com.xmfunsdkdemo.ui.activity.MainActivity;
+import demo.xm.com.xmfunsdkdemo.ui.activity.scanqrcode.CaptureActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.list.view.ChannelListActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.list.view.DevListActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.alert.view.AlertSetActivity;
@@ -100,13 +102,21 @@ public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> impl
     private void initView() {
         titleBar = findViewById(R.id.layoutTop);
         titleBar.setRightTitleText(getString(R.string.user_login_forgot_passwd));
-        titleBar.getLeftBtn().setVisibility(View.GONE);
+        titleBar.setLeftBtnResource(R.mipmap.ic_scan,R.mipmap.ic_scan);
         titleBar.setLeftClick(this);
         titleBar.setBottomTip(UserLoginActivity.class.getName());
         titleBar.setRightTvClick(new XTitleBar.OnRightClickListener() {
             @Override
             public void onRightClick() {
                 enterForgotPassword();
+            }
+        });
+        titleBar.setLeftClick(new XTitleBar.OnLeftClickListener() {
+            @Override
+            public void onLeftclick() {
+                Intent intent = new Intent();
+                intent.setClass(UserLoginActivity.this, CaptureActivity.class);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -155,8 +165,9 @@ public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> impl
 //                        DevDataCenter.getInstance().addDev(sdbDeviceInfo);
 //                        FunSDK.AddDevInfoToDataCenter(G.ObjToBytes(sdbDeviceInfo), 0, 0, "");
 //                        turnToActivity(DevListActivity.class);
-                        turnToActivity(MainActivity.class);
-                        finish();
+                        Intent intent = new Intent();
+                        intent.setClass(UserLoginActivity.this, CaptureActivity.class);
+                        startActivityForResult(intent, 2);
                     }
                 });
 
@@ -173,17 +184,6 @@ public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> impl
         DevDataCenter.getInstance().clear();
         users = pref.getString("Users", "");
         pwds = pref.getString("Pwds", "");
-        //前往（应用开放平台：https://aops.jftech.com），注册申请成为开放平台开发者，然后到【控制台】-【创应用列表】中创建Android应用，等应用审核通过后就可以获取到AppKey、movedCard和AppSecret等信息
-        if (TextUtils.isEmpty(DemoConstant.APP_UUID) || TextUtils.isEmpty(DemoConstant.APP_KEY) || TextUtils.isEmpty(DemoConstant.APP_SECRET) || DemoConstant.APP_MOVEDCARD <= 0) {
-            XMPromptDlg.onShow(this, getString(R.string.funsdk_integration_tips), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-            return;
-        }
-
         presenter.updateAreaCode();
     }
 
@@ -386,5 +386,53 @@ public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> impl
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         UserLoginActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int responseCode, Intent data) {
+        super.onActivityResult(requestCode, responseCode, data);
+        if (responseCode == RESULT_OK) {
+            if (null != data) {
+                if (requestCode == 1) {
+                    String result = data.getStringExtra("result");
+                    String[] appInfos = result.split(";");
+                    if (appInfos.length == 4) {
+                        SPUtil.getInstance(this).setSettingParam("APP_UUID", appInfos[0]);
+                        SPUtil.getInstance(this).setSettingParam("APP_KEY", appInfos[1]);
+                        SPUtil.getInstance(this).setSettingParam("APP_SECRET", appInfos[2]);
+                        SPUtil.getInstance(this).setSettingParam("APP_MOVEDCARD", Integer.parseInt(appInfos[3]));
+                        XMPromptDlg.onShow(UserLoginActivity.this, "请重启APP", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(getApplicationContext(), UserLoginActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        Process.killProcess(Process.myPid());
+                                    }
+                                }, 1000);
+                            }
+                        });
+                    }
+                }else if (requestCode == 2) {
+                    String result = data.getStringExtra("result");
+                    String[] devInfos = result.split(";");
+                    for (String devId : devInfos) {
+                        SDBDeviceInfo sdbDeviceInfo = new SDBDeviceInfo();
+                        G.SetValue(sdbDeviceInfo.st_0_Devmac, devId);//设备序列号
+                        G.SetValue(sdbDeviceInfo.st_5_loginPsw, "");//设置设备登录密码
+                        G.SetValue(sdbDeviceInfo.st_4_loginName, "admin");//设置设备登录名，默认一般是admin
+                        sdbDeviceInfo.setDevToken("");//设备登录Token，如果设备支持Token的话需要设置，不支持的话不需要设置
+                        sdbDeviceInfo.setPid("");//如果设备有PID的话，需要设置
+                        DevDataCenter.getInstance().addDev(sdbDeviceInfo);
+                        FunSDK.AddDevInfoToDataCenter(G.ObjToBytes(sdbDeviceInfo), 0, 0, "");
+                    }
+                    turnToActivity(DevListActivity.class);
+                    finish();
+                }
+            }
+        }
     }
 }
