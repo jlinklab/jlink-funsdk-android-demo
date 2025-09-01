@@ -25,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.basic.G;
+import com.blankj.utilcode.util.ToastUtils;
 import com.lib.EFUN_ERROR;
 import com.lib.FunSDK;
 import com.lib.sdk.bean.CountryFlagBean;
@@ -78,7 +79,8 @@ import permissions.dispatcher.RuntimePermissions;
  * Created by jiangping on 2018-10-23.
  */
 @RuntimePermissions
-public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> implements UserLoginContract.IUserLoginView, View.OnClickListener {
+public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> implements
+        UserLoginContract.IUserLoginView, View.OnClickListener,DevDataCenter.OnSyncDevInfoToSDKListener {
     private EditText etUserName;
     private EditText etPwd;
 
@@ -162,8 +164,16 @@ public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> impl
 //                        sdbDeviceInfo.st_7_nType = 21;//设备类型，如果设备是低功耗需要唤醒的，必须要设置，比如门铃设备是21，具体值参考https://docs.jftech.com/docs?menusId=ab9a6dddd50c46a6af8a913b472ed015&siderid=1e394db91bc34d908839eeee09cdf5ec
 //                        sdbDeviceInfo.setDevToken("");//设备登录Token，如果设备支持Token的话需要设置，不支持的话不需要设置
 //                        sdbDeviceInfo.setPid("");//如果设备有PID的话，需要设置
-//                        DevDataCenter.getInstance().addDev(sdbDeviceInfo);
-//                        FunSDK.AddDevInfoToDataCenter(G.ObjToBytes(sdbDeviceInfo), 0, 0, "");
+//                        DevDataCenter.getInstance().addDevSyncToSDK(sdbDeviceInfo, new DevDataCenter.OnSyncDevInfoToSDKListener() {
+//                            public void onSyncToSDKResult(boolean isSuccess, int errorId) {
+//                                if (isSuccess) {
+//                                    turnToActivity(DevListActivity.class);
+//                                    finish();
+//                                }else {
+//                                    XMPromptDlg.onShow(UserLoginActivity.this,"同步设备信息失败:" + errorId,null);
+//                                }
+//                            }
+//                        });
 //                        turnToActivity(DevListActivity.class);
                         Intent intent = new Intent();
                         intent.setClass(UserLoginActivity.this, CaptureActivity.class);
@@ -419,20 +429,35 @@ public class UserLoginActivity extends DemoBaseActivity<UserLoginPresenter> impl
                 }else if (requestCode == 2) {
                     String result = data.getStringExtra("result");
                     String[] devInfos = result.split(";");
-                    for (String devId : devInfos) {
-                        SDBDeviceInfo sdbDeviceInfo = new SDBDeviceInfo();
-                        G.SetValue(sdbDeviceInfo.st_0_Devmac, devId);//设备序列号
-                        G.SetValue(sdbDeviceInfo.st_5_loginPsw, "");//设置设备登录密码
-                        G.SetValue(sdbDeviceInfo.st_4_loginName, "admin");//设置设备登录名，默认一般是admin
-                        sdbDeviceInfo.setDevToken("");//设备登录Token，如果设备支持Token的话需要设置，不支持的话不需要设置
-                        sdbDeviceInfo.setPid("");//如果设备有PID的话，需要设置
-                        DevDataCenter.getInstance().addDev(sdbDeviceInfo);
-                        FunSDK.AddDevInfoToDataCenter(G.ObjToBytes(sdbDeviceInfo), 0, 0, "");
+                    String devId = "";
+                    String devToken = "";
+                    if (devInfos.length >= 1) {
+                        devId = devInfos[0];
                     }
-                    turnToActivity(DevListActivity.class);
-                    finish();
+
+                    if (devInfos.length >= 2) {
+                        devToken = devInfos[1];
+                    }
+
+                    SDBDeviceInfo sdbDeviceInfo = new SDBDeviceInfo();
+                    G.SetValue(sdbDeviceInfo.st_0_Devmac,devId);//设备序列号
+                    G.SetValue(sdbDeviceInfo.st_5_loginPsw, "");//设置设备登录密码
+                    G.SetValue(sdbDeviceInfo.st_4_loginName, "admin");//设置设备登录名，默认一般是admin
+                    sdbDeviceInfo.setDevToken(devToken);//设备登录Token，如果设备支持Token的话需要设置，不支持的话不需要设置
+                    sdbDeviceInfo.setPid("");//如果设备有PID的话，需要设置
+                    DevDataCenter.getInstance().addDevSyncToSDK(sdbDeviceInfo,this);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onSyncToSDKResult(boolean isSuccess, int errorId) {
+        if (isSuccess) {
+            turnToActivity(DevListActivity.class);
+            finish();
+        }else {
+            XMPromptDlg.onShow(this,"同步设备信息失败:" + errorId,null);
         }
     }
 }
