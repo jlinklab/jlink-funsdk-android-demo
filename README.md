@@ -16,7 +16,7 @@ defaultConfig {
  }
 dependencies {
     // The latest stable version of FunSDK:
-    implementation 'com.jftechsoft.funsdk:funsdk:5.0.4' //Or directly obtain the AAR file from the demo for loading
+    implementation 'com.jftechsoft.funsdk:funsdk:5.0.7' //Or directly obtain the AAR file from the demo for loading
     implementation 'io.github.xmcamera:uilibrary:2.1' //Or directly obtain the AAR file from the demo for loading
     implementation 'com.alibaba:fastjson:1.1.72.android'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
