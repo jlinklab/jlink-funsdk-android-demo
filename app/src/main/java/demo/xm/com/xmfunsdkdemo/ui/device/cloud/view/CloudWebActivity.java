@@ -45,9 +45,12 @@ import com.lib.FunSDK;
 import com.lib.sdk.bean.ChannelInfoBean;
 import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.SysDevAbilityInfoBean;
+import com.lib.sdk.bean.account.PhoneRuleAndRegionBean;
 import com.lib.sdk.bean.web.H5DevListBean;
 import com.lib.sdk.bean.web.H5TitleBean;
 import com.manager.account.XMAccountManager;
+import com.manager.account.countrycode.CountryCodeListener;
+import com.manager.account.countrycode.CountryCodeManager;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.db.XMUserInfo;
@@ -357,22 +360,17 @@ public class CloudWebActivity extends DemoBaseActivity<CloudWebPresenter> implem
             return null;
         }
 
-        //只有中文或英文,
         String lan = Locale.getDefault().getLanguage();
-        if (lan.compareToIgnoreCase("zh") == 0) {
-            lan = "zh-CN";//不是zh_CN
-        } else {
-            lan = "en";
-        }
-
+        String country = Locale.getDefault().getCountry();
+        String countryLan = lan + "-" + country;
         Map<String, String> urlMap = new LinkedHashMap<>();
         urlMap.put("sn", presenter.getDevId());//设备序列号
-        urlMap.put("lang", lan);//语言
+        urlMap.put("lang", countryLan);//语言
         urlMap.put("appKey", DemoConstant.APP_KEY);
         urlMap.put("authorization", DevDataCenter.getInstance().getAccessToken());//账号登录Token
         urlMap.put("classifyId", presenter.getGoodsType());// 根据需求传入对应的值，比如云存储->GOODS_TYPE_CLOUD_STORAGE，云电话->GOODS_TYPE_CALL，4G流量->GOODS_TYPE_FLOW, 如果不传的话默认云服务首页
         urlMap.put("appVer",XUtils.getVersion(this));
-        urlMap.put("routing","buy");//首页传index 购买页面传buy
+        urlMap.put("routing","index");//首页传index 购买页面传buy
         return getUrl(CLOUD_STORAGE_BASE_URL,urlMap);
     }
 
@@ -620,5 +618,21 @@ public class CloudWebActivity extends DemoBaseActivity<CloudWebPresenter> implem
                 dialog.dismiss();
             }
         });
+    }
+
+    String ipConfigJson = "";
+    @JavascriptInterface
+    public String getIPConfig() {
+        try {
+            CountryCodeManager.getInstance().getSupportAreaCodeList("", new CountryCodeListener() {
+                @Override
+                public void onSupportAreaCodeList(PhoneRuleAndRegionBean phoneRuleAndRegionBean, int i) {
+                    ipConfigJson = new Gson().toJson(phoneRuleAndRegionBean.getDefaultCountry());
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ipConfigJson;
     }
 }

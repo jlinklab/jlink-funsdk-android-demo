@@ -34,6 +34,7 @@ import com.manager.bluetooth.IXMBleManagerListener;
 import com.manager.bluetooth.XMBleManager;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
+import com.manager.device.DeviceManager;
 import com.utils.LogUtils;
 import com.xm.activity.base.XMBaseActivity;
 import com.xm.ui.dialog.XMPromptDlg;
@@ -424,27 +425,24 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
                         presenter.responseReceiveConnectWiFiResult(mac, isSuccess);
                     }
                     if (isSuccess) {
-                        XMDevInfo xmDevInfo = (XMDevInfo) hashMap.get("devInfo");
+                        final XMDevInfo xmDevInfo = (XMDevInfo) hashMap.get("devInfo");
                         if (xmDevInfo == null) {
                             return;
                         }
 
-                        //判断是否为低功耗设备
-                        if (DevDataCenter.getInstance().isLowPowerDevByPid(xmDevInfo.getPid())) {
-                            SDBDeviceInfo sdbDeviceInfo = xmDevInfo.getSdbDevInfo();
-                            sdbDeviceInfo.st_7_nType = SDKCONST.DEVICE_TYPE.IDR;
-                            xmDevInfo.setDevType(SDKCONST.DEVICE_TYPE.IDR);
-                        }
-
-
                         presenter.setDevId(xmDevInfo.getDevId());
-
-                        //如果设备支持Token的话，需要获取设备特征码
-                        if (!StringUtils.isStringNULL(xmDevInfo.getDevToken())) {
-                            showWaitDialog();
-                            presenter.getCloudCryNum(xmDevInfo);
+                        //首先通过pid未判断为低功耗设备，若通过pid未判断为低功耗，进一步根据设备序列号检查设备是否低功耗类型
+                        if(DevDataCenter.getInstance().isLowPowerDevByPid(xmDevInfo.getPid())){
+                            setDeviceTypeAndGetCloudCryNum(xmDevInfo,true);
+                        } else {
+                            //检查设备状态判断是否为低功耗设备
+                            DeviceManager.getInstance().checkIsLowPowerDevFromServer(xmDevInfo.getDevId(),new DeviceManager.OnCheckIsLowPowerDevListener() {
+                                @Override
+                                public void onCheckIsLowPowerDevResult(boolean isLowPowerDev) {
+                                    setDeviceTypeAndGetCloudCryNum(xmDevInfo,isLowPowerDev);
+                                }
+                            });
                         }
-
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -523,6 +521,21 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
                 showToast(getString(R.string.Add_Dev_Failed) + ":" + errorId, Toast.LENGTH_LONG);
                 return;
             }
+        }
+    }
+
+
+    private void setDeviceTypeAndGetCloudCryNum(XMDevInfo xmDevInfo,boolean isIDRDev) {
+        if (isIDRDev) {
+            SDBDeviceInfo sdbDeviceInfo = xmDevInfo.getSdbDevInfo();
+            sdbDeviceInfo.st_7_nType = SDKCONST.DEVICE_TYPE.IDR;
+            xmDevInfo.setDevType(SDKCONST.DEVICE_TYPE.IDR);
+        }
+
+        //如果设备支持Token的话，需要获取设备特征码
+        if (!StringUtils.isStringNULL(xmDevInfo.getDevToken())) {
+            showWaitDialog();
+            presenter.getCloudCryNum(xmDevInfo);
         }
     }
 }

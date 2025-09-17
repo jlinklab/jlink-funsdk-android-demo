@@ -30,6 +30,7 @@ import java.util.Map;
 import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoConstant;
 import demo.xm.com.xmfunsdkdemo.ui.entity.AlarmTranslationIconBean;
+import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 
 /**
  * created by hws 2018-10-27 14:36
@@ -78,12 +79,17 @@ public class SDKDemoApplication extends Application {
          */
         xmFunSDKManager = XMFunSDKManager.getInstance();
         if (xmFunSDKManager.isLoadLibrarySuccess()) {
+            //前往（应用开放平台：https://aops.jftech.com），注册申请成为开放平台开发者，然后到【控制台】-【创应用列表】中创建Android应用，等应用审核通过后就可以获取到AppKey、movedCard和AppSecret等信息
+            String appUUID = SPUtil.getInstance(this).getSettingParam("APP_UUID", DemoConstant.APP_UUID);
+            String appKey = SPUtil.getInstance(this).getSettingParam("APP_KEY", DemoConstant.APP_KEY);
+            String appSecret = SPUtil.getInstance(this).getSettingParam("APP_SECRET", DemoConstant.APP_SECRET);
+            int appMovedcard = SPUtil.getInstance(this).getSettingParam("APP_MOVEDCARD", DemoConstant.APP_MOVEDCARD);
             xmFunSDKManager.initXMCloudPlatform(
                     this,
-                    DemoConstant.APP_UUID,
-                    DemoConstant.APP_KEY,
-                    DemoConstant.APP_SECRET,
-                    DemoConstant.APP_MOVEDCARD,
+                    appUUID,
+                    appKey,
+                    appSecret,
+                    appMovedcard,
                     true);
 
             /**

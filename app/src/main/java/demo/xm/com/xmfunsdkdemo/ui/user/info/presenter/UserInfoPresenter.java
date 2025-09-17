@@ -11,6 +11,7 @@ import com.manager.account.share.ShareManager;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMUserInfo;
 
+import com.manager.push.XMPushManager;
 import com.utils.XUtils;
 import com.xm.activity.base.XMBasePresenter;
 import com.xm.ui.dialog.XMPromptDlg;
@@ -40,6 +41,8 @@ public class UserInfoPresenter extends XMBasePresenter<XMAccountManager> impleme
     }
 
     public void logout(Context context) {
+        //取消客服订阅
+        new XMPushManager(null).unLinkCustomService();
         SPUtil.getInstance(context).setSettingParam("Password", null);
         manager.logout();
         //释放分享
