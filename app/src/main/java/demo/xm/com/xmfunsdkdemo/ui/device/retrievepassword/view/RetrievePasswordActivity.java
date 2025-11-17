@@ -131,7 +131,8 @@ public class RetrievePasswordActivity extends XMBaseActivity
             @Override
             public void onSupportDevRetrievePwd(String devId, int supportType) {
                 hideWaitDialog();
-                if (supportType == RETRIEVE_PWD_SUPPORT_QUESTION || supportType == RETRIEVE_PWD_SUPPORT_QRCODE_AND_QUESTION || supportType == RETRIEVE_PWD_SUPPORT_QRCODE_AND_QUESTION) {
+                if (supportType == RETRIEVE_PWD_SUPPORT_QUESTION || supportType == RETRIEVE_PWD_SUPPORT_QRCODE_AND_QUESTION
+                         || supportType == RETRIEVE_PWD_SUPPORT_QRCODE_AND_QUESTION_NOT_SET) {
                     if (DevRetrievePasswordManager.getInstance().isSupportQuestion(devId)) {
                         mLlWay1.setVisibility(View.VISIBLE);
                         mBtnConfirm.setVisibility(View.VISIBLE);
@@ -149,10 +150,13 @@ public class RetrievePasswordActivity extends XMBaseActivity
                     } else {
                         mLlWay2.setVisibility(View.GONE);
                     }
-                }else if(supportType == RETRIEVE_PWD_SUPPORT_QUESTION_NOT_SET || supportType == RETRIEVE_PWD_SUPPORT_QRCODE_AND_QUESTION_NOT_SET){
-                    showToast(getString( R.string.this_network_not_support),Toast.LENGTH_LONG);
-                    finish();
-                }else {
+
+                    if(!DevRetrievePasswordManager.getInstance().isSupportQuestion(devId)
+                            && !DevRetrievePasswordManager.getInstance().isSupportVerifyQRCode(devId)){
+                        showToast(getString( R.string.device_alarm_func_alarmout_tip),Toast.LENGTH_LONG);
+                        finish();
+                    }
+                } else {
                     showToast(getString( R.string.device_alarm_func_alarmout_tip),Toast.LENGTH_LONG);
                     finish();
                 }
