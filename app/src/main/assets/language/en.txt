@@ -1784,6 +1784,35 @@ set_start=Start Time
 Time_Slot=Period
 
 
+TR_Setting_4G_Network_Switching=4G Network Switching
+TR_Setting_Card_Only_Support_On_Device_Switching=This card can only be switched on the device.
+TR_Setting_Card_Slot=Card Slot
+TR_Setting_Check_Device_Power_And_Reset=Please power on the device and bring your phone as close to it as possible.
+TR_Setting_China_Mobile=China Mobile
+TR_Setting_China_Telecom=China Telecom
+TR_Setting_China_Unicom=China Unicom
+
+TR_Setting_Switch=Switch
+TR_Setting_Switch_Card_Step_One_Hint=1.It will take 1 to 2 minutes to switch the SIM card. During this period, the device will be unable to operate and use.
+TR_Setting_Switch_Card_Step_Two_Hint=2.Switching, please do not turn off device and App
+TR_Setting_Switching_And_Wait=Switching, please wait...
+
+TR_Setting_In_Transition=Switching
+TR_Setting_In_Use=In use
+
+TR_Seting_Idle=Idle
+TR_Setting_4G_Network_Switching=4G Network Switching
+
+TR_Logged_Out=Activation period ended.
+
+TR_Setting_Network_Card_Change_Hint=1. Switching cards may take 1-3 minutes; please do not close the app or turn off the device during this time.\n2. It is recommended to turn off the device before replacing the data card.
+
+
+
+
+
+
+
 
 
 

@@ -1895,6 +1895,29 @@ set_start=起始时间
 Time_Slot=时间段
 
 
+TR_Setting_4G_Network_Switching=4G网络切换
+TR_Setting_Card_Only_Support_On_Device_Switching=该卡片仅支持在设备上切换
+TR_Setting_Card_Slot=卡槽
+TR_Setting_Check_Device_Power_And_Reset=请将设备通电，并且将手机尽量靠近设备
+TR_Setting_China_Mobile=中国移动
+TR_Setting_China_Telecom=中国电信
+TR_Setting_China_Unicom=中国联通
+
+TR_Setting_Switch=切换
+TR_Setting_Switch_Card_Step_One_Hint=1、切换卡片需要等待1-2分钟，期间设备将无法操作和使用。
+TR_Setting_Switch_Card_Step_Two_Hint=2、切换中请勿关闭设备和App
+TR_Setting_Switching_And_Wait=切换中，请稍后…
+
+TR_Setting_In_Transition=切换中
+TR_Setting_In_Use=正在使用
+
+TR_Seting_Idle=空闲
+TR_Setting_4G_Network_Switching=4G网络切换
+
+TR_Logged_Out=已过激活期
+
+TR_Setting_Network_Card_Change_Hint=1、切换卡片需要等到1-3分钟，期间请勿关闭App和设备\n2、更换流量卡建议关闭设备后操作
+
 
 
 

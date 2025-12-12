@@ -7,11 +7,17 @@ package demo.xm.com.xmfunsdkdemo.ui.vm;
  */
 public class DevConfigViewModel {
     private int name;
+    private String nameStr;
     private int des;
     private int imageId = 0;
 
     public DevConfigViewModel(int name, int des) {
         this.name = name;
+        this.des = des;
+    }
+
+    public DevConfigViewModel(String nameStr, int des) {
+        this.nameStr = nameStr;
         this.des = des;
     }
 
@@ -23,6 +29,10 @@ public class DevConfigViewModel {
 
     public int getName() {
         return name;
+    }
+
+    public String getNameStr() {
+        return nameStr;
     }
 
     public int getDes() {

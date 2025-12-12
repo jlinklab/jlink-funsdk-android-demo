@@ -39,7 +39,12 @@ public class DevConfigAdapter extends ArrayAdapter {
             ImageName.setImageResource(picture.getImageId());
         }
 
-        TitleName.setText(picture.getName());
+        if(picture.getNameStr() != null){
+            TitleName.setText(picture.getNameStr());
+        } else {
+            TitleName.setText(picture.getName());
+        }
+
         if (picture.getDes() != -1) {
             DescName.setText(picture.getDes());
         }

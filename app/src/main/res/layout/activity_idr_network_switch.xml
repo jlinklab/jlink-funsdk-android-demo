@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/xm_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/new_bg_color">
+
+
+
+
+    <com.xm.ui.widget.XTitleBar
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/layoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color1"
+        uilib:LeftBtn_Nor="@mipmap/icon_back_normal"
+        uilib:LeftBtn_Sel="@mipmap/icon_back_pressed"
+        uilib:RightText=""
+        uilib:RightTextSize="@dimen/small_text_size"
+        uilib:RightTextColor="@color/white"
+        uilib:BottomTipText=""
+        uilib:BottomTipSize="@dimen/too_small_text_size"
+        uilib:BottomTipColor="@color/white"
+        uilib:TitleText="TR_Setting_4G_Network_Switching"
+        uilib:TitleTextColor="@color/white"
+        uilib:XTitleImageRightWidth="30dp"
+        uilib:XTitleImageRightHeight="30dp"/>
+
+    <TextView
+        android:id="@+id/tvCard1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="@dimen/di_20"
+        android:text="TR_Setting_Card_Slot"
+        android:textColor="@color/color_text_light1"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutTop"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCard1State"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:autoSizeMaxTextSize="15sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeTextType="uniform"
+        android:maxHeight="70dp"
+        android:autoSizeStepGranularity="1sp"
+        android:text=""
+        android:textColor="@color/color_5A5A5A"
+        android:textSize="15sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCard1"
+        app:layout_constraintLeft_toRightOf="@+id/tvCard1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvCard1" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clCard1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/bg_card_china_mobile"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/tvCard1State"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/ivCard1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/ic_mobile"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvCarrierName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="TR_Setting_China_Telecom"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCard1"
+            app:layout_constraintLeft_toRightOf="@+id/ivCard1"
+            app:layout_constraintTop_toTopOf="@id/ivCard1" />
+
+        <ImageView
+            android:id="@+id/ivSingleLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/signal_1"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCard1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivCard1" />
+
+        <!-- 切换动画 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clSwitchTips1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="11dp"
+            android:background="@drawable/bg_white_r10_alpha_70"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCard1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tvCarrierName"
+            app:layout_constraintTop_toTopOf="@id/ivCard1"
+            tools:visibility="gone">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/switchLoading1"
+                android:layout_width="20dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tvSwitchTips1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true" />
+
+            <TextView
+                android:id="@+id/tvSwitchTips1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="3dp"
+                android:text="TR_Setting_In_Transition"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/switchLoading1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@id/tvIccid1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:text="2130 1456 7894 1234 7890"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivCard1" />
+
+        <ImageView
+            android:id="@+id/ivCopyIccid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_copy"
+            app:layout_constraintBottom_toBottomOf="@+id/tvIccid1"
+            app:layout_constraintLeft_toRightOf="@+id/tvIccid1"
+            app:layout_constraintTop_toTopOf="@id/tvIccid1" />
+
+        <TextView
+            android:id="@+id/tvImeiName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="IMEI"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvIccid1" />
+
+        <TextView
+            android:id="@+id/tvImei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:text="1234 1234"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvImeiName" />
+
+        <ImageView
+            android:id="@+id/ivCopyImei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_copy"
+            app:layout_constraintBottom_toBottomOf="@+id/tvImei"
+            app:layout_constraintLeft_toRightOf="@id/tvImei"
+            app:layout_constraintTop_toTopOf="@id/tvImei" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivCopyImei" />
+
+        <ImageView
+            android:id="@+id/ivSelectedTips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_select"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clSwitch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="11dp"
+            android:background="@drawable/shape_theme_25"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tvImei"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvImei">
+
+            <ImageView
+                android:id="@+id/ivSwitch1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13dp"
+                android:src="@drawable/ic_switch"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tvSwitch1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvSwitch1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="13dp"
+                android:layout_marginBottom="3dp"
+                android:text="TR_Setting_Switch"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/ivSwitch1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvCard2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="@dimen/di_20"
+        android:text="TR_Setting_Card_Slot"
+        android:textColor="@color/color_text_light1"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clCard1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constrainedWidth="true"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCard2State"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:autoSizeMaxTextSize="15sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeTextType="uniform"
+        android:maxHeight="70dp"
+        android:autoSizeStepGranularity="1sp"
+        android:text=""
+        android:textColor="@color/color_5A5A5A"
+        android:textSize="15sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCard2"
+        app:layout_constraintLeft_toRightOf="@+id/tvCard2"
+        app:layout_constraintTop_toTopOf="@+id/tvCard2" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clCard2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/bg_card_no_selected"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/tvCard2State"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/ivCard2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/ic_telecom_no"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvCarrierName2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="TR_Setting_China_Telecom"
+            android:textColor="@color/color_text_light1"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCard2"
+            app:layout_constraintLeft_toRightOf="@+id/ivCard2"
+            app:layout_constraintTop_toTopOf="@id/ivCard2" />
+
+        <ImageView
+            android:id="@+id/ivSingleLevel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCard2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivCard2" />
+
+        <!-- 切换动画 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clSwitchTips2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="11dp"
+            android:background="@drawable/bg_white_r10_alpha_70"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCard2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tvCarrierName2"
+            app:layout_constraintTop_toTopOf="@id/ivCard2"
+            tools:visibility="gone">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/switchLoading2"
+                android:layout_width="20dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tvSwitchTips2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true" />
+
+            <TextView
+                android:id="@+id/tvSwitchTips2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="3dp"
+                android:text="TR_Setting_In_Transition"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/switchLoading2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@id/tvIccid2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:text="2130 1456 7894 1234 7890"
+            android:textColor="@color/color_text_light1"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivCard2" />
+
+        <ImageView
+            android:id="@+id/ivCopyIccid2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_copy_gray"
+            app:layout_constraintBottom_toBottomOf="@+id/tvIccid2"
+            app:layout_constraintLeft_toRightOf="@+id/tvIccid2"
+            app:layout_constraintTop_toTopOf="@id/tvIccid2" />
+
+        <TextView
+            android:id="@+id/tvImeiName2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="IMEI"
+            android:textColor="@color/color_9D9CA0"
+            android:textSize="11sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvIccid2" />
+
+        <TextView
+            android:id="@+id/tvImei2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:text="1234 1234"
+            android:textColor="@color/color_text_light1"
+            android:textSize="15dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvImeiName2" />
+
+        <ImageView
+            android:id="@+id/ivCopyImei2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_copy_gray"
+            app:layout_constraintBottom_toBottomOf="@+id/tvImei2"
+            app:layout_constraintLeft_toRightOf="@id/tvImei2"
+            app:layout_constraintTop_toTopOf="@id/tvImei2" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivCopyImei2" />
+
+        <ImageView
+            android:id="@+id/ivSelectedTips2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_select"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="11dp"
+            android:background="@drawable/shape_theme_25"
+            app:layout_constraintBottom_toBottomOf="@+id/tvImei2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvImei2">
+
+            <ImageView
+                android:id="@+id/ivSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13dp"
+                android:src="@drawable/ic_switch"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tvSwitch"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="13dp"
+                android:layout_marginBottom="3dp"
+                android:text="TR_Setting_Switch"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/ivSwitch"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clEmptyTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/clCard2"
+        app:layout_constraintLeft_toLeftOf="@+id/clCard2"
+        app:layout_constraintRight_toRightOf="@+id/clCard2"
+        app:layout_constraintTop_toTopOf="@+id/clCard2">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/network_4g_img_bg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:drawableLeft="@drawable/hint"
+            android:gravity="center"
+            android:text="TR_Setting_No_Flow_Card_Inserted"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:text="TR_Setting_Network_Card_Change_Hint"
+        android:textColor="@color/color_text_light1"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@+id/clCard2"
+        app:layout_constraintRight_toRightOf="@+id/clCard2"
+        app:layout_constraintTop_toBottomOf="@+id/clCard2"
+        tools:visibility="visible" />
+</androidx.constraintlayout.widget.ConstraintLayout>

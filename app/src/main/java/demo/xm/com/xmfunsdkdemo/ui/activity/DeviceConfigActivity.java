@@ -1,16 +1,18 @@
 package demo.xm.com.xmfunsdkdemo.ui.activity;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.xm.activity.base.XMBaseActivity;
+import com.lib.FunSDK;
+import com.lib.sdk.bean.SystemFunctionBean;
+import com.manager.device.DeviceManager;
 import com.xm.activity.device.devset.ability.view.XMDevAbilityActivity;
 import com.xm.ui.dialog.XMPromptDlg;
-import com.xm.ui.widget.XTitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +24,12 @@ import demo.xm.com.xmfunsdkdemo.ui.device.aov.view.AovSettingActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.about.view.DevAboutActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.advance.view.DevAdvanceActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.alarmconfig.view.DevAlarmSetActivity;
-import demo.xm.com.xmfunsdkdemo.ui.device.config.cameralink.view.CameraLinkSetActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.decodeconfig.view.DevDecodeSetActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.devicestore.view.DevSetupStorageActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.door.view.DoorSettingActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.filetransfer.view.FileTransferActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.idr.view.IDRSettingActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.imageconfig.view.DevCameraSetActivity;
-import demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.view.IntelligentVigilanceActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.pwdmodify.view.DevModifyPwdActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.serialport.view.SerialPortActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.shadow.view.DevShadowConfigActivity;
@@ -37,6 +37,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.config.simpleconfig.view.DevSimpleConf
 import demo.xm.com.xmfunsdkdemo.ui.device.config.videoconfig.view.DevRecordSetActivity;
 import demo.xm.com.xmfunsdkdemo.ui.vm.DevConfigViewModel;
 import io.reactivex.annotations.Nullable;
+import demo.xm.com.xmfunsdkdemo.ui.device.config.idrnetwork.view.IDRNetworkSwitchActivity;
 
 /**
  * 设备预览界面中的配置选项列表,包括编码配置,报警配置,录像配置,图像配置,高级配置,鱼眼灯泡控制,设备存储管理,
@@ -158,6 +159,10 @@ public class DeviceConfigActivity extends DemoBaseActivity<DeviceConfigPresenter
                 case 16:// aov设备配置
                     intent = new Intent(view.getContext(), AovSettingActivity.class);
                     break;
+                case 17:// 4G网络切换
+                    checkIsSupportNet4GDualSim();
+
+                    break;
                 default:
                     break;
             }
@@ -237,11 +242,50 @@ public class DeviceConfigActivity extends DemoBaseActivity<DeviceConfigPresenter
         //aov设备配置
         DevConfigViewModel item16 = new DevConfigViewModel(R.string.aov_device, -1);
         deviceList.add(item16);
+
+
+        DevConfigViewModel item17 = new DevConfigViewModel(FunSDK.TS("TR_Setting_4G_Network_Switching"), -1);
+        deviceList.add(item17);
+
     }
 
     @Override
     public void onUpdateView() {
 
+    }
+
+
+    public void checkIsSupportNet4GDualSim(){
+        DeviceManager.getInstance().getDevAllAbility(presenter.getDevId(), new DeviceManager.OnDevManagerListener<SystemFunctionBean>() {
+            /**
+             * 成功回调
+             * @param devId         设备类型
+             * @param operationType 操作类型
+             */
+            @Override
+            public void onSuccess(String devId, int operationType, SystemFunctionBean result) {
+                if (result != null && result.NetServerFunction!=null && result.NetServerFunction.Net4GDualSim) {
+                    Intent intent = new Intent(DeviceConfigActivity.this, IDRNetworkSwitchActivity.class);
+                    intent.putExtra("devId", presenter.getDevId());
+                    startActivity(intent);
+                } else {
+                    showToast(FunSDK.TS("EE_MNETSDK_NOTSUPPORT"), Toast.LENGTH_LONG);
+                }
+            }
+
+            /**
+             * 失败回调
+             *
+             * @param devId    设备序列号
+             * @param msgId    消息ID
+             * @param jsonName
+             * @param errorId  错误码
+             */
+            @Override
+            public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+
+            }
+        });
     }
 
 }
