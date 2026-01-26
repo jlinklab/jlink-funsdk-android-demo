@@ -103,5 +103,5 @@ dependencies {
     implementation 'io.github.lucksiege:pictureselector:v3.11.1'
     implementation 'com.blankj:utilcodex:1.31.0'
     implementation 'com.airbnb.android:lottie:3.2.2'
-    implementation 'com.jftechsoft.funsdk:funsdk:5.0.9'
+    implementation 'com.jftechsoft.funsdk:funsdk:5.1.0'
 }

@@ -1,5 +1,7 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.add.bluetooth.listener;
 
+import android.content.Context;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lib.sdk.bean.bluetooth.XMBleData;
@@ -30,4 +32,6 @@ public interface IDevBlueToothView {
     default RecyclerView getRecyclerView() {
         return null;
     }
+
+    Context getContext();
 }

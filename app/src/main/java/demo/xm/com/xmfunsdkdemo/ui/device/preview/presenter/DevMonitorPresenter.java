@@ -6,6 +6,7 @@ import static android.media.AudioFormat.ENCODING_PCM_8BIT;
 
 import android.content.Context;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -32,11 +33,13 @@ import com.lib.sdk.bean.StringUtils;
 import com.lib.sdk.bean.SystemFunctionBean;
 import com.lib.sdk.bean.WhiteLightBean;
 import com.lib.sdk.bean.WifiRouteInfo;
+import com.lib.sdk.bean.account.RegionBean;
 import com.lib.sdk.bean.decode.DecoderPramBean;
 import com.lib.sdk.bean.preset.ConfigGetPreset;
 import com.lib.sdk.bean.tour.PTZTourBean;
 import com.lib.sdk.bean.tour.TourBean;
 import com.manager.account.code.AccountCode;
+import com.manager.account.countrycode.CountryCodeManager;
 import com.manager.db.DevDataCenter;
 import com.manager.db.XMDevInfo;
 import com.manager.device.DeviceManager;
@@ -60,6 +63,7 @@ import com.xm.ui.dialog.XMPromptDlg;
 import com.xmgl.vrsoft.VRSoftDefine;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +76,8 @@ import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.DevMonitorContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.listener.PresetListContract;
 import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 
+import static com.constant.SDKLogConstant.APP_DEV_OPERATOR;
+import static com.constant.SDKLogConstant.APP_TALK;
 import static com.constant.SDKLogConstant.APP_VIDEO_ENCODE;
 import static com.lib.EFUN_ATTR.EDA_DEV_TANSPORT_COM_WRITE;
 import static com.lib.EUIMSG.DEV_CMD_EN;
@@ -82,6 +88,9 @@ import static com.lib.sdk.bean.JsonConfig.WHITE_LIGHT;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_BROADCAST;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_CHN;
 import static com.manager.device.media.monitor.MonitorManager.TALK_TYPE_DEV;
+
+import static demo.xm.com.xmfunsdkdemo.base.DemoConstant.BLUE_CONFIG_DNS_RESULT;
+import static demo.xm.com.xmfunsdkdemo.base.DemoConstant.DEFAULT_COUNTRY_REGION;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -150,6 +159,9 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
     private boolean isDelayChangeStream = false;//针对多目设备获取到镜头信息后再进行码流切换
     private MonitorManager splitMonitorManager;//被分割后的播放器
     private DecoderPramBean decoderPramBean; //编码信息，包括音视频
+
+
+    private boolean isFirstSetDNS = true;
 
     public DevMonitorPresenter(DevMonitorContract.IDevMonitorView iDevMonitorView) {
         this.iDevMonitorView = iDevMonitorView;
@@ -1586,6 +1598,83 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
 
         //设置成实时性优先
         FunSDK.MediaSetFluency(attribute.getPlayHandle(), EDECODE_REAL_TIME_STREAM_MOST_REAL, 0);
+        //如果设备支持设置DNS，且没设置过，则设置DNS
+        setDns();
+    }
+
+
+
+    private void setDns() {
+        //设置DNS
+        RegionBean regionBean = getDefaultCountryRegionBySp();
+        if (isFirstSetDNS &&
+                regionBean != null && !TextUtils.isEmpty(regionBean.getDns())) {
+            //检查设备是否支持设置DNS
+            DeviceManager.getInstance().getDevAllAbility(getDevId(), new DeviceManager.OnDevManagerListener<SystemFunctionBean>() {
+                /**
+                 * 成功回调
+                 * @param devId         设备类型
+                 * @param operationType 操作类型
+                 */
+                @Override
+                public void onSuccess(String devId, int operationType, SystemFunctionBean result) {
+                    if (result != null && result.OtherFunction!=null && result.OtherFunction.SetAdditionalDNS) {
+                        int dnsFlag = SPUtil.getInstance(iDevMonitorView.getContext()).getSettingParam(BLUE_CONFIG_DNS_RESULT + "_" + devId, 0);
+                        if (dnsFlag != 1) {
+                            HashMap<String, Object> params = new HashMap<>();
+                            String dns = regionBean.getDns();
+                            FunSDK.Log("set dns = " + dns);
+                            params.put("NetPub-DNS1", dns);
+                            isFirstSetDNS = false;
+
+
+                            DevConfigInfo devConfigInfo = DevConfigInfo.create(new DeviceManager.OnDevManagerListener() {
+                                @Override
+                                public void onSuccess(String devId, int msgId, Object result) {
+                                    LogUtils.debugInfo(APP_DEV_OPERATOR, "预览设置dns成功");
+                                    SPUtil.getInstance(iDevMonitorView.getContext()).setSettingParam(BLUE_CONFIG_DNS_RESULT + "_" + devId, 1);
+                                }
+
+                                @Override
+                                public void onFailed(String devId, int msgId, String s1, int errorId) {
+                                    LogUtils.debugInfo(APP_DEV_OPERATOR, "预览设置dns失败");
+                                }
+                            });
+                            devConfigInfo.setJsonName(JsonConfig.NET_PUB_CFG_DOMAIN);
+                            devConfigInfo.setChnId(-1);
+                            devConfigInfo.setJsonData(HandleConfigData.getSendData(JsonConfig.NET_PUB_CFG_DOMAIN, "0x01", params));
+                            devConfigManager.setDevConfig(devConfigInfo);
+                        }
+                    }
+                }
+
+                /**
+                 * 失败回调
+                 *
+                 * @param devId    设备序列号
+                 * @param msgId    消息ID
+                 * @param jsonName
+                 * @param errorId  错误码
+                 */
+                @Override
+                public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+
+                }
+            });
+
+        }
+    }
+
+
+    public RegionBean getDefaultCountryRegionBySp() {
+        try {
+            String jsonStr = SPUtil.getInstance(iDevMonitorView.getContext())
+                    .getSettingParam(DEFAULT_COUNTRY_REGION, "");
+            return new Gson().fromJson(jsonStr, RegionBean.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

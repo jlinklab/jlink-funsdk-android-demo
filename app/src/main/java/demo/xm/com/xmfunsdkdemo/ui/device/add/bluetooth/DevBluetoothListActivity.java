@@ -62,6 +62,7 @@ import static com.utils.BleDistributionUtil.createCheckCode;
 import static com.utils.BleUtils.CmdId.APP_RESPONSE;
 import static com.utils.BleUtils.DataType.NO_ENCRYPT_BINARY;
 import static com.utils.BleUtils.FunId.DMS_BY_BLE;
+import static demo.xm.com.xmfunsdkdemo.base.DemoConstant.BLUE_CONFIG_DNS_RESULT;
 
 /**
  * 蓝牙设备列表
@@ -431,6 +432,12 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
                         }
 
                         presenter.setDevId(xmDevInfo.getDevId());
+                        //保存DNS配网结果
+                        Object dnsFlag = hashMap.get("dnsFlg");
+                        if (dnsFlag instanceof Integer){
+                            SPUtil.getInstance(DevBluetoothListActivity.this)
+                                    .setSettingParam(BLUE_CONFIG_DNS_RESULT+"_"+ xmDevInfo.getDevId(),(int)dnsFlag);
+                        }
                         //首先通过pid未判断为低功耗设备，若通过pid未判断为低功耗，进一步根据设备序列号检查设备是否低功耗类型
                         if(DevDataCenter.getInstance().isLowPowerDevByPid(xmDevInfo.getPid())){
                             setDeviceTypeAndGetCloudCryNum(xmDevInfo,true);
@@ -537,5 +544,9 @@ public class DevBluetoothListActivity extends DemoBaseActivity<DevBluetoothConne
             showWaitDialog();
             presenter.getCloudCryNum(xmDevInfo);
         }
+    }
+
+    public Context getContext() {
+        return this;
     }
 }
