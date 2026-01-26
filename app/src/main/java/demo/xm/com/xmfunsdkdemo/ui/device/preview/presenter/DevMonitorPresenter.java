@@ -5,6 +5,7 @@ import static android.media.AudioFormat.ENCODING_PCM_16BIT;
 import static android.media.AudioFormat.ENCODING_PCM_8BIT;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
@@ -51,6 +52,7 @@ import com.manager.device.config.preset.IPresetManager;
 import com.manager.device.media.MediaManager;
 import com.manager.device.media.TalkManager;
 import com.manager.device.media.attribute.PlayerAttribute;
+import com.manager.device.media.audio.AudioSourceManager;
 import com.manager.device.media.monitor.MonitorManager;
 import com.utils.BleDistributionUtil;
 import com.utils.FileUtils;
@@ -894,6 +896,8 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
             } else {
                 mediaManager.setTalkType(monitorManagers.size() > 1 ? TALK_TYPE_CHN : TALK_TYPE_DEV);
             }
+            //指定音频输入源
+//            mediaManager.setSpecifiedAudioSource(AudioSourceManager.AudioSource.PHONE_MIC);
             //开启单向对讲
             // Start one-way intercom
             mediaManager.startTalkByHalfDuplex(iDevMonitorView.getContext());
@@ -946,6 +950,8 @@ public class DevMonitorPresenter extends XMBasePresenter<DeviceManager> implemen
                 mediaManager.setTalkType(monitorManagers.size() > 1 ? TALK_TYPE_CHN : TALK_TYPE_DEV);
             }
 
+            //指定音频输入源
+//            mediaManager.setSpecifiedAudioSource(AudioSourceManager.AudioSource.PHONE_MIC);
             //开始双向对讲
             // Start two-way intercom
             mediaManager.startTalkByDoubleDirection(iDevMonitorView.getContext(), true);
