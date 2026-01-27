@@ -10,7 +10,7 @@ public class DemoConstant {
      * 前往（https://aops.jftech.com/） 新人指南，注册申请成为开放平台开发者，
      * 然后到【控制台】-【创建应用页面】中创建Android应用，
      * 等应用审核通过后就可以获取到AppKey、movedCard和AppSecret等信息
-     * 
+     *
      * The following four fields of the application certificate must be replaced after the application is registered on the open platform.
      * The test key will be replaced periodically. If it is not replaced, the consequences will be borne by yourself、
      * Go to（https://aops.jftech.com/）A guide for newcomers, register and apply to become an open platform developer,
@@ -28,4 +28,10 @@ public class DemoConstant {
     public static final String LAST_CHANGE_SCALE_TIMES = "last_change_scale_times";//记录设备最近一次的倍数
     public static final String SENSOR_MAX_TIMES = "sensor_max_time";//最大倍数
     public static final String REQUEST_DEV_RETRIEVE_PWD_CODE_URL = "https://tools.xmeye.net/deviceSuperPassword?text=%s&uuid=%s&appkey=%s";
+
+    //默认国家域名
+    public static final String DEFAULT_COUNTRY_REGION = "DefaultCountryRegion";
+
+    //蓝牙配网DNS结果
+    public static final String BLUE_CONFIG_DNS_RESULT = "blue_config_dns_result";
 }
