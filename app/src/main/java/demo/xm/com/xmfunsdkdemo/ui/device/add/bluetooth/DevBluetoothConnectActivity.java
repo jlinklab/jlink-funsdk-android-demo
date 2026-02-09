@@ -1,5 +1,6 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.add.bluetooth;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -28,10 +29,12 @@ import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.bluetooth.listener.IDevBlueToothView;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.bluetooth.presenter.DevBluetoothConnectPresenter;
+import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 
 import static com.constant.SDKLogConstant.APP_BLE;
 import static com.lib.sdk.bean.bluetooth.XMBleData.CMD_CALLBACK;
 import static com.lib.sdk.bean.bluetooth.XMBleData.CMD_RECEIVE;
+import static demo.xm.com.xmfunsdkdemo.base.DemoConstant.BLUE_CONFIG_DNS_RESULT;
 
 public class DevBluetoothConnectActivity extends DemoBaseActivity<DevBluetoothConnectPresenter> implements IDevBlueToothView {
     private EditText etWiFiSSID;
@@ -111,6 +114,12 @@ public class DevBluetoothConnectActivity extends DemoBaseActivity<DevBluetoothCo
                     if (isSuccess) {
                         final XMDevInfo xmDevInfo = (XMDevInfo) hashMap.get("devInfo");
                         presenter.setDevId(xmDevInfo.getDevId());
+                        //保存DNS配网结果
+                        Object dnsFlag = hashMap.get("dnsFlg");
+                        if (dnsFlag instanceof Integer){
+                            SPUtil.getInstance(DevBluetoothConnectActivity.this)
+                                    .setSettingParam(BLUE_CONFIG_DNS_RESULT+"_"+ xmDevInfo.getDevId(),(int)dnsFlag);
+                        }
                         //首先通过pid未判断为低功耗设备，若通过pid未判断为低功耗，进一步根据设备序列号检查设备是否低功耗类型
                         if(DevDataCenter.getInstance().isLowPowerDevByPid(pid)){
                             setDeviceTypeAndGetCloudCryNum(xmDevInfo,true);
@@ -191,6 +200,11 @@ public class DevBluetoothConnectActivity extends DemoBaseActivity<DevBluetoothCo
         if (!isSuccess) {
             showToast(getString(R.string.Add_Dev_Failed) + ":" + errorId, Toast.LENGTH_LONG);
         }
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
 

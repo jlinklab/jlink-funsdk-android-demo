@@ -9,6 +9,7 @@ import com.lib.FunSDK;
 import com.lib.MsgContent;
 import com.lib.sdk.bean.CountryFlagBean;
 import com.lib.sdk.bean.account.PhoneRuleAndRegionBean;
+import com.lib.sdk.bean.account.RegionBean;
 import com.lib.sdk.struct.SDBDeviceInfo;
 import com.lib.sdk.struct.SDK_ChannelNameConfigAll;
 import com.manager.account.AccountManager;
@@ -34,6 +35,7 @@ import demo.xm.com.xmfunsdkdemo.ui.user.login.listener.UserLoginContract;
 import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 
 import static com.manager.db.Define.LOGIN_BY_INTERNET;
+import static demo.xm.com.xmfunsdkdemo.base.DemoConstant.DEFAULT_COUNTRY_REGION;
 
 /**
  * 用户登录界面,通过账号或手机号及相应密码进行登录
@@ -45,6 +47,7 @@ public class UserLoginPresenter extends XMBasePresenter<AccountManager> implemen
     private int errorId;
     private final String ACCOUNT_USER_NAME = "AccountUserName";
     private final String ACCOUNT_PASSWORD = "AccountPassword";
+
     private String accountUserName;
     private String accountPassword;
 
@@ -144,10 +147,16 @@ public class UserLoginPresenter extends XMBasePresenter<AccountManager> implemen
                     } else {
                         FunSDK.SysSetServerIPPort("CAPS_SERVER", "https://caps.jftechws.com", 443);
                     }
+                    if (iUserLoginView != null && phoneRuleAndRegion.getDefaultCountry()!=null) {
+                        SPUtil.getInstance(iUserLoginView.getContext())
+                                .setSettingParam(DEFAULT_COUNTRY_REGION, new Gson().toJson(phoneRuleAndRegion.getDefaultCountry()));
+                    }
                 }
             }
         });
     }
+
+
 
     @Override
     public void onSuccess(int msgId) {

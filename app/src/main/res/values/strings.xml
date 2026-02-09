@@ -13,7 +13,7 @@
     <string name="set_user_info_change">edit</string>
     <string name="set_user_info_change_save">save</string>
     <string name="set_user_save_local_pwd">Save Local Password</string>
-    <string name="user_name_repeat_btn">Repeat</string>
+    <string name="user_name_repeat_btn">verify</string>
     <string name="user_logout">Logout</string>
     <string name="guide_message_username_fine">User name available</string>
     <string name="guide_message_request_phone_msg_success">Request to send verification code succeeded</string>
@@ -34,6 +34,7 @@
     <string name="user_info_sex">Sex</string>
     <string name="user_info_reg_time">Registration time</string>
     <string name="user_login_error_emptyusername">The user name is empty</string>
+    <string name="user_login_error_username_not_pure_number">User name cannot be pure number</string>
     <string name="user_login_error_email">Email error</string>
     <string name="user_login_error_phone_number">Wrong mobile number</string>
     <string name="guide_message_error_call">Interface call returned error, please check</string>
@@ -463,7 +464,7 @@
     <string name="full_stream">Full Screen</string>
     <string name="dev_type">Device Type</string>
     <string name="dev_unwake">The device is in deep sleep and cannot be woken up!</string>
-    <string name="normal_ipc">Common Device</string>
+    <string name="normal_ipc">Continuously Powered Device</string>
     <string name="low_power_dev">Low Power Device</string>
     <string name="is_sure_delete_dev">Do you want to delete device?</string>
     <string name="dev_offline">Off-line</string>
@@ -977,5 +978,7 @@
     <string name="input_code">Input Code</string>
     <string name="data_exception">Exception Data</string>
     <string name="this_network_not_support">The current network environment does not support this feature.</string>
+    <string name="please_check_error_code">Please check the error code below or visit the Open Platform Documentation Center</string>
+    <string name="visit_open_platform_documentation_center">visit the Open Platform Documentation Center</string>
     <string name="received_customer_service_message">Received customer service message:</string>
 </resources>

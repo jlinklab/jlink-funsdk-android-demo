@@ -8,6 +8,15 @@
     <include
         android:id="@+id/layoutTop"
         layout="@layout/include_title_layout"/>
+
+    <TextView
+        android:id="@+id/tv_hint"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/color_9D9CA0"
+        android:textSize="16sp"/>
     <com.xm.ui.widget.XMEditText
         android:id="@+id/et_input_error_code"
         android:layout_width="match_parent"

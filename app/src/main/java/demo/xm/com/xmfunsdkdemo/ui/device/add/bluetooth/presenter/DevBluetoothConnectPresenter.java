@@ -6,21 +6,25 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.basic.G;
 import com.blankj.utilcode.util.ConvertUtils;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.lib.EFUN_ERROR;
 import com.lib.EUIMSG;
 import com.lib.FunSDK;
 import com.lib.MsgContent;
 import com.lib.sdk.bean.HandleConfigData;
+import com.lib.sdk.bean.account.RegionBean;
 import com.lib.sdk.bean.bluetooth.XMBleData;
 import com.lib.sdk.bean.bluetooth.XMBleInfo;
 import com.lib.sdk.struct.SDBDeviceInfo;
 import com.manager.account.AccountManager;
 import com.manager.account.BaseAccountManager;
 import com.manager.account.XMAccountManager;
+import com.manager.account.countrycode.CountryCodeManager;
 import com.manager.base.BaseManager;
 import com.manager.bluetooth.XMBleManager;
 import com.manager.bluetooth.IXMBleManagerListener;
@@ -35,10 +39,12 @@ import com.utils.XMWifiManager;
 import com.xm.activity.base.XMBasePresenter;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import demo.xm.com.xmfunsdkdemo.ui.device.add.bluetooth.listener.IDevBlueToothView;
+import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 
 import static com.constant.SDKLogConstant.APP_BLE;
 import static com.inuker.bluetooth.library.Constants.REQUEST_SUCCESS;
@@ -49,6 +55,8 @@ import static com.utils.BleDistributionUtil.createCheckCode;
 import static com.utils.BleUtils.CmdId.APP_RESPONSE;
 import static com.utils.BleUtils.DataType.NO_ENCRYPT_BINARY;
 import static com.utils.BleUtils.FunId.DMS_BY_BLE;
+
+import static demo.xm.com.xmfunsdkdemo.base.DemoConstant.DEFAULT_COUNTRY_REGION;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,7 +90,12 @@ public class DevBluetoothConnectPresenter extends XMBasePresenter<AccountManager
     }
 
     public void connectWiFi(String mac, String ssid, String pwd) {
-        XMBleManager.getInstance().connectWiFi(mac, ssid, pwd, "", iBleManagerListener);
+        List<String> dnsList =  new ArrayList<String>();
+        RegionBean regionBean = getDefaultCountryRegionBySp();
+        if (regionBean != null && !TextUtils.isEmpty(regionBean.getDns())){
+            dnsList.add(regionBean.getDns());
+        }
+        XMBleManager.getInstance().connectWiFi(mac, ssid, pwd, "",dnsList, iBleManagerListener);
     }
 
     /**
@@ -239,5 +252,18 @@ public class DevBluetoothConnectPresenter extends XMBasePresenter<AccountManager
 
     public void setOnlySearchNearDev(boolean onlySearchNearDev) {
         isOnlySearchNearDev = onlySearchNearDev;
+    }
+
+
+
+    public RegionBean getDefaultCountryRegionBySp() {
+        try {
+            String jsonStr = SPUtil.getInstance(iDevBlueToothView.getContext())
+                    .getSettingParam(DEFAULT_COUNTRY_REGION, "");
+            return new Gson().fromJson(jsonStr, RegionBean.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

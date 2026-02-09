@@ -116,7 +116,15 @@ public class UserRegisterActivity extends DemoBaseActivity<UserRegisterPresenter
     private void checkUsername() {
         String userName = etUserName.getText().toString();
         if (userName.length() != 0) {
-            presenter.userCheck(userName);
+            //用户名不能为纯数字
+            if (userName.matches("[0-9]+")) {
+                showToast(getString(R.string.user_login_error_username_not_pure_number), Toast.LENGTH_LONG);
+            } else {
+                presenter.userCheck(userName);
+            }
+        } else {
+            //用户名不能为空
+            showToast(getString(R.string.user_login_error_emptyusername), Toast.LENGTH_LONG);
         }
     }
 
@@ -128,6 +136,12 @@ public class UserRegisterActivity extends DemoBaseActivity<UserRegisterPresenter
         if (userName.length() == 0) {
             // 用户名为空
             showToast(getString(R.string.user_login_error_emptyusername), Toast.LENGTH_LONG);
+            return;
+        }
+
+        //用户名不能为纯数字
+        if (userName.matches("[0-9]+")) {
+            showToast(getString(R.string.user_login_error_username_not_pure_number), Toast.LENGTH_LONG);
             return;
         }
 

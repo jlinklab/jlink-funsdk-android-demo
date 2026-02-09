@@ -1,6 +1,11 @@
 package demo.xm.com.xmfunsdkdemo.ui.activity;
 
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +20,7 @@ import com.xm.ui.widget.XMEditText;
 import com.xm.ui.widget.XTitleBar;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +38,9 @@ public class CheckErrorCodeActivity extends DemoBaseActivity {
     XMEditText etInputErrorCode;
     @BindView(R.id.tv_error_code_result)
     TextView tvErrorCodeResult;
+
+    @BindView(R.id.tv_hint)
+    TextView tvHint;
     @Override
     public XMBasePresenter getPresenter() {
         return null;
@@ -52,6 +61,37 @@ public class CheckErrorCodeActivity extends DemoBaseActivity {
         });
         titleBar.setTitleText(getString(R.string.see_error_code));
         titleBar.setBottomTip(getClass().getName());
+
+
+        boolean isCn = "zh".equals(Locale.getDefault().getLanguage());
+        String hintText = getString(R.string.please_check_error_code);
+        SpannableString spannableString = new SpannableString(hintText);
+        String goDocText = getString(R.string.visit_open_platform_documentation_center);
+        int startIndex = hintText.indexOf(goDocText);
+        int endIndex = startIndex + goDocText.length();
+
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                //开放平台错误码文档链接
+                //https://docs.jftech.com/docs?menusId=ab0ed73834f54368be3e375075e27fb2&siderId=a5e54a6f9ab34703b0b53131f7a2b458&lang=zh
+                //https://docs.jftech.com/docs?menusId=ab0ed73834f54368be3e375075e27fb2&siderId=a5e54a6f9ab34703b0b53131f7a2b458&lang=en
+                openBrowser("https://docs.jftech.com/docs?menusId=ab0ed73834f54368be3e375075e27fb2&siderId=a5e54a6f9ab34703b0b53131f7a2b458&lang="
+                        + (isCn ? "zh" : "en"));
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(true); // 不显示下划线
+                ds.setColor(getResources().getColor(android.R.color.holo_blue_dark)); // 设置链接颜色
+            }
+        };
+
+        spannableString.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        tvHint.setText(spannableString);
+        tvHint.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @OnClick(R.id.btn_check)
