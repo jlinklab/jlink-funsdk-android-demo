@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -601,7 +602,12 @@ public class DevMonitorActivity extends DemoBaseActivity<DevMonitorPresenter> im
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-        registerReceiver(mHomeClickReceiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(mHomeClickReceiver, filter, RECEIVER_EXPORTED);
+        } else {
+            registerReceiver(mHomeClickReceiver, filter);
+        }
+
 
         sensorChangePresenter = new SensorChangePresenter(this);
     }

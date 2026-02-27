@@ -25,6 +25,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.config.about.view.DevAboutActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.advance.view.DevAdvanceActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.alarmconfig.view.DevAlarmSetActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.decodeconfig.view.DevDecodeSetActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.config.devability.DevAbilityActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.devicestore.view.DevSetupStorageActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.door.view.DoorSettingActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.filetransfer.view.FileTransferActivity;
@@ -111,7 +112,7 @@ public class DeviceConfigActivity extends DemoBaseActivity<DeviceConfigPresenter
                     break;
                 //设备能力集
                 case 7:
-                    intent = new Intent(DeviceConfigActivity.this, XMDevAbilityActivity.class);
+                    intent = new Intent(DeviceConfigActivity.this, DevAbilityActivity.class);
                     break;
                 case 8://串口透传
                     intent = new Intent(view.getContext(), SerialPortActivity.class);

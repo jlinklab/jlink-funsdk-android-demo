@@ -10,6 +10,8 @@ import com.xm.ui.widget.XTitleBar;
 
 import java.util.Locale;
 
+import demo.xm.com.xmfunsdkdemo.utils.StatusBarUtils;
+
 /**
  * @author hws
  * @name XMFunSDKDemo_Android
@@ -30,13 +32,24 @@ public abstract class BaseConfigActivity<T extends XMBasePresenter> extends XMBa
         super.onCreate(savedInstanceState);
     }
 
+
+
+
+    private boolean isInit = false;
+
     @Override
     protected void onResume() {
         super.onResume();
         if (titleBar != null) {
             titleBar.setBottomTip(getClass().getName());
         }
+        if(!isInit){
+            StatusBarUtils.setRootView(this);
+            isInit = true;
+        }
     }
+
+
 
     public void openBrowser(String url) {
         Intent intent = new Intent(Intent.ACTION_VIEW);

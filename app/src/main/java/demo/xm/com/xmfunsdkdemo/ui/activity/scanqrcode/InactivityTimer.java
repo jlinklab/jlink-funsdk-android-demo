@@ -16,6 +16,8 @@
 
 package demo.xm.com.xmfunsdkdemo.ui.activity.scanqrcode;
 
+import static android.content.Context.RECEIVER_EXPORTED;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -74,7 +76,11 @@ public class InactivityTimer {
 		if (registered) {
 			Log.w(TAG, "PowerStatusReceiver was already registered?");
 		} else {
-			activity.registerReceiver(powerStatusReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+				activity.registerReceiver(powerStatusReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED), RECEIVER_EXPORTED);
+			} else {
+				activity.registerReceiver(powerStatusReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+			}
 			registered = true;
 		}
 		onActivity();

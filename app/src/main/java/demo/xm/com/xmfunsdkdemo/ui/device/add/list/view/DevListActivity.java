@@ -43,6 +43,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.add.share.view.DevShareManageActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.share.view.ShareDevListActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.alarm.view.DevAlarmMsgActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.cloud.view.CloudStateActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.config.devability.DevAbilityActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.interdevlinkage.view.InterDevLinkageActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.shadow.view.DevShadowConfigActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.simpleconfig.view.DevSimpleConfigActivity;
@@ -493,7 +494,7 @@ public class DevListActivity extends DemoBaseActivity<DevListConnectPresenter>
     @Override
     public void onTurnToDevAbility(int position, XMDevInfo xmDevInfo) {
         presenter.setDevId(xmDevInfo.getDevId());
-        turnToActivity(XMDevAbilityActivity.class);
+        turnToActivity(DevAbilityActivity.class);
     }
 
     /**

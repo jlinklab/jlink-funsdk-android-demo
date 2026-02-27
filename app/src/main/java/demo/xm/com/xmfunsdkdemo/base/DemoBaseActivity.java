@@ -1,12 +1,14 @@
 package demo.xm.com.xmfunsdkdemo.base;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import com.xm.activity.base.XMBaseActivity;
 import com.xm.activity.base.XMBasePresenter;
@@ -14,9 +16,12 @@ import com.xm.ui.widget.XTitleBar;
 
 import java.util.Locale;
 
+import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.app.SDKDemoApplication;
 import demo.xm.com.xmfunsdkdemo.ui.dialog.PermissionDialog;
 import demo.xm.com.xmfunsdkdemo.utils.MobileInfoUtils;
+import demo.xm.com.xmfunsdkdemo.utils.StatusBarUtils;
+import demo.xm.com.xmfunsdkdemo.utils.ViewCompatUtils;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -39,6 +44,18 @@ public abstract class DemoBaseActivity <T extends XMBasePresenter> extends XMBas
         if (getApplication() instanceof SDKDemoApplication) {
             ((SDKDemoApplication) getApplication()).addActivity(this);
         }
+    }
+
+    private boolean isInit = false;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!isInit){
+            StatusBarUtils.setRootView(this);
+            isInit = true;
+        }
+
     }
 
     protected boolean checkLocationService() {

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -110,7 +111,11 @@ public class MainActivity extends DemoBaseActivity<MainPresenter> implements Mai
             networkConnectChangeReceiver = new NetworkConnectChangeReceiver();
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            registerReceiver(networkConnectChangeReceiver, intentFilter);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(networkConnectChangeReceiver, intentFilter, RECEIVER_EXPORTED);
+            } else {
+                registerReceiver(networkConnectChangeReceiver, intentFilter);
+            }
             multicastLock = wifiManager.createMulticastLock(XUtils.getAppName(getApplicationContext()));
             multicastLock.acquire();
         }
