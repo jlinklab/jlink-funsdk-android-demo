@@ -52,7 +52,9 @@ public abstract class DemoBaseActivity <T extends XMBasePresenter> extends XMBas
     protected void onResume() {
         super.onResume();
         if(!isInit){
-            StatusBarUtils.setRootView(this);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                StatusBarUtils.setRootView(this);
+            }
             isInit = true;
         }
 

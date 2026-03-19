@@ -2,6 +2,7 @@ package demo.xm.com.xmfunsdkdemo.ui.device.config;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.xm.activity.base.XMBaseActivity;
@@ -44,7 +45,9 @@ public abstract class BaseConfigActivity<T extends XMBasePresenter> extends XMBa
             titleBar.setBottomTip(getClass().getName());
         }
         if(!isInit){
-            StatusBarUtils.setRootView(this);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                StatusBarUtils.setRootView(this);
+            }
             isInit = true;
         }
     }
