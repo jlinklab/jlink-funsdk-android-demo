@@ -351,3 +351,24 @@ XPMS_UNINIT=uninitialized
 login_failed=Login failed
 qr_scan_tips=Align QR/Bar code within the frame to scan
 register_username_not_exist=user name does not exist
+
+AP_config_NetWork_tip=* Remarque : Si vous ne trouvez pas le point d’accès de l’appareil auquel vous souhaitez vous connecter, veuillez actualiser la liste*
+AP_model_Back_tip=Cliquez sur Enregistrer pour activer le mode AP sur l’appareil. Dans ce mode, l’accès à Internet n’est pas pris en charge.
+AP_model_tip=Le mode AP sera activé sur l’appareil. Continuer ? Dans ce mode, votre téléphone portable ne peut se connecter et accéder à l’appareil que par le biais du point d’accès partagé. L’accès à Internet n’est pas pris en charge. Soyez vigilant lorsque vous agissez.
+Ap_model=Mode AP
+Connect_router_network=Connexion au routeur...
+Enter_link_wifi=Entrez le Wi-Fi sur lequel vous voulez vous connecter
+Network_setting=Paramètres réseau
+Router_model=Mode de routage
+Scanning_WiFi=Recherche de Wi-Fi...
+Select_switch_model=Veuillez sélectionner le mode
+Select_wifi=Sélectionnez le Wi-Fi sur lequel vous voulez vous connecter à partir de la liste ci-dessous
+Switch_link_model_router=Basculez l’appareil au mode de routage
+TR_5GHz_WiFi_Continue=Vous utilisez actuellement le Wi-Fi 5 GHz. La configuration réseau peut échouer. Nous recommandons de passer au Wi-Fi 2,4 Ghz.
+TR_Dev_WiFi_To_AP_S=Configurez correctement l’appareil au mode AP. Vous pouvez trouver et connecter le point d’accès de l’appareil dans les paramètres Wi-Fi de votre téléphone.
+Wifi_list=Liste des Wi-Fi
+finish=Enregistrer
+get_config_f=Échec de récupération de la configuration
+password=Mot de passe
+
+TR_Switch_WiFi_F=Échec du basculement du réseau Wi-Fi [%s]. Vous pouvez manuellement changer de réseau Wi-Fi sur votre téléphone mobile

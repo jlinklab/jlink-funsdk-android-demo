@@ -351,3 +351,24 @@ XPMS_UNINIT=uninitialized
 login_failed=Login failed
 qr_scan_tips=Align QR/Bar code within the frame to scan
 register_username_not_exist=user name does not exist
+
+AP_config_NetWork_tip=* หมายเหตุ: หากคุณไม่พบฮอตสปอตของอุปกรณ์ที่คุณต้องการเชื่อมต่อ โปรดรีเฟรชรายการ*
+AP_model_Back_tip=คลิก บันทึก เพื่อเปลี่ยนอุปกรณ์เป็นโหมด AP ในโหมดนี้ จะไม่รองรับการเข้าถึงอินเทอร์เน็ต
+AP_model_tip=อุปกรณ์จะเปลี่ยนเป็นโหมด AP ดำเนินการต่อหรือไม่ ในโหมดนี้ โทรศัพท์มือถือของคุณสามารถเชื่อมต่อและเข้าถึงอุปกรณ์ผ่านฮอตสปอตที่แชร์เท่านั้น ไม่รองรับการเข้าถึงอินเทอร์เน็ต โปรดดำเนินการด้วยความระมัดระวัง
+Ap_model=โหมด AP
+Connect_router_network=กำลังเชื่อมต่อกับเราเตอร์...
+Enter_link_wifi=ป้อน Wi-Fi ที่คุณต้องการเชื่อมต่อ
+Network_setting=การตั้งค่าเครือข่าย
+Router_model=โหมดการจัดเส้นทาง
+Scanning_WiFi=กำลังสแกน Wi-Fi...
+Select_switch_model=โปรดเลือกโหมด
+Select_wifi=เลือก Wi-Fi ที่คุณต้องการเชื่อมต่อจากรายการด้านล่าง
+Switch_link_model_router=เปลี่ยนอุปกรณ์เป็นโหมดการจัดเส้นทาง
+TR_5GHz_WiFi_Continue=คุณกำลังใช้ Wi-Fi 5 GHz การกำหนดค่าเครือข่ายอาจล้มเหลว เราขอแนะนำให้คุณเปลี่ยนไปใช้ Wi-Fi 2.4 GHz
+TR_Dev_WiFi_To_AP_S=ตั้งค่าอุปกรณ์เป็นโหมด AP สำเร็จ คุณสามารถค้นหาและเชื่อมต่อฮอตสปอตของอุปกรณ์ได้ในการตั้งค่า Wi-Fi บนโทรศัพท์ของคุณ
+Wifi_list=รายการ Wi-Fi
+finish=บันทึก
+get_config_f=ไม่สามารถรับการกำหนดค่า!
+password=รหัสผ่าน
+
+TR_Switch_WiFi_F=ไม่สามารถสลับ Wi-Fi [%s] ได้ คุณอาจสลับ Wi-Fi บนโทรศัพท์มือถือด้วยตนเอง

@@ -351,3 +351,24 @@ XPMS_UNINIT=uninitialized
 login_failed=Login failed
 qr_scan_tips=Align QR/Bar code within the frame to scan
 register_username_not_exist=user name does not exist
+
+AP_config_NetWork_tip=Hinweis Falls Sie den Hotspot des Geräts, mit dem Sie sich verbinden möchten, nicht finden können, aktualisieren Sie bitte die Liste*.
+AP_model_Back_tip=Klicken Sie auf Speichern, um das Gerät in den AP-Modus zu schalten. In diesem Modus wird der Internetzugang nicht unterstützt.
+AP_model_tip=Das Gerät wird in den AP-Modus umgeschaltet. Weiter? In diesem Modus kann Ihr Mobiltelefon nur über den freigegebenen Hotspot eine Verbindung zum Gerät herstellen und darauf zugreifen. Internetzugang wird nicht unterstützt. Bitte handeln Sie mit der gebotenen Sorgfalt.
+Ap_model=AP-Modus
+Connect_router_network=Mit Router verbinden ...
+Enter_link_wifi=Geben Sie das WLAN ein, mit dem eine Verbindung herstellen möchten
+Network_setting=Netzwerkeinstellungen
+Router_model=Routing-Modus
+Scanning_WiFi=WLAN wird gescannt ...
+Select_switch_model=Bitte Modus auswählen
+Select_wifi=Wählen Sie das WLAN, mit dem Sie sich verbinden möchten, aus der folgenden Liste aus
+Switch_link_model_router=Das Gerät in den Routing-Modus schalten
+TR_5GHz_WiFi_Continue=Sie verwenden derzeit 5 GHz WLAN. Die Netzwerkkonfiguration kann fehlschlagen. Wir empfehlen Ihnen, zu 2,4 GHz WLAN zu wechseln.
+TR_Dev_WiFi_To_AP_S=Das Gerät wurde erfolgreich in den AP-Modus versetzt. Sie können den Geräte-Hotspot in den WLAN-Einstellungen Ihres Telefons finden und verbinden.
+Wifi_list=WLAN-Liste
+finish=Speichern
+get_config_f=Fehler beim Lesen der Konfiguration
+password=Passwort
+
+TR_Switch_WiFi_F=Der Wechsel des WLANs [%s] ist fehlgeschlagen. Sie können das WLAN auf Ihrem Mobiltelefon manuell umschalten

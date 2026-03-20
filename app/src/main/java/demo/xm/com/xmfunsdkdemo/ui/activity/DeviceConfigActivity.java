@@ -10,7 +10,9 @@ import android.widget.Toast;
 
 import com.lib.FunSDK;
 import com.lib.sdk.bean.SystemFunctionBean;
+import com.manager.db.DevDataCenter;
 import com.manager.device.DeviceManager;
+import com.manager.device.idr.IdrDefine;
 import com.xm.activity.device.devset.ability.view.XMDevAbilityActivity;
 import com.xm.ui.dialog.XMPromptDlg;
 
@@ -31,6 +33,8 @@ import demo.xm.com.xmfunsdkdemo.ui.device.config.door.view.DoorSettingActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.filetransfer.view.FileTransferActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.idr.view.IDRSettingActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.imageconfig.view.DevCameraSetActivity;
+import demo.xm.com.xmfunsdkdemo.ui.device.config.networksetting.presenter.NetworkSettingPresenter;
+import demo.xm.com.xmfunsdkdemo.ui.device.config.networksetting.view.DevWirelessNetWorkSettingActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.pwdmodify.view.DevModifyPwdActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.serialport.view.SerialPortActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.shadow.view.DevShadowConfigActivity;
@@ -162,7 +166,9 @@ public class DeviceConfigActivity extends DemoBaseActivity<DeviceConfigPresenter
                     break;
                 case 17:// 4G网络切换
                     checkIsSupportNet4GDualSim();
-
+                    break;
+                case 18:// 网络设置
+                    checkIsSupportNetworkSetting();
                     break;
                 default:
                     break;
@@ -248,6 +254,9 @@ public class DeviceConfigActivity extends DemoBaseActivity<DeviceConfigPresenter
         DevConfigViewModel item17 = new DevConfigViewModel(FunSDK.TS("TR_Setting_4G_Network_Switching"), -1);
         deviceList.add(item17);
 
+        DevConfigViewModel item18 = new DevConfigViewModel(FunSDK.TS("Network_setting"), -1);
+        deviceList.add(item18);
+
     }
 
     @Override
@@ -287,6 +296,18 @@ public class DeviceConfigActivity extends DemoBaseActivity<DeviceConfigPresenter
 
             }
         });
+    }
+
+
+    public void checkIsSupportNetworkSetting(){
+        if (IdrDefine.isIDR(DevDataCenter.getInstance().getDevInfo(presenter.getDevId()).getDevType() ) ||
+            NetworkSettingPresenter.isNVR(DevDataCenter.getInstance().getDevInfo(presenter.getDevId()).getDevType())) {
+            showToast(FunSDK.TS("EE_MNETSDK_NOTSUPPORT"), Toast.LENGTH_LONG);
+        } else {
+            Intent intent = new Intent(DeviceConfigActivity.this, DevWirelessNetWorkSettingActivity.class);
+            intent.putExtra("devId", presenter.getDevId());
+            startActivity(intent);
+        }
     }
 
 }

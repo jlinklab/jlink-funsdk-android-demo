@@ -351,3 +351,24 @@ XPMS_UNINIT=uninitialized
 login_failed=Login failed
 qr_scan_tips=Align QR/Bar code within the frame to scan
 register_username_not_exist=user name does not exist
+
+AP_config_NetWork_tip=*注意：接続するホットスポットが見つからない場合は、一度リストを更新してください*
+AP_model_Back_tip=[保存]をタップでデバイスをAPモードに切り替えます。このモードでは別のネットワークには接続できません。
+AP_model_tip=APモードに切替えますか？このモードではホットスポットにしか接続できません。別のネットワークには接続できません。
+Ap_model=APモード
+Connect_router_network=ルーターに接続中
+Enter_link_wifi=接続するWiFiを入力してください
+Network_setting=ネットワーク設定
+Router_model=ルーターモード
+Scanning_WiFi=WiFiをスキャン中
+Select_switch_model=モードを選択してください
+Select_wifi=下のリストから接続するWiFiを選択してください
+Switch_link_model_router=デバイスをルーターモードに切り替えます
+TR_5GHz_WiFi_Continue=5GのWiFiに接続されています。2.4GHzのWiFiに接続詞直してください。
+TR_Dev_WiFi_To_AP_S=デバイスがAPモードになると、WiFi一覧にデバイスのホットスポットが表示されます。
+Wifi_list=WiFiリスト
+finish=保存
+get_config_f=設定の取得に失敗しました
+password=パスワード
+
+TR_Switch_WiFi_F=WiFi [%s] を切り替えできません。手動で切り替えてください。

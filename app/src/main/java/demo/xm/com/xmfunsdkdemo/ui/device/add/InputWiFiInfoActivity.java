@@ -32,6 +32,7 @@ import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.bluetooth.DevBluetoothListActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.bluetooth.adapter.DevBluetoothListAdapter;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.quick.view.DevQuickConnectActivity;
+import demo.xm.com.xmfunsdkdemo.utils.WifiNameAndPwdManager;
 import demo.xm.com.xmfunsdkdemo.utils.SPUtil;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -82,6 +83,7 @@ public class InputWiFiInfoActivity extends DemoBaseActivity {
                 String ssid = wifiSSIDEdit.getText().toString().trim();
                 //WiFi密码
                 String password = wifiPasswdEdit.getText().toString().trim();
+                WifiNameAndPwdManager.getInstance(InputWiFiInfoActivity.this).saveWiFiPwd(InputWiFiInfoActivity.this, password, ssid);
                 SPUtil.getInstance(InputWiFiInfoActivity.this).setSettingParam("wifi_ssid", ssid);
                 SPUtil.getInstance(InputWiFiInfoActivity.this).setSettingParam("wifi_password", password);
                 Intent intent = new Intent();

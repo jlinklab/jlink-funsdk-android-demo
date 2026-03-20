@@ -351,3 +351,24 @@ XPMS_UNINIT=uninitialized
 login_failed=Login failed
 qr_scan_tips=Align QR/Bar code within the frame to scan
 register_username_not_exist=user name does not exist
+
+AP_config_NetWork_tip=*Lưu ý: Nếu bạn không thể tìm thấy điểm phát sóng của thiết bị bạn muốn kết nối, vui lòng làm mới danh sách*
+AP_model_Back_tip=Nhấn vào Lưu để chuyển thiết bị sang chế độ AP. Chế độ này không hỗ trợ truy cập Internet.
+AP_model_tip=Thiết bị sẽ chuyển sang chế độ AP. Tiếp tục? Ở chế độ này, điện thoại di động của bạn chỉ có thể kết nối và truy cập thiết bị thông qua điểm phát sóng chung. Truy cập Internet không được hỗ trợ. Vui lòng thao tác cẩn thận.
+Ap_model=Chế độ AP
+Connect_router_network=Kết nối với bộ định tuyến...
+Enter_link_wifi=Nhập Wi-Fi bạn muốn kết nối
+Network_setting=Thiết lập mạng
+Router_model=Chế độ định tuyến
+Scanning_WiFi=Đang quét tìm Wi-Fi...
+Select_switch_model=Vui lòng chọn chế độ
+Select_wifi=Chọn Wi-Fi bạn muốn kết nối từ danh sách bên dưới
+Switch_link_model_router=Chuyển thiết bị sang chế độ định tuyến
+TR_5GHz_WiFi_Continue=Bạn hiện đang sử dụng Wi-Fi 5 GHz. Cấu hình mạng có thể không thành công. Chúng tôi khuyên bạn nên chuyển sang Wi-Fi 2.4 GHz.
+TR_Dev_WiFi_To_AP_S=Đặt thiết bị ở chế độ AP thành công. Bạn có thể tìm và kết nối điểm phát sóng của thiết bị trong cài đặt Wi-Fi trên điện thoại của mình.
+Wifi_list=Danh sách Wi-Fi
+finish=Lưu
+get_config_f=Không lấy được cấu hình
+password=Mật khẩu
+
+TR_Switch_WiFi_F=Không thể chuyển đổi Wi-Fi [%s]. Bạn có thể tự chuyển đổi Wi-Fi trên điện thoại di động của mình

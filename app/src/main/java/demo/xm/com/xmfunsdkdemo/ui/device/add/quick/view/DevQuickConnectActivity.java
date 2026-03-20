@@ -28,7 +28,9 @@ import demo.xm.com.xmfunsdkdemo.R;
 import demo.xm.com.xmfunsdkdemo.base.DemoBaseActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.quick.listener.DevQuickConnectContract;
 import demo.xm.com.xmfunsdkdemo.ui.device.add.quick.presenter.DevQuickConnectPresenter;
+import demo.xm.com.xmfunsdkdemo.ui.device.config.networksetting.view.DevWirelessNetWorkSettingActivity;
 import demo.xm.com.xmfunsdkdemo.ui.device.preview.view.DevMonitorActivity;
+import demo.xm.com.xmfunsdkdemo.utils.WifiNameAndPwdManager;
 import io.reactivex.annotations.Nullable;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -79,7 +81,7 @@ public class DevQuickConnectActivity extends DemoBaseActivity<DevQuickConnectPre
                 if (!TextUtils.isEmpty(pwd)) {
                     pwdType = 1;
                 }
-
+                WifiNameAndPwdManager.getInstance(DevQuickConnectActivity.this).saveWiFiPwd(DevQuickConnectActivity.this, pwd, ssid);
                 presenter.startQuickSetWiFiSimple(ssid, pwd, pwdType);
             }
         });

@@ -1817,3 +1817,24 @@ TR_Setting_Network_Card_Change_Hint=1. Switching cards may take 1-3 minutes; ple
 
 
 
+
+AP_config_NetWork_tip=* Note: If you cannot find the hotspot of the device you want to connect to, please refresh the list*
+AP_model_Back_tip=Click Save to switch the device to AP mode. In this mode, Internet access is not supported.
+AP_model_tip=The device will switch to AP mode. Continue? In this mode, your mobile phone can only connect to and access the device through the shared hotspot. Internet access is not supported. Please act with due care.
+Ap_model=AP Mode
+Connect_router_network=Connect to the router...
+Enter_link_wifi=Enter the Wi-Fi You Want to Connect to
+Network_setting=Network Settings
+Router_model=Route Mode
+Scanning_WiFi=Scanning Wi-Fi...
+Select_switch_model=Please select mode
+Select_wifi=Select the Wi-Fi you want to connect to from the list below
+Switch_link_model_router=Switch the device to routing mode
+TR_5GHz_WiFi_Continue=You are currently using 5 GHz Wi-Fi. Network configuration may fail. We recommend you switch to 2.4 GHz Wi-Fi.
+TR_Dev_WiFi_To_AP_S=Set the device to AP mode successfully. You can find and connect the device hotspot in the Wi-Fi setting on your phone.
+Wifi_list=Wi-Fi List
+finish=Save
+get_config_f=Failed to get configuration
+password=Password
+
+TR_Switch_WiFi_F=Failed to switch Wi-Fi [%s]. You can manually switch Wi-Fi on your mobile phone

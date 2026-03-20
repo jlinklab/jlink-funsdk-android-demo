@@ -1792,3 +1792,24 @@ EE_VIDEOPLAY_URL_ReadStream=Unable to get video stream
 EE_WRITE_FILE=Failed to write file
 TR_Translation_Rules=翻译规则:所有的翻译都是TR开头的，命名按照驼峰规则(例：TR_Phone_Video=手机影像            放于最后)
 Language_ja=韩语(请把该翻译置于最后)
+
+AP_config_NetWork_tip=* 참고: 연결하려는 장비 핫스팟을 찾을 수 없는 경우 목록을 새로고치십시오*
+AP_model_Back_tip=저장을 클릭해 장비를 AP 모드로 전환합니다. 이 모드에서는 인터넷 액세스가 지원되지 않습니다.
+AP_model_tip=장비가 AP 모드로 전환됩니다. 계속하시겠습니까? 이 모드에서는 공유 핫스팟을 통해서만 휴대전화가 장치에 연결하고 액세스할 수 있습니다. 인터넷 액세스가 지원되지 않습니다. 주의하여 진행하십시오.
+Ap_model=AP 모드
+Connect_router_network=라우터에 연결하는 중...
+Enter_link_wifi=연결할 Wi-Fi 입력
+Network_setting=네트워크 설정
+Router_model=라우팅 모드
+Scanning_WiFi=Wi-Fi 스캔 중...
+Select_switch_model=모드를 선택하십시오
+Select_wifi=아래 목록에서 연결할 Wi-Fi를 선택하십시오
+Switch_link_model_router=장비를 라우팅 모드로 전환
+TR_5GHz_WiFi_Continue=현재 5GHz Wi-Fi를 사용하고 있습니다. 네트워크 구성에 실패할 수 있습니다. 2.4GHz Wi-Fi로 전환할 것을 권장합니다.
+TR_Dev_WiFi_To_AP_S=장비를 AP 모드로 설정하는 데 성공했습니다. 휴대전화의 Wi-Fi 설정에서 장비 핫스팟을 찾아 연결할 수 있습니다.
+Wifi_list=Wi-Fi 목록
+finish=저장
+get_config_f=구성을 가져오지 못했습니다
+password=비밀번호
+
+TR_Switch_WiFi_F=[%s] Wi-Fi로 전환하는 데 실패했습니다. 휴대전화에서 직접 Wi-Fi를 전환할 수 있습니다

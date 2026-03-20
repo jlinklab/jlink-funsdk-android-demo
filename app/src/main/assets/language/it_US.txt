@@ -351,3 +351,24 @@ XPMS_UNINIT=uninitialized
 login_failed=Login failed
 qr_scan_tips=Align QR/Bar code within the frame to scan
 register_username_not_exist=user name does not exist
+
+AP_config_NetWork_tip=*Nota: se l'hotspot del dispositivo al quale connettersi non è visibile, aggiornare l'elenco*
+AP_model_Back_tip=Fare clic su Salva per attivare la modalità AP sul dispositivo. In questa modalità l'accesso a Internet non è supportato.
+AP_model_tip=Il dispositivo passerà alla modalità AP. Continuare? In questa modalità il telefono cellulare può connettersi al dispositivo e accedervi solo tramite l'hotspot condiviso. L'accesso a Internet non è supportato. Procedere con cautela.
+Ap_model=Modalità AP
+Connect_router_network=Connessione al router…
+Enter_link_wifi=Indicare la rete Wi-Fi a cui connettersi
+Network_setting=Impostazioni di rete
+Router_model=Modalità router
+Scanning_WiFi=Scansione Wi-Fi...
+Select_switch_model=Selezionare la modalità
+Select_wifi=Selezionare la rete Wi-Fi a cui connettersi nell'elenco seguente
+Switch_link_model_router=Passaggio alla modalità router
+TR_5GHz_WiFi_Continue=È in uso la connessione Wi-Fi a 5 GHz. La configurazione della rete potrebbe non riuscire. È consigliabile di passare alla rete Wi-Fi a 2,4 GHz.
+TR_Dev_WiFi_To_AP_S=Il dispositivo è in modalità AP. È possibile trovare l'hotspot del dispositivo e connettersi accedendo alla sezione delle impostazioni della rete Wi-Fi del telefono.
+Wifi_list=Elenco Wi-Fi
+finish=Salva
+get_config_f=Impossibile ottenere la configurazione
+password=Password
+
+TR_Switch_WiFi_F=Commutazione Wi-Fi [%s] non riuscita. È possibile commutare manualmente la rete Wi-Fi sul telefono

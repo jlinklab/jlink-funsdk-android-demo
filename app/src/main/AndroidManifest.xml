@@ -406,6 +406,10 @@
         <activity
             android:name="demo.xm.com.xmfunsdkdemo.ui.device.config.idrnetwork.view.IDRNetworkSwitchActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="demo.xm.com.xmfunsdkdemo.ui.device.config.networksetting.view.DevWirelessNetWorkSettingActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

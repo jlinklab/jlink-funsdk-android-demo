@@ -1791,3 +1791,24 @@ EE_VIDEOPLAY_URL_Open=打開失敗
 EE_VIDEOPLAY_URL_ReadStream=無法獲取視頻流
 EE_WRITE_FILE=寫檔案失敗
 TR_Translation_Rules=翻译规则:所有的翻译都是TR开头的，命名按照驼峰规则(例：TR_Phone_Video=手机影像            放于最后)
+
+AP_config_NetWork_tip=* 注:如果找不到要連接設備的熱點，請刷新列表 *
+AP_model_Back_tip=點擊“保存”可將設備切換到AP熱點單機模式，此模式下無法進行外網訪問！
+AP_model_tip=設備即將切換到AP熱點單機模式，是否繼續？此模式下，手機只能直接連接設備共享熱點進行訪問，無法外網訪問，請慎重！
+Ap_model=AP熱點單機模式
+Connect_router_network=連接路由器網絡…
+Enter_link_wifi=輸入要連接的WiFi
+Network_setting=網絡設置
+Router_model=路由器網絡模式
+Scanning_WiFi=掃描WiFi中…
+Select_switch_model=請選擇模式
+Select_wifi=請從下面列表中選擇設備要連接的WiFi
+Switch_link_model_router=將切換設備為路由模式
+TR_5GHz_WiFi_Continue=檢測到您當前連接的是5GWiFi，配網可能會不成功，建議您请切换 2.4GHZ WiFi。
+TR_Dev_WiFi_To_AP_S=AP熱點單機模式切換成功，您可以到手機WiFi清單中找到設備熱點進行連接！
+Wifi_list=WIFI列表
+finish=保存
+get_config_f=獲取配置失敗
+password=密碼
+
+TR_Switch_WiFi_F=切換WiFi【%s】失敗，您可以在手機系統進行手動切換WiFi

@@ -351,3 +351,24 @@ XPMS_UNINIT=uninitialized
 login_failed=Login failed
 qr_scan_tips=Align QR/Bar code within the frame to scan
 register_username_not_exist=user name does not exist
+
+AP_config_NetWork_tip=* Not: Bağlanmak istediğiniz cihazın kablosuz bağlantı noktasını bulamazsanız lütfen listeyi yenileyin*
+AP_model_Back_tip=Cihazı AP moduna geçirmek için Kaydet’e tıklayın. Bu modda internet erişimi desteklenmez.
+AP_model_tip=Cihaz AP moduna geçirilecektir. Devam edilsin mi? Bu modda cep telefonunuz cihaza yalnızca paylaşılan kablosuz bağlantı noktası üzerinden bağlanabilir ve erişebilir. İnternet erişimi desteklenmez. Lütfen dikkatli bir şekilde ilerleyin.
+Ap_model=AP Modu
+Connect_router_network=Yönlendiriciyle bağlantı kuruluyor...
+Enter_link_wifi=Bağlanmak İstediğiniz Wi-Fi’yi Girin
+Network_setting=Ağ Ayarları
+Router_model=Yönlendirme modu
+Scanning_WiFi=Wi-Fi taraması yapılıyor...
+Select_switch_model=Lütfen mod seçin
+Select_wifi=Aşağıdaki listeden bağlanmak istediğiniz Wi-Fi’yi seçin
+Switch_link_model_router=Cihazı yönlendirme moduna geçirin
+TR_5GHz_WiFi_Continue=Şu anda 5 GHz Wi-Fi kullanıyorsunuz. Ağ yapılandırması başarısız olabilir. 2,4 GHz Wi-Fi’ye geçmenizi öneririz.
+TR_Dev_WiFi_To_AP_S=Cihaz AP moduna başarıyla ayarlandı. Telefonunuzdaki Wi-Fi ayarında cihaz kablosuz bağlantı noktasını bulup bağlanabilirsiniz.
+Wifi_list=Wi-Fi Listesi
+finish=Kaydet
+get_config_f=Yapılandırma alınamadı
+password=Parola
+
+TR_Switch_WiFi_F=Wi-Fi [%s] açılamadı. Cep telefonunuzda Wi-Fi’yi manuel olarak açabilirsiniz

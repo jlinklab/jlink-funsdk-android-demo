@@ -351,3 +351,24 @@ XPMS_UNINIT=uninitialized
 login_failed=Login failed
 qr_scan_tips=Align QR/Bar code within the frame to scan
 register_username_not_exist=user name does not exist
+
+AP_config_NetWork_tip=* Nota: Si no encuentra el punto de acceso del dispositivo al que desea conectarse, actualice la lista*
+AP_model_Back_tip=Haga clic en Guardar para cambiar el dispositivo al modo AP. En este modo, no se admite el acceso a Internet.
+AP_model_tip=El dispositivo cambiará al modo AP. ¿Continuar? En este modo, su teléfono celular solo puede conectarse y acceder al dispositivo a través del punto de acceso compartido. No se admite el acceso a Internet. Actúe con la debida cautela.
+Ap_model=Modo AP
+Connect_router_network=Conectarse al router...
+Enter_link_wifi=Ingrese la red Wi-Fi a la que desea conectarse
+Network_setting=Ajustes de red
+Router_model=Modo de enrutamiento
+Scanning_WiFi=Escaneando Wi-Fi...
+Select_switch_model=Seleccione el modo
+Select_wifi=Seleccione de la siguiente lista la red Wi-Fi a la que desea conectarse
+Switch_link_model_router=Cambiar el dispositivo al modo de enrutamiento
+TR_5GHz_WiFi_Continue=Actualmente está utilizando Wi-Fi de 5 GHz. La configuración de la red puede fallar. Le recomendamos que cambie a Wi-Fi de 2,4 GHz.
+TR_Dev_WiFi_To_AP_S=Dispositivo configurado en modo AP correctamente. Puede encontrar y conectar el punto de acceso del dispositivo en la configuración Wi-Fi de su teléfono.
+Wifi_list=Lista de redes Wi-Fi
+finish=Guardar
+get_config_f=Error al obtener la configuración
+password=Contraseña
+
+TR_Switch_WiFi_F=Error al activar Wi-Fi [%s]. Puede cambiar manualmente el Wi-Fi de su teléfono celular
