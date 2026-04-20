@@ -34,4 +34,8 @@ public class DemoConstant {
 
     //蓝牙配网DNS结果
     public static final String BLUE_CONFIG_DNS_RESULT = "blue_config_dns_result";
+
+
+    public static final String ROUTER_WIFI_SSID = "router_ssid";
+
 }
