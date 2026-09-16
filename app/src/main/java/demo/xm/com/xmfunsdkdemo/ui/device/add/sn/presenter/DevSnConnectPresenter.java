@@ -72,7 +72,7 @@ public class DevSnConnectPresenter extends XMBasePresenter<AccountManager> imple
         //未使用AccountManager(包括XMAccountManager或LocalAccountManager)登录（包括账号登录和本地临时登录），只能将设备信息临时缓存，重启应用后无法查到设备信息。
         if (DevDataCenter.getInstance().getLoginType() == LOGIN_NONE) {
             DevDataCenter.getInstance().addDev(xmDevInfo);
-            FunSDK.AddDevInfoToDataCenter(G.ObjToBytes(xmDevInfo.getSdbDevInfo()), 0, 0, "");
+            FunSDK.AddDevInfoToDataCenterAsync(0, G.ObjToBytes(xmDevInfo.getSdbDevInfo()), 0, 0, "", 5000, 0);
             if (iDevSnConnectView != null) {
                 iDevSnConnectView.onAddDevResult(true, 0);
             }
