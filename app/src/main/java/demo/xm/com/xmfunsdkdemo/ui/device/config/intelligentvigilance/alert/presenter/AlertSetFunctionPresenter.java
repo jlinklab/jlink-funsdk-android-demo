@@ -1,29 +1,26 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.alert.presenter;
 
-import android.content.Context;
+import static com.lib.sdk.bean.HumanDetectionBean.IA_BIDIRECTION;
+import static com.lib.sdk.bean.HumanDetectionBean.IA_DIRECT_BACKWARD;
+import static com.lib.sdk.bean.HumanDetectionBean.IA_DIRECT_FORWARD;
+import static com.xm.ui.widget.drawgeometry.model.GeometryInfo.GEOMETRY_AO;
+import static com.xm.ui.widget.drawgeometry.model.GeometryInfo.GEOMETRY_L;
+import static com.xm.ui.widget.drawgeometry.model.GeometryInfo.GEOMETRY_PENTAGON;
+import static com.xm.ui.widget.drawgeometry.model.GeometryInfo.GEOMETRY_RECTANGLE;
+import static com.xm.ui.widget.drawgeometry.model.GeometryInfo.GEOMETRY_TRIANGLE;
 
 import com.basic.G;
+import com.lib.FunSDK;
+import com.xm.ui.widget.drawgeometry.model.GeometryInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import demo.xm.com.xmfunsdkdemo.R;
+import demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.alert.SmartAnalyzeAlertType;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.alert.model.FunctionViewItemElement;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.alert.view.AlertSetFunctionInterface;
-
-import static com.lib.sdk.bean.HumanDetectionBean.IA_BIDIRECTION;
-import static com.lib.sdk.bean.HumanDetectionBean.IA_DIRECT_BACKWARD;
-import static com.lib.sdk.bean.HumanDetectionBean.IA_DIRECT_FORWARD;
-import static com.manager.db.Define.ALERT_AREA_TYPE;
-import static com.manager.db.Define.ALERT_lINE_TYPE;
-import static com.xm.ui.widget.drawgeometry.model.GeometryInfo.GEOMETRY_AO;
-import static com.xm.ui.widget.drawgeometry.model.GeometryInfo.GEOMETRY_L;
-import static com.xm.ui.widget.drawgeometry.model.GeometryInfo.GEOMETRY_LINE;
-import static com.xm.ui.widget.drawgeometry.model.GeometryInfo.GEOMETRY_PENTAGON;
-import static com.xm.ui.widget.drawgeometry.model.GeometryInfo.GEOMETRY_RECTANGLE;
-import static com.xm.ui.widget.drawgeometry.model.GeometryInfo.GEOMETRY_TRIANGLE;
-
 
 public class AlertSetFunctionPresenter {
     private AlertSetFunctionInterface mSetFunctionInterface;
@@ -31,9 +28,7 @@ public class AlertSetFunctionPresenter {
     private HashMap<Integer,Boolean> areaEnableMap;
     private List<FunctionViewItemElement> itemList;
     private int curSelectItemPos;
-    private Context context;
-    public AlertSetFunctionPresenter(Context context,AlertSetFunctionInterface functionInterface) {
-        this.context = context;
+    public AlertSetFunctionPresenter(AlertSetFunctionInterface functionInterface) {
         this.mSetFunctionInterface = functionInterface;
         directEnableMap = new HashMap<>();
         directEnableMap.put(IA_DIRECT_FORWARD,false);
@@ -55,14 +50,12 @@ public class AlertSetFunctionPresenter {
         this.curSelectItemPos = position;
         int itemType = itemList.get(position).getItemType();
         switch (ruleType) {
-            case ALERT_lINE_TYPE:
-                mSetFunctionInterface.setGeometryType(GEOMETRY_LINE);
+            case SmartAnalyzeAlertType.ALERT_lINE_TYPE:
+                mSetFunctionInterface.setShapeType(GeometryInfo.GEOMETRY_LINE);
                 mSetFunctionInterface.setAlertLineType(itemType);
                 break;
-            case ALERT_AREA_TYPE:
-                mSetFunctionInterface.setGeometryType(itemType);
-                break;
-            default:
+            case SmartAnalyzeAlertType.ALERT_AREA_TYPE:
+                mSetFunctionInterface.setShapeType(itemType);
                 break;
         }
     }
@@ -88,53 +81,51 @@ public class AlertSetFunctionPresenter {
     public List<FunctionViewItemElement> initFunctionViewData(int type) {
         itemList = new ArrayList();
         switch (type) {
-            case ALERT_lINE_TYPE:
+            case SmartAnalyzeAlertType.ALERT_lINE_TYPE:
                 if (directEnableMap.get(IA_DIRECT_FORWARD)) {
-                    itemList.add(new FunctionViewItemElement(R.mipmap.smart_analyze__line_right_nor,
-                            R.mipmap.smart_analyze__line_right_sel,context.getString(R.string.smart_analyze_line_left)
-                            ,IA_DIRECT_FORWARD));
+                    itemList.add(new FunctionViewItemElement(R.drawable.smart_analyze__line_right_nor,
+                            R.drawable.smart_analyze__line_right_sel,
+                            FunSDK.TS("smart_analyze_line_left"),IA_DIRECT_FORWARD));
                 }
                 if (directEnableMap.get(IA_DIRECT_BACKWARD)) {
-                    itemList.add(new FunctionViewItemElement(R.mipmap.smart_analyze__line_left_nor,
-                            R.mipmap.smart_analyze__line_left_sel,
-                            context.getString(R.string.smart_analyze_line_right),IA_DIRECT_BACKWARD));
+                    itemList.add(new FunctionViewItemElement(R.drawable.smart_analyze__line_left_nor,
+                            R.drawable.smart_analyze__line_left_sel,
+                            FunSDK.TS("smart_analyze_line_right"),IA_DIRECT_BACKWARD));
                 }
                 if (directEnableMap.get(IA_BIDIRECTION)) {
-                    itemList.add(new FunctionViewItemElement(R.mipmap.smart_analyze__line_middle_nor,
-                            R.mipmap.smart_analyze__line_middle_sel,
-                            context.getString(R.string.smart_analyze_line_middle),IA_BIDIRECTION));
+                    itemList.add(new FunctionViewItemElement(R.drawable.smart_analyze__line_middle_nor,
+                            R.drawable.smart_analyze__line_middle_sel,
+                            FunSDK.TS("smart_analyze_line_middle"),IA_BIDIRECTION));
                 }
                 break;
-            case ALERT_AREA_TYPE:
+            case SmartAnalyzeAlertType.ALERT_AREA_TYPE:
                 if (areaEnableMap.get(GEOMETRY_TRIANGLE)) {
-                    itemList.add(new FunctionViewItemElement(R.mipmap.smart_analyze_shape_triangle_nor,
-                            R.mipmap.smart_analyze_shape_triangle_sel,
-                            context.getString(R.string.smart_analyze_shape_triangle),GEOMETRY_TRIANGLE));
+                    itemList.add(new FunctionViewItemElement(R.drawable.smart_analyze_shape_triangle_nor,
+                            R.drawable.smart_analyze_shape_triangle_sel,
+                            FunSDK.TS("smart_analyze_shape_triangle"),GEOMETRY_TRIANGLE));
                 }
                 if (areaEnableMap.get(GEOMETRY_RECTANGLE)) {
-                    itemList.add(new FunctionViewItemElement(R.mipmap.smart_analyze_shape_rectangle_nor,
-                            R.mipmap.smart_analyze_shape_rectangle_sel,
-                            context.getString(R.string.smart_analyze_shape_rectangle),GEOMETRY_RECTANGLE));
+                    itemList.add(new FunctionViewItemElement(R.drawable.smart_analyze_shape_rectangle_nor,
+                            R.drawable.smart_analyze_shape_rectangle_sel,
+                            FunSDK.TS("smart_analyze_shape_rectangle"),GEOMETRY_RECTANGLE));
                 }
                 if (areaEnableMap.get(GEOMETRY_PENTAGON)) {
-                    itemList.add(new FunctionViewItemElement(R.mipmap.smart_analyze_shape_pentagram_nor,
-                            R.mipmap.smart_analyze_shape_pentagram_sel,
-                            context.getString(R.string.smart_analyze_shape_pentagram),GEOMETRY_PENTAGON));
+                    itemList.add(new FunctionViewItemElement(R.drawable.smart_analyze_shape_pentagram_nor,
+                            R.drawable.smart_analyze_shape_pentagram_sel,
+                            FunSDK.TS("smart_analyze_shape_pentagram"),GEOMETRY_PENTAGON));
                 }
                 if (areaEnableMap.get(GEOMETRY_L)) {
-                    itemList.add(new FunctionViewItemElement(R.mipmap.smart_analyze_shape_l_nor,
-                            R.mipmap.smart_analyze_shape_l_sel,
-                            context.getString(R.string.smart_analyze_shape_l_sel),GEOMETRY_L));
+                    itemList.add(new FunctionViewItemElement(R.drawable.smart_analyze_shape_l_nor,
+                            R.drawable.smart_analyze_shape_l_sel,
+                            FunSDK.TS("smart_analyze_shape_l_sel"),GEOMETRY_L));
                 }
                 if (areaEnableMap.get(GEOMETRY_AO)) {
-                    itemList.add(new FunctionViewItemElement(R.mipmap.smart_analyze_shape_concave_nor,
-                            R.mipmap.smart_analyze_shape_concave_sel,
-                            context.getString(R.string.smart_analyze_shape_concave),GEOMETRY_AO));
+                    itemList.add(new FunctionViewItemElement(R.drawable.smart_analyze_shape_concave_nor,
+                            R.drawable.smart_analyze_shape_concave_sel,
+                            FunSDK.TS("smart_analyze_shape_concave"),GEOMETRY_AO));
 
                 }
-                //itemList.add(new FunctionViewItemElement(R.mipmap.smart_analyze_shape_customize_nor, R.mipmap.smart_analyze_shape_customize_sel, FunSDK.TS("smart_analyze_shape_customize")));
-                break;
-            default:
+                //itemList.add(new FunctionViewItemElement(R.drawable.smart_analyze_shape_customize_nor, R.drawable.smart_analyze_shape_customize_sel, FunSDK.TS("smart_analyze_shape_customize")));
                 break;
         }
         return itemList;

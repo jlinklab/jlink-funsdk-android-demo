@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=Français
 help_declare=Introduction
 help_feature=Relecture
@@ -1673,3 +1673,11 @@ EE_VIDEOPLAY_URL_ReadStream=Unable to get video stream
 EE_WRITE_FILE=Failed to write file
 TR_Translation_Rules=翻译规则:所有的翻译都是TR开头的，命名按照驼峰规则(例：TR_Phone_Video=手机影像            放于最后)
 Language_fr=法语(请把该翻译置于最后)
+TR_Detect_Rule_Setting=Paramètres des règles
+
+TR_Live_Gun_Camera=Détente %s
+TR_Live_Ball_Camera=Machine à balles %s
+TR_Setting_Lens=Objectif
+smart_analyze_restore=Restaurer
+TR_Alert_Set_Application_Scenarios_Tip=Une alarme se déclenche lorsque vous êtes dans la zone d’avertissement
+TR_Alert_Set_Alert_Line_Tip=Une alarme se déclenche uniquement en cas de franchissement de la ligne d’avertissement dans le sens de la flèche

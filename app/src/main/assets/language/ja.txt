@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=簡体字中国語
 help_declare=はじめに
 help_feature=プレイバック
@@ -1792,3 +1792,11 @@ EE_VIDEOPLAY_URL_ReadStream=Unable to get video stream
 EE_WRITE_FILE=Failed to write file
 TR_Translation_Rules=翻译规则:所有的翻译都是TR开头的，命名按照驼峰规则(例：TR_Phone_Video=手机影像            放于最后)
 Language_ja=日语(请把该翻译置于最后)
+TR_Detect_Rule_Setting=ルール設定
+
+TR_Live_Gun_Camera=引き金 %s
+TR_Live_Ball_Camera=ボールマシン %s
+TR_Setting_Lens=レンズ
+smart_analyze_restore=元に戻す
+TR_Alert_Set_Application_Scenarios_Tip=警戒領域に入るとアラームが鳴ります
+TR_Alert_Set_Alert_Line_Tip=警戒線を矢印方向にまたぐとアラームが鳴ります

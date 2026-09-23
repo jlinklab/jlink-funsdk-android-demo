@@ -1,9 +1,9 @@
 package demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.alert.view;
 
 
-import java.util.List;
-
 import com.lib.sdk.bean.smartanalyze.Points;
+
+import java.util.List;
 
 /**
  * Created by zhangyongyong on 2017-05-09-12:57.

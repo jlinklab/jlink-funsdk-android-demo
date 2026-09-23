@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=русский
 Login_Success=Login success
 Login_Failed=Login failure
@@ -372,3 +372,13 @@ get_config_f=Не удалось получить конфигурацию
 password=Пароль
 
 TR_Switch_WiFi_F=Не удалось включить Wi-Fi [%s]. Включить Wi-Fi на мобильном телефоне можно вручную.
+TR_Detect_Rule_Setting=Настройки правил
+
+TR_Live_Gun_Camera=Спусковой крючок %s
+TR_Live_Ball_Camera=Мяч машина %s
+TR_Setting_Lens=Объектив
+smart_analyze_restore=Возобновить
+smart_analyze_revoke=Отменить
+Done=Выполнено
+TR_Alert_Set_Application_Scenarios_Tip=Сигнал тревоги подается только когда вы находитесь в области предупреждения
+TR_Alert_Set_Alert_Line_Tip=Сигнал тревоги подается только при пересечении линии предупреждения в направлении стрелки

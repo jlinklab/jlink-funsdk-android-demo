@@ -14,8 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.List;
+import java.util.Stack;
 
 import demo.xm.com.xmfunsdkdemo.R;
+import demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.alert.SmartAnalyzeAlertType;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.alert.model.FunctionViewItemElement;
 import demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.alert.presenter.AlertSetFunctionPresenter;
 import demo.xm.com.xmfunsdkdemo.ui.widget.SmartAnalyzeFunctionView;
@@ -24,6 +26,8 @@ import static com.manager.db.Define.ALERT_AREA_TYPE;
 import static com.manager.db.Define.ALERT_lINE_TYPE;
 import static com.manager.db.Define.GOODS_RETENTION_TYPE;
 import static com.manager.db.Define.STOLEN_GOODS_TYPE;
+
+import com.lib.FunSDK;
 
 
 public class AlertSetFunctionFragment extends Fragment implements View.OnClickListener,
@@ -37,16 +41,22 @@ public class AlertSetFunctionFragment extends Fragment implements View.OnClickLi
     private RelativeLayout mContainer;
     private SmartAnalyzeFunctionView mFunctionView;
     private AlertSetFunctionPresenter mFunctionPresenter;
-    private TextView mSave;
-    private TextView mRevert;
-    private TextView mRevoke;
-    private int curItemPos = -1;
-    private int defaultItemPos = 0;
+    private Button mSave;
+    private Button mRevert;
+    private Button mRevoke;
+    private int itemPos = -1;
     private int edgeCount = 0;
+    private TextView tips ; // 提示语
+    private LinearLayout tipsLayout;
+    private Stack<Integer> clickStack;
+
+    public AlertSetFunctionFragment() {
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mFunctionPresenter = new AlertSetFunctionPresenter(getContext(),this);
+        mFunctionPresenter = new AlertSetFunctionPresenter(this);
     }
 
     @Nullable
@@ -55,18 +65,30 @@ public class AlertSetFunctionFragment extends Fragment implements View.OnClickLi
         mLayout = inflater.inflate(R.layout.fragment_alert_set_function, container);
         mAlertAreaSetting = (LinearLayout) mLayout.findViewById(R.id.alert_area_setting);
         mBoundaryAlertDirection = (Button) mLayout.findViewById(R.id.boundary_alert_direction);
+        mBoundaryAlertDirection.setText(FunSDK.TS("boundary_alert_direction"));
         mBoundaryAlertDirection.setOnClickListener(this);
         mAlertLineTriggerDirection = (Button) mLayout.findViewById(R.id.alert_line_trigger_direction);
+        mAlertLineTriggerDirection.setText(FunSDK.TS("alert_line_trigger_direction"));
         mGoodsApplicationScenarios = (Button) mLayout.findViewById(R.id.goods_application_scenarios);
+        mGoodsApplicationScenarios.setText(FunSDK.TS("TR_Alert_Shape_Area"));
         mContainer = (RelativeLayout) mLayout.findViewById(R.id.layoutRoot);
         mSave = mLayout.findViewById(R.id.smart_analyze_save);
+        mSave.setText(FunSDK.TS("Done"));
         mSave.setOnClickListener(this);
         mRevoke = mLayout.findViewById(R.id.smart_analyze_revoke);
+        mRevoke.setText(FunSDK.TS("smart_analyze_revoke"));
         mRevert = mLayout.findViewById(R.id.smart_analyze_revert);
+        mRevert.setText(FunSDK.TS("smart_analyze_restore"));
+        mFunctionView = mLayout.findViewById(R.id.alert_set_function_smart_layout);
+        mFunctionView.setOnItemClickListener(this);
+        tips = mLayout.findViewById(R.id.alert_set_function_tips);
+        tipsLayout = mLayout.findViewById(R.id.alert_set_function_tips_layout);
         mRevoke.setOnClickListener(this);
         mRevert.setOnClickListener(this);
+        clickStack = new Stack<>();
         return mLayout;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -80,43 +102,41 @@ public class AlertSetFunctionFragment extends Fragment implements View.OnClickLi
         if (functionList == null) {
             return;
         }
+        if(functionList != null && functionList.size() > 0){
+            tipsLayout.setVisibility(View.VISIBLE);
+        }
+        mAlertAreaSetting.setVisibility(View.VISIBLE);
         switch (mRuleType) {
             case ALERT_lINE_TYPE:
-                mAlertLineTriggerDirection.setVisibility(View.VISIBLE);
+                mAlertLineTriggerDirection.setVisibility(View.GONE);
+                tips.setText(FunSDK.TS("TR_Alert_Set_Alert_Line_Tip"));
                 break;
-            case ALERT_AREA_TYPE:
+            case SmartAnalyzeAlertType.ALERT_AREA_TYPE:
                 mAlertAreaSetting.setVisibility(View.VISIBLE);
+                tips.setText(FunSDK.TS("TR_Alert_Set_Application_Scenarios_Tip"));
                 break;
-            case GOODS_RETENTION_TYPE:
+            case SmartAnalyzeAlertType.GOODS_RETENTION_TYPE:
                 mGoodsApplicationScenarios.setVisibility(View.VISIBLE);
+                tipsLayout.setVisibility(View.GONE);
                 break;
-            case STOLEN_GOODS_TYPE:
+            case SmartAnalyzeAlertType.STOLEN_GOODS_TYPE:
                 mGoodsApplicationScenarios.setVisibility(View.VISIBLE);
+                tipsLayout.setVisibility(View.GONE);
                 break;
             default:
                 break;
         }
-
-        if (mFunctionView == null) {
-            mFunctionView = new SmartAnalyzeFunctionView(getActivity(), functionList);
-            mFunctionView.setOnItemClickListener(this);
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-            mContainer.addView(mFunctionView, 1, layoutParams);
-        }else {
-            mFunctionView.setData(functionList);
-        }
+        mFunctionView.setData(functionList);
         initData();
     }
 
     private void initData() {
-        if (curItemPos == -1) {
-            curItemPos = defaultItemPos;
-        }
-        mFunctionView.setItemSelected(curItemPos);
+//        if (itemPos == -1) {
+//            itemPos = 0;
+//        }
+//        mFunctionView.setItemSelected(itemPos);
         if (mFunctionPresenter.isDirectionDlgShow()) {
-            mBoundaryAlertDirection.setVisibility(View.VISIBLE);
+            mBoundaryAlertDirection.setVisibility(View.GONE);
         }
 
     }
@@ -129,9 +149,11 @@ public class AlertSetFunctionFragment extends Fragment implements View.OnClickLi
                 break;
             case R.id.smart_analyze_revoke:
                 ((AlertSetActivity) getActivity()).retreatStep();
+                itemRetreatStep();
                 break;
             case R.id.smart_analyze_revert:
                 ((AlertSetActivity) getActivity()).revert();
+                clickStack.clear();
                 break;
             case R.id.boundary_alert_direction:
                 ((AlertSetActivity) getActivity()).showAlertDirectionDialog();
@@ -142,23 +164,33 @@ public class AlertSetFunctionFragment extends Fragment implements View.OnClickLi
 
     }
 
-    @Override
-    public void onItemClick(View view, int position, String label) {
-        curItemPos = position;
-        mFunctionPresenter.showShapeOnCanvas(position, mRuleType);
+    private void itemRetreatStep() {
+//        if(!clickStack.empty() && clickStack.size()>1){
+//            clickStack.pop();
+//            mFunctionView.setItemSelected(clickStack.peek());
+//        }else {
+//            ((AlertSetActivity) getActivity()).revert();
+//            clickStack.clear();
+//        }
+
     }
 
     @Override
-    public void setGeometryType(int type) {
-        ((AlertSetActivity) getActivity()).setGeometryType(type);
+    public void onItemClick(View view, int position, String label) {
+        mFunctionPresenter.showShapeOnCanvas(position, mRuleType);
+//        clickStack.push(position);
+    }
+
+    @Override
+    public void setShapeType(int type) {
+        ((AlertSetActivity) getActivity()).setShapeType(type);
     }
 
     @Override
     public void initAlertLineType(int lineType) {
-        this.defaultItemPos = lineType;
-        this.curItemPos = defaultItemPos;
+        this.itemPos = lineType;
         if (mFunctionView != null) {
-            mFunctionView.setItemSelected(curItemPos);
+            mFunctionView.setItemSelected(itemPos);
         }
     }
 
@@ -175,23 +207,17 @@ public class AlertSetFunctionFragment extends Fragment implements View.OnClickLi
     public void initAlertAreaEdgeCount(int edgeCount) {
         this.edgeCount = edgeCount;
         if (edgeCount <= 6) {
-            defaultItemPos = edgeCount - 3;
+            itemPos = edgeCount - 3;
         }else if (edgeCount == 8){
-            defaultItemPos = 4;
+            itemPos = 4;
         }else {
-            defaultItemPos = 5;
+            itemPos = 5;
         }
-
-        this.curItemPos = defaultItemPos;
         if (mFunctionView != null) {
-            mFunctionView.setItemSelected(curItemPos);
+            mFunctionView.setItemSelected(itemPos);
         }
     }
 
-    /**
-     * 支持警戒线的方向。XM_IA_DIRECTION_E枚举的掩码，这里代表支持双向 0x4  表示100
-     * @param directionMask
-     */
     @Override
     public void setDirectionMask(String directionMask) {
         mFunctionPresenter.setDirectionMask(directionMask);
@@ -204,21 +230,9 @@ public class AlertSetFunctionFragment extends Fragment implements View.OnClickLi
         initFunctionView();
     }
 
-    @Override
-    public void revert() {
-        curItemPos = defaultItemPos;
-        if (mFunctionView != null) {
-            mFunctionView.setItemSelected(curItemPos);
-        }
-    }
-
     public void changeRevokeState(boolean state) {
         mRevoke.setEnabled(state);
-        if (!state) {
-            if (mFunctionView != null) {
-                mFunctionView.setItemSelected(curItemPos);
-            }
-        }
+        mRevert.setEnabled(state);
     }
 
     @Override
@@ -226,5 +240,14 @@ public class AlertSetFunctionFragment extends Fragment implements View.OnClickLi
         mFunctionPresenter.onDestroy();
         mFunctionPresenter = null;
         super.onDestroy();
+    }
+
+    /**
+     * 设置提示是否显示
+     * @param state
+     */
+    public void setTipsView(int state) {
+        tipsLayout.setVisibility(state);
+
     }
 }

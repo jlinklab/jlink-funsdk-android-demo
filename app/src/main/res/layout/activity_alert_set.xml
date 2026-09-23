@@ -5,19 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.xm.ui.widget.XTitleBar
+    <include
         android:id="@+id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_height"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        app:LeftBtn_Nor="@mipmap/ic_xm_ui_back_sel"
-        app:LeftBtn_Sel="@mipmap/ic_xm_ui_back_sel"
-        app:TitleText=""
-        app:TitleTextColor="@android:color/white">
-
-    </com.xm.ui.widget.XTitleBar>
+        layout="@layout/include_title_layout" />
 
     <LinearLayout
         android:layout_width="match_parent"

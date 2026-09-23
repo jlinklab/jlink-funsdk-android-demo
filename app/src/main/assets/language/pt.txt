@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=Português
 help_declare=Introdução
 help_feature=Reprodução
@@ -1792,3 +1792,11 @@ EE_VIDEOPLAY_URL_ReadStream=Unable to get video stream
 EE_WRITE_FILE=Failed to write file
 TR_Translation_Rules=翻译规则:所有的翻译都是TR开头的，命名按照驼峰规则(例：TR_Phone_Video=手机影像            放于最后)
 Language_pt=葡萄牙语(请把该翻译置于最后)
+TR_Detect_Rule_Setting=Configurações de regras
+
+TR_Live_Gun_Camera=Gatilho %s
+TR_Live_Ball_Camera=Máquina de bolas %s
+TR_Setting_Lens=Lente
+smart_analyze_restore=Restaurar
+TR_Alert_Set_Application_Scenarios_Tip=Um alarme será acionado quando você estiver na área de aviso
+TR_Alert_Set_Alert_Line_Tip=Um alarme será acionado somente quando a linha de advertência na direção da seta for cruzada

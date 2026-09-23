@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=Español
 Login_Success=Login success
 Login_Failed=Login failure
@@ -372,3 +372,13 @@ get_config_f=Error al obtener la configuración
 password=Contraseña
 
 TR_Switch_WiFi_F=Error al activar Wi-Fi [%s]. Puede cambiar manualmente el Wi-Fi de su teléfono celular
+TR_Detect_Rule_Setting=Configuración de reglas
+
+TR_Live_Gun_Camera=Gatillo %s
+TR_Live_Ball_Camera=Máquina de pelotas %s
+TR_Setting_Lens=Lente
+smart_analyze_restore=Restaurar
+smart_analyze_revoke=Deshacer
+Done=Completado
+TR_Alert_Set_Application_Scenarios_Tip=Se activará una alarma cuando se encuentre en la zona de alerta
+TR_Alert_Set_Alert_Line_Tip=Solo se activará una alarma cuando se cruce la línea de advertencia en la dirección de la flecha

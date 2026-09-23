@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=한국어
 help_declare=소개
 help_feature=재생
@@ -1813,3 +1813,11 @@ get_config_f=구성을 가져오지 못했습니다
 password=비밀번호
 
 TR_Switch_WiFi_F=[%s] Wi-Fi로 전환하는 데 실패했습니다. 휴대전화에서 직접 Wi-Fi를 전환할 수 있습니다
+TR_Detect_Rule_Setting=규칙 설정
+
+TR_Live_Gun_Camera=방아쇠 %s
+TR_Live_Ball_Camera=공 기계 %s
+TR_Setting_Lens=렌즈
+smart_analyze_restore=복원
+TR_Alert_Set_Application_Scenarios_Tip=경고 영역에 있을 때만 알람이 트리거됩니다
+TR_Alert_Set_Alert_Line_Tip=화살표 방향의 경계선을 넘었을 때만 알람이 트리거됩니다

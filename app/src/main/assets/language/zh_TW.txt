@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=繁體中文
 help_declare=Introduction
 help_feature=PlayBack
@@ -1812,3 +1812,11 @@ get_config_f=獲取配置失敗
 password=密碼
 
 TR_Switch_WiFi_F=切換WiFi【%s】失敗，您可以在手機系統進行手動切換WiFi
+TR_Detect_Rule_Setting=規則設置
+
+TR_Live_Gun_Camera=槍機%s
+TR_Live_Ball_Camera=球機%s
+TR_Setting_Lens=鏡頭
+smart_analyze_restore=還原
+TR_Alert_Set_Application_Scenarios_Tip=只有進入警戒區域才會產生報警
+TR_Alert_Set_Alert_Line_Tip=只有沿著箭頭的方向，跨過警戒線才會產生報警

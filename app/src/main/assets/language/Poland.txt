@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=Poland
 help_declare=Wprowadzenie
 help_feature=Odtwarzanie
@@ -1828,3 +1828,11 @@ TR_All_Device=Wszystkie urządzenia
 TR_Not_Login_Or_Dev_Not_In_List=Konto nie jest zalogowane lub urządzenia nie ma na liście
 TR_Unsupport_Talk=Intercom nie jest obsługiwany
 TR_Open_Alarm_Sound_Tip=Włącz lub wyłącz alarm
+TR_Detect_Rule_Setting=Ustawienia reguł
+
+TR_Live_Gun_Camera=Spust %s
+TR_Live_Ball_Camera=Maszyna do piłek %s
+TR_Setting_Lens=Obiektyw
+smart_analyze_restore=Przywróć
+TR_Alert_Set_Application_Scenarios_Tip=Alarm zostanie uruchomiony, gdy znajdziesz się w obszarze ostrzegania.
+TR_Alert_Set_Alert_Line_Tip=Alarm zostanie uruchomiony tylko wtedy, gdy zostanie przekroczona linia ostrzegawcza w kierunku strzałki

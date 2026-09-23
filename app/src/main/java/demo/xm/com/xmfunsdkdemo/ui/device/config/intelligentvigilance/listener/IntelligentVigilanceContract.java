@@ -22,6 +22,9 @@ public interface IntelligentVigilanceContract {
         void updateHumanDetectResult(boolean isSuccess, int errorId);
 
         void saveHumanDetectResult(boolean isSuccess, int errorId);
+
+        /** 更新镜头标题（chnId: 0/1/2 对应枪机/球机序号） */
+        void updateCameraTitle(int chnId, String title);
     }
 
     interface IIntelligentVigilancePresenter {
@@ -108,5 +111,8 @@ public interface IntelligentVigilanceContract {
         void setHumanDetection(HumanDetectionBean humanDetection);
 
         ChannelHumanRuleLimitBean getChannelHumanRuleLimitBean();
+
+        /** 获取多目设备各通道镜头名称（递归查询 chnId 0→1→2） */
+        void getAllChnName();
     }
 }

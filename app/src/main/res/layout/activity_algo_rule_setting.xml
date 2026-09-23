@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/new_bg_color"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layoutTop"
+        layout="@layout/include_title_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 单目传感器卡片（默认显示，多目时隐藏） -->
+            <LinearLayout
+                android:id="@+id/ll_single_sensor_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/corner_white_bg_8"
+                android:orientation="vertical">
+
+                <!-- 选项容器（不再依赖开关，始终可见） -->
+                <LinearLayout
+                    android:id="@+id/ll_rule_options"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <!-- 警戒区域 -->
+                    <com.xm.ui.widget.ListSelectItem
+                        android:id="@+id/lsi_rule_area"
+                        style="@style/baseListSelectItemStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:Cap=""
+                        app:ImageLeft1="@drawable/correct_nor"
+                        app:ImageLeft2="@drawable/correct_sel"
+                        app:ImageLeftHeight="22dp"
+                        app:ImageLeftWidth="22dp"
+                        app:LineColor="@color/line_color"
+                        app:LineMargin="15dp"
+                        app:RightClickable="false"
+                        app:ShowBottomLine="true"
+                        app:ShowTopLine="false"
+                        app:Title="alert_area"
+                        app:leftMargin="10dp" />
+
+                    <!-- 警戒线 -->
+                    <com.xm.ui.widget.ListSelectItem
+                        android:id="@+id/lsi_rule_line"
+                        style="@style/baseListSelectItemStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:Cap=""
+                        app:ImageLeft1="@drawable/correct_nor"
+                        app:ImageLeft2="@drawable/correct_sel"
+                        app:ImageLeftHeight="22dp"
+                        app:ImageLeftWidth="22dp"
+                        app:RightClickable="false"
+                        app:ShowBottomLine="false"
+                        app:ShowTopLine="false"
+                        app:Title="alert_line"
+                        app:leftMargin="10dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 多目传感器容器（默认隐藏，多目时动态填充） -->
+            <LinearLayout
+                android:id="@+id/ll_multi_sensor_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                android:orientation="vertical"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

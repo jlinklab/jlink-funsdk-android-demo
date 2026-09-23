@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 可复用的规则选项项布局，用于多目传感器场景动态添加警戒区域/警戒线选项 -->
+<com.xm.ui.widget.ListSelectItem
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/baseListSelectItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:ImageLeft1="@drawable/correct_nor"
+    app:ImageLeft2="@drawable/correct_sel"
+    app:ImageLeftWidth="22dp"
+    app:ImageLeftHeight="22dp"
+    app:Title=""
+    app:Cap=""
+    app:RightClickable="false"
+    app:ShowTopLine="false"
+    app:ShowBottomLine="false"
+    app:leftMargin="10dp" />
