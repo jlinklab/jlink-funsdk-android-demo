@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=Việt Nam
 help_declare=Hướng dẫn
 help_feature=Xem lại
@@ -1793,3 +1793,11 @@ EE_WRITE_FILE=Failed to write file
 TR_Translation_Rules=翻译规则:所有的翻译都是TR开头的，命名按照驼峰规则(例：TR_Phone_Video=手机影像            放于最后)
 Vietnamese=Tiếng Việt
 Language_vi=越南语(请把该翻译置于最后)
+TR_Detect_Rule_Setting=Cài đặt quy tắc
+
+TR_Live_Gun_Camera=Cò %s
+TR_Live_Ball_Camera=máy bóng %s
+TR_Setting_Lens=Ống kính
+smart_analyze_restore=Khôi phục
+TR_Alert_Set_Application_Scenarios_Tip=Cảnh báo sẽ được kích hoạt khi bạn ở trong khu vực cảnh báo
+TR_Alert_Set_Alert_Line_Tip=Cảnh báo sẽ chỉ được kích hoạt khi đường cảnh báo theo hướng mũi tên bị vượt qua

@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=Deutsch
 Login_Success=Login success
 Login_Failed=Login failure
@@ -372,3 +372,13 @@ get_config_f=Fehler beim Lesen der Konfiguration
 password=Passwort
 
 TR_Switch_WiFi_F=Der Wechsel des WLANs [%s] ist fehlgeschlagen. Sie können das WLAN auf Ihrem Mobiltelefon manuell umschalten
+TR_Detect_Rule_Setting=Regeleinstellungen
+
+TR_Live_Gun_Camera=Abzug %s
+TR_Live_Ball_Camera=Ballmaschine %s
+TR_Setting_Lens=Objektiv
+smart_analyze_restore=Wiederherstellen
+smart_analyze_revoke=Rückgängig machen
+Done=Abgeschlossen
+TR_Alert_Set_Application_Scenarios_Tip=Es wird ein Alarm ausgelöst, wenn Sie sich im Warnbereich befinden
+TR_Alert_Set_Alert_Line_Tip=Es wird nur dann ein Alarm ausgelöst, wenn die Warnlinie in Pfeilrichtung überschritten wird.

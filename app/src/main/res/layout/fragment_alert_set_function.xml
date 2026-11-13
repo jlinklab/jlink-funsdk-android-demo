@@ -4,11 +4,11 @@
     android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_e5e5e5"
+    android:background="@color/new_bg_color"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/alert_type_title"
+        android:id="@+id/llRule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -19,20 +19,22 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             android:orientation="horizontal"
+            android:gravity="center"
             android:visibility="gone"
             tools:visibility="visible">
 
             <Button
-                android:id="@+id/boundary_application_scenarios"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@android:color/white"
                 android:gravity="center"
-                android:text="@string/application_scenarios"
-                android:textColor="@color/default_selected_text_color"
-                android:textAllCaps="false"/>
+                android:text="TR_Alert_Shape_Area"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                tools:visibility="gone"
+                android:textColor="@color/smart_analyze_pressed_text_color" />
 
             <Button
                 android:id="@+id/boundary_alert_direction"
@@ -42,11 +44,63 @@
                 android:layout_weight="1"
                 android:background="@android:color/white"
                 android:gravity="center"
-                android:text="@string/boundary_alert_direction"
-                android:textColor="@color/default_selected_text_color"
+                android:text="boundary_alert_direction"
+                android:textAllCaps="false"
+                android:textColor="@color/smart_analyze_pressed_text_color"
                 android:visibility="gone"
-                tools:visibility="visible"
-                android:textAllCaps="false"/>
+                tools:visibility="gone" />
+
+
+            <!--还原-->
+            <Button
+                android:id="@+id/smart_analyze_revert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:layout_alignTop="@id/smart_analyze_revoke"
+                android:layout_alignBottom="@id/smart_analyze_revoke"
+                android:maxWidth="120dp"
+                android:enabled="false"
+                android:gravity="center"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:drawableLeft="@drawable/ic_set_region_restore_selector"
+                android:paddingLeft="@dimen/half_of_normal_padding"
+                android:paddingTop="@dimen/small_padding"
+                android:paddingRight="@dimen/half_of_normal_padding"
+                android:paddingBottom="@dimen/small_padding"
+                android:layout_marginEnd="16dp"
+                android:text="smart_analyze_restore"
+                android:textAllCaps="false"
+                android:textColor="@drawable/textcolor_gray_selector"
+                android:textSize="15sp" />
+
+            <!--撤销-->
+            <Button
+                android:id="@+id/smart_analyze_revoke"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/smart_analyze_revert"
+                android:background="@null"
+                android:maxWidth="120dp"
+                android:enabled="false"
+                android:gravity="center"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingLeft="@dimen/half_of_normal_padding"
+                android:paddingTop="@dimen/small_padding"
+                android:paddingRight="@dimen/half_of_normal_padding"
+                android:paddingBottom="@dimen/small_padding"
+                android:layout_marginVertical="8dp"
+                android:layout_marginStart="16dp"
+                android:drawableLeft="@drawable/ic_set_region_revoke_selector"
+                android:text="smart_analyze_revoke"
+                android:textAllCaps="false"
+                android:textColor="@drawable/textcolor_gray_selector"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <Button
@@ -55,8 +109,9 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             android:gravity="center"
-            android:text="@string/alert_line_trigger_direction"
-            android:textColor="@color/default_selected_text_color"
+            android:text="alert_line_trigger_direction"
+            android:textAllCaps="false"
+            android:textColor="@color/smart_analyze_pressed_text_color"
             android:visibility="gone" />
 
         <Button
@@ -65,57 +120,79 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             android:gravity="center"
-            android:text="@string/application_scenarios"
-            android:textColor="@color/default_selected_text_color"
+            android:text="TR_Alert_Shape_Area"
+            android:textColor="@color/smart_analyze_pressed_text_color"
             android:visibility="gone" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/alert_set_function_tips_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alert_set_function_smart_layout"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/half_of_normal_margin"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/ic_set_hint" />
+
+        <TextView
+            android:id="@+id/alert_set_function_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/half_of_normal_margin"
+            android:text="TR_Alert_Set_Tips"
+            android:textColor="@color/color_text_light1" />
+    </LinearLayout>
+
+    <demo.xm.com.xmfunsdkdemo.ui.widget.SmartAnalyzeFunctionView
+        android:id="@+id/alert_set_function_smart_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/llRule"
+        android:layout_marginTop="16dp"
+        />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="15dp">
 
-        <!--还原-->
-        <TextView
-            android:id="@+id/smart_analyze_revert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:padding="20dp"
-            android:text="@string/smart_analyze_restore"
-            android:textSize="@dimen/normal_text_size"
-            android:textColor="@drawable/textcolor_gray_selector"/>
 
-        <!--撤销-->
-        <TextView
-            android:id="@+id/smart_analyze_revoke"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="@string/smart_analyze_revoke"
-            android:textColor="@drawable/textcolor_gray_selector"
-            android:enabled="false"
-            android:textSize="@dimen/normal_text_size"
-            android:layout_toRightOf="@+id/smart_analyze_revert"/>
-
-        <TextView
+        <!--完成-->
+        <Button
             android:id="@+id/smart_analyze_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
+            android:layout_marginEnd="9dp"
+            android:background="@drawable/shape_theme_btn"
             android:gravity="center"
-            android:padding="20dp"
-            android:text="@string/Done"
-            android:textSize="@dimen/normal_text_size"
-            android:textColor="@color/default_normal_text_color"/>
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:maxWidth="100dp"
+            android:paddingLeft="@dimen/half_of_normal_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingRight="@dimen/half_of_normal_padding"
+            android:paddingBottom="@dimen/small_padding"
+            android:text="Done"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:textSize="15sp" />
     </RelativeLayout>
 
 </RelativeLayout>

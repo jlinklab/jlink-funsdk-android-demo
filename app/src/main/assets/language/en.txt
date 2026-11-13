@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=English
 help_declare=Introduction
 help_feature=Playback
@@ -1838,3 +1838,11 @@ get_config_f=Failed to get configuration
 password=Password
 
 TR_Switch_WiFi_F=Failed to switch Wi-Fi [%s]. You can manually switch Wi-Fi on your mobile phone
+TR_Detect_Rule_Setting=Rule Settings
+
+TR_Live_Gun_Camera=Bullet cam %s
+TR_Live_Ball_Camera=Dome cam %s
+TR_Setting_Lens=Lens
+smart_analyze_restore=Restore
+TR_Alert_Set_Application_Scenarios_Tip=An alarm will be triggered when you are in the warning area
+TR_Alert_Set_Alert_Line_Tip=An alarm will be triggered only when the warning line in the arrow direction is crossed

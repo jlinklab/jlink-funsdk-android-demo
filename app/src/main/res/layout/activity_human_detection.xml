@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:uilib="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
@@ -89,6 +90,90 @@
                     android:visibility="gone"
                     tools:visibility="visible"/>
             </LinearLayout>
+
+
+
+            <!-- 警戒区域 新 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginStart="@dimen/dp_10"
+                android:id="@+id/cl_rule_set_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/cl_rule_set"
+                tools:visibility="visible">
+
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/tv_rule_set_title"
+                    style="@style/baseListSelectItemStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ImageRight1="@null"
+                    app:ImageRight2="@null"
+                    app:RightClickable="false"
+                    app:ShowBottomLine="false"
+                    app:ShowTopLine="true"
+                    app:Title="alert_area"
+                    app:leftMargin="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_camera_1"
+                    style="@style/baseListSelectItemStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:visibility="gone"
+                    app:ImageLeft1="@drawable/correct_nor"
+                    app:ImageLeft2="@drawable/correct_sel"
+                    app:LineColor="@color/line_color"
+                    app:RightClickable="false"
+                    app:ShowTopLine="false"
+                    app:Title="TR_Setting_Lens"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_rule_set_title"
+                    tools:visibility="visible" />
+
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_camera_2"
+                    style="@style/baseListSelectItemStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    app:ImageLeft1="@drawable/correct_nor"
+                    app:ImageLeft2="@drawable/correct_sel"
+                    app:RightClickable="false"
+                    app:Title="TR_Setting_Lens"
+                    app:layout_constraintTop_toBottomOf="@+id/lsi_camera_1" />
+
+                <com.xm.ui.widget.ListSelectItem
+                    android:id="@+id/lsi_camera_3"
+                    style="@style/baseListSelectItemStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:visibility="gone"
+                    app:ImageLeft1="@drawable/correct_nor"
+                    app:ImageLeft2="@drawable/correct_sel"
+                    app:RightClickable="false"
+                    app:Title="TR_Setting_Lens"
+                    app:layout_constraintTop_toBottomOf="@+id/lsi_camera_2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- 规则设置入口 -->
+            <com.xm.ui.widget.ListSelectItem
+                android:layout_marginStart="@dimen/dp_10"
+                android:id="@+id/lsi_rule_setting"
+                style="@style/baseListSelectItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:RightClickable="true"
+                app:ShowBottomLine="true"
+                app:ShowTopLine="true"
+                app:Title="TR_Detect_Rule_Setting"
+                tools:visibility="visible" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

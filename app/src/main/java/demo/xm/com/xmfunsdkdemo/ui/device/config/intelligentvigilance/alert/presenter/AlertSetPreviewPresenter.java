@@ -19,13 +19,13 @@ public class AlertSetPreviewPresenter implements AlertSetPreViewInterface {
 	public List<Points> getConvertPoint(int width, int height) {
 		// TODO Auto-generated method stub
 		List<Points> list = getVertex();
-		for (Points points : list) {
-			points.setX((int) (points.getX() * CONVERT_PARAMETER / width ));
-			points.setY((int) (points.getY() * CONVERT_PARAMETER / height));
-		}
-		return list;
+        for (Points points : list) {
+            points.setX((int) (points.getX() * CONVERT_PARAMETER / width ));
+            points.setY((int) (points.getY() * CONVERT_PARAMETER / height));
+        }
+        return list;
 	}
-
+	
 	public void setConvertPoint(List<Points> list,int width,int height) {
 		GeometryPoints[] points = new GeometryPoints[list.size()];
 		for(int i = 0 ; i < list.size();++i) {
@@ -33,14 +33,14 @@ public class AlertSetPreviewPresenter implements AlertSetPreViewInterface {
 		}
 		mDrawGeometry.setGeometryPoints(points);
 	}
-
-	private List<Points> getVertex() {
-		List<Points> list = new ArrayList<>();
-		if(null != mDrawGeometry) {
-			for (GeometryPoints points : mDrawGeometry.getVertex()) {
-				list.add(new Points(points.x, points.y));
-			}
-		}
-		return list;
-	}
+	
+	 private List<Points> getVertex() {
+        List<Points> list = new ArrayList<>();
+        if(null != mDrawGeometry) {
+	        for (GeometryPoints points : mDrawGeometry.getVertex()) {
+	            list.add(new Points(points.x, points.y));
+	        }
+        }
+        return list;
+    }
 }

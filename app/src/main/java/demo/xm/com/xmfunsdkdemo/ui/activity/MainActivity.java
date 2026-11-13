@@ -73,7 +73,7 @@ import static com.manager.db.Define.LOGIN_NONE;
  */
 @RuntimePermissions
 public class MainActivity extends DemoBaseActivity<MainPresenter> implements MainContract.IMainView {
-    private static String APP_KEY = "0621ef206a1d4cafbe0c5545c3882ea8";
+    private static String APP_KEY = "";
     private RecyclerView userlv;
     private RecyclerView devLv;
     private WifiManager.MulticastLock multicastLock;

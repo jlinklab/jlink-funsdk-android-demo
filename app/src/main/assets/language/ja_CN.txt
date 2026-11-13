@@ -1,4 +1,4 @@
-[Language]
+﻿[Language]
 Language=日本語
 Login_Success=Login success
 Login_Failed=Login failure
@@ -372,3 +372,13 @@ get_config_f=設定の取得に失敗しました
 password=パスワード
 
 TR_Switch_WiFi_F=WiFi [%s] を切り替えできません。手動で切り替えてください。
+TR_Detect_Rule_Setting=ルール設定
+
+TR_Live_Gun_Camera=引き金 %s
+TR_Live_Ball_Camera=ボールマシン %s
+TR_Setting_Lens=レンズ
+smart_analyze_restore=元に戻す
+smart_analyze_revoke=取り消し
+Done=完了
+TR_Alert_Set_Application_Scenarios_Tip=警戒領域に入るとアラームが鳴ります
+TR_Alert_Set_Alert_Line_Tip=警戒線を矢印方向にまたぐとアラームが鳴ります

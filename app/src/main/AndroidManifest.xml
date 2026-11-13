@@ -276,6 +276,9 @@
             android:name=".ui.device.config.intelligentvigilance.alert.view.AlertSetActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.device.config.intelligentvigilance.alert.view.AlgoRuleSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.device.config.serialport.view.SerialPortActivity"
             android:screenOrientation="portrait" />
 

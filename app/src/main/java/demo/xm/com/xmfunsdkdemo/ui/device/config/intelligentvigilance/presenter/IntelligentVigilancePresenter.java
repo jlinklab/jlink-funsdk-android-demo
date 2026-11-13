@@ -2,6 +2,7 @@ package demo.xm.com.xmfunsdkdemo.ui.device.config.intelligentvigilance.presenter
 
 import android.os.Message;
 
+import com.lib.FunSDK;
 import com.lib.MsgContent;
 import com.lib.SDKCONST;
 import com.lib.sdk.bean.ChannelHumanRuleLimitBean;
@@ -9,6 +10,7 @@ import com.lib.sdk.bean.DetectTrackBean;
 import com.lib.sdk.bean.HandleConfigData;
 import com.lib.sdk.bean.HumanDetectionBean;
 import com.lib.sdk.bean.JsonConfig;
+import com.lib.sdk.bean.SystemFunctionBean;
 import com.manager.device.DeviceManager;
 import com.manager.device.config.DevConfigInfo;
 import com.manager.device.config.DevConfigManager;
@@ -27,10 +29,12 @@ import static com.lib.sdk.bean.HumanDetectionBean.IA_TRIPWIRE;
 public class IntelligentVigilancePresenter extends XMBasePresenter<DeviceManager>
         implements IntelligentVigilanceContract.IIntelligentVigilancePresenter {
     private IntelligentVigilanceContract.IIntelligentVigilanceView iIntelligentVigilanceView;
-    private DevConfigManager devConfigManager;
+    public DevConfigManager devConfigManager;
     private HumanDetectionBean humanDetectionBean;
     private ChannelHumanRuleLimitBean channelHumanRuleLimitBean;
     private DetectTrackBean detectTrackBean;
+    private int gunCameraNum = 1;
+    private int ballCameraNum = 1;
     public IntelligentVigilancePresenter(IntelligentVigilanceContract.IIntelligentVigilanceView iIntelligentVigilanceView) {
         this.iIntelligentVigilanceView = iIntelligentVigilanceView;
     }
@@ -334,5 +338,72 @@ public class IntelligentVigilancePresenter extends XMBasePresenter<DeviceManager
     @Override
     public ChannelHumanRuleLimitBean getChannelHumanRuleLimitBean() {
         return channelHumanRuleLimitBean;
+    }
+
+    @Override
+    public void getAllChnName(){
+        getChnName(0);
+    }
+
+    /**
+     * 获取多目设备通道镜头名称（递归查询 chnId 0→1→2）
+     * 查询 SystemFunction 判断是否支持 PTZ 方向控制，
+     * 支持则为球机，不支持则为枪机
+     */
+
+    private void getChnName(final int chnId) {
+        if (chnId > 2) {
+            return;
+        }
+        DevConfigInfo devConfigInfo = DevConfigInfo.create(new DevConfigManager.OnDevConfigResultListener() {
+            @Override
+            public void onFunSDKResult(Message msg, MsgContent ex) {
+            }
+
+            @Override
+            public void onSuccess(String devId, int operationType, Object result) {
+                boolean isSupportPTZ = false;
+                if (result instanceof String) {
+                    HandleConfigData handleConfigData = new HandleConfigData();
+                    if (handleConfigData.getDataObj((String) result, SystemFunctionBean.class)) {
+                        SystemFunctionBean bean = (SystemFunctionBean) handleConfigData.getObj();
+                        if (bean != null && bean.OtherFunction != null) {
+                            isSupportPTZ = bean.OtherFunction.SupportPTZDirectionControl;
+                        }
+                    }
+                }
+                dealWithChnNameResult(chnId, isSupportPTZ);
+            }
+
+            @Override
+            public void onFailed(String devId, int msgId, String jsonName, int errorId) {
+                dealWithChnNameResult(chnId, false);
+            }
+        });
+
+        devConfigInfo.setJsonName(JsonConfig.SYSTEM_FUNCTION);
+        devConfigInfo.setChnId(chnId);
+        devConfigManager.getDevConfig(devConfigInfo);
+    }
+
+    /**
+     * 处理通道镜头名称查询结果，设置标题并递归查询下一通道
+     */
+    private void dealWithChnNameResult(int chnId, boolean isSupportPTZ) {
+        String title;
+        if (isSupportPTZ) {
+            title = String.format(FunSDK.TS("TR_Live_Ball_Camera"), "0" + ballCameraNum);
+            ballCameraNum++;
+        } else {
+            title = String.format(FunSDK.TS("TR_Live_Gun_Camera"), "0" + gunCameraNum);
+            gunCameraNum++;
+        }
+        if (iIntelligentVigilanceView != null) {
+            iIntelligentVigilanceView.updateCameraTitle(chnId, title);
+        }
+        // 递归查询下一通道
+        if (chnId < 2) {
+            getChnName(chnId + 1);
+        }
     }
 }
