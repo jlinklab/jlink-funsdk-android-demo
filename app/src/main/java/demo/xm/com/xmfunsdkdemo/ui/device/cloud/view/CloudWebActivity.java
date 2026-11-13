@@ -81,7 +81,7 @@ import demo.xm.com.xmfunsdkdemo.ui.device.cloud.presenter.CloudWebPresenter;
  * @time 2019-10-23 9:38
  */
 public class CloudWebActivity extends DemoBaseActivity<CloudWebPresenter> implements CloudWebContract.ICloudWebView {
-    public static final String CLOUD_STORAGE_BASE_URL = "https://boss22-api.xmcsrv.net/index?";
+    public static final String CLOUD_STORAGE_BASE_URL = "https://boss-api.jftechsoft.com/index?";
     /**
      * 流量
      */

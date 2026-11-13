@@ -140,7 +140,7 @@ public class UserLoginPresenter extends XMBasePresenter<AccountManager> implemen
                     if (!TextUtils.isEmpty(phoneRuleAndRegion.getDefaultCountry().getAmsUrl())) {
                         FunSDK.SysSetServerIPPort("MI_SERVER", phoneRuleAndRegion.getDefaultCountry().getAmsUrl(), 443);
                     } else {
-                        FunSDK.SysSetServerIPPort("MI_SERVER", "https://rs.xmeye.net", 443);
+                        FunSDK.SysSetServerIPPort("MI_SERVER", "https://ams.jftechws.com", 443);
                     }
                     if (!TextUtils.isEmpty(phoneRuleAndRegion.getDefaultCountry().getCapsUrl())) {
                         FunSDK.SysSetServerIPPort("CAPS_SERVER",phoneRuleAndRegion.getDefaultCountry().getCapsUrl(), 443);

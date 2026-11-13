@@ -18,7 +18,7 @@ urlMap.put("appKey",appKey);//A registered appkey on an open platform
 urlMap.put("goods",presenter.getGoodsType());//Product type: cloud storage, traffic, etc
 urlMap.put("devName", devInfo.getDevName());//Device name
 
-String url = getUrl("https://boss2.xmcsrv.net/index.do",urlMap)
+String url = getUrl("https://boss2.jftechsoft.com/index.do",urlMap)
 webView.loadUrl(url);
 
 ```
